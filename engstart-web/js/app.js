@@ -520,6 +520,9 @@
       if (navName === 'home') {
         document.getElementById('page-home').classList.remove('hidden');
         renderHomePage();
+      } else if (navName === 'exercises') {
+        document.getElementById('page-exercises').classList.remove('hidden');
+        renderExercisesPage();
       } else if (navName === 'grammar') {
         document.getElementById('page-grammar').classList.remove('hidden');
         renderAioGrammarPage();
@@ -3000,6 +3003,306 @@
 
 
 
+
+    // ==================== EXERCISES TAB ("LÀM BÀI TẬP" — ANH & TRUNG, 4 DẠNG BÀI) ====================
+    const EX_GRAMMAR_QS = {
+      en: [
+        { prompt: 'She ____ a teacher at a primary school.', options: ['am', 'is', 'are', 'be'], ans: 1, exp: 'Chủ ngữ ngôi thứ 3 số ít "She" đi với động từ to be "is".' },
+        { prompt: '____ you like drinking iced coffee?', options: ['Does', 'Is', 'Do', 'Are'], ans: 2, exp: 'Câu hỏi hiện tại đơn với động từ thường "like" và chủ ngữ "you" dùng "Do".' },
+        { prompt: 'I ____ English with my AI teacher right now.', options: ['learn', 'am learning', 'learned', 'learns'], ans: 1, exp: 'Có "right now" (ngay lúc này) nên dùng thì Hiện tại tiếp diễn: am + V-ing.' },
+        { prompt: 'Yesterday, we ____ to a new Vietnamese restaurant.', options: ['go', 'going', 'went', 'goes'], ans: 2, exp: '"Yesterday" (hôm qua) dùng Quá khứ đơn; quá khứ của "go" là "went".' },
+        { prompt: 'Could you ____ me where the train station is?', options: ['tell', 'telling', 'to tell', 'told'], ans: 0, exp: 'Sau động từ khuyết thiếu "Could" luôn dùng động từ nguyên mẫu không "to".' },
+        { prompt: 'If it rains tomorrow, I ____ stay at home.', options: ['am', 'will', 'was', 'did'], ans: 1, exp: 'Câu điều kiện loại 1: If + Hiện tại đơn, S + will + V nguyên mẫu.' }
+      ],
+      zh: [
+        { prompt: '我 ____ 越南人。(Tôi là người Việt Nam.)', options: ['有 (yǒu)', '是 (shì)', '在 (zài)', '去 (qù)'], ans: 1, exp: 'Dùng động từ 是 (shì — là) để nối chủ ngữ và danh từ.' },
+        { prompt: '你是学生 ____？(Bạn là học sinh phải không?)', options: ['的 (de)', '了 (le)', '吗 (ma)', '不 (bù)'], ans: 2, exp: 'Thêm trợ từ 吗 (ma) vào cuối câu để tạo câu hỏi Có/Không.' },
+        { prompt: '我 ____ 弟弟。(Tôi không có em trai.)', options: ['不有 (bù yǒu)', '没有 (méiyǒu)', '不是 (bú shì)', '没是 (méi shì)'], ans: 1, exp: 'Phủ định của 有 (có) luôn là 没有 (méiyǒu), không dùng 不有.' },
+        { prompt: '我今天 ____ 家学习中文。(Hôm nay tôi học tiếng Trung ở nhà.)', options: ['在 (zài)', '是 (shì)', '有 (yǒu)', '很 (hěn)'], ans: 0, exp: 'Cấu trúc địa điểm: Chủ ngữ + Thời gian + 在 + Địa điểm + Động từ.' },
+        { prompt: '这件衣服 ____ 钱？(Cái áo này bao nhiêu tiền?)', options: ['什么 (shénme)', '哪里 (nǎlǐ)', '多少 (duōshao)', '怎么 (zěnme)'], ans: 2, exp: 'Hỏi giá tiền dùng cụm cố định 多少钱 (duōshao qián).' },
+        { prompt: '我 ____ 一杯珍珠奶茶。(Cho tôi một ly trà sữa trân châu.)', options: ['要 (yào)', '是 (shì)', '在 (zài)', '叫 (jiào)'], ans: 0, exp: 'Khi gọi món ăn/đồ uống, dùng động từ 要 (yào — muốn/lấy).' }
+      ]
+    };
+
+    function buildExerciseSet(lang, mode) {
+      const isZh = lang === 'zh';
+      const words = [];
+      if (isZh && typeof ZH_TOPICS !== 'undefined') {
+        ZH_TOPICS.forEach(t => (t.words || []).forEach(w => words.push({
+          term: w.hanzi, sub: w.pinyin, vi: w.vi,
+          ex: w.exZh || w.hanzi, exSub: w.exPy || w.pinyin, exVi: w.exVi || w.vi
+        })));
+      } else {
+        TOPICS_DATA.forEach(t => (t.lessons || []).forEach(l => (l.words || []).forEach(w => words.push({
+          term: w.en, sub: w.ipa || '', vi: w.vi,
+          ex: w.exEn || w.en, exBlank: w.exBlank || '', exSub: w.ipa || '', exVi: w.exVi || w.vi
+        }))));
+      }
+      const shuffled = [...words].sort(() => Math.random() - 0.5);
+
+      if (mode === 'mcq') {
+        const gramPart = (EX_GRAMMAR_QS[lang] || EX_GRAMMAR_QS.en).slice(0, 4).map(g => ({ ...g, kind: 'grammar' }));
+        const vocabPart = shuffled.slice(0, 4).map(w => {
+          const wrongs = shuffled.filter(x => x.term !== w.term).slice(0, 3).map(x => x.vi);
+          const opts = [w.vi, ...wrongs].sort(() => Math.random() - 0.5);
+          return {
+            kind: 'vocab',
+            prompt: isZh ? `Từ "${w.term}" (${w.sub}) có nghĩa là gì?` : `Từ "${w.term}" (${w.sub}) có nghĩa là gì?`,
+            speak: w.term,
+            options: opts,
+            ans: opts.indexOf(w.vi),
+            exp: `${w.term} (${w.sub}) = ${w.vi}. Ví dụ: ${w.ex} (${w.exVi})`
+          };
+        });
+        return [...gramPart, ...vocabPart];
+      }
+
+      if (mode === 'fill') {
+        return shuffled.slice(0, 6).map(w => {
+          let blanked = w.exBlank || '';
+          if (!blanked) {
+            if (isZh && w.ex.includes(w.term)) blanked = w.ex.replace(w.term, '____');
+            else if (!isZh && w.ex.toLowerCase().includes(w.term.toLowerCase())) {
+              blanked = w.ex.replace(new RegExp(w.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '____');
+            } else {
+              blanked = isZh ? `Điền chữ Hán cho nghĩa: "${w.vi}"` : `Điền từ tiếng Anh cho nghĩa: "${w.vi}"`;
+            }
+          }
+          return { blanked, answer: w.term, full: w.ex, sub: w.sub, vi: w.exVi || w.vi };
+        });
+      }
+
+      if (mode === 'order') {
+        const usable = shuffled.filter(w => isZh ? (w.ex.length >= 4 && w.ex.length <= 10) : (w.ex.split(/\s+/).length >= 4 && w.ex.split(/\s+/).length <= 8));
+        return usable.slice(0, 5).map(w => {
+          const cleanEx = w.ex.replace(/[.!?。！？]/g, '').trim();
+          const tokens = isZh ? [...cleanEx] : cleanEx.split(/\s+/);
+          const scrambled = [...tokens].sort(() => Math.random() - 0.5);
+          return { target: cleanEx, tokens, scrambled, vi: w.exVi || w.vi, speak: w.ex };
+        });
+      }
+
+      // mode === 'listen'
+      return shuffled.slice(0, 6).map(w => {
+        const wrongs = shuffled.filter(x => x.term !== w.term).slice(0, 3).map(x => ({ label: `${x.term} — ${x.vi}`, ok: false }));
+        const opts = [{ label: `${w.term} — ${w.vi}`, ok: true }, ...wrongs].sort(() => Math.random() - 0.5);
+        return { speak: w.term, sub: w.sub, term: w.term, vi: w.vi, options: opts, ans: opts.findIndex(o => o.ok) };
+      });
+    }
+
+    function initExerciseSession(lang, mode) {
+      ui.exLang = lang || ui.exLang || 'en';
+      ui.exMode = mode || ui.exMode || 'mcq';
+      ui.exItems = buildExerciseSet(ui.exLang, ui.exMode);
+      ui.exIdx = 0;
+      ui.exCorrect = 0;
+      ui.exDone = false;
+      ui.exPicked = null;
+      ui.exFillInput = '';
+      ui.exFillChecked = null;
+      ui.exOrderPicked = [];
+      ui.exOrderChecked = null;
+    }
+
+    function renderExercisesPage() {
+      const el = document.getElementById('page-exercises');
+      if (!el) return;
+      const lang = ui.exLang || 'en';
+      const mode = ui.exMode || 'mcq';
+      const isZh = lang === 'zh';
+      if (!ui.exItems || !ui.exItems.length) initExerciseSession(lang, mode);
+
+      const items = ui.exItems;
+      const idx = Math.min(ui.exIdx || 0, items.length - 1);
+      const item = items[idx];
+      const pct = Math.round(((idx + (ui.exDone ? 1 : 0)) / items.length) * 100);
+      const speakAttrFor = (t) => isZh
+        ? `data-speak-zh="${String(t || '').replace(/"/g, '&quot;')}"`
+        : `data-speak="${String(t || '').replace(/"/g, '&quot;')}"`;
+
+      el.innerHTML = `
+        <!-- Lavender AIO Exercises Hero Banner -->
+        <div class="aio-lavender-banner rounded-3xl p-5 sm:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xs">
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Làm bài tập.</h1>
+              <div class="bg-white/85 p-0.5 rounded-xl inline-flex text-xs font-bold border border-purple-200">
+                <button type="button" data-ex-lang="en" class="px-3 py-1 rounded-lg ${!isZh ? 'bg-indigo-600 text-white' : 'text-slate-600'}">Tiếng Anh</button>
+                <button type="button" data-ex-lang="zh" class="px-3 py-1 rounded-lg ${isZh ? 'bg-rose-600 text-white' : 'text-slate-600'}">Tiếng Trung</button>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700">4 dạng bài tập tương tác có chấm điểm tức thì, giải thích chi tiết và thưởng XP khi hoàn thành.</p>
+          </div>
+          <button type="button" id="ex-new-set-btn" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-purple-50 border border-purple-200 text-slate-900 text-xs font-extrabold shadow-xs shrink-0 self-start lg:self-center">
+            Tạo đề mới ↻
+          </button>
+        </div>
+
+        <!-- 4 Exercise Mode Tabs -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <button type="button" data-ex-mode="mcq" class="p-3.5 rounded-2xl border text-left transition-all ${mode === 'mcq' ? 'bg-white border-indigo-400 ring-2 ring-indigo-100 shadow-xs' : 'bg-white/80 border-[#E6DEC9] hover:bg-white'}">
+            <div class="text-xs font-extrabold text-indigo-700">1. Trắc nghiệm A/B/C/D</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Từ vựng &amp; Ngữ pháp tổng hợp</div>
+          </button>
+          <button type="button" data-ex-mode="fill" class="p-3.5 rounded-2xl border text-left transition-all ${mode === 'fill' ? 'bg-white border-amber-400 ring-2 ring-amber-100 shadow-xs' : 'bg-white/80 border-[#E6DEC9] hover:bg-white'}">
+            <div class="text-xs font-extrabold text-amber-700">2. Điền từ chỗ trống</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Nhớ chính tả &amp; ngữ cảnh</div>
+          </button>
+          <button type="button" data-ex-mode="order" class="p-3.5 rounded-2xl border text-left transition-all ${mode === 'order' ? 'bg-white border-emerald-400 ring-2 ring-emerald-100 shadow-xs' : 'bg-white/80 border-[#E6DEC9] hover:bg-white'}">
+            <div class="text-xs font-extrabold text-emerald-700">3. Sắp xếp câu</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Luyện trật tự từ chuẩn xác</div>
+          </button>
+          <button type="button" data-ex-mode="listen" class="p-3.5 rounded-2xl border text-left transition-all ${mode === 'listen' ? 'bg-white border-rose-400 ring-2 ring-rose-100 shadow-xs' : 'bg-white/80 border-[#E6DEC9] hover:bg-white'}">
+            <div class="text-xs font-extrabold text-rose-700">4. Nghe chọn đáp án</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Luyện phản xạ tai nghe</div>
+          </button>
+        </div>
+
+        <!-- Exercise Stage Card -->
+        <div class="bg-white rounded-3xl border border-[#E6DEC9] shadow-xs p-5 sm:p-7 space-y-5 max-w-3xl mx-auto">
+          ${ui.exDone ? `
+            <div class="text-center py-6 space-y-4">
+              <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto text-3xl">🏆</div>
+              <div>
+                <h2 class="text-2xl font-extrabold text-slate-900">Hoàn thành bài tập!</h2>
+                <p class="text-sm text-slate-600 mt-1">Bạn trả lời đúng <strong class="text-emerald-700">${ui.exCorrect}/${items.length}</strong> câu (${Math.round((ui.exCorrect / items.length) * 100)}%).</p>
+              </div>
+              <div class="flex flex-wrap justify-center gap-2">
+                <button type="button" id="ex-new-set-btn-2" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">Làm đề mới ngay</button>
+              </div>
+            </div>
+          ` : `
+            <!-- Progress Bar -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-500">
+                <span>Câu ${idx + 1} / ${items.length}</span>
+                <span class="text-emerald-700">Đúng: ${ui.exCorrect}</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full bg-indigo-600 rounded-full transition-all" style="width:${pct}%"></div>
+              </div>
+            </div>
+
+            ${mode === 'mcq' ? `
+              <div class="p-5 rounded-2xl aio-grid-paper border border-[#E5DEC9] flex items-center justify-between gap-3">
+                <div class="text-base sm:text-lg font-extrabold text-slate-900">${item.prompt}</div>
+                ${item.speak ? `<button type="button" ${speakAttrFor(item.speak)} class="p-2.5 rounded-xl bg-white border border-slate-200 text-indigo-600 shrink-0"><i data-lucide="volume-2" class="w-4 h-4"></i></button>` : ''}
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                ${item.options.map((opt, i) => {
+                  const picked = ui.exPicked;
+                  let cls = 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800';
+                  if (picked !== null) {
+                    if (i === item.ans) cls = 'bg-emerald-50 border-emerald-500 text-emerald-900 font-bold';
+                    else if (i === picked) cls = 'bg-rose-50 border-rose-400 text-rose-800';
+                  }
+                  return `<button type="button" data-ex-mcq-pick="${i}" ${picked !== null ? 'disabled' : ''} class="p-3.5 rounded-2xl border text-left text-sm transition-all ${cls}"><span class="font-extrabold mr-2 text-slate-400">${['A','B','C','D'][i]}.</span>${opt}</button>`;
+                }).join('')}
+              </div>
+              ${ui.exPicked !== null ? `
+                <div class="p-4 rounded-2xl ${ui.exPicked === item.ans ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'} border text-xs sm:text-sm space-y-2">
+                  <div class="font-extrabold">${ui.exPicked === item.ans ? '✓ Chính xác!' : '✗ Chưa đúng rồi!'}</div>
+                  <div>${item.exp}</div>
+                </div>
+                <div class="flex justify-end">
+                  <button type="button" id="ex-next-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">Câu tiếp theo →</button>
+                </div>
+              ` : ''}
+            ` : ''}
+
+            ${mode === 'fill' ? `
+              <div class="p-5 rounded-2xl aio-grid-paper border border-[#E5DEC9] space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-xs font-bold uppercase text-amber-700">Điền từ còn thiếu</span>
+                  <button type="button" ${speakAttrFor(item.full)} class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-indigo-600 flex items-center gap-1"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe câu</button>
+                </div>
+                <div class="text-lg font-extrabold text-slate-900">${item.blanked}</div>
+                <div class="text-xs text-slate-600">Gợi ý nghĩa: <strong>${item.vi}</strong> (${item.sub})</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="text" id="ex-fill-input" value="${(ui.exFillInput || '').replace(/"/g, '&quot;')}" placeholder="${isZh ? 'Gõ chữ Hán cần điền...' : 'Gõ từ tiếng Anh cần điền...'}" class="flex-1 px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-amber-500 text-sm font-bold outline-none" />
+                <button type="button" id="ex-fill-check-btn" class="px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold shrink-0">Kiểm tra</button>
+              </div>
+              ${ui.exFillChecked !== null ? `
+                <div class="p-4 rounded-2xl border ${ui.exFillChecked ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'} text-xs sm:text-sm space-y-1">
+                  <div class="font-extrabold">${ui.exFillChecked ? '✓ Chính xác!' : `✗ Đáp án đúng là: ${item.answer}`}</div>
+                  <div>Câu đầy đủ: <strong>${item.full}</strong></div>
+                </div>
+                <div class="flex justify-end">
+                  <button type="button" id="ex-next-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">Câu tiếp theo →</button>
+                </div>
+              ` : ''}
+            ` : ''}
+
+            ${mode === 'order' ? `
+              <div class="p-5 rounded-2xl aio-grid-paper border border-[#E5DEC9] space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-xs font-bold uppercase text-emerald-700">Sắp xếp thành câu hoàn chỉnh</span>
+                  <button type="button" ${speakAttrFor(item.speak)} class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-indigo-600 flex items-center gap-1"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe gợi ý</button>
+                </div>
+                <div class="text-sm font-bold text-slate-700">Nghĩa tiếng Việt: “${item.vi}”</div>
+              </div>
+
+              <!-- Built Answer Box -->
+              <div class="min-h-[56px] p-3.5 rounded-2xl border-2 border-dashed border-emerald-300 bg-emerald-50/30 flex flex-wrap gap-2 items-center">
+                ${(ui.exOrderPicked || []).length ? ui.exOrderPicked.map((tokIdx, pos) => `
+                  <button type="button" data-ex-order-remove="${pos}" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-sm font-bold shadow-2xs">${item.scrambled[tokIdx]}</button>
+                `).join('') : `<span class="text-xs text-slate-400">Bấm các mảnh từ bên dưới theo đúng thứ tự...</span>`}
+              </div>
+
+              <!-- Word Bank -->
+              <div class="flex flex-wrap gap-2">
+                ${item.scrambled.map((tok, i) => {
+                  const used = (ui.exOrderPicked || []).includes(i);
+                  return `<button type="button" data-ex-order-add="${i}" ${used ? 'disabled' : ''} class="px-3.5 py-2 rounded-xl border text-sm font-bold transition-all ${used ? 'bg-slate-100 border-slate-200 text-slate-300' : 'bg-white hover:bg-emerald-50 border-slate-300 text-slate-900 shadow-2xs'}">${tok}</button>`;
+                }).join('')}
+              </div>
+
+              <div class="flex items-center justify-between gap-2">
+                <button type="button" id="ex-order-clear-btn" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Xếp lại</button>
+                <button type="button" id="ex-order-check-btn" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold">Kiểm tra câu</button>
+              </div>
+
+              ${ui.exOrderChecked !== null ? `
+                <div class="p-4 rounded-2xl border ${ui.exOrderChecked ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'} text-xs sm:text-sm space-y-1">
+                  <div class="font-extrabold">${ui.exOrderChecked ? '✓ Xếp câu chuẩn xác!' : `✗ Thứ tự đúng là: ${item.target}`}</div>
+                </div>
+                <div class="flex justify-end">
+                  <button type="button" id="ex-next-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">Câu tiếp theo →</button>
+                </div>
+              ` : ''}
+            ` : ''}
+
+            ${mode === 'listen' ? `
+              <div class="p-6 rounded-2xl aio-grid-paper border border-[#E5DEC9] text-center space-y-3">
+                <div class="text-xs font-bold uppercase text-rose-600">Bấm loa để nghe rồi chọn từ khớp nhất</div>
+                <button type="button" ${speakAttrFor(item.speak)} class="px-6 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-extrabold shadow-xs inline-flex items-center gap-2">
+                  <i data-lucide="volume-2" class="w-5 h-5"></i> Nghe phát âm
+                </button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                ${item.options.map((opt, i) => {
+                  const picked = ui.exPicked;
+                  let cls = 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800';
+                  if (picked !== null) {
+                    if (i === item.ans) cls = 'bg-emerald-50 border-emerald-500 text-emerald-900 font-bold';
+                    else if (i === picked) cls = 'bg-rose-50 border-rose-400 text-rose-800';
+                  }
+                  return `<button type="button" data-ex-mcq-pick="${i}" ${picked !== null ? 'disabled' : ''} class="p-3.5 rounded-2xl border text-left text-sm transition-all ${cls}">${opt.label}</button>`;
+                }).join('')}
+              </div>
+              ${ui.exPicked !== null ? `
+                <div class="flex justify-end">
+                  <button type="button" id="ex-next-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">Câu tiếp theo →</button>
+                </div>
+              ` : ''}
+            ` : ''}
+          `}
+        </div>
+      `;
+      refreshIcons();
+    }
+
     // ==================== AIO FULL SUITE: HOME, GRAMMAR, READING, PRONUNCIATION, DEEP DICTIONARY ====================
     const AIO_GRAMMAR_UNITS = {
       en: [
@@ -3828,7 +4131,7 @@
       refreshIcons();
     }
 
-    // ==================== CORODOMO-STYLE VIDEO STUDIO (SHADOWING, DICTATION, BILINGUAL SUBS) ====================
+    // ==================== CORODOMO-STYLE LIVE-SYNC VIDEO STUDIO (YT IFRAME API + REAL-TIME SUBTITLES) ====================
     const VIDEO_STUDIO_LESSONS = [
       {
         id: 'vid-en-1',
@@ -3838,21 +4141,13 @@
         youtubeId: 'S_8vM_vE7s8',
         duration: '03:15',
         lines: [
-          { text: 'Good morning! How is everything going today?', ipa: '/ɡʊd ˈmɔːrnɪŋ haʊ ɪz ˈevriθɪŋ ˈɡoʊɪŋ təˈdeɪ/', vi: 'Chào buổi sáng! Hôm nay mọi việc thế nào rồi?' },
-          { text: 'Pretty good, thanks! I just grabbed a cup of coffee.', ipa: '/ˈprɪti ɡʊd θæŋks aɪ dʒʌst ɡræbd ə kʌp əv ˈkɔːfi/', vi: 'Khá ổn, cảm ơn! Mình vừa làm một ly cà phê.' },
-          { text: 'Sounds great! Are you busy with work this morning?', ipa: '/saʊndz ɡreɪt ɑːr juː ˈbɪzi wɪð wɜːrk ðɪs ˈmɔːrnɪŋ/', vi: 'Nghe tuyệt đấy! Sáng nay bạn có bận việc không?' },
-          { text: 'A little bit, I have a short meeting at ten.', ipa: '/ə ˈlɪtl bɪt aɪ hæv ə ʃɔːrt ˈmiːtɪŋ æt ten/', vi: 'Hơi bận một chút, mình có cuộc họp ngắn lúc 10 giờ.' },
-          { text: 'No worries, let us catch up after lunch!', ipa: '/noʊ ˈwɜːriz let ʌs kætʃ ʌp ˈæftər lʌntʃ/', vi: 'Không sao đâu, trưa ăn xong mình nói chuyện tiếp nhé!' }
+          { start: 0, end: 5, text: 'Good morning! How is everything going today?', ipa: '/ɡʊd ˈmɔːrnɪŋ haʊ ɪz ˈevriθɪŋ ˈɡoʊɪŋ təˈdeɪ/', vi: 'Chào buổi sáng! Hôm nay mọi việc thế nào rồi?' },
+          { start: 5, end: 10, text: 'Pretty good, thanks! I just grabbed a cup of coffee.', ipa: '/ˈprɪti ɡʊd θæŋks aɪ dʒʌst ɡræbd ə kʌp əv ˈkɔːfi/', vi: 'Khá ổn, cảm ơn! Mình vừa làm một ly cà phê.' },
+          { start: 10, end: 16, text: 'Sounds great! Are you busy with work this morning?', ipa: '/saʊndz ɡreɪt ɑːr juː ˈbɪzi wɪð wɜːrk ðɪs ˈmɔːrnɪŋ/', vi: 'Nghe tuyệt đấy! Sáng nay bạn có bận việc không?' },
+          { start: 16, end: 22, text: 'A little bit, I have a short meeting at ten.', ipa: '/ə ˈlɪtl bɪt aɪ hæv ə ʃɔːrt ˈmiːtɪŋ æt ten/', vi: 'Hơi bận một chút, mình có cuộc họp ngắn lúc 10 giờ.' },
+          { start: 22, end: 28, text: 'No worries, let us catch up after lunch!', ipa: '/noʊ ˈwɜːriz let ʌs kætʃ ʌp ˈæftər lʌntʃ/', vi: 'Không sao đâu, trưa ăn xong mình nói chuyện tiếp nhé!' }
         ],
-        vocab: {
-          morning: 'buổi sáng (/ˈmɔːrnɪŋ/)',
-          everything: 'mọi thứ (/ˈevriθɪŋ/)',
-          pretty: 'khá là (/ˈprɪti/)',
-          coffee: 'cà phê (/ˈkɔːfi/)',
-          busy: 'bận rộn (/ˈbɪzi/)',
-          meeting: 'cuộc họp (/ˈmiːtɪŋ/)',
-          lunch: 'bữa trưa (/lʌntʃ/)'
-        }
+        vocab: { morning: 'buổi sáng', everything: 'mọi thứ', pretty: 'khá là', coffee: 'cà phê', busy: 'bận rộn', meeting: 'cuộc họp', lunch: 'bữa trưa' }
       },
       {
         id: 'vid-en-2',
@@ -3862,43 +4157,13 @@
         youtubeId: '2i2M6Y58m6g',
         duration: '02:40',
         lines: [
-          { text: 'Hi there! What can I get started for you today?', ipa: '/haɪ ðer wʌt kæn aɪ ɡet ˈstɑːrtɪd fɔːr juː təˈdeɪ/', vi: 'Chào bạn! Hôm nay bạn muốn gọi món gì nào?' },
-          { text: 'Can I have an iced latte with less sugar, please?', ipa: '/kæn aɪ hæv æn aɪst ˈlɑːteɪ wɪð les ˈʃʊɡər pliːz/', vi: 'Cho mình một ly latte đá ít đường nhé?' },
-          { text: 'Sure thing! Would you like a medium or a large?', ipa: '/ʃʊr θɪŋ wʊd juː laɪk ə ˈmiːdiəm ɔːr ə lɑːrdʒ/', vi: 'Chắc chắn rồi! Bạn lấy cỡ vừa hay cỡ lớn?' },
-          { text: 'Medium is fine. How much does that come to?', ipa: '/ˈmiːdiəm ɪz faɪn haʊ mʌtʃ dʌz ðæt kʌm tuː/', vi: 'Cỡ vừa là được. Tổng cộng hết bao nhiêu vậy?' },
-          { text: 'That will be four dollars and fifty cents.', ipa: '/ðæt wɪl biː fɔːr ˈdɑːlərz ænd ˈfɪfti sents/', vi: 'Của bạn hết 4 đô la 50 xu ạ.' }
+          { start: 0, end: 5, text: 'Hi there! What can I get started for you today?', ipa: '/haɪ ðer wʌt kæn aɪ ɡet ˈstɑːrtɪd fɔːr juː təˈdeɪ/', vi: 'Chào bạn! Hôm nay bạn muốn gọi món gì nào?' },
+          { start: 5, end: 11, text: 'Can I have an iced latte with less sugar, please?', ipa: '/kæn aɪ hæv æn aɪst ˈlɑːteɪ wɪð les ˈʃʊɡər pliːz/', vi: 'Cho mình một ly latte đá ít đường nhé?' },
+          { start: 11, end: 17, text: 'Sure thing! Would you like a medium or a large?', ipa: '/ʃʊr θɪŋ wʊd juː laɪk ə ˈmiːdiəm ɔːr ə lɑːrdʒ/', vi: 'Chắc chắn rồi! Bạn lấy cỡ vừa hay cỡ lớn?' },
+          { start: 17, end: 23, text: 'Medium is fine. How much does that come to?', ipa: '/ˈmiːdiəm ɪz faɪn haʊ mʌtʃ dʌz ðæt kʌm tuː/', vi: 'Cỡ vừa là được. Tổng cộng hết bao nhiêu vậy?' },
+          { start: 23, end: 29, text: 'That will be four dollars and fifty cents.', ipa: '/ðæt wɪl biː fɔːr ˈdɑːlərz ænd ˈfɪfti sents/', vi: 'Của bạn hết 4 đô la 50 xu ạ.' }
         ],
-        vocab: {
-          started: 'bắt đầu gọi món (/ˈstɑːrtɪd/)',
-          iced: 'có đá (/aɪst/)',
-          sugar: 'đường (/ˈʃʊɡər/)',
-          medium: 'cỡ vừa (/ˈmiːdiəm/)',
-          large: 'cỡ lớn (/lɑːrdʒ/)',
-          dollars: 'đô la (/ˈdɑːlərz/)'
-        }
-      },
-      {
-        id: 'vid-en-3',
-        lang: 'en',
-        level: 'A1–A2 · Du lịch & Hỏi đường',
-        title: 'Hỏi đường & Bắt xe khi đi du lịch nước ngoài',
-        youtubeId: 'z4J0sW_4R6w',
-        duration: '03:05',
-        lines: [
-          { text: 'Excuse me, could you tell me where the train station is?', ipa: '/ɪkˈskjuːz miː kʊd juː tel miː wer ðə treɪn ˈsteɪʃən ɪz/', vi: 'Xin lỗi, bạn chỉ giúp mình ga tàu ở đâu được không?' },
-          { text: 'Go straight ahead for two blocks, then turn left.', ipa: '/ɡoʊ streɪt əˈhed fɔːr tuː blɑːks ðen tɜːrn left/', vi: 'Bạn đi thẳng hai dãy nhà rồi rẽ trái nhé.' },
-          { text: 'Is it far from here, or can I walk there?', ipa: '/ɪz ɪt fɑːr frʌm hɪr ɔːr kæn aɪ wɔːk ðer/', vi: 'Từ đây tới đó có xa không, hay mình đi bộ được?' },
-          { text: 'It only takes about five minutes on foot.', ipa: '/ɪt ˈoʊnli teɪks əˈbaʊt faɪv ˈmɪnɪts ɑːn fʊt/', vi: 'Đi bộ chỉ mất khoảng 5 phút thôi.' },
-          { text: 'Thank you so much for your help!', ipa: '/θæŋk juː soʊ mʌtʃ fɔːr jʊr help/', vi: 'Cảm ơn bạn rất nhiều vì đã giúp đỡ!' }
-        ],
-        vocab: {
-          station: 'nhà ga (/ˈsteɪʃən/)',
-          straight: 'thẳng (/streɪt/)',
-          blocks: 'dãy nhà (/blɑːks/)',
-          left: 'bên trái (/left/)',
-          walk: 'đi bộ (/wɔːk/)',
-          minutes: 'phút (/ˈmɪnɪts/)'
-        }
+        vocab: { started: 'bắt đầu gọi món', iced: 'có đá', sugar: 'đường', medium: 'cỡ vừa', large: 'cỡ lớn', dollars: 'đô la' }
       },
       {
         id: 'vid-zh-1',
@@ -3908,20 +4173,13 @@
         youtubeId: 'McZW0iZ0Z8A',
         duration: '02:50',
         lines: [
-          { text: '你好！请问你贵姓？', ipa: 'Nǐ hǎo! Qǐngwèn nǐ guìxìng?', vi: 'Xin chào! Xin hỏi bạn họ gì?' },
-          { text: '我姓陈，叫小明。很高兴认识你！', ipa: 'Wǒ xìng Chén, jiào Xiǎomíng. Hěn gāoxìng rènshi nǐ!', vi: 'Tôi họ Trần, tên là Tiểu Minh. Rất vui được quen bạn!' },
-          { text: '你是越南人吗？你的中文真好！', ipa: 'Nǐ shì Yuènán rén ma? Nǐ de Zhōngwén zhēn hǎo!', vi: 'Bạn là người Việt Nam phải không? Tiếng Trung của bạn giỏi quá!' },
-          { text: '哪里哪里，我还在学习呢。', ipa: 'Nǎlǐ nǎlǐ, wǒ hái zài xuéxí ne.', vi: 'Đâu có đâu có, mình vẫn đang học thôi ạ.' },
-          { text: '以后我们多用中文聊天吧！', ipa: 'Yǐhòu wǒmen duō yòng Zhōngwén liáotiān ba!', vi: 'Sau này chúng mình nói chuyện bằng tiếng Trung nhiều hơn nhé!' }
+          { start: 0, end: 5, text: '你好！请问你贵姓？', ipa: 'Nǐ hǎo! Qǐngwèn nǐ guìxìng?', vi: 'Xin chào! Xin hỏi bạn họ gì?' },
+          { start: 5, end: 11, text: '我姓陈，叫小明。很高兴认识你！', ipa: 'Wǒ xìng Chén, jiào Xiǎomíng. Hěn gāoxìng rènshi nǐ!', vi: 'Tôi họ Trần, tên là Tiểu Minh. Rất vui được quen bạn!' },
+          { start: 11, end: 17, text: '你是越南人吗？你的中文真好！', ipa: 'Nǐ shì Yuènán rén ma? Nǐ de Zhōngwén zhēn hǎo!', vi: 'Bạn là người Việt Nam phải không? Tiếng Trung của bạn giỏi quá!' },
+          { start: 17, end: 23, text: '哪里哪里，我还在学习呢。', ipa: 'Nǎlǐ nǎlǐ, wǒ hái zài xuéxí ne.', vi: 'Đâu có đâu có, mình vẫn đang học thôi ạ.' },
+          { start: 23, end: 29, text: '以后我们多用中文聊天吧！', ipa: 'Yǐhòu wǒmen duō yòng Zhōngwén liáotiān ba!', vi: 'Sau này chúng mình nói chuyện bằng tiếng Trung nhiều hơn nhé!' }
         ],
-        vocab: {
-          '你好': 'xin chào (nǐ hǎo)',
-          '请问': 'xin hỏi (qǐngwèn)',
-          '高兴': 'vui vẻ (gāoxìng)',
-          '认识': 'làm quen (rènshi)',
-          '学习': 'học tập (xuéxí)',
-          '聊天': 'trò chuyện (liáotiān)'
-        }
+        vocab: { '你好': 'xin chào (nǐ hǎo)', '请问': 'xin hỏi (qǐngwèn)', '高兴': 'vui vẻ (gāoxìng)', '认识': 'làm quen (rènshi)', '学习': 'học tập (xuéxí)', '聊天': 'trò chuyện (liáotiān)' }
       },
       {
         id: 'vid-zh-2',
@@ -3931,41 +4189,182 @@
         youtubeId: 'U9gN1yC8x9w',
         duration: '03:10',
         lines: [
-          { text: '欢迎光临！请问您想喝点什么？', ipa: 'Huānyíng guānglín! Qǐngwèn nín xiǎng hē diǎn shénme?', vi: 'Chào mừng quý khách! Xin hỏi bạn muốn uống gì?' },
-          { text: '我要一杯珍珠奶茶，少糖少冰。', ipa: 'Wǒ yào yì bēi zhēnzhū nǎichá, shǎo táng shǎo bīng.', vi: 'Cho tôi một ly trà sữa trân châu, ít đường ít đá.' },
-          { text: '好的，大杯还是中杯？', ipa: 'Hǎo de, dà bēi háishi zhōng bēi?', vi: 'Vâng, ly lớn hay ly vừa ạ?' },
-          { text: '中杯就可以了。一共多少钱？', ipa: 'Zhōng bēi jiù kěyǐ le. Yígòng duōshao qián?', vi: 'Ly vừa là được rồi. Tổng cộng bao nhiêu tiền?' },
-          { text: '一共二十块钱，请这里扫码付款。', ipa: 'Yígòng èrshí kuài qián, qǐng zhèlǐ sǎomǎ fùkuǎn.', vi: 'Tổng cộng 20 tệ, mời bạn quét mã thanh toán ở đây.' }
+          { start: 0, end: 5, text: '欢迎光临！请问您想喝点什么？', ipa: 'Huānyíng guānglín! Qǐngwèn nín xiǎng hē diǎn shénme?', vi: 'Chào mừng quý khách! Xin hỏi bạn muốn uống gì?' },
+          { start: 5, end: 11, text: '我要一杯珍珠奶茶，少糖少冰。', ipa: 'Wǒ yào yì bēi zhēnzhū nǎichá, shǎo táng shǎo bīng.', vi: 'Cho tôi một ly trà sữa trân châu, ít đường ít đá.' },
+          { start: 11, end: 17, text: '好的，大杯还是中杯？', ipa: 'Hǎo de, dà bēi háishi zhōng bēi?', vi: 'Vâng, ly lớn hay ly vừa ạ?' },
+          { start: 17, end: 23, text: '中杯就可以了。一共多少钱？', ipa: 'Zhōng bēi jiù kěyǐ le. Yígòng duōshao qián?', vi: 'Ly vừa là được rồi. Tổng cộng bao nhiêu tiền?' },
+          { start: 23, end: 29, text: '一共二十块钱，请这里扫码付款。', ipa: 'Yígòng èrshí kuài qián, qǐng zhèlǐ sǎomǎ fùkuǎn.', vi: 'Tổng cộng 20 tệ, mời bạn quét mã thanh toán ở đây.' }
         ],
-        vocab: {
-          '奶茶': 'trà sữa (nǎichá)',
-          '少糖': 'ít đường (shǎo táng)',
-          '少冰': 'ít đá (shǎo bīng)',
-          '一共': 'tổng cộng (yígòng)',
-          '多少钱': 'bao nhiêu tiền (duōshao qián)'
-        }
-      },
-      {
-        id: 'vid-zh-3',
-        lang: 'zh',
-        level: 'HSK 2 · Mua sắm & Du lịch',
-        title: 'Hỏi đường & Mặc cả nhẹ nhàng khi đi du lịch Trung Quốc',
-        youtubeId: '9vR3gL6b2K4',
-        duration: '03:30',
-        lines: [
-          { text: '请问，最近的地铁站在哪里？', ipa: 'Qǐngwèn, zuìjìn de dìtiězhàn zài nǎlǐ?', vi: 'Xin hỏi, trạm tàu điện ngầm gần nhất ở đâu ạ?' },
-          { text: '一直往前走，红绿灯那里往右拐。', ipa: 'Yìzhí wǎng qián zǒu, hónglǜdēng nàlǐ wǎng yòu guǎi.', vi: 'Cứ đi thẳng về phía trước, tới đèn đỏ thì rẽ phải.' },
-          { text: '这件衣服多少钱？可以便宜一点吗？', ipa: 'Zhè jiàn yīfu duōshao qián? Kěyǐ piányi yìdiǎn ma?', vi: 'Cái áo này bao nhiêu tiền? Bớt chút được không ạ?' },
-          { text: '好吧，算你九十块钱！', ipa: 'Hǎo ba, suàn nǐ jiǔshí kuài qián!', vi: 'Được rồi, tính bạn 90 tệ nhé!' }
-        ],
-        vocab: {
-          '地铁站': 'trạm tàu điện ngầm (dìtiězhàn)',
-          '往前走': 'đi thẳng (wǎng qián zǒu)',
-          '衣服': 'quần áo (yīfu)',
-          '便宜': 'rẻ (piányi)'
-        }
+        vocab: { '奶茶': 'trà sữa (nǎichá)', '少糖': 'ít đường (shǎo táng)', '少冰': 'ít đá (shǎo bīng)', '一共': 'tổng cộng (yígòng)', '多少钱': 'bao nhiêu tiền (duōshao qián)' }
       }
     ];
+
+    let _ytPlayer = null;
+    let _ytMountedVideoId = null;
+    let _ytSyncTimer = null;
+
+    function formatSec(sec) {
+      const s = Math.max(0, Math.floor(sec || 0));
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
+    }
+
+    function parseSrtOrVtt(raw) {
+      const blocks = String(raw || '').replace(/\r/g, '').split(/\n\s*\n/);
+      const toSec = (ts) => {
+        const parts = ts.replace(',', '.').trim().split(':').map(Number);
+        if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+        if (parts.length === 2) return parts[0] * 60 + parts[1];
+        return 0;
+      };
+      const out = [];
+      blocks.forEach(b => {
+        const lines = b.split('\n').map(x => x.trim()).filter(Boolean);
+        const timeLineIdx = lines.findIndex(l => l.includes('-->'));
+        if (timeLineIdx !== -1) {
+          const [sStr, eStr] = lines[timeLineIdx].split('-->');
+          const text = lines.slice(timeLineIdx + 1).join(' ').replace(/<[^>]+>/g, '').trim();
+          if (text) out.push({ start: toSec(sStr), end: toSec(eStr.split(' ')[0]), text, ipa: '', vi: '' });
+        }
+      });
+      return out;
+    }
+
+    function getActiveVideoData() {
+      const langFilter = ui.videoLangFilter || 'all';
+      const filtered = VIDEO_STUDIO_LESSONS.filter(v => langFilter === 'all' || v.lang === langFilter);
+      const base = VIDEO_STUDIO_LESSONS.find(v => v.id === ui.videoId) || filtered[0] || VIDEO_STUDIO_LESSONS[0];
+      ui.videoId = base.id;
+      const lines = (ui.customVideoLines && ui.customVideoLines.length) ? ui.customVideoLines : base.lines;
+      const lang = ui.customVideoLang || base.lang;
+      const youtubeId = ui.customYoutubeId || base.youtubeId;
+      return { base, filtered, lines, lang, youtubeId };
+    }
+
+    function ensureYouTubeApiLoaded(cb) {
+      if (window.YT && window.YT.Player) { cb(); return; }
+      window._ytReadyQueue = window._ytReadyQueue || [];
+      window._ytReadyQueue.push(cb);
+      if (!document.getElementById('yt-iframe-api-script')) {
+        const tag = document.createElement('script');
+        tag.id = 'yt-iframe-api-script';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+        window.onYouTubeIframeAPIReady = () => {
+          (window._ytReadyQueue || []).forEach(fn => { try { fn(); } catch {} });
+          window._ytReadyQueue = [];
+        };
+      }
+    }
+
+    function updateLiveCaptionUI(currentSec) {
+      const { lines, lang } = getActiveVideoData();
+      if (!lines || !lines.length) return;
+      let activeIdx = lines.findIndex(l => currentSec >= (l.start || 0) && currentSec < (l.end || (l.start + 5)));
+      if (activeIdx === -1) {
+        for (let i = lines.length - 1; i >= 0; i--) {
+          if (currentSec >= (lines[i].start || 0)) { activeIdx = i; break; }
+        }
+      }
+      if (activeIdx === -1) activeIdx = 0;
+
+      // Loop current line if Loop mode is enabled
+      if (ui.videoLoopActive && _ytPlayer && typeof _ytPlayer.seekTo === 'function') {
+        const loopLine = lines[ui.videoLineIdx || 0];
+        if (loopLine && currentSec >= (loopLine.end || loopLine.start + 5)) {
+          _ytPlayer.seekTo(loopLine.start || 0, true);
+          return;
+        }
+      }
+
+      if (activeIdx !== ui.videoLineIdx) {
+        ui.videoLineIdx = activeIdx;
+        const ln = lines[activeIdx];
+        const bar = document.getElementById('vid-live-caption-bar');
+        if (bar && ln) {
+          bar.innerHTML = `
+            <div class="text-sm sm:text-base font-extrabold text-white leading-snug">${ln.text}</div>
+            ${ui.videoShowIpa !== false && ln.ipa ? `<div class="text-xs font-mono text-emerald-300 mt-0.5">${ln.ipa}</div>` : ''}
+            ${ui.videoShowVi !== false && ln.vi ? `<div class="text-xs text-slate-300 mt-0.5">${ln.vi}</div>` : ''}
+          `;
+        }
+        // Highlight & auto-scroll active subtitle row in right panel
+        document.querySelectorAll('[data-vid-row]').forEach(row => {
+          const rIdx = parseInt(row.dataset.vidRow, 10);
+          const isCur = rIdx === activeIdx;
+          row.classList.toggle('bg-emerald-50', isCur);
+          row.classList.toggle('border-emerald-400', isCur);
+          row.classList.toggle('ring-1', isCur);
+          row.classList.toggle('ring-emerald-200', isCur);
+          row.classList.toggle('bg-white', !isCur);
+          row.classList.toggle('border-slate-200/80', !isCur);
+          if (isCur && ui.videoMode === 'subs') {
+            try { row.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch {}
+          }
+        });
+      }
+    }
+
+    function mountYouTubeLivePlayer(videoId) {
+      const host = document.getElementById('yt-player-host');
+      if (!host) return;
+      if (_ytPlayer && _ytMountedVideoId === videoId && typeof _ytPlayer.getCurrentTime === 'function') return;
+
+      ensureYouTubeApiLoaded(() => {
+        const elHost = document.getElementById('yt-player-host');
+        if (!elHost) return;
+        try { if (_ytPlayer && _ytPlayer.destroy) _ytPlayer.destroy(); } catch {}
+        _ytMountedVideoId = videoId;
+        _ytPlayer = new YT.Player('yt-player-host', {
+          videoId: videoId,
+          width: '100%',
+          height: '100%',
+          playerVars: { rel: 0, modestbranding: 1, cc_load_policy: 0 },
+          events: {
+            onStateChange: (ev) => {
+              if (ev.data === YT.PlayerState.PLAYING) {
+                if (_ytSyncTimer) clearInterval(_ytSyncTimer);
+                _ytSyncTimer = setInterval(() => {
+                  if (state.mainNav !== 'videos' || !_ytPlayer || typeof _ytPlayer.getCurrentTime !== 'function') {
+                    clearInterval(_ytSyncTimer);
+                    return;
+                  }
+                  updateLiveCaptionUI(_ytPlayer.getCurrentTime());
+                }, 250);
+              }
+            }
+          }
+        });
+      });
+    }
+
+    async function fetchYoutubeTranscript(videoId) {
+      if (!window.location || !window.location.protocol.startsWith('http')) {
+        showToast('Đã mở video! Để tự động lấy phụ đề YouTube, hãy mở trên web Vercel hoặc nạp file .SRT/.VTT nhé.');
+        return;
+      }
+      ui.videoLoadingSubs = true;
+      renderVideoStudioPage();
+      try {
+        const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}`);
+        if (!res.ok) throw new Error('no-subs');
+        const data = await res.json();
+        if (data && Array.isArray(data.lines) && data.lines.length) {
+          ui.customVideoLines = data.lines;
+          ui.customVideoLang = data.lang || 'en';
+          ui.videoLineIdx = 0;
+          showToast(`Đã tải thành công ${data.lines.length} dòng phụ đề chạy tự động!`);
+        } else {
+          showToast('Video này không có phụ đề công khai trên YouTube — bạn có thể nạp file .SRT/.VTT bên dưới.');
+        }
+      } catch {
+        showToast('Chưa lấy được phụ đề tự động của video này (hãy thử video khác có bật CC hoặc nạp file .SRT/.VTT).');
+      } finally {
+        ui.videoLoadingSubs = false;
+        renderVideoStudioPage();
+      }
+    }
 
     function extractYoutubeId(urlOrId) {
       const s = (urlOrId || '').trim();
@@ -4005,84 +4404,135 @@
       const el = document.getElementById('page-videos');
       if (!el) return;
 
-      const langFilter = ui.videoLangFilter || 'all';
-      const filtered = VIDEO_STUDIO_LESSONS.filter(v => langFilter === 'all' || v.lang === langFilter);
-      const activeVideo = VIDEO_STUDIO_LESSONS.find(v => v.id === ui.videoId) || filtered[0] || VIDEO_STUDIO_LESSONS[0];
-      ui.videoId = activeVideo.id;
-      const isZh = activeVideo.lang === 'zh';
+      const { base: activeVideo, filtered, lines, lang, youtubeId: activeYtId } = getActiveVideoData();
+      const isZh = lang === 'zh';
       const mode = ui.videoMode || 'subs';
-      const lineIdx = Math.max(0, Math.min(ui.videoLineIdx || 0, activeVideo.lines.length - 1));
+      const lineIdx = Math.max(0, Math.min(ui.videoLineIdx || 0, lines.length - 1));
       ui.videoLineIdx = lineIdx;
-      const curLine = activeVideo.lines[lineIdx];
-      const activeYtId = ui.customYoutubeId || activeVideo.youtubeId;
+      const curLine = lines[lineIdx] || { start: 0, end: 5, text: '', ipa: '', vi: '' };
       const speakAttrFor = (txt) => isZh
-        ? `data-speak-zh="${txt.replace(/"/g, '&quot;')}"`
-        : `data-speak="${txt.replace(/"/g, '&quot;')}"`;
+        ? `data-speak-zh="${String(txt || '').replace(/"/g, '&quot;')}"`
+        : `data-speak="${String(txt || '').replace(/"/g, '&quot;')}"`;
 
       el.innerHTML = `
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div>
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-violet-50 border border-violet-200 text-violet-700 text-[11px] font-bold uppercase tracking-wider">
-                Học qua Video thực tế · Shadowing &amp; Dictation
-              </div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Video Song Ngữ (Anh &amp; Trung)</h1>
-              <p class="text-sm text-slate-600 mt-1">Xem video kèm phụ đề song ngữ + IPA/Pinyin, bấm vào từng từ để tra nghĩa &amp; lưu Sổ tay, luyện nói đuổi Shadowing và nghe chép chính tả Dictation.</p>
-            </div>
-
-            <div class="bg-slate-100 p-1 rounded-xl inline-flex text-xs font-bold shrink-0 self-start">
-              <button type="button" data-video-lang="all" class="px-3 py-2 rounded-lg ${langFilter === 'all' ? 'bg-white text-violet-700 shadow-2xs' : 'text-slate-600'}">Tất cả (${VIDEO_STUDIO_LESSONS.length})</button>
-              <button type="button" data-video-lang="en" class="px-3 py-2 rounded-lg ${langFilter === 'en' ? 'bg-white text-indigo-600 shadow-2xs' : 'text-slate-600'}">Tiếng Anh</button>
-              <button type="button" data-video-lang="zh" class="px-3 py-2 rounded-lg ${langFilter === 'zh' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Tiếng Trung</button>
+        <!-- Corodomo Emerald-Green Banner: "Biến mọi video yêu thích thành bài học." -->
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Học qua video</h1>
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold">
+              <button type="button" data-video-lang="all" class="px-3.5 py-1.5 rounded-full border transition-all ${(ui.videoLangFilter || 'all') === 'all' ? 'bg-emerald-500 text-white border-emerald-500 shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">Thư viện (${VIDEO_STUDIO_LESSONS.length})</button>
+              <button type="button" data-video-lang="en" class="px-3.5 py-1.5 rounded-full border transition-all ${ui.videoLangFilter === 'en' ? 'bg-emerald-500 text-white border-emerald-500 shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">Tiếng Anh</button>
+              <button type="button" data-video-lang="zh" class="px-3.5 py-1.5 rounded-full border transition-all ${ui.videoLangFilter === 'zh' ? 'bg-emerald-500 text-white border-emerald-500 shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}">Tiếng Trung</button>
             </div>
           </div>
 
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-2 border-t border-slate-100">
-            <span class="text-xs font-bold text-slate-500 shrink-0">Hoặc dán link YouTube bạn thích:</span>
-            <input type="text" id="custom-yt-input" value="${ui.customYoutubeUrl || ''}" placeholder="https://www.youtube.com/watch?v=..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs outline-none focus:border-violet-400" />
-            <div class="flex items-center gap-1.5">
-              <button type="button" id="load-custom-yt-btn" class="px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold shrink-0">Mở Video</button>
-              ${ui.customYoutubeId ? `<button type="button" id="reset-custom-yt-btn" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold shrink-0">Về video mẫu</button>` : ''}
+          <div class="coro-green-banner rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+            <div class="text-lg sm:text-2xl font-extrabold text-white tracking-tight">Biến mọi video yêu thích thành bài học.</div>
+
+            <div>
+              <!-- 3 Source Tabs: YouTube | Tải lên | Studio -->
+              <div class="inline-flex items-end gap-1">
+                <button type="button" data-vid-src-tab="youtube" class="px-4 py-2 rounded-t-2xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${(ui.videoSrcTab || 'youtube') === 'youtube' ? 'bg-white text-rose-600' : 'bg-white/80 text-slate-600 hover:bg-white'}">
+                  <i data-lucide="youtube" class="w-4 h-4"></i> YouTube
+                </button>
+                <button type="button" data-vid-src-tab="upload" class="px-4 py-2 rounded-t-2xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${ui.videoSrcTab === 'upload' ? 'bg-white text-emerald-700' : 'bg-white/80 text-slate-600 hover:bg-white'}">
+                  <i data-lucide="upload" class="w-4 h-4"></i> Tải lên
+                </button>
+                <button type="button" data-vid-src-tab="studio" class="px-4 py-2 rounded-t-2xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${ui.videoSrcTab === 'studio' ? 'bg-white text-indigo-700' : 'bg-white/80 text-slate-600 hover:bg-white'}">
+                  <i data-lucide="clapperboard" class="w-4 h-4"></i> Studio
+                </button>
+              </div>
+
+              <!-- White Action Bar -->
+              <div class="bg-white rounded-b-2xl rounded-tr-2xl p-3.5 sm:p-4 shadow-xs">
+                ${(ui.videoSrcTab || 'youtube') === 'youtube' ? `
+                  <div class="grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-end">
+                    <div class="lg:col-span-6 space-y-1">
+                      <label class="text-[11px] font-bold text-slate-500">Link YouTube</label>
+                      <input type="text" id="custom-yt-input" value="${ui.customYoutubeUrl || ''}" placeholder="Dán link YouTube bạn muốn học..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500" />
+                    </div>
+                    <div class="lg:col-span-2 space-y-1">
+                      <label class="text-[11px] font-bold text-slate-500">Ngôn ngữ video</label>
+                      <select id="vid-lang-select" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white outline-none">
+                        <option value="en" ${(ui.customVideoLang || 'en') === 'en' ? 'selected' : ''}>Tiếng Anh</option>
+                        <option value="zh" ${ui.customVideoLang === 'zh' ? 'selected' : ''}>Tiếng Trung</option>
+                      </select>
+                    </div>
+                    <div class="lg:col-span-2 space-y-1">
+                      <label class="text-[11px] font-bold text-slate-500">Phụ đề</label>
+                      <label for="upload-srt-input" class="cursor-pointer w-full px-3 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-center gap-1 truncate">
+                        + Nạp .SRT/.VTT
+                      </label>
+                      <input type="file" id="upload-srt-input" accept=".srt,.vtt,.txt" class="hidden" />
+                    </div>
+                    <div class="lg:col-span-2">
+                      <button type="button" id="load-custom-yt-btn" class="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 shadow-xs">
+                        <i data-lucide="video" class="w-4 h-4"></i> ${ui.videoLoadingSubs ? 'Đang tạo...' : 'Tạo video'}
+                      </button>
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${ui.videoSrcTab === 'upload' ? `
+                  <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                    <label for="upload-local-video-input" class="cursor-pointer flex-1 px-4 py-3 rounded-xl border-2 border-dashed border-emerald-300 hover:bg-emerald-50/50 text-xs sm:text-sm font-bold text-emerald-800 text-center">
+                      ${ui.localVideoName ? `✓ Đã chọn: ${ui.localVideoName} (Bấm để đổi video khác)` : '📁 Bấm để chọn video từ máy (.MP4, .WebM, .MOV)'}
+                    </label>
+                    <input type="file" id="upload-local-video-input" accept="video/*" class="hidden" />
+                    <label for="upload-srt-input" class="cursor-pointer px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center shrink-0">
+                      + Nạp phụ đề .SRT/.VTT
+                    </label>
+                    <input type="file" id="upload-srt-input" accept=".srt,.vtt,.txt" class="hidden" />
+                  </div>
+                ` : ''}
+
+                ${ui.videoSrcTab === 'studio' ? `
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+                    <span>Chọn ngay các bài video mẫu Anh &amp; Trung đã gắn sẵn phụ đề song ngữ + IPA/Pinyin bên dưới.</span>
+                    <button type="button" id="reset-custom-yt-btn" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold">Mở video mẫu</button>
+                  </div>
+                ` : ''}
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div class="lg:col-span-6 space-y-4">
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-              <div class="aspect-video bg-slate-900 w-full">
-                <iframe
-                  class="w-full h-full"
-                  src="https://www.youtube-nocookie.com/embed/${activeYtId}?rel=0"
-                  title="${activeVideo.title}"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+          <!-- Left Column: Video Player + Corodomo Floating Live Caption Bar + Library -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="bg-slate-950 rounded-3xl overflow-hidden shadow-sm border border-slate-800">
+              <div class="aspect-video w-full bg-black relative">
+                ${ui.localVideoUrl
+                  ? `<video id="local-video-player" src="${ui.localVideoUrl}" controls class="w-full h-full"></video>`
+                  : `<div id="yt-player-host" class="w-full h-full"></div>`
+                }
               </div>
-              <div class="p-4 flex items-center justify-between gap-3">
-                <div>
-                  <div class="text-[11px] font-bold uppercase tracking-wider ${isZh ? 'text-rose-600' : 'text-indigo-600'}">${activeVideo.level} · ${activeVideo.duration}</div>
-                  <div class="font-extrabold text-slate-900 text-sm sm:text-base mt-0.5">${ui.customYoutubeId ? 'Video YouTube của bạn (kèm kịch bản luyện bên cạnh)' : activeVideo.title}</div>
+              <!-- Corodomo-style Live Floating Subtitle Bar directly under video -->
+              <div class="px-4 py-3.5 bg-slate-900/95 border-t border-slate-800 flex items-center justify-between gap-3">
+                <div id="vid-live-caption-bar" class="min-w-0 flex-1 text-center">
+                  <div class="text-sm sm:text-base font-extrabold text-white leading-snug">${curLine.text || 'Bấm phát video để chữ tự chạy đồng bộ...'}</div>
+                  ${ui.videoShowIpa !== false && curLine.ipa ? `<div class="text-xs font-mono text-emerald-300 mt-0.5">${curLine.ipa}</div>` : ''}
+                  ${ui.videoShowVi !== false && curLine.vi ? `<div class="text-xs text-slate-300 mt-0.5">${curLine.vi}</div>` : ''}
                 </div>
-                <button type="button" ${speakAttrFor(activeVideo.lines.map(l => l.text).join('. '))} class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold shrink-0 flex items-center gap-1.5">
-                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Đọc cả bài
+                <button type="button" id="vid-toggle-loop-btn" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold shrink-0 border ${ui.videoLoopActive ? 'bg-emerald-500 border-emerald-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white'}" title="Lặp đi lặp lại câu đang phát">
+                  ${ui.videoLoopActive ? '🔁 Đang lặp câu' : '🔁 Lặp câu'}
                 </button>
               </div>
             </div>
 
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 space-y-2.5">
-              <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Thư viện Video có phụ đề song ngữ</div>
-              <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+            <!-- Video Library -->
+            <div class="bg-white rounded-3xl border border-[#E6DEC9] shadow-2xs p-4 space-y-2.5">
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Thư viện Video có sẵn phụ đề đồng bộ</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 ${filtered.map(v => {
                   const active = v.id === activeVideo.id && !ui.customYoutubeId;
                   return `
-                    <button type="button" data-select-video="${v.id}" class="w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${active ? 'bg-violet-600 text-white border-transparent shadow-xs' : 'bg-white hover:bg-slate-50 border-slate-200/80 text-slate-800'}">
+                    <button type="button" data-select-video="${v.id}" class="w-full text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 ${active ? 'bg-emerald-600 text-white border-transparent shadow-xs' : 'bg-white hover:bg-slate-50 border-slate-200/80 text-slate-800'}">
                       <div class="min-w-0">
-                        <div class="text-[11px] font-bold ${active ? 'text-violet-100' : (v.lang === 'zh' ? 'text-rose-600' : 'text-indigo-600')}">${v.lang === 'zh' ? 'Tiếng Trung' : 'Tiếng Anh'} · ${v.level}</div>
-                        <div class="font-bold text-xs sm:text-sm truncate">${v.title}</div>
+                        <div class="text-[10px] font-bold ${active ? 'text-emerald-100' : (v.lang === 'zh' ? 'text-rose-600' : 'text-indigo-600')}">${v.lang === 'zh' ? 'Tiếng Trung' : 'Tiếng Anh'} · ${v.level}</div>
+                        <div class="font-bold text-xs truncate">${v.title}</div>
                       </div>
-                      <span class="text-[11px] font-bold shrink-0 ${active ? 'text-violet-100' : 'text-slate-400'}">${v.duration}</span>
+                      <span class="text-[10px] font-bold shrink-0 ${active ? 'text-emerald-100' : 'text-slate-400'}">${v.duration}</span>
                     </button>
                   `;
                 }).join('')}
@@ -4090,179 +4540,105 @@
             </div>
           </div>
 
-          <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
-              <div class="bg-slate-100 p-1 rounded-xl inline-flex flex-wrap gap-1 text-xs font-bold">
-                <button type="button" data-video-mode="subs" class="px-3 py-1.5 rounded-lg ${mode === 'subs' ? 'bg-white text-violet-700 shadow-2xs' : 'text-slate-600'}">Phụ đề &amp; Tra từ</button>
-                <button type="button" data-video-mode="shadowing" class="px-3 py-1.5 rounded-lg ${mode === 'shadowing' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Shadowing</button>
-                <button type="button" data-video-mode="dictation" class="px-3 py-1.5 rounded-lg ${mode === 'dictation' ? 'bg-white text-indigo-600 shadow-2xs' : 'text-slate-600'}">Nghe chép</button>
-                <button type="button" data-video-mode="quiz" class="px-3 py-1.5 rounded-lg ${mode === 'quiz' ? 'bg-white text-emerald-600 shadow-2xs' : 'text-slate-600'}">Quiz nhanh</button>
+          <!-- Right Column: Corodomo Live Auto-Scrolling Subtitle Panel & Practice Modes -->
+          <div class="lg:col-span-5 bg-white rounded-3xl border border-[#E6DEC9] shadow-2xs p-4 sm:p-5 space-y-3.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+              <div class="bg-[#F6F2E9] p-1 rounded-xl inline-flex flex-wrap gap-1 text-xs font-bold">
+                <button type="button" data-video-mode="subs" class="px-2.5 py-1.5 rounded-lg ${mode === 'subs' ? 'bg-emerald-600 text-white shadow-2xs' : 'text-slate-600'}">Phụ đề (${lines.length})</button>
+                <button type="button" data-video-mode="shadowing" class="px-2.5 py-1.5 rounded-lg ${mode === 'shadowing' ? 'bg-rose-600 text-white shadow-2xs' : 'text-slate-600'}">Shadowing</button>
+                <button type="button" data-video-mode="dictation" class="px-2.5 py-1.5 rounded-lg ${mode === 'dictation' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-600'}">Nghe chép</button>
+                <button type="button" data-video-mode="quiz" class="px-2.5 py-1.5 rounded-lg ${mode === 'quiz' ? 'bg-amber-600 text-white shadow-2xs' : 'text-slate-600'}">Quiz</button>
               </div>
 
-              <div class="flex items-center gap-1.5">
-                <button type="button" id="vid-toggle-ipa" class="px-2.5 py-1.5 rounded-lg border border-slate-200 text-[11px] font-bold ${ui.videoShowIpa !== false ? 'bg-violet-50 text-violet-700 border-violet-200' : 'text-slate-500'}">
-                  ${isZh ? 'Pinyin' : 'IPA'}
-                </button>
-                <button type="button" id="vid-toggle-vi" class="px-2.5 py-1.5 rounded-lg border border-slate-200 text-[11px] font-bold ${ui.videoShowVi !== false ? 'bg-violet-50 text-violet-700 border-violet-200' : 'text-slate-500'}">
-                  Dịch Việt
-                </button>
+              <div class="flex items-center gap-1">
+                <button type="button" id="vid-toggle-ipa" class="px-2 py-1 rounded-lg border border-slate-200 text-[11px] font-bold ${ui.videoShowIpa !== false ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'text-slate-500'}">${isZh ? 'Pinyin' : 'IPA'}</button>
+                <button type="button" id="vid-toggle-vi" class="px-2 py-1 rounded-lg border border-slate-200 text-[11px] font-bold ${ui.videoShowVi !== false ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'text-slate-500'}">Dịch</button>
               </div>
             </div>
 
             ${mode === 'subs' ? `
-              ${ui.videoLookupWord ? `
-                <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between gap-3 animate-pop">
-                  <div>
-                    <div class="text-xs font-extrabold text-amber-900">Tra nhanh: <span class="text-sm">${ui.videoLookupWord.word}</span></div>
-                    <div class="text-xs text-amber-800 mt-0.5">${ui.videoLookupWord.meaning}</div>
-                  </div>
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <button type="button" ${speakAttrFor(ui.videoLookupWord.word)} class="p-2 rounded-lg bg-white border border-amber-200 text-amber-700" title="Nghe từ này">
-                      <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                    </button>
-                    <button type="button" id="vid-save-word-btn" class="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold">
-                      + Lưu Sổ tay
-                    </button>
-                  </div>
-                </div>
-              ` : `<div class="text-[11px] text-slate-500">Mẹo: Bấm vào các từ được gạch chân trong phụ đề để xem nghĩa &amp; lưu vào Sổ tay, hoặc bấm nút <b>Lặp 3x</b> để luyện nghe kỹ từng câu.</div>`}
-
-              <div class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
-                ${activeVideo.lines.map((ln, idx) => {
-                  const vocabKeys = Object.keys(activeVideo.vocab || {});
-                  let renderedLine = ln.text;
-                  if (!isZh) {
-                    renderedLine = ln.text.split(/(\s+)/).map(tok => {
-                      const cleanTok = tok.toLowerCase().replace(/[^a-z]/g, '');
-                      if (cleanTok && activeVideo.vocab[cleanTok]) {
-                        return `<button type="button" data-vid-lookup="${cleanTok}" class="underline decoration-violet-400 decoration-2 underline-offset-4 hover:bg-violet-100 rounded px-0.5 font-bold text-violet-900">${tok}</button>`;
-                      }
-                      return tok;
-                    }).join('');
-                  } else {
-                    vocabKeys.forEach(k => {
-                      if (renderedLine.includes(k)) {
-                        renderedLine = renderedLine.replace(k, `<button type="button" data-vid-lookup="${k}" class="underline decoration-rose-400 decoration-2 underline-offset-4 hover:bg-rose-100 rounded px-0.5 font-bold text-rose-900">${k}</button>`);
-                      }
-                    });
-                  }
-                  return `
-                    <div class="p-3.5 rounded-xl border ${idx === lineIdx ? 'border-violet-300 bg-violet-50/40' : 'border-slate-200/80 bg-white'} space-y-1.5">
-                      <div class="flex items-start justify-between gap-2">
-                        <div class="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">${renderedLine}</div>
-                        <div class="flex items-center gap-1 shrink-0">
-                          <button type="button" ${speakAttrFor(ln.text)} class="w-8 h-8 rounded-lg bg-violet-50 hover:bg-violet-100 text-violet-700 flex items-center justify-center" title="Nghe câu này">
-                            <i data-lucide="volume-2" class="w-4 h-4"></i>
-                          </button>
-                          <button type="button" data-vid-loop="${idx}" class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold" title="Đọc lặp lại 3 lần">
-                            Lặp 3x
-                          </button>
-                        </div>
+              <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                ${lines.map((ln, idx) => `
+                  <div data-vid-row="${idx}" data-vid-seek="${ln.start || 0}" class="cursor-pointer p-3 rounded-2xl border transition-all ${idx === lineIdx ? 'bg-emerald-50 border-emerald-400 ring-1 ring-emerald-200' : 'bg-white border-slate-200/80 hover:bg-slate-50'} space-y-1">
+                    <div class="flex items-start justify-between gap-2">
+                      <div class="flex items-start gap-2 min-w-0">
+                        <span class="mt-0.5 px-1.5 py-0.5 rounded bg-slate-100 text-[10px] font-mono font-bold text-slate-500 shrink-0">${formatSec(ln.start || 0)}</span>
+                        <div class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">${ln.text}</div>
                       </div>
-                      ${ui.videoShowIpa !== false ? `<div class="text-xs font-mono ${isZh ? 'text-rose-600' : 'text-indigo-600'}">${ln.ipa}</div>` : ''}
-                      ${ui.videoShowVi !== false ? `<div class="text-xs text-slate-600">${ln.vi}</div>` : ''}
+                      <button type="button" ${speakAttrFor(ln.text)} class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-emerald-700 flex items-center justify-center shrink-0" title="Đọc chậm câu này">
+                        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                      </button>
                     </div>
-                  `;
-                }).join('')}
+                    ${ui.videoShowIpa !== false && ln.ipa ? `<div class="text-[11px] font-mono pl-11 ${isZh ? 'text-rose-600' : 'text-indigo-600'}">${ln.ipa}</div>` : ''}
+                    ${ui.videoShowVi !== false && ln.vi ? `<div class="text-xs text-slate-600 pl-11">${ln.vi}</div>` : ''}
+                  </div>
+                `).join('')}
               </div>
             ` : ''}
 
             ${mode === 'shadowing' ? `
-              <div class="space-y-4">
+              <div class="space-y-3.5">
                 <div class="flex items-center justify-between text-xs font-bold text-slate-500">
-                  <span>Câu ${lineIdx + 1} / ${activeVideo.lines.length}</span>
+                  <span>Câu ${lineIdx + 1} / ${lines.length} (${formatSec(curLine.start || 0)})</span>
                   <div class="flex items-center gap-1.5">
                     <button type="button" data-vid-line-nav="-1" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">← Trước</button>
                     <button type="button" data-vid-line-nav="1" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">Sau →</button>
                   </div>
                 </div>
-
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-                  <div class="text-lg font-extrabold text-slate-900 leading-snug">${curLine.text}</div>
-                  ${ui.videoShowIpa !== false ? `<div class="text-xs font-mono ${isZh ? 'text-rose-600' : 'text-indigo-600'}">${curLine.ipa}</div>` : ''}
-                  ${ui.videoShowVi !== false ? `<div class="text-xs text-slate-600">${curLine.vi}</div>` : ''}
+                  <div class="text-base font-extrabold text-slate-900">${curLine.text}</div>
+                  ${curLine.ipa ? `<div class="text-xs font-mono text-indigo-600">${curLine.ipa}</div>` : ''}
+                  ${curLine.vi ? `<div class="text-xs text-slate-600">${curLine.vi}</div>` : ''}
                   <div class="pt-2 flex flex-wrap gap-2">
-                    <button type="button" ${speakAttrFor(curLine.text)} class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-xs font-bold flex items-center gap-1.5">
-                      <i data-lucide="volume-2" class="w-4 h-4 text-indigo-600"></i> Nghe mẫu
-                    </button>
-                    <button type="button" id="vid-shadow-mic-btn" class="px-4 py-2 rounded-xl ${ui.speechListening ? 'bg-rose-600 text-white animate-pulse' : 'bg-rose-600 hover:bg-rose-700 text-white'} text-xs font-bold flex items-center gap-1.5">
-                      <i data-lucide="mic" class="w-4 h-4"></i> ${ui.speechListening ? 'Đang nghe bạn nói...' : 'Bấm Micro nói đuổi (Shadowing)'}
-                    </button>
+                    <button type="button" ${speakAttrFor(curLine.text)} class="px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4 text-indigo-600"></i> Nghe mẫu</button>
+                    <button type="button" id="vid-shadow-mic-btn" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5"><i data-lucide="mic" class="w-4 h-4"></i> Nói đuổi (Micro)</button>
                   </div>
                 </div>
-
                 ${ui.videoShadowResult ? `
-                  <div class="p-4 rounded-2xl border ${ui.videoShadowResult.pct >= 70 ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'} space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs font-extrabold ${ui.videoShadowResult.pct >= 70 ? 'text-emerald-800' : 'text-amber-800'}">Độ khớp từng từ: ${ui.videoShadowResult.pct}%</span>
-                      <span class="text-[11px] text-slate-500">Bạn nói: "${ui.videoShadowResult.transcript}"</span>
-                    </div>
-                    <div class="flex flex-wrap gap-1.5">
-                      ${ui.videoShadowResult.tokens.map(t => `
-                        <span class="px-2 py-0.5 rounded-md text-xs font-bold ${t.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'}">${t.word}</span>
-                      `).join('')}
-                    </div>
+                  <div class="p-3.5 rounded-2xl border ${ui.videoShadowResult.pct >= 70 ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'} space-y-2">
+                    <div class="text-xs font-extrabold">Độ khớp từng từ: ${ui.videoShadowResult.pct}%</div>
+                    <div class="flex flex-wrap gap-1.5">${ui.videoShadowResult.tokens.map(t => `<span class="px-2 py-0.5 rounded text-xs font-bold ${t.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'}">${t.word}</span>`).join('')}</div>
                   </div>
                 ` : ''}
               </div>
             ` : ''}
 
             ${mode === 'dictation' ? `
-              <div class="space-y-4">
+              <div class="space-y-3.5">
                 <div class="flex items-center justify-between text-xs font-bold text-slate-500">
-                  <span>Nghe chép câu ${lineIdx + 1} / ${activeVideo.lines.length}</span>
+                  <span>Nghe chép câu ${lineIdx + 1} / ${lines.length}</span>
                   <div class="flex items-center gap-1.5">
                     <button type="button" data-vid-line-nav="-1" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">← Trước</button>
                     <button type="button" data-vid-line-nav="1" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">Sau →</button>
                   </div>
                 </div>
-
-                <div class="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-3">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-indigo-800">Bấm nghe rồi gõ lại chính xác câu bạn nghe được:</span>
-                    <button type="button" ${speakAttrFor(curLine.text)} class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-1.5">
-                      <i data-lucide="volume-2" class="w-4 h-4"></i> Phát câu
-                    </button>
-                  </div>
-                  ${ui.videoShowVi !== false ? `<div class="text-xs text-slate-600">Gợi ý nghĩa: <b>${curLine.vi}</b></div>` : ''}
-                  <textarea id="vid-dictation-input" rows="2" placeholder="${isZh ? 'Gõ lại chữ Hán...' : 'Gõ lại câu tiếng Anh bạn nghe được...'}" class="w-full p-3 rounded-xl border border-slate-200 bg-white text-sm outline-none focus:border-indigo-500">${ui.videoDictationInput || ''}</textarea>
-                  <button type="button" id="vid-check-dictation-btn" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold">Kiểm tra chính tả</button>
+                <div class="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-2.5">
+                  <button type="button" ${speakAttrFor(curLine.text)} class="px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold inline-flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4"></i> Phát câu</button>
+                  <textarea id="vid-dictation-input" rows="2" placeholder="Gõ lại câu bạn nghe được..." class="w-full p-3 rounded-xl border border-slate-200 bg-white text-sm outline-none">${ui.videoDictationInput || ''}</textarea>
+                  <button type="button" id="vid-check-dictation-btn" class="w-full py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold">Kiểm tra chính tả</button>
                 </div>
-
                 ${ui.videoDictationResult ? `
-                  <div class="p-4 rounded-2xl border ${ui.videoDictationResult.pct >= 80 ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'} space-y-2">
-                    <div class="text-xs font-extrabold ${ui.videoDictationResult.pct >= 80 ? 'text-emerald-800' : 'text-amber-800'}">Kết quả: ${ui.videoDictationResult.pct}% chính xác</div>
-                    <div class="text-xs text-slate-700">Đáp án chuẩn: <b>${curLine.text}</b></div>
-                    <div class="flex flex-wrap gap-1.5">
-                      ${ui.videoDictationResult.tokens.map(t => `
-                        <span class="px-2 py-0.5 rounded-md text-xs font-bold ${t.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'}">${t.word}</span>
-                      `).join('')}
-                    </div>
+                  <div class="p-3.5 rounded-2xl border bg-emerald-50 border-emerald-200 space-y-1.5">
+                    <div class="text-xs font-extrabold">Kết quả: ${ui.videoDictationResult.pct}% · Đáp án: ${curLine.text}</div>
                   </div>
                 ` : ''}
               </div>
             ` : ''}
 
             ${mode === 'quiz' ? (() => {
-              const qLine = activeVideo.lines[lineIdx];
-              const options = activeVideo.lines.slice(0, 4);
+              const qLine = lines[lineIdx] || lines[0];
+              const options = lines.slice(0, 4);
               if (!options.some(o => o.text === qLine.text)) options[0] = qLine;
               return `
-                <div class="space-y-4">
+                <div class="space-y-3.5">
                   <div class="flex items-center justify-between text-xs font-bold text-slate-500">
-                    <span>Quiz câu ${lineIdx + 1} / ${activeVideo.lines.length}</span>
+                    <span>Quiz câu ${lineIdx + 1} / ${lines.length}</span>
                     <div class="flex items-center gap-1.5">
                       <button type="button" data-vid-line-nav="-1" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">← Trước</button>
                       <button type="button" data-vid-line-nav="1" class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">Sau →</button>
                     </div>
                   </div>
-                  <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-2">
-                    <div class="text-xs font-bold text-emerald-800">Câu sau đây có nghĩa tiếng Việt là gì?</div>
-                    <div class="flex items-center justify-between gap-2">
-                      <div class="text-base font-extrabold text-slate-900">${qLine.text}</div>
-                      <button type="button" ${speakAttrFor(qLine.text)} class="p-2 rounded-lg bg-white border border-emerald-200 text-emerald-700"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
-                    </div>
-                  </div>
+                  <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 font-extrabold text-sm text-slate-900">${qLine.text}</div>
                   <div class="space-y-2">
                     ${options.map((opt, idx) => {
                       const picked = ui.videoQuizPicked;
@@ -4272,11 +4648,7 @@
                         if (isCorrect) cls = 'bg-emerald-50 border-emerald-400 text-emerald-900 font-bold';
                         else if (picked === idx) cls = 'bg-rose-50 border-rose-300 text-rose-800';
                       }
-                      return `
-                        <button type="button" data-vid-quiz-pick="${idx}" data-vid-quiz-correct="${isCorrect ? '1' : '0'}" class="w-full text-left p-3 rounded-xl border text-xs sm:text-sm transition-all ${cls}">
-                          ${opt.vi}
-                        </button>
-                      `;
+                      return `<button type="button" data-vid-quiz-pick="${idx}" data-vid-quiz-correct="${isCorrect ? '1' : '0'}" class="w-full text-left p-3 rounded-xl border text-xs transition-all ${cls}">${opt.vi || opt.text}</button>`;
                     }).join('')}
                   </div>
                 </div>
@@ -4286,6 +4658,12 @@
         </div>
       `;
       refreshIcons();
+      if (ui.localVideoUrl) {
+        const lv = document.getElementById('local-video-player');
+        if (lv) lv.ontimeupdate = () => updateLiveCaptionUI(lv.currentTime);
+      } else {
+        mountYouTubeLivePlayer(activeYtId);
+      }
     }
 
     function renderChinesePage() {
@@ -5146,11 +5524,106 @@
         ui.oqLang = chosen;
         ui.aioGrammarLang = chosen;
         ui.pronLang = chosen;
+        if (ui.exLang !== chosen) initExerciseSession(chosen, ui.exMode || 'mcq');
         ui.videoLangFilter = chosen;
         ui.typingActiveTopicId = null;
         if (state.mainNav === 'roadmap' && chosen === 'zh') { showMainPage('chinese'); return; }
         if (state.mainNav === 'chinese' && chosen === 'en') { showMainPage('roadmap'); return; }
         showMainPage(state.mainNav);
+        return;
+      }
+
+      // Exercises ("Làm bài tập") actions
+      const exLangBtn = e.target.closest('[data-ex-lang]');
+      if (exLangBtn) {
+        initExerciseSession(exLangBtn.dataset.exLang, ui.exMode || 'mcq');
+        renderExercisesPage();
+        return;
+      }
+      const exModeBtn = e.target.closest('[data-ex-mode]');
+      if (exModeBtn) {
+        initExerciseSession(ui.exLang || 'en', exModeBtn.dataset.exMode);
+        renderExercisesPage();
+        return;
+      }
+      if (e.target.closest('#ex-new-set-btn') || e.target.closest('#ex-new-set-btn-2')) {
+        initExerciseSession(ui.exLang || 'en', ui.exMode || 'mcq');
+        renderExercisesPage();
+        return;
+      }
+      const exMcqBtn = e.target.closest('[data-ex-mcq-pick]');
+      if (exMcqBtn && ui.exPicked === null) {
+        const picked = parseInt(exMcqBtn.dataset.exMcqPick, 10);
+        const cur = ui.exItems[ui.exIdx || 0];
+        ui.exPicked = picked;
+        if (picked === cur.ans) {
+          ui.exCorrect = (ui.exCorrect || 0) + 1;
+          addXp(5, 'Đúng bài tập (+5 XP)');
+        }
+        renderExercisesPage();
+        return;
+      }
+      if (e.target.closest('#ex-fill-check-btn')) {
+        const inp = document.getElementById('ex-fill-input');
+        const val = (inp ? inp.value : '').trim();
+        ui.exFillInput = val;
+        const cur = ui.exItems[ui.exIdx || 0];
+        const ok = val.toLowerCase() === cur.answer.toLowerCase();
+        ui.exFillChecked = ok;
+        if (ok) {
+          ui.exCorrect = (ui.exCorrect || 0) + 1;
+          addXp(5, 'Điền từ chính xác (+5 XP)');
+        }
+        renderExercisesPage();
+        return;
+      }
+      const exOrdAdd = e.target.closest('[data-ex-order-add]');
+      if (exOrdAdd) {
+        const i = parseInt(exOrdAdd.dataset.exOrderAdd, 10);
+        if (!ui.exOrderPicked) ui.exOrderPicked = [];
+        if (!ui.exOrderPicked.includes(i)) ui.exOrderPicked.push(i);
+        renderExercisesPage();
+        return;
+      }
+      const exOrdRem = e.target.closest('[data-ex-order-remove]');
+      if (exOrdRem) {
+        const pos = parseInt(exOrdRem.dataset.exOrderRemove, 10);
+        if (ui.exOrderPicked) ui.exOrderPicked.splice(pos, 1);
+        renderExercisesPage();
+        return;
+      }
+      if (e.target.closest('#ex-order-clear-btn')) {
+        ui.exOrderPicked = [];
+        ui.exOrderChecked = null;
+        renderExercisesPage();
+        return;
+      }
+      if (e.target.closest('#ex-order-check-btn')) {
+        const cur = ui.exItems[ui.exIdx || 0];
+        const isZh = (ui.exLang || 'en') === 'zh';
+        const built = (ui.exOrderPicked || []).map(i => cur.scrambled[i]).join(isZh ? '' : ' ');
+        const ok = built.toLowerCase() === cur.target.toLowerCase();
+        ui.exOrderChecked = ok;
+        if (ok) {
+          ui.exCorrect = (ui.exCorrect || 0) + 1;
+          addXp(10, 'Sắp xếp câu đúng (+10 XP)');
+        }
+        renderExercisesPage();
+        return;
+      }
+      if (e.target.closest('#ex-next-btn')) {
+        if ((ui.exIdx || 0) + 1 >= ui.exItems.length) {
+          ui.exDone = true;
+          addXp(20, 'Hoàn thành bộ bài tập (+20 XP)');
+        } else {
+          ui.exIdx = (ui.exIdx || 0) + 1;
+          ui.exPicked = null;
+          ui.exFillInput = '';
+          ui.exFillChecked = null;
+          ui.exOrderPicked = [];
+          ui.exOrderChecked = null;
+        }
+        renderExercisesPage();
         return;
       }
 
@@ -5422,6 +5895,9 @@
       if (vSelBtn) {
         ui.videoId = vSelBtn.dataset.selectVideo;
         ui.customYoutubeId = '';
+        ui.customVideoLines = null;
+        ui.customVideoLang = null;
+        _ytMountedVideoId = null;
         ui.videoLineIdx = 0;
         ui.videoLookupWord = null;
         ui.videoShadowResult = null;
@@ -5439,6 +5915,32 @@
       }
       if (e.target.closest('#vid-toggle-ipa')) { ui.videoShowIpa = ui.videoShowIpa === false ? true : false; renderVideoStudioPage(); return; }
       if (e.target.closest('#vid-toggle-vi')) { ui.videoShowVi = ui.videoShowVi === false ? true : false; renderVideoStudioPage(); return; }
+      const vSrcTab = e.target.closest('[data-vid-src-tab]');
+      if (vSrcTab) {
+        ui.videoSrcTab = vSrcTab.dataset.vidSrcTab;
+        renderVideoStudioPage();
+        return;
+      }
+      if (e.target.closest('#vid-toggle-loop-btn')) {
+        ui.videoLoopActive = !ui.videoLoopActive;
+        renderVideoStudioPage();
+        return;
+      }
+      const seekRow = e.target.closest('[data-vid-seek]');
+      if (seekRow && !e.target.closest('button')) {
+        const sec = parseFloat(seekRow.dataset.vidSeek || '0');
+        ui.videoLineIdx = parseInt(seekRow.dataset.vidRow || '0', 10);
+        const lv = document.getElementById('local-video-player');
+        if (lv) {
+          lv.currentTime = sec;
+          lv.play().catch(() => {});
+        } else if (_ytPlayer && typeof _ytPlayer.seekTo === 'function') {
+          _ytPlayer.seekTo(sec, true);
+          _ytPlayer.playVideo();
+        }
+        updateLiveCaptionUI(sec + 0.05);
+        return;
+      }
       if (e.target.closest('#load-custom-yt-btn')) {
         const inp = document.getElementById('custom-yt-input');
         const val = inp ? inp.value.trim() : '';
@@ -5446,13 +5948,26 @@
         if (!ytId) { showToast('Link YouTube chưa hợp lệ, bạn dán lại link nhé!'); return; }
         ui.customYoutubeUrl = val;
         ui.customYoutubeId = ytId;
+        ui.localVideoUrl = '';
+        ui.localVideoName = '';
+        const lSel = document.getElementById('vid-lang-select');
+        ui.customVideoLang = lSel ? lSel.value : 'en';
+        ui.customVideoLines = null;
+        ui.customVideoLang = null;
+        ui.videoLineIdx = 0;
+        _ytMountedVideoId = null;
         renderVideoStudioPage();
-        showToast('Đã mở video YouTube của bạn!');
+        fetchYoutubeTranscript(ytId);
         return;
       }
       if (e.target.closest('#reset-custom-yt-btn')) {
         ui.customYoutubeId = '';
+        ui.localVideoUrl = '';
+        ui.localVideoName = '';
         ui.customYoutubeUrl = '';
+        ui.customVideoLines = null;
+        ui.customVideoLang = null;
+        _ytMountedVideoId = null;
         renderVideoStudioPage();
         return;
       }
@@ -5860,6 +6375,33 @@
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'upload-local-video-input' && e.target.files && e.target.files[0]) {
+        const f = e.target.files[0];
+        if (ui.localVideoUrl) { try { URL.revokeObjectURL(ui.localVideoUrl); } catch {} }
+        ui.localVideoUrl = URL.createObjectURL(f);
+        ui.localVideoName = f.name;
+        ui.customYoutubeId = '';
+        renderVideoStudioPage();
+        showToast(`Đã tải video "${f.name}" — bạn có thể nạp thêm file .SRT/.VTT để chữ chạy đồng bộ!`);
+        e.target.value = '';
+        return;
+      }
+      if (e.target.id === 'upload-srt-input' && e.target.files && e.target.files[0]) {
+        const f = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const parsed = parseSrtOrVtt(ev.target.result || '');
+          if (!parsed.length) { showToast('File phụ đề .SRT/.VTT không đúng định dạng!'); return; }
+          ui.customVideoLines = parsed;
+          ui.videoLineIdx = 0;
+          ui.videoMode = 'subs';
+          renderVideoStudioPage();
+          showToast(`Đã nạp ${parsed.length} dòng phụ đề chạy đồng bộ!`);
+        };
+        reader.readAsText(f);
+        e.target.value = '';
+        return;
+      }
       if (e.target.id === 'custom-avatar-input' && e.target.files && e.target.files[0]) {
         handleCustomAvatarFile(e.target.files[0]);
         e.target.value = '';

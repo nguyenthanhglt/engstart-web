@@ -59,3 +59,11 @@ body {
     .aio-pink-banner     { background: linear-gradient(115deg, #FCE0EB 0%, #F7CADE 100%); border: 1px solid #EBA5C5; }
     .aio-sand-banner     { background: linear-gradient(115deg, #F4EAD4 0%, #EADAB7 100%); border: 1px solid #D8C190; }
     .aio-coral-banner    { background: linear-gradient(115deg, #FDE2DA 0%, #F8CEC3 100%); border: 1px solid #EBAFA0; }
+
+    .coro-green-banner {
+      background-color: #1FA97C;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
