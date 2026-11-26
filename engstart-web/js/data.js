@@ -10,9 +10,9 @@
           {
             id: "t1_l1", num: "Bài 01", title: "Chào hỏi & Lịch sự cơ bản",
             words: [
-              W("w1", "hello", "/həˈləʊ/", "THÁN TỪ", "xin chào", "Dùng để chào bất kỳ ai, mọi lúc trong ngày.", "Hello, nice to meet you!", "____, nice to meet you!", "Xin chào, rất vui được gặp bạn!"),
+              W("w1", "hello", "/həˈloʊ/", "THÁN TỪ", "xin chào", "Dùng để chào bất kỳ ai, mọi lúc trong ngày.", "Hello, nice to meet you!", "____, nice to meet you!", "Xin chào, rất vui được gặp bạn!"),
               W("w2", "thank you", "/θæŋk juː/", "CỤM TỪ", "cảm ơn bạn", "thank you + for + danh từ / V-ing.", "Thank you for your help.", "____ for your help.", "Cảm ơn bạn đã giúp đỡ."),
-              W("w3", "sorry", "/ˈsɒri/", "TÍNH TỪ", "xin lỗi", "I am sorry + lý do.", "I am sorry I am late.", "I am ____ I am late.", "Tôi xin lỗi vì đến muộn."),
+              W("w3", "sorry", "/ˈsɑːri/", "TÍNH TỪ", "xin lỗi", "I am sorry + lý do.", "I am sorry I am late.", "I am ____ I am late.", "Tôi xin lỗi vì đến muộn."),
               W("w4", "please", "/pliːz/", "THÁN TỪ", "làm ơn, vui lòng", "Đặt ở đầu hoặc cuối câu nhờ vả để lịch sự hơn.", "Speak slowly, please.", "Speak slowly, ____.", "Làm ơn hãy nói chậm thôi."),
               W("w5", "goodbye", "/ˌɡʊdˈbaɪ/", "THÁN TỪ", "tạm biệt", "Dùng khi chia tay; thân mật hơn nói 'Bye'.", "Goodbye, see you tomorrow!", "____, see you tomorrow!", "Tạm biệt, hẹn gặp lại ngày mai!")
             ],
@@ -61,7 +61,7 @@
               W("w16", "study", "/ˈstʌdi/", "ĐỘNG TỪ", "học tập", "study + môn học (study English).", "I study English every night.", "I ____ English every night.", "Tôi học tiếng Anh mỗi tối."),
               W("w17", "understand", "/ˌʌndərˈstænd/", "ĐỘNG TỪ", "hiểu", "I understand / I don't understand.", "Now I understand this word.", "Now I ____ this word.", "Bây giờ tôi đã hiểu từ này."),
               W("w18", "practice", "/ˈpræktɪs/", "ĐỘNG TỪ", "luyện tập", "practice speaking / practice every day.", "I practice English every day.", "I ____ English every day.", "Tôi luyện tiếng Anh mỗi ngày."),
-              W("w19", "homework", "/ˈhəʊmwɜːrk/", "DANH TỪ", "bài tập về nhà", "do homework (không thêm s).", "I do my homework after dinner.", "I do my ____ after dinner.", "Tôi làm bài tập về nhà sau bữa tối."),
+              W("w19", "homework", "/ˈhoʊmwɜːrk/", "DANH TỪ", "bài tập về nhà", "do homework (không thêm s).", "I do my homework after dinner.", "I do my ____ after dinner.", "Tôi làm bài tập về nhà sau bữa tối."),
               W("w20", "question", "/ˈkwestʃən/", "DANH TỪ", "câu hỏi", "ask a question / answer a question.", "I have a simple question.", "I have a simple ____.", "Tôi có một câu hỏi đơn giản.")
             ],
             sentences: [
@@ -113,10 +113,10 @@
             id: "t4_l1", num: "Bài 01", title: "Nơi làm việc cơ bản",
             words: [
               W("w31", "work", "/wɜːrk/", "ĐỘNG TỪ", "làm việc", "go to work (đi làm), at work.", "I go to work at 8 AM.", "I go to ____ at 8 AM.", "Tôi đi làm lúc 8 giờ sáng."),
-              W("w32", "office", "/ˈɒfɪs/", "DANH TỪ", "văn phòng", "in an office / at the office.", "My office is near my home.", "My ____ is near my home.", "Văn phòng của tôi gần nhà."),
+              W("w32", "office", "/ˈɑːfɪs/", "DANH TỪ", "văn phòng", "in an office / at the office.", "My office is near my home.", "My ____ is near my home.", "Văn phòng của tôi gần nhà."),
               W("w33", "company", "/ˈkʌmpəni/", "DANH TỪ", "công ty", "work for a company.", "He works for a big company.", "He works for a big ____.", "Anh ấy làm cho một công ty lớn."),
               W("w34", "meeting", "/ˈmiːtɪŋ/", "DANH TỪ", "cuộc họp", "have a meeting (có cuộc họp).", "We have a meeting at 10 AM.", "We have a ____ at 10 AM.", "Chúng tôi có cuộc họp lúc 10 giờ sáng."),
-              W("w35", "job", "/dʒɒb/", "DANH TỪ", "nghề nghiệp, việc làm", "a good job / a new job.", "I like my new job.", "I like my new ____.", "Tôi thích công việc mới của mình.")
+              W("w35", "job", "/dʒɑːb/", "DANH TỪ", "nghề nghiệp, việc làm", "a good job / a new job.", "I like my new job.", "I like my new ____.", "Tôi thích công việc mới của mình.")
             ],
             sentences: [
               { vi: "Tôi đi làm lúc 8 giờ sáng.", words: ["I", "go", "to", "work", "at", "8", "AM"] },
@@ -147,7 +147,7 @@
             id: "t5_l1", num: "Bài 01", title: "Đồ uống & Bữa ăn",
             words: [
               W("w41", "water", "/ˈwɔːtər/", "DANH TỪ", "nước uống", "a glass of water / some water.", "Can I have some water?", "Can I have some ____?", "Cho tôi một ít nước được không?"),
-              W("w42", "coffee", "/ˈkɒfi/", "DANH TỪ", "cà phê", "drink coffee / iced coffee.", "I drink coffee every morning.", "I drink ____ every morning.", "Tôi uống cà phê mỗi sáng."),
+              W("w42", "coffee", "/ˈkɑːfi/", "DANH TỪ", "cà phê", "drink coffee / iced coffee.", "I drink coffee every morning.", "I drink ____ every morning.", "Tôi uống cà phê mỗi sáng."),
               W("w43", "breakfast", "/ˈbrekfəst/", "DANH TỪ", "bữa sáng", "eat breakfast / have breakfast.", "I eat breakfast at 7 AM.", "I eat ____ at 7 AM.", "Tôi ăn sáng lúc 7 giờ."),
               W("w44", "lunch", "/lʌntʃ/", "DANH TỪ", "bữa trưa", "have lunch (ăn trưa).", "Let's have lunch together.", "Let's have ____ together.", "Hãy cùng nhau ăn trưa nhé."),
               W("w45", "dinner", "/ˈdɪnər/", "DANH TỪ", "bữa tối", "cook dinner / eat dinner.", "My mom cooks dinner at 6 PM.", "My mom cooks ____ at 6 PM.", "Mẹ tôi nấu bữa tối lúc 6 giờ.")
@@ -194,7 +194,7 @@
           {
             id: "t6_l2", num: "Bài 02", title: "Cửa hàng & Thanh toán",
             words: [
-              W("w56", "shop", "/ʃɒp/", "DANH TỪ", "cửa hàng", "coffee shop / clothes shop.", "There is a shop near here.", "There is a ____ near here.", "Có một cửa hàng gần đây."),
+              W("w56", "shop", "/ʃɑːp/", "DANH TỪ", "cửa hàng", "coffee shop / clothes shop.", "There is a shop near here.", "There is a ____ near here.", "Có một cửa hàng gần đây."),
               W("w57", "market", "/ˈmɑːrkɪt/", "DANH TỪ", "chợ / siêu thị", "go to the market (đi chợ).", "My mom goes to the market.", "My mom goes to the ____.", "Mẹ tôi đi chợ."),
               W("w58", "size", "/saɪz/", "DANH TỪ", "kích cỡ", "medium size / Do you have a larger size?", "Do you have a bigger size?", "Do you have a bigger ____?", "Bạn có cỡ lớn hơn không?"),
               W("w59", "pay", "/peɪ/", "ĐỘNG TỪ", "trả tiền, thanh toán", "pay by card / pay in cash.", "Can I pay by card?", "Can I ____ by card?", "Tôi có thể thanh toán bằng thẻ không?"),
@@ -215,10 +215,10 @@
             id: "t7_l1", num: "Bài 01", title: "Thời gian & Thời tiết",
             words: [
               W("w61", "today", "/təˈdeɪ/", "TRẠNG TỪ", "hôm nay", "Đặt ở đầu hoặc cuối câu.", "Today is a beautiful day.", "____ is a beautiful day.", "Hôm nay là một ngày đẹp trời."),
-              W("w62", "tomorrow", "/təˈmɒrəʊ/", "TRẠNG TỪ", "ngày mai", "see you tomorrow.", "I will call you tomorrow.", "I will call you ____.", "Tôi sẽ gọi cho bạn ngày mai."),
+              W("w62", "tomorrow", "/təˈmɑːroʊ/", "TRẠNG TỪ", "ngày mai", "see you tomorrow.", "I will call you tomorrow.", "I will call you ____.", "Tôi sẽ gọi cho bạn ngày mai."),
               W("w63", "yesterday", "/ˈjestərdeɪ/", "TRẠNG TỪ", "hôm qua", "Dấu hiệu của thì Quá khứ đơn.", "I met him yesterday.", "I met him ____.", "Tôi đã gặp anh ấy hôm qua."),
               W("w64", "weather", "/ˈweðər/", "DANH TỪ", "thời tiết", "The weather is hot/cold/nice.", "The weather is hot today.", "The ____ is hot today.", "Hôm nay thời tiết nóng."),
-              W("w65", "home", "/həʊm/", "DANH TỪ", "nhà, tổ ấm", "go home (không dùng 'to'), at home.", "I go home at 6 PM.", "I go ____ at 6 PM.", "Tôi về nhà lúc 6 giờ chiều.")
+              W("w65", "home", "/hoʊm/", "DANH TỪ", "nhà, tổ ấm", "go home (không dùng 'to'), at home.", "I go home at 6 PM.", "I go ____ at 6 PM.", "Tôi về nhà lúc 6 giờ chiều.")
             ],
             sentences: [
               { vi: "Hôm nay thời tiết nóng.", words: ["The", "weather", "is", "hot", "today"] },
@@ -251,7 +251,7 @@
               W("w71", "airport", "/ˈerpɔːrt/", "DANH TỪ", "sân bay", "go to the airport / at the airport.", "We arrive at the airport early.", "We arrive at the ____ early.", "Chúng tôi đến sân bay sớm."),
               W("w72", "ticket", "/ˈtɪkɪt/", "DANH TỪ", "vé (máy bay, xe)", "buy a ticket / plane ticket.", "Here is my plane ticket.", "Here is my plane ____.", "Đây là vé máy bay của tôi."),
               W("w73", "passport", "/ˈpæspɔːrt/", "DANH TỪ", "hộ chiếu", "show your passport.", "Don't forget your passport.", "Don't forget your ____.", "Đừng quên hộ chiếu của bạn nhé."),
-              W("w74", "hotel", "/həʊˈtel/", "DANH TỪ", "khách sạn", "stay at a hotel / book a hotel.", "Our hotel is near the beach.", "Our ____ is near the beach.", "Khách sạn của chúng tôi gần biển."),
+              W("w74", "hotel", "/hoʊˈtel/", "DANH TỪ", "khách sạn", "stay at a hotel / book a hotel.", "Our hotel is near the beach.", "Our ____ is near the beach.", "Khách sạn của chúng tôi gần biển."),
               W("w75", "luggage", "/ˈlʌɡɪdʒ/", "DANH TỪ", "hành lý", "Danh từ không đếm được (không thêm s).", "My luggage is very heavy.", "My ____ is very heavy.", "Hành lý của tôi rất nặng.")
             ],
             sentences: [
@@ -282,8 +282,8 @@
           {
             id: "t9_l1", num: "Bài 01", title: "Cảm giác & Khám bệnh",
             words: [
-              W("w81", "doctor", "/ˈdɒktər/", "DANH TỪ", "bác sĩ", "see a doctor (đi khám bác sĩ).", "You should see a doctor.", "You should see a ____.", "Bạn nên đi khám bác sĩ."),
-              W("w82", "hospital", "/ˈhɒspɪtl/", "DANH TỪ", "bệnh viện", "go to the hospital.", "The hospital is on this street.", "The ____ is on this street.", "Bệnh viện nằm trên con đường này."),
+              W("w81", "doctor", "/ˈdɑːktər/", "DANH TỪ", "bác sĩ", "see a doctor (đi khám bác sĩ).", "You should see a doctor.", "You should see a ____.", "Bạn nên đi khám bác sĩ."),
+              W("w82", "hospital", "/ˈhɑːspɪtl/", "DANH TỪ", "bệnh viện", "go to the hospital.", "The hospital is on this street.", "The ____ is on this street.", "Bệnh viện nằm trên con đường này."),
               W("w83", "tired", "/ˈtaɪərd/", "TÍNH TỪ", "mệt mỏi", "feel tired / be tired.", "I feel a little tired today.", "I feel a little ____ today.", "Hôm nay tôi cảm thấy hơi mệt."),
               W("w84", "sick", "/sɪk/", "TÍNH TỪ", "bị ốm, bệnh", "be sick / feel sick.", "He is sick, so he stays home.", "He is ____, so he stays home.", "Anh ấy bị ốm nên ở nhà."),
               W("w85", "medicine", "/ˈmedɪsn/", "DANH TỪ", "thuốc uống", "take medicine (uống thuốc — dùng 'take', không dùng 'drink').", "Take this medicine after meals.", "Take this ____ after meals.", "Uống thuốc này sau bữa ăn.")
@@ -300,7 +300,7 @@
               W("w87", "exercise", "/ˈeksərsaɪz/", "DANH TỪ / ĐỘNG TỪ", "tập thể dục", "do exercise (tập thể dục).", "I do exercise every morning.", "I do ____ every morning.", "Tôi tập thể dục mỗi sáng."),
               W("w88", "headache", "/ˈhedeɪk/", "DANH TỪ", "đau đầu", "have a headache (bị đau đầu).", "I have a bad headache.", "I have a bad ____.", "Tôi bị đau đầu nặng."),
               W("w89", "rest", "/rest/", "DANH TỪ / ĐỘNG TỪ", "nghỉ ngơi", "take a rest / get some rest.", "You need to get some rest.", "You need to get some ____.", "Bạn cần nghỉ ngơi một chút."),
-              W("w90", "strong", "/strɒŋ/", "TÍNH TỪ", "khỏe mạnh, vững chắc", "stay strong / strong body.", "Running makes my body strong.", "Running makes my body ____.", "Chạy bộ giúp cơ thể tôi khỏe mạnh.")
+              W("w90", "strong", "/strɔːŋ/", "TÍNH TỪ", "khỏe mạnh, vững chắc", "stay strong / strong body.", "Running makes my body strong.", "Running makes my body ____.", "Chạy bộ giúp cơ thể tôi khỏe mạnh.")
             ],
             sentences: [
               { vi: "Tôi tập thể dục mỗi sáng.", words: ["I", "do", "exercise", "every", "morning"] },
@@ -316,7 +316,7 @@
           {
             id: "t10_l1", num: "Bài 01", title: "Thiết bị & Internet",
             words: [
-              W("w91", "phone", "/fəʊn/", "DANH TỪ", "điện thoại", "phone number / use my phone.", "What is your phone number?", "What is your ____ number?", "Số điện thoại của bạn là gì?"),
+              W("w91", "phone", "/foʊn/", "DANH TỪ", "điện thoại", "phone number / use my phone.", "What is your phone number?", "What is your ____ number?", "Số điện thoại của bạn là gì?"),
               W("w92", "computer", "/kəmˈpjuːtər/", "DANH TỪ", "máy tính", "use a computer.", "I work on my computer.", "I work on my ____.", "Tôi làm việc trên máy tính."),
               W("w93", "internet", "/ˈɪntərnet/", "DANH TỪ", "mạng internet", "on the internet.", "The internet here is very fast.", "The ____ here is very fast.", "Mạng internet ở đây rất nhanh."),
               W("w94", "password", "/ˈpæswɜːrd/", "DANH TỪ", "mật khẩu", "wifi password (mật khẩu wifi).", "What is the wifi password?", "What is the wifi ____?", "Mật khẩu wifi là gì vậy?"),
@@ -332,13 +332,489 @@
             words: [
               W("w96", "music", "/ˈmjuːzɪk/", "DANH TỪ", "âm nhạc", "listen to music.", "I love listening to music.", "I love listening to ____.", "Tôi thích nghe nhạc."),
               W("w97", "movie", "/ˈmuːvi/", "DANH TỪ", "bộ phim", "watch a movie (xem phim).", "Let's watch a movie tonight.", "Let's watch a ____ tonight.", "Tối nay cùng xem phim nhé."),
-              W("w98", "photo", "/ˈfəʊtəʊ/", "DANH TỪ", "bức ảnh", "take a photo (chụp ảnh).", "Can you take a photo for me?", "Can you take a ____ for me?", "Bạn chụp giúp tôi một tấm ảnh được không?"),
+              W("w98", "photo", "/ˈfoʊtoʊ/", "DANH TỪ", "bức ảnh", "take a photo (chụp ảnh).", "Can you take a photo for me?", "Can you take a ____ for me?", "Bạn chụp giúp tôi một tấm ảnh được không?"),
               W("w99", "weekend", "/ˌwiːkˈend/", "DANH TỪ", "cuối tuần", "on the weekend / Have a nice weekend!", "Have a nice weekend!", "Have a nice ____!", "Chúc bạn cuối tuần vui vẻ!"),
               W("w100", "enjoy", "/ɪnˈdʒɔɪ/", "ĐỘNG TỪ", "tận hưởng, thích thú", "enjoy + danh từ / V-ing.", "I enjoy learning English now.", "I ____ learning English now.", "Bây giờ tôi thấy thích học tiếng Anh.")
             ],
             sentences: [
               { vi: "Tối nay hãy cùng xem phim nhé.", words: ["Let's", "watch", "a", "movie", "tonight"] },
               { vi: "Chúc bạn cuối tuần vui vẻ!", words: ["Have", "a", "nice", "weekend"] }
+            ]
+          }
+        ]
+      }
+      ,{
+        id: "colors", num: "11", title: "Màu sắc & Hình dạng", enTitle: "Colors & Shapes",
+        desc: "Các màu sắc rực rỡ và hình dạng cơ bản giúp bé và người mới mô tả mọi đồ vật xung quanh.",
+        lessons: [
+          {
+            id: "t11_l1", num: "Bài 01", title: "5 Màu sắc tươi sáng",
+            words: [
+              W("w101", "red", "/red/", "TÍNH TỪ", "màu đỏ", "a red apple (một quả táo đỏ).", "The apple is red.", "The apple is ____.", "Quả táo có màu đỏ."),
+              W("w102", "blue", "/bluː/", "TÍNH TỪ", "màu xanh dương", "blue sky (bầu trời xanh).", "The sky is blue today.", "The sky is ____ today.", "Hôm nay bầu trời có màu xanh dương."),
+              W("w103", "yellow", "/ˈjeloʊ/", "TÍNH TỪ", "màu vàng", "a yellow sun / yellow banana.", "I like this yellow hat.", "I like this ____ hat.", "Tôi thích chiếc mũ màu vàng này."),
+              W("w104", "green", "/ɡriːn/", "TÍNH TỪ", "màu xanh lá", "green trees / green grass.", "The leaves are green.", "The leaves are ____.", "Những chiếc lá có màu xanh lá."),
+              W("w105", "pink", "/pɪŋk/", "TÍNH TỪ", "màu hồng", "a pink flower (bông hoa màu hồng).", "She has a pink bag.", "She has a ____ bag.", "Cô ấy có một chiếc cặp màu hồng.")
+            ],
+            sentences: [
+              { vi: "Quả táo có màu đỏ.", words: ["The", "apple", "is", "red"] },
+              { vi: "Hôm nay bầu trời màu xanh dương.", words: ["The", "sky", "is", "blue", "today"] }
+            ]
+          },
+          {
+            id: "t11_l2", num: "Bài 02", title: "Màu sắc mở rộng & Hình tròn",
+            words: [
+              W("w106", "black", "/blæk/", "TÍNH TỪ", "màu đen", "black hair / black cat.", "He has a black dog.", "He has a ____ dog.", "Anh ấy có một chú chó màu đen."),
+              W("w107", "white", "/waɪt/", "TÍNH TỪ", "màu trắng", "white clouds (những đám mây trắng).", "The clouds are white.", "The clouds are ____.", "Những đám mây có màu trắng."),
+              W("w108", "orange", "/ˈɔːrɪndʒ/", "TÍNH TỪ", "màu cam", "Vừa là màu cam, vừa là quả cam.", "This balloon is orange.", "This balloon is ____.", "Quả bóng bay này có màu cam."),
+              W("w109", "purple", "/ˈpɜːrpl/", "TÍNH TỪ", "màu tím", "purple grapes (nho tím).", "My favorite color is purple.", "My favorite color is ____.", "Màu yêu thích của tôi là màu tím."),
+              W("w110", "circle", "/ˈsɜːrkl/", "DANH TỪ", "hình tròn", "draw a circle (vẽ một hình tròn).", "Please draw a big circle.", "Please draw a big ____.", "Hãy vẽ một hình tròn lớn nhé.")
+            ],
+            sentences: [
+              { vi: "Những đám mây có màu trắng.", words: ["The", "clouds", "are", "white"] },
+              { vi: "Màu yêu thích của tôi là màu tím.", words: ["My", "favorite", "color", "is", "purple"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "animals", num: "12", title: "Động vật thân quen", enTitle: "Animals",
+        desc: "Những loài thú cưng và động vật đáng yêu gần gũi nhất với trẻ em và đời sống hằng ngày.",
+        lessons: [
+          {
+            id: "t12_l1", num: "Bài 01", title: "Thú cưng & Vật nuôi",
+            words: [
+              W("w111", "dog", "/dɔːɡ/", "DANH TỪ", "con chó", "a cute dog (một chú chó dễ thương).", "My dog likes to run.", "My ____ likes to run.", "Chú chó của tôi thích chạy nhảy."),
+              W("w112", "cat", "/kæt/", "DANH TỪ", "con mèo", "a little cat (một chú mèo nhỏ).", "The cat is sleeping on the bed.", "The ____ is sleeping on the bed.", "Chú mèo đang ngủ trên giường."),
+              W("w113", "bird", "/bɜːrd/", "DANH TỪ", "con chim", "a bird can fly (chim có thể bay).", "A little bird is singing.", "A little ____ is singing.", "Một chú chim nhỏ đang hót."),
+              W("w114", "fish", "/fɪʃ/", "DANH TỪ", "con cá", "Số nhiều vẫn là 'fish' (không thêm es).", "The fish swims in the water.", "The ____ swims in the water.", "Con cá bơi trong nước."),
+              W("w115", "rabbit", "/ˈræbɪt/", "DANH TỪ", "con thỏ", "a white rabbit (chú thỏ trắng).", "The rabbit eats carrots.", "The ____ eats carrots.", "Chú thỏ ăn cà rốt.")
+            ],
+            sentences: [
+              { vi: "Chú chó của tôi thích chạy.", words: ["My", "dog", "likes", "to", "run"] },
+              { vi: "Chú thỏ ăn cà rốt.", words: ["The", "rabbit", "eats", "carrots"] }
+            ]
+          },
+          {
+            id: "t12_l2", num: "Bài 02", title: "Động vật vườn thú & Thiên nhiên",
+            words: [
+              W("w116", "elephant", "/ˈelɪfənt/", "DANH TỪ", "con voi", "an elephant (dùng 'an' vì bắt đầu bằng nguyên âm).", "The elephant is very big.", "The ____ is very big.", "Con voi rất to lớn."),
+              W("w117", "lion", "/ˈlaɪən/", "DANH TỪ", "con sư tử", "a strong lion.", "The lion is the king of animals.", "The ____ is the king of animals.", "Sư tử là chúa tể muôn loài."),
+              W("w118", "monkey", "/ˈmʌŋki/", "DANH TỪ", "con khỉ", "a funny monkey (chú khỉ tinh nghịch).", "The monkey loves bananas.", "The ____ loves bananas.", "Chú khỉ rất thích ăn chuối."),
+              W("w119", "duck", "/dʌk/", "DANH TỪ", "con vịt", "a yellow duck (chú vịt vàng).", "The yellow duck is cute.", "The yellow ____ is cute.", "Chú vịt vàng thật dễ thương."),
+              W("w120", "butterfly", "/ˈbʌtərflaɪ/", "DANH TỪ", "con bướm", "a colorful butterfly.", "Look at that pretty butterfly!", "Look at that pretty ____!", "Nhìn chú bướm xinh đẹp kia kìa!")
+            ],
+            sentences: [
+              { vi: "Con voi rất to lớn.", words: ["The", "elephant", "is", "very", "big"] },
+              { vi: "Chú khỉ rất thích chuối.", words: ["The", "monkey", "loves", "bananas"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "plants", num: "13", title: "Thực vật & Thiên nhiên", enTitle: "Plants & Nature",
+        desc: "Từ vựng về cây cối, hoa lá, trái cây, khu vườn và thiên nhiên quanh ta.",
+        lessons: [
+          {
+            id: "t13_l1", num: "Bài 01", title: "Cây cối & Bầu trời",
+            words: [
+              W("w121", "tree", "/triː/", "DANH TỪ", "cái cây", "a big tree / green tree.", "There is a tall tree outside.", "There is a tall ____ outside.", "Có một cái cây cao ở bên ngoài."),
+              W("w122", "flower", "/ˈflaʊər/", "DANH TỪ", "bông hoa", "water the flowers (tưới hoa).", "This flower smells so nice.", "This ____ smells so nice.", "Bông hoa này thơm quá."),
+              W("w123", "leaf", "/liːf/", "DANH TỪ", "chiếc lá", "Số ít: leaf — Số nhiều: leaves.", "A green leaf fell down.", "A green ____ fell down.", "Một chiếc lá xanh rơi xuống."),
+              W("w124", "grass", "/ɡræs/", "DANH TỪ", "bãi cỏ", "green grass (cỏ xanh — không đếm được).", "Kids play on the green grass.", "Kids play on the green ____.", "Trẻ em chơi trên bãi cỏ xanh."),
+              W("w125", "sun", "/sʌn/", "DANH TỪ", "mặt trời", "the sun (luôn đi với 'the').", "The sun is bright today.", "The ____ is bright today.", "Hôm nay mặt trời thật rực rỡ.")
+            ],
+            sentences: [
+              { vi: "Hôm nay mặt trời rất sáng.", words: ["The", "sun", "is", "bright", "today"] },
+              { vi: "Bông hoa này rất thơm.", words: ["This", "flower", "smells", "so", "nice"] }
+            ]
+          },
+          {
+            id: "t13_l2", num: "Bài 02", title: "Trái cây & Khu vườn",
+            words: [
+              W("w126", "apple", "/ˈæpl/", "DANH TỪ", "quả táo", "an apple (dùng 'an' trước apple).", "I eat an apple every day.", "I eat an ____ every day.", "Tôi ăn một quả táo mỗi ngày."),
+              W("w127", "banana", "/bəˈnænə/", "DANH TỪ", "quả chuối", "a yellow banana.", "She likes sweet bananas.", "She likes sweet ____.", "Cô ấy thích chuối ngọt."),
+              W("w128", "carrot", "/ˈkærət/", "DANH TỪ", "củ cà rốt", "Carrots are good for your eyes.", "I grow carrots in my garden.", "I grow ____ in my garden.", "Tôi trồng cà rốt trong vườn."),
+              W("w129", "garden", "/ˈɡɑːrdn/", "DANH TỪ", "khu vườn", "in the garden (trong vườn).", "My grandma has a nice garden.", "My grandma has a nice ____.", "Bà tôi có một khu vườn đẹp."),
+              W("w130", "rain", "/reɪn/", "DANH TỪ / ĐỘNG TỪ", "cơn mưa / trời mưa", "It is raining (trời đang mưa).", "Plants need water from the rain.", "Plants need water from the ____.", "Cây cối cần nước từ cơn mưa.")
+            ],
+            sentences: [
+              { vi: "Tôi ăn một quả táo mỗi ngày.", words: ["I", "eat", "an", "apple", "every", "day"] },
+              { vi: "Bà tôi có một khu vườn đẹp.", words: ["My", "grandma", "has", "a", "nice", "garden"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "numbers", num: "14", title: "Số đếm cơ bản (1–10)", enTitle: "Numbers 1 to 10",
+        desc: "Học đếm từ 1 đến 10 chuẩn phát âm để nói tuổi tác, số lượng đồ vật và giờ giấc.",
+        lessons: [
+          {
+            id: "t14_l1", num: "Bài 01", title: "Số đếm từ 1 đến 5",
+            words: [
+              W("w131", "one", "/wʌn/", "SỐ ĐẾM", "số một (1)", "Đọc là /wʌn/, không đọc là 'oăn'.", "I have one cute cat.", "I have ____ cute cat.", "Tôi có một chú mèo dễ thương."),
+              W("w132", "two", "/tuː/", "SỐ ĐẾM", "số hai (2)", "two books (từ 2 trở lên nhớ thêm 's' vào danh từ).", "I have two sisters.", "I have ____ sisters.", "Tôi có hai chị em gái."),
+              W("w133", "three", "/θriː/", "SỐ ĐẾM", "số ba (3)", "Nhớ đặt đầu lưỡi giữa hai răng cho âm /θ/.", "There are three apples here.", "There are ____ apples here.", "Có ba quả táo ở đây."),
+              W("w134", "four", "/fɔːr/", "SỐ ĐẾM", "số bốn (4)", "four chairs (bốn cái ghế).", "A car has four wheels.", "A car has ____ wheels.", "Một chiếc ô tô có bốn bánh xe."),
+              W("w135", "five", "/faɪv/", "SỐ ĐẾM", "số năm (5)", "Nhớ âm cuối /v/ nhẹ ở cuối từ.", "I have five fingers on one hand.", "I have ____ fingers on one hand.", "Tôi có năm ngón tay trên một bàn tay.")
+            ],
+            sentences: [
+              { vi: "Có ba quả táo ở đây.", words: ["There", "are", "three", "apples", "here"] },
+              { vi: "Tôi có một chú mèo dễ thương.", words: ["I", "have", "one", "cute", "cat"] }
+            ]
+          },
+          {
+            id: "t14_l2", num: "Bài 02", title: "Số đếm từ 6 đến 10",
+            words: [
+              W("w136", "six", "/sɪks/", "SỐ ĐẾM", "số sáu (6)", "Nhớ bật âm cuối /ks/ rõ ràng.", "I wake up at six AM.", "I wake up at ____ AM.", "Tôi thức dậy lúc sáu giờ sáng."),
+              W("w137", "seven", "/ˈsevn/", "SỐ ĐẾM", "số bảy (7)", "seven days in a week (7 ngày trong tuần).", "There are seven days in a week.", "There are ____ days in a week.", "Có bảy ngày trong một tuần."),
+              W("w138", "eight", "/eɪt/", "SỐ ĐẾM", "số tám (8)", "Chữ 'gh' là âm câm, đọc gọn là /eɪt/.", "My class starts at eight AM.", "My class starts at ____ AM.", "Lớp học của tôi bắt đầu lúc tám giờ."),
+              W("w139", "nine", "/naɪn/", "SỐ ĐẾM", "số chín (9)", "nine o'clock (9 giờ đúng).", "My little brother is nine years old.", "My little brother is ____ years old.", "Em trai tôi chín tuổi."),
+              W("w140", "ten", "/ten/", "SỐ ĐẾM", "số mười (10)", "ten stars (mười ngôi sao).", "Count from one to ten!", "Count from one to ____!", "Hãy đếm từ một đến mười nào!")
+            ],
+            sentences: [
+              { vi: "Có bảy ngày trong một tuần.", words: ["There", "are", "seven", "days", "in", "a", "week"] },
+              { vi: "Hãy đếm từ một đến mười.", words: ["Count", "from", "one", "to", "ten"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "vehicles", num: "15", title: "Xe cộ & Giao thông", enTitle: "Vehicles & Transport",
+        desc: "Các phương tiện đi lại quen thuộc trên đường phố, trên biển và trên bầu trời.",
+        lessons: [
+          {
+            id: "t15_l1", num: "Bài 01", title: "Phương tiện đường bộ",
+            words: [
+              W("w141", "car", "/kɑːr/", "DANH TỪ", "xe ô tô", "by car (đi bằng ô tô), drive a car.", "My dad drives a red car.", "My dad drives a red ____.", "Bố tôi lái một chiếc ô tô màu đỏ."),
+              W("w142", "bus", "/bʌs/", "DANH TỪ", "xe buýt", "school bus (xe buýt trường học), take the bus.", "I go to school by bus.", "I go to school by ____.", "Tôi đi học bằng xe buýt."),
+              W("w143", "bike", "/baɪk/", "DANH TỪ", "xe đạp", "ride a bike (đạp xe đạp). Đầy đủ là 'bicycle'.", "I ride my bike in the park.", "I ride my ____ in the park.", "Tôi đạp xe đạp trong công viên."),
+              W("w144", "motorbike", "/ˈmoʊtərbaɪk/", "DANH TỪ", "xe máy", "by motorbike (đi bằng xe máy — rất phổ biến ở VN).", "Many people ride a motorbike.", "Many people ride a ____.", "Rất nhiều người đi xe máy."),
+              W("w145", "train", "/treɪn/", "DANH TỪ", "tàu hỏa", "by train / train station (ga tàu).", "The blue train is very fast.", "The blue ____ is very fast.", "Chuyến tàu màu xanh chạy rất nhanh.")
+            ],
+            sentences: [
+              { vi: "Tôi đi học bằng xe buýt.", words: ["I", "go", "to", "school", "by", "bus"] },
+              { vi: "Bố tôi lái một chiếc ô tô đỏ.", words: ["My", "dad", "drives", "a", "red", "car"] }
+            ]
+          },
+          {
+            id: "t15_l2", num: "Bài 02", title: "Máy bay, Tàu thuyền & An toàn",
+            words: [
+              W("w146", "plane", "/pleɪn/", "DANH TỪ", "máy bay", "by plane (đi bằng máy bay). Đầy đủ: 'airplane'.", "The plane flies high in the sky.", "The ____ flies high in the sky.", "Máy bay bay cao trên bầu trời."),
+              W("w147", "boat", "/boʊt/", "DANH TỪ", "con thuyền", "by boat / a small boat.", "We see a boat on the river.", "We see a ____ on the river.", "Chúng tôi thấy một con thuyền trên sông."),
+              W("w148", "truck", "/trʌk/", "DANH TỪ", "xe tải", "a big truck (chiếc xe tải lớn).", "The truck carries fresh fruit.", "The ____ carries fresh fruit.", "Chiếc xe tải chở trái cây tươi."),
+              W("w149", "helmet", "/ˈhelmɪt/", "DANH TỪ", "mũ bảo hiểm", "wear a helmet (đội mũ bảo hiểm).", "Always wear a helmet on a bike.", "Always wear a ____ on a bike.", "Luôn đội mũ bảo hiểm khi đi xe nhé."),
+              W("w150", "road", "/roʊd/", "DANH TỪ", "con đường", "cross the road (qua đường).", "Look left and right on the road.", "Look left and right on the ____.", "Hãy nhìn trái phải khi qua đường.")
+            ],
+            sentences: [
+              { vi: "Máy bay bay cao trên bầu trời.", words: ["The", "plane", "flies", "high", "in", "the", "sky"] },
+              { vi: "Chúng tôi thấy một con thuyền trên sông.", words: ["We", "see", "a", "boat", "on", "the", "river"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "objects", num: "16", title: "Đồ vật hằng ngày", enTitle: "Everyday Objects",
+        desc: "Những đồ dùng quen thuộc trong nhà, trên bàn học và vật dụng mang theo mỗi ngày.",
+        lessons: [
+          {
+            id: "t16_l1", num: "Bài 01", title: "Đồ dùng trong nhà & Bàn ăn",
+            words: [
+              W("w151", "table", "/ˈteɪbl/", "DANH TỪ", "cái bàn", "on the table (ở trên bàn).", "The book is on the table.", "The book is on the ____.", "Quyển sách nằm ở trên bàn."),
+              W("w152", "chair", "/tʃer/", "DANH TỪ", "cái ghế", "sit on a chair (ngồi lên ghế).", "Please sit on this chair.", "Please sit on this ____.", "Mời bạn ngồi lên chiếc ghế này."),
+              W("w153", "bed", "/bed/", "DANH TỪ", "cái giường", "go to bed (đi ngủ — không dùng 'the').", "I go to bed at 9 PM.", "I go to ____ at 9 PM.", "Tôi đi ngủ lúc 9 giờ tối."),
+              W("w154", "cup", "/kʌp/", "DANH TỪ", "cái cốc, tách", "a cup of tea / a cup of milk.", "She drinks a cup of warm milk.", "She drinks a ____ of warm milk.", "Cô ấy uống một cốc sữa ấm."),
+              W("w155", "spoon", "/spuːn/", "DANH TỪ", "cái thìa, muỗng", "a soup spoon (thìa ăn súp).", "I use a spoon to eat soup.", "I use a ____ to eat soup.", "Tôi dùng thìa để ăn súp.")
+            ],
+            sentences: [
+              { vi: "Quyển sách ở trên bàn.", words: ["The", "book", "is", "on", "the", "table"] },
+              { vi: "Tôi đi ngủ lúc 9 giờ tối.", words: ["I", "go", "to", "bed", "at", "9", "PM"] }
+            ]
+          },
+          {
+            id: "t16_l2", num: "Bài 02", title: "Đồ dùng học tập & Cá nhân",
+            words: [
+              W("w156", "pen", "/pen/", "DANH TỪ", "cây bút mực", "a blue pen (cây bút xanh).", "Can I borrow your pen?", "Can I borrow your ____?", "Tôi mượn cây bút của bạn được không?"),
+              W("w157", "bag", "/bæɡ/", "DANH TỪ", "cái túi, cặp sách", "school bag (cặp đi học).", "Put your books in the bag.", "Put your books in the ____.", "Hãy cất sách vào trong cặp."),
+              W("w158", "clock", "/klɑːk/", "DANH TỪ", "đồng hồ (treo tường / để bàn)", "alarm clock (đồng hồ báo thức).", "The clock is on the desk.", "The ____ is on the desk.", "Chiếc đồng hồ nằm trên bàn học."),
+              W("w159", "key", "/kiː/", "DANH TỪ", "chìa khóa", "house key (chìa khóa nhà).", "Where is my house key?", "Where is my house ____?", "Chìa khóa nhà của tôi đâu rồi?"),
+              W("w160", "umbrella", "/ʌmˈbrelə/", "DANH TỪ", "cái ô, cây dù", "an umbrella (dùng 'an' trước umbrella).", "Take an umbrella when it rains.", "Take an ____ when it rains.", "Hãy mang theo ô khi trời mưa nhé.")
+            ],
+            sentences: [
+              { vi: "Hãy cất sách vào trong cặp.", words: ["Put", "your", "books", "in", "the", "bag"] },
+              { vi: "Chìa khóa nhà của tôi đâu rồi?", words: ["Where", "is", "my", "house", "key"] }
+            ]
+          }
+        ]
+      }
+      ,{
+        id: "body", num: "17", title: "Bộ phận cơ thể", enTitle: "Body Parts",
+        desc: "Từ vựng về các bộ phận trên cơ thể giúp học sinh mô tả ngoại hình và nói khi đau mỏi.",
+        lessons: [
+          {
+            id: "t17_l1", num: "Bài 01", title: "Khuôn mặt & Đầu",
+            words: [
+              W("w161", "head", "/hed/", "DANH TỪ", "cái đầu", "shake your head (lắc đầu).", "Wear a hat on your head.", "Wear a hat on your ____.", "Đội mũ lên đầu của bạn nhé."),
+              W("w162", "eye", "/aɪ/", "DANH TỪ", "đôi mắt", "two eyes (hai mắt), open your eyes.", "She has big brown eyes.", "She has big brown ____.", "Cô ấy có đôi mắt nâu to."),
+              W("w163", "ear", "/ɪr/", "DANH TỪ", "cái tai", "listen with your ears.", "Rabbits have very long ears.", "Rabbits have very long ____.", "Loài thỏ có đôi tai rất dài."),
+              W("w164", "mouth", "/maʊθ/", "DANH TỪ", "cái miệng", "Nhớ đặt lưỡi giữa hai răng cho âm cuối /θ/.", "Open your mouth and say ah.", "Open your ____ and say ah.", "Há miệng ra và nói a nào."),
+              W("w165", "nose", "/noʊz/", "DANH TỪ", "cái mũi", "smell with your nose.", "I smell flowers with my nose.", "I smell flowers with my ____.", "Tôi ngửi hoa bằng mũi.")
+            ],
+            sentences: [
+              { vi: "Cô ấy có đôi mắt nâu to.", words: ["She", "has", "big", "brown", "eyes"] },
+              { vi: "Loài thỏ có đôi tai rất dài.", words: ["Rabbits", "have", "very", "long", "ears"] }
+            ]
+          },
+          {
+            id: "t17_l2", num: "Bài 02", title: "Tay, Chân & Trái tim",
+            words: [
+              W("w166", "hand", "/hænd/", "DANH TỪ", "bàn tay", "wash your hands (rửa tay).", "Wash your hands before eating.", "Wash your ____ before eating.", "Hãy rửa tay trước khi ăn."),
+              W("w167", "arm", "/ɑːrm/", "DANH TỪ", "cánh tay", "raise your arm (giơ cánh tay lên).", "Stretch your arms every morning.", "Stretch your ____ every morning.", "Hãy vươn vai duỗi tay mỗi sáng."),
+              W("w168", "leg", "/leɡ/", "DANH TỪ", "đôi chân (cẳng chân)", "strong legs (đôi chân khỏe).", "Running makes your legs strong.", "Running makes your ____ strong.", "Chạy bộ giúp đôi chân khỏe mạnh."),
+              W("w169", "foot", "/fʊt/", "DANH TỪ", "bàn chân", "Số ít: foot — Số nhiều bất quy tắc: feet.", "Put socks on your feet.", "Put socks on your ____.", "Hãy đi tất vào chân nhé."),
+              W("w170", "heart", "/hɑːrt/", "DANH TỪ", "trái tim", "a kind heart (một trái tim nhân hậu).", "She has a very kind heart.", "She has a very kind ____.", "Cô ấy có một trái tim rất nhân hậu.")
+            ],
+            sentences: [
+              { vi: "Hãy rửa tay trước khi ăn.", words: ["Wash", "your", "hands", "before", "eating"] },
+              { vi: "Cô ấy có một trái tim nhân hậu.", words: ["She", "has", "a", "very", "kind", "heart"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "clothes", num: "18", title: "Quần áo & Thời trang", enTitle: "Clothes & Fashion",
+        desc: "Các trang phục mặc hằng ngày, đi học, đi làm và phụ kiện thời tiết.",
+        lessons: [
+          {
+            id: "t18_l1", num: "Bài 01", title: "Trang phục cơ bản",
+            words: [
+              W("w171", "shirt", "/ʃɜːrt/", "DANH TỪ", "áo sơ mi / áo phông", "wear a white shirt (mặc áo trắng).", "I wear a clean white shirt.", "I wear a clean white ____.", "Tôi mặc một chiếc áo trắng sạch sẽ."),
+              W("w172", "pants", "/pænts/", "DANH TỪ", "quần dài", "Luôn ở dạng số nhiều (a pair of pants).", "These blue pants fit me well.", "These blue ____ fit me well.", "Chiếc quần xanh này vừa với tôi."),
+              W("w173", "dress", "/dres/", "DANH TỪ", "chiếc váy liền", "a pretty dress (chiếc váy xinh).", "She wears a pink dress today.", "She wears a pink ____ today.", "Hôm nay cô ấy mặc một chiếc váy hồng."),
+              W("w174", "shoes", "/ʃuːz/", "DANH TỪ", "đôi giày", "take off your shoes (cởi giày ra).", "Please take off your shoes.", "Please take off your ____.", "Vui lòng cởi giày của bạn ra."),
+              W("w175", "hat", "/hæt/", "DANH TỪ", "cái mũ, nón", "wear a hat (đội mũ).", "Wear a hat in the hot sun.", "Wear a ____ in the hot sun.", "Hãy đội mũ khi trời nắng nóng.")
+            ],
+            sentences: [
+              { vi: "Vui lòng cởi giày của bạn ra.", words: ["Please", "take", "off", "your", "shoes"] },
+              { vi: "Hôm nay cô ấy mặc váy hồng.", words: ["She", "wears", "a", "pink", "dress", "today"] }
+            ]
+          },
+          {
+            id: "t18_l2", num: "Bài 02", title: "Áo khoác & Phụ kiện",
+            words: [
+              W("w176", "jacket", "/ˈdʒækɪt/", "DANH TỪ", "áo khoác", "a warm jacket (chiếc áo khoác ấm).", "Bring a jacket, it is cold.", "Bring a ____, it is cold.", "Mang theo áo khoác nhé, trời lạnh đấy."),
+              W("w177", "glasses", "/ˈɡlæsɪz/", "DANH TỪ", "cặp kính mắt", "wear glasses (đeo kính).", "My teacher wears glasses.", "My teacher wears ____.", "Giáo viên của tôi đeo kính."),
+              W("w178", "watch", "/wɑːtʃ/", "DANH TỪ", "đồng hồ đeo tay", "a new watch (chiếc đồng hồ mới).", "He looks at his watch.", "He looks at his ____.", "Anh ấy nhìn vào đồng hồ đeo tay."),
+              W("w179", "socks", "/sɑːks/", "DANH TỪ", "đôi tất, vớ", "a pair of socks (một đôi tất).", "I need a clean pair of socks.", "I need a clean pair of ____.", "Tôi cần một đôi tất sạch."),
+              W("w180", "pocket", "/ˈpɑːkɪt/", "DANH TỪ", "túi quần / túi áo", "in my pocket (trong túi tôi).", "My keys are in my pocket.", "My keys are in my ____.", "Chìa khóa của tôi nằm trong túi.")
+            ],
+            sentences: [
+              { vi: "Giáo viên của tôi đeo kính.", words: ["My", "teacher", "wears", "glasses"] },
+              { vi: "Chìa khóa nằm trong túi tôi.", words: ["My", "keys", "are", "in", "my", "pocket"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "sports", num: "19", title: "Thể thao & Vận động", enTitle: "Sports & Activities",
+        desc: "Các môn thể thao phổ biến cho cả học sinh và người lớn rèn luyện sức khỏe.",
+        lessons: [
+          {
+            id: "t19_l1", num: "Bài 01", title: "Các môn thể thao quen thuộc",
+            words: [
+              W("w181", "football", "/ˈfʊtbɔːl/", "DANH TỪ", "bóng đá", "play football (chơi bóng đá; ở Mỹ gọi là soccer).", "We play football on Sunday.", "We play ____ on Sunday.", "Chúng tôi chơi bóng đá vào Chủ nhật."),
+              W("w182", "swimming", "/ˈswɪmɪŋ/", "DANH TỪ", "bơi lội", "go swimming (đi bơi).", "I go swimming in the summer.", "I go ____ in the summer.", "Tôi đi bơi vào mùa hè."),
+              W("w183", "running", "/ˈrʌnɪŋ/", "DANH TỪ", "chạy bộ", "go running (đi chạy bộ).", "Running in the park feels great.", "____ in the park feels great.", "Chạy bộ trong công viên thật tuyệt."),
+              W("w184", "basketball", "/ˈbæskɪtbɔːl/", "DANH TỪ", "bóng rổ", "play basketball (chơi bóng rổ).", "Students love playing basketball.", "Students love playing ____.", "Học sinh rất thích chơi bóng rổ."),
+              W("w185", "tennis", "/ˈtenɪs/", "DANH TỪ", "quần vợt", "play tennis (chơi quần vợt).", "My dad plays tennis every week.", "My dad plays ____ every week.", "Bố tôi chơi quần vợt mỗi tuần.")
+            ],
+            sentences: [
+              { vi: "Chúng tôi chơi bóng đá vào Chủ nhật.", words: ["We", "play", "football", "on", "Sunday"] },
+              { vi: "Tôi đi bơi vào mùa hè.", words: ["I", "go", "swimming", "in", "the", "summer"] }
+            ]
+          },
+          {
+            id: "t19_l2", num: "Bài 02", title: "Thi đấu & Tinh thần thể thao",
+            words: [
+              W("w186", "ball", "/bɔːl/", "DANH TỪ", "quả bóng", "kick the ball (đá bóng), catch the ball.", "Pass the ball to me!", "Pass the ____ to me!", "Chuyền bóng cho mình với!"),
+              W("w187", "win", "/wɪn/", "ĐỘNG TỪ", "chiến thắng", "win a game (thắng trận; Quá khứ: won).", "Our team wants to win today.", "Our team wants to ____ today.", "Đội chúng tôi muốn thắng hôm nay."),
+              W("w188", "lose", "/luːz/", "ĐỘNG TỪ", "thua cuộc / đánh mất", "win or lose (thắng hay thua).", "It is okay to lose sometimes.", "It is okay to ____ sometimes.", "Đôi khi thua cuộc cũng không sao."),
+              W("w189", "coach", "/koʊtʃ/", "DANH TỪ", "huấn luyện viên", "a football coach.", "Our coach teaches us well.", "Our ____ teaches us well.", "Huấn luyện viên dạy chúng tôi rất tốt."),
+              W("w190", "stadium", "/ˈsteɪdiəm/", "DANH TỪ", "sân vận động", "at the stadium (tại sân vận động).", "The stadium is full of fans.", "The ____ is full of fans.", "Sân vận động chật kín người hâm mộ.")
+            ],
+            sentences: [
+              { vi: "Đội chúng tôi muốn thắng hôm nay.", words: ["Our", "team", "wants", "to", "win", "today"] },
+              { vi: "Huấn luyện viên dạy chúng tôi rất tốt.", words: ["Our", "coach", "teaches", "us", "well"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "emotions", num: "20", title: "Cảm xúc & Tính cách", enTitle: "Emotions & Personality",
+        desc: "Cách diễn tả tâm trạng thật và khen ngợi tính cách người khác trong giao tiếp.",
+        lessons: [
+          {
+            id: "t20_l1", num: "Bài 01", title: "Cảm xúc thường gặp",
+            words: [
+              W("w191", "happy", "/ˈhæpi/", "TÍNH TỪ", "vui vẻ, hạnh phúc", "be happy about... (vui về điều gì).", "I am so happy to see you.", "I am so ____ to see you.", "Tôi rất vui được gặp bạn."),
+              W("w192", "sad", "/sæd/", "TÍNH TỪ", "buồn bã", "feel sad (cảm thấy buồn).", "Don't be sad, I am here.", "Don't be ____, I am here.", "Đừng buồn nhé, có tôi ở đây rồi."),
+              W("w193", "angry", "/ˈæŋɡri/", "TÍNH TỪ", "tức giận", "be angry with someone.", "Try not to get angry quickly.", "Try not to get ____ quickly.", "Cố gắng đừng nóng giận vội nhé."),
+              W("w194", "excited", "/ɪkˈsaɪtɪd/", "TÍNH TỪ", "hào hứng, phấn khích", "be excited about + sự kiện.", "I am excited about the trip.", "I am ____ about the trip.", "Tôi rất hào hứng về chuyến đi."),
+              W("w195", "nervous", "/ˈnɜːrvəs/", "TÍNH TỪ", "lo lắng, hồi hộp", "feel nervous before an interview.", "I feel nervous before speaking.", "I feel ____ before speaking.", "Tôi thấy hồi hộp trước khi nói.")
+            ],
+            sentences: [
+              { vi: "Tôi rất vui được gặp bạn.", words: ["I", "am", "so", "happy", "to", "see", "you"] },
+              { vi: "Tôi rất hào hứng về chuyến đi.", words: ["I", "am", "excited", "about", "the", "trip"] }
+            ]
+          },
+          {
+            id: "t20_l2", num: "Bài 02", title: "Tính cách tích cực",
+            words: [
+              W("w196", "calm", "/kɑːm/", "TÍNH TỪ", "bình tĩnh", "keep calm (giữ bình tĩnh — chữ 'l' là âm câm).", "Please stay calm and breathe.", "Please stay ____ and breathe.", "Hãy giữ bình tĩnh và hít thở nhé."),
+              W("w197", "confident", "/ˈkɑːnfɪdənt/", "TÍNH TỪ", "tự tin", "feel confident (cảm thấy tự tin).", "Practice makes you confident.", "Practice makes you ____.", "Luyện tập giúp bạn trở nên tự tin."),
+              W("w198", "honest", "/ˈɑːnɪst/", "TÍNH TỪ", "trung thực, thật thà", "Chữ 'h' đầu là âm câm -> đọc là /ˈɑːnɪst/.", "Everyone trusts an honest person.", "Everyone trusts an ____ person.", "Ai cũng tin tưởng người trung thực."),
+              W("w199", "patient", "/ˈpeɪʃnt/", "TÍNH TỪ", "kiên nhẫn", "be patient (hãy kiên nhẫn).", "Be patient when learning English.", "Be ____ when learning English.", "Hãy kiên nhẫn khi học tiếng Anh."),
+              W("w200", "proud", "/praʊd/", "TÍNH TỪ", "tự hào", "be proud of + ai đó / điều gì.", "I am very proud of myself.", "I am very ____ of myself.", "Tôi rất tự hào về bản thân mình.")
+            ],
+            sentences: [
+              { vi: "Luyện tập giúp bạn tự tin.", words: ["Practice", "makes", "you", "confident"] },
+              { vi: "Tôi rất tự hào về bản thân.", words: ["I", "am", "very", "proud", "of", "myself"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "house", num: "21", title: "Nhà cửa & Nội thất", enTitle: "House & Rooms",
+        desc: "Các phòng trong nhà và đồ nội thất quen thuộc để mô tả không gian sống của bạn.",
+        lessons: [
+          {
+            id: "t21_l1", num: "Bài 01", title: "Các phòng trong nhà",
+            words: [
+              W("w201", "kitchen", "/ˈkɪtʃɪn/", "DANH TỪ", "nhà bếp", "in the kitchen (trong bếp).", "Mom is cooking in the kitchen.", "Mom is cooking in the ____.", "Mẹ đang nấu ăn trong bếp."),
+              W("w202", "bedroom", "/ˈbedruːm/", "DANH TỪ", "phòng ngủ", "my bedroom (phòng ngủ của tôi).", "My bedroom is clean and bright.", "My ____ is clean and bright.", "Phòng ngủ của tôi sạch sẽ và sáng sủa."),
+              W("w203", "bathroom", "/ˈbæθruːm/", "DANH TỪ", "phòng tắm / nhà vệ sinh", "Where is the bathroom?", "Excuse me, where is the bathroom?", "Excuse me, where is the ____?", "Cho tôi hỏi nhà vệ sinh ở đâu ạ?"),
+              W("w204", "living room", "/ˈlɪvɪŋ ruːm/", "CỤM DANH TỪ", "phòng khách", "in the living room (ở phòng khách).", "We watch TV in the living room.", "We watch TV in the ____.", "Chúng tôi xem TV ở phòng khách."),
+              W("w205", "window", "/ˈwɪndoʊ/", "DANH TỪ", "cửa sổ", "open the window (mở cửa sổ).", "Please open the window for fresh air.", "Please open the ____ for fresh air.", "Mở cửa sổ ra cho thoáng khí nhé.")
+            ],
+            sentences: [
+              { vi: "Mẹ đang nấu ăn trong bếp.", words: ["Mom", "is", "cooking", "in", "the", "kitchen"] },
+              { vi: "Cho tôi hỏi nhà vệ sinh ở đâu?", words: ["Excuse", "me", "where", "is", "the", "bathroom"] }
+            ]
+          },
+          {
+            id: "t21_l2", num: "Bài 02", title: "Đồ nội thất & Tiện nghi",
+            words: [
+              W("w206", "door", "/dɔːr/", "DANH TỪ", "cánh cửa", "close the door / lock the door.", "Please close the door gently.", "Please close the ____ gently.", "Làm ơn đóng cửa nhẹ tay nhé."),
+              W("w207", "mirror", "/ˈmɪrər/", "DANH TỪ", "cái gương", "look in the mirror (soi gương).", "There is a mirror on the wall.", "There is a ____ on the wall.", "Có một chiếc gương trên tường."),
+              W("w208", "sofa", "/ˈsoʊfə/", "DANH TỪ", "ghế sô-pha", "sit on the sofa.", "This green sofa is very soft.", "This green ____ is very soft.", "Chiếc ghế sô-pha xanh này rất êm."),
+              W("w209", "fridge", "/frɪdʒ/", "DANH TỪ", "tủ lạnh", "Viết gọn của 'refrigerator' — dùng hằng ngày.", "Cold water is in the fridge.", "Cold water is in the ____.", "Nước lạnh ở trong tủ lạnh."),
+              W("w210", "balcony", "/ˈbælkəni/", "DANH TỪ", "ban công", "on the balcony (ngoài ban công).", "I grow plants on the balcony.", "I grow plants on the ____.", "Tôi trồng cây ngoài ban công.")
+            ],
+            sentences: [
+              { vi: "Nước lạnh ở trong tủ lạnh.", words: ["Cold", "water", "is", "in", "the", "fridge"] },
+              { vi: "Tôi trồng cây ngoài ban công.", words: ["I", "grow", "plants", "on", "the", "balcony"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "finance", num: "22", title: "Tài chính & Ngân hàng", enTitle: "Finance & Banking",
+        desc: "Từ vựng thực tế cho người lớn khi giao dịch ngân hàng, chuyển khoản và quản lý chi tiêu.",
+        lessons: [
+          {
+            id: "t22_l1", num: "Bài 01", title: "Giao dịch ngân hàng cơ bản",
+            words: [
+              W("w211", "bank", "/bæŋk/", "DANH TỪ", "ngân hàng", "at the bank / bank account.", "I need to go to the bank.", "I need to go to the ____.", "Tôi cần ra ngân hàng."),
+              W("w212", "account", "/əˈkaʊnt/", "DANH TỪ", "tài khoản", "open an account (mở tài khoản).", "I want to open a bank account.", "I want to open a bank ____.", "Tôi muốn mở một tài khoản ngân hàng."),
+              W("w213", "card", "/kɑːrd/", "DANH TỪ", "thẻ (ngân hàng / tín dụng)", "credit card / debit card.", "Do you accept credit cards?", "Do you accept credit ____?", "Ở đây có nhận thẻ tín dụng không?"),
+              W("w214", "cash", "/kæʃ/", "DANH TỪ", "tiền mặt", "pay in cash (trả bằng tiền mặt).", "I prefer to pay in cash.", "I prefer to pay in ____.", "Tôi thích trả bằng tiền mặt hơn."),
+              W("w215", "transfer", "/ˈtrænsfɜːr/", "ĐỘNG TỪ / DANH TỪ", "chuyển khoản", "bank transfer (chuyển khoản ngân hàng).", "Can I transfer the money online?", "Can I ____ the money online?", "Tôi chuyển khoản trực tuyến được không?")
+            ],
+            sentences: [
+              { vi: "Tôi muốn mở một tài khoản ngân hàng.", words: ["I", "want", "to", "open", "a", "bank", "account"] },
+              { vi: "Tôi thích trả bằng tiền mặt.", words: ["I", "prefer", "to", "pay", "in", "cash"] }
+            ]
+          },
+          {
+            id: "t22_l2", num: "Bài 02", title: "Quản lý chi tiêu cá nhân",
+            words: [
+              W("w216", "save", "/seɪv/", "ĐỘNG TỪ", "tiết kiệm", "save money (tiết kiệm tiền).", "I save ten percent every month.", "I ____ ten percent every month.", "Tôi tiết kiệm 10% mỗi tháng."),
+              W("w217", "spend", "/spend/", "ĐỘNG TỪ", "chi tiêu, dành ra", "spend money on... (tiêu tiền vào việc gì).", "Don't spend too much on snacks.", "Don't ____ too much on snacks.", "Đừng tiêu quá nhiều vào đồ ăn vặt."),
+              W("w218", "budget", "/ˈbʌdʒɪt/", "DANH TỪ", "ngân sách", "monthly budget (ngân sách hằng tháng).", "We plan our monthly budget carefully.", "We plan our monthly ____ carefully.", "Chúng tôi lập ngân sách tháng rất kỹ."),
+              W("w219", "loan", "/loʊn/", "DANH TỪ", "khoản vay", "home loan / bank loan.", "They took a loan to buy a house.", "They took a ____ to buy a house.", "Họ vay một khoản để mua nhà."),
+              W("w220", "receipt", "/rɪˈsiːt/", "DANH TỪ", "biên lai, hóa đơn", "Chữ 'p' là âm câm -> đọc là /rɪˈsiːt/.", "Could I have a receipt, please?", "Could I have a ____, please?", "Cho tôi xin biên lai nhé?")
+            ],
+            sentences: [
+              { vi: "Cho tôi xin biên lai nhé.", words: ["Could", "I", "have", "a", "receipt", "please"] },
+              { vi: "Tôi tiết kiệm tiền mỗi tháng.", words: ["I", "save", "money", "every", "month"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "career", num: "23", title: "Phỏng vấn & Sự nghiệp", enTitle: "Career & Interviews",
+        desc: "Từ vựng thiết yếu cho người đi làm khi viết CV, đi phỏng vấn và báo cáo dự án.",
+        lessons: [
+          {
+            id: "t23_l1", num: "Bài 01", title: "Xin việc & Phỏng vấn",
+            words: [
+              W("w221", "resume", "/ˈrezəmeɪ/", "DANH TỪ", "sơ yếu lý lịch (CV)", "send my resume (gửi CV).", "I updated my resume last night.", "I updated my ____ last night.", "Tối qua tôi đã cập nhật lại CV."),
+              W("w222", "interview", "/ˈɪntərvjuː/", "DANH TỪ", "buổi phỏng vấn", "job interview (phỏng vấn xin việc).", "I have a job interview tomorrow.", "I have a job ____ tomorrow.", "Ngày mai tôi có buổi phỏng vấn xin việc."),
+              W("w223", "experience", "/ɪkˈspɪriəns/", "DANH TỪ", "kinh nghiệm", "work experience (kinh nghiệm làm việc).", "I have three years of experience.", "I have three years of ____.", "Tôi có ba năm kinh nghiệm."),
+              W("w224", "skill", "/skɪl/", "DANH TỪ", "kỹ năng", "communication skills (kỹ năng giao tiếp).", "English is a very useful skill.", "English is a very useful ____.", "Tiếng Anh là kỹ năng rất hữu ích."),
+              W("w225", "manager", "/ˈmænɪdʒər/", "DANH TỪ", "quản lý, trưởng phòng", "talk to my manager.", "My manager is very fair.", "My ____ is very fair.", "Quản lý của tôi rất công bằng.")
+            ],
+            sentences: [
+              { vi: "Ngày mai tôi có buổi phỏng vấn.", words: ["I", "have", "a", "job", "interview", "tomorrow"] },
+              { vi: "Tiếng Anh là kỹ năng rất hữu ích.", words: ["English", "is", "a", "very", "useful", "skill"] }
+            ]
+          },
+          {
+            id: "t23_l2", num: "Bài 02", title: "Dự án & Thăng tiến",
+            words: [
+              W("w226", "project", "/ˈprɑːdʒekt/", "DANH TỪ", "dự án", "start a new project.", "We finished the project on time.", "We finished the ____ on time.", "Chúng tôi hoàn thành dự án đúng hạn."),
+              W("w227", "deadline", "/ˈdedlaɪn/", "DANH TỪ", "hạn chót", "meet the deadline (kịp hạn chót).", "The deadline is next Friday.", "The ____ is next Friday.", "Hạn chót là thứ Sáu tuần sau."),
+              W("w228", "colleague", "/ˈkɑːliːɡ/", "DANH TỪ", "đồng nghiệp", "work with colleagues.", "My colleagues are very helpful.", "My ____ are very helpful.", "Đồng nghiệp của tôi rất hay giúp đỡ."),
+              W("w229", "promotion", "/prəˈmoʊʃn/", "DANH TỪ", "sự thăng chức", "get a promotion (được thăng chức).", "She got a promotion this year.", "She got a ____ this year.", "Năm nay cô ấy được thăng chức."),
+              W("w230", "goal", "/ɡoʊl/", "DANH TỪ", "mục tiêu", "career goal (mục tiêu sự nghiệp).", "My goal is to speak English fluently.", "My ____ is to speak English fluently.", "Mục tiêu của tôi là nói tiếng Anh trôi chảy.")
+            ],
+            sentences: [
+              { vi: "Chúng tôi hoàn thành dự án đúng hạn.", words: ["We", "finished", "the", "project", "on", "time"] },
+              { vi: "Hạn chót là thứ Sáu tuần sau.", words: ["The", "deadline", "is", "next", "Friday"] }
+            ]
+          }
+        ]
+      },
+      {
+        id: "social", num: "24", title: "Điện thoại & Hẹn gặp", enTitle: "Calls & Appointments",
+        desc: "Cách gọi điện, đặt lịch hẹn, xác nhận hoặc dời lịch một cách lịch sự, chuyên nghiệp.",
+        lessons: [
+          {
+            id: "t24_l1", num: "Bài 01", title: "Đặt & Xác nhận lịch hẹn",
+            words: [
+              W("w231", "call", "/kɔːl/", "ĐỘNG TỪ / DANH TỪ", "gọi điện / cuộc gọi", "call back (gọi lại).", "I will call you back soon.", "I will ____ you back soon.", "Tôi sẽ sớm gọi lại cho bạn."),
+              W("w232", "appointment", "/əˈpɔɪntmənt/", "DANH TỪ", "cuộc hẹn", "make an appointment (đặt lịch hẹn).", "I have an appointment at 3 PM.", "I have an ____ at 3 PM.", "Tôi có một cuộc hẹn lúc 3 giờ chiều."),
+              W("w233", "confirm", "/kənˈfɜːrm/", "ĐỘNG TỪ", "xác nhận", "confirm the time (xác nhận thời gian).", "Please confirm our meeting time.", "Please ____ our meeting time.", "Vui lòng xác nhận giờ họp của chúng ta."),
+              W("w234", "cancel", "/ˈkænsl/", "ĐỘNG TỪ", "hủy bỏ", "cancel a booking / cancel a plan.", "Sorry, I have to cancel today.", "Sorry, I have to ____ today.", "Xin lỗi, hôm nay tôi phải hủy hẹn."),
+              W("w235", "reschedule", "/ˌriːˈskedʒuːl/", "ĐỘNG TỪ", "dời lịch sang hôm khác", "reschedule for tomorrow.", "Can we reschedule to Monday?", "Can we ____ to Monday?", "Mình dời lịch sang thứ Hai được không?")
+            ],
+            sentences: [
+              { vi: "Tôi sẽ sớm gọi lại cho bạn.", words: ["I", "will", "call", "you", "back", "soon"] },
+              { vi: "Tôi có cuộc hẹn lúc 3 giờ chiều.", words: ["I", "have", "an", "appointment", "at", "3", "PM"] }
+            ]
+          },
+          {
+            id: "t24_l2", num: "Bài 02", title: "Mời gặp & Xã giao lịch sự",
+            words: [
+              W("w236", "address", "/ˈædres/", "DANH TỪ", "địa chỉ", "home address / email address.", "Please send me your address.", "Please send me your ____.", "Vui lòng gửi cho tôi địa chỉ của bạn."),
+              W("w237", "invite", "/ɪnˈvaɪt/", "ĐỘNG TỪ", "mời", "invite someone to dinner.", "I want to invite you to dinner.", "I want to ____ you to dinner.", "Tôi muốn mời bạn đi ăn tối."),
+              W("w238", "celebrate", "/ˈselɪbreɪt/", "ĐỘNG TỪ", "ăn mừng, kỷ niệm", "celebrate a birthday.", "Let's celebrate your birthday!", "Let's ____ your birthday!", "Hãy cùng ăn mừng sinh nhật bạn nhé!"),
+              W("w239", "gift", "/ɡɪft/", "DANH TỪ", "món quà", "a small gift (một món quà nhỏ).", "Thank you for this lovely gift.", "Thank you for this lovely ____.", "Cảm ơn bạn vì món quà đáng yêu này."),
+              W("w240", "polite", "/pəˈlaɪt/", "TÍNH TỪ", "lịch sự", "be polite (cư xử lịch sự).", "Always be polite when asking.", "Always be ____ when asking.", "Luôn lịch sự khi hỏi nhé.")
+            ],
+            sentences: [
+              { vi: "Vui lòng gửi cho tôi địa chỉ.", words: ["Please", "send", "me", "your", "address"] },
+              { vi: "Cảm ơn vì món quà đáng yêu này.", words: ["Thank", "you", "for", "this", "lovely", "gift"] }
             ]
           }
         ]
@@ -365,6 +841,28 @@
       travel: "./assets/topics/travel.jpg",
       health: "./assets/topics/health.jpg",
       tech: "./assets/topics/tech.jpg",
+      colors: "./assets/topics/colors.jpg",
+      animals: "./assets/topics/animals.jpg",
+      plants: "./assets/topics/plants.jpg",
+      numbers: "./assets/topics/numbers.jpg",
+      vehicles: "./assets/topics/vehicles.jpg",
+      objects: "./assets/topics/objects.jpg",
+      body: "./assets/topics/body.jpg",
+      clothes: "./assets/topics/clothes.jpg",
+      sports: "./assets/topics/sports.jpg",
+      emotions: "./assets/topics/emotions.jpg",
+      house: "./assets/topics/house.jpg",
+      finance: "./assets/topics/finance.jpg",
+      career: "./assets/topics/career.jpg",
+      social: "./assets/topics/social.jpg",
+    };
+    const TOPIC_AUDIENCE = {
+      greeting: 'both', education: 'kids', family: 'both', work: 'adult',
+      food: 'both', shopping: 'adult', daily: 'both', travel: 'adult',
+      health: 'both', tech: 'adult', colors: 'kids', animals: 'kids',
+      plants: 'kids', numbers: 'kids', vehicles: 'kids', objects: 'kids',
+      body: 'kids', clothes: 'both', sports: 'both', emotions: 'adult',
+      house: 'both', finance: 'adult', career: 'adult', social: 'adult'
     };
     const ENABLE_CUSTOM_WORD_IMAGES = true;
     function getWordSlug(en) {
@@ -558,10 +1056,10 @@
       { id: "ipa_u", symbol: "/ʊ/", name: "Âm u ngắn", cat: "vowel", tip: "Môi hơi tròn nhẹ, thả lỏng, đọc rất ngắn giữa 'u' và 'ư'.", mistake: "Đọc kéo dài giống /uː/.", examples: [{ en: "book", ipa: "/bʊk/", vi: "quyển sách" }, { en: "good", ipa: "/ɡʊd/", vi: "tốt" }, { en: "look", ipa: "/lʊk/", vi: "nhìn" }] },
       { id: "ipa_th_unvoiced", symbol: "/θ/", name: "Âm th không rung", cat: "consonant", tip: "Đặt nhẹ đầu lưỡi giữa hai hàm răng rồi thổi hơi ra (cổ họng KHÔNG rung).", mistake: "Đọc thành 'th' tiếng Việt ('thank' thành 'thanh').", examples: [{ en: "thank", ipa: "/θæŋk/", vi: "cảm ơn" }, { en: "think", ipa: "/θɪŋk/", vi: "suy nghĩ" }, { en: "three", ipa: "/θriː/", vi: "số ba" }] },
       { id: "ipa_th_voiced", symbol: "/ð/", name: "Âm th có rung", cat: "consonant", tip: "Đặt đầu lưỡi giữa hai hàm răng và làm RUNG cổ họng.", mistake: "Đọc thành 'đ' hoặc 'd' mà không đưa lưỡi ra.", examples: [{ en: "this", ipa: "/ðɪs/", vi: "cái này" }, { en: "mother", ipa: "/ˈmʌðər/", vi: "mẹ" }, { en: "weather", ipa: "/ˈweðər/", vi: "thời tiết" }] },
-      { id: "ipa_sh", symbol: "/ʃ/", name: "Âm s nặng", cat: "consonant", tip: "Chu môi ra trước như ra hiệu 'suỵt!', đẩy hơi nhẹ qua kẽ răng.", mistake: "Đọc thành 's' nhẹ khiến 'she' giống 'see'.", examples: [{ en: "she", ipa: "/ʃiː/", vi: "cô ấy" }, { en: "shop", ipa: "/ʃɒp/", vi: "cửa hàng" }, { en: "fish", ipa: "/fɪʃ/", vi: "con cá" }] },
+      { id: "ipa_sh", symbol: "/ʃ/", name: "Âm s nặng", cat: "consonant", tip: "Chu môi ra trước như ra hiệu 'suỵt!', đẩy hơi nhẹ qua kẽ răng.", mistake: "Đọc thành 's' nhẹ khiến 'she' giống 'see'.", examples: [{ en: "she", ipa: "/ʃiː/", vi: "cô ấy" }, { en: "shop", ipa: "/ʃɑːp/", vi: "cửa hàng" }, { en: "fish", ipa: "/fɪʃ/", vi: "con cá" }] },
       { id: "ipa_ch", symbol: "/tʃ/", name: "Âm ch bật hơi", cat: "consonant", tip: "Chu môi, chạm đầu lưỡi lên vòm miệng trên rồi bật hơi mạnh.", mistake: "Đọc nhẹ như 'ch' tiếng Việt nên thiếu lực bật.", examples: [{ en: "chair", ipa: "/tʃer/", vi: "cái ghế" }, { en: "lunch", ipa: "/lʌntʃ/", vi: "bữa trưa" }, { en: "watch", ipa: "/wɒtʃ/", vi: "xem" }] },
       { id: "ipa_zh", symbol: "/ʒ/", name: "Âm gi rung", cat: "consonant", tip: "Chu môi giống /ʃ/, nhưng rung mạnh cổ họng tạo âm trầm mượt.", mistake: "Hay đọc thành 'd' hoặc 's'.", examples: [{ en: "usually", ipa: "/ˈjuːʒuəli/", vi: "thường xuyên" }, { en: "television", ipa: "/ˈtelɪvɪʒn/", vi: "ti vi" }, { en: "decision", ipa: "/dɪˈsɪʒn/", vi: "quyết định" }] },
-      { id: "ipa_dz", symbol: "/dʒ/", name: "Âm j bật rung", cat: "consonant", tip: "Khẩu hình giống /tʃ/ nhưng rung cổ họng khi bật âm.", mistake: "Đọc thành 'gi' nhẹ thiếu lực bật.", examples: [{ en: "job", ipa: "/dʒɒb/", vi: "công việc" }, { en: "orange", ipa: "/ˈɒrɪndʒ/", vi: "quả cam" }, { en: "enjoy", ipa: "/ɪnˈdʒɔɪ/", vi: "tận hưởng" }] },
+      { id: "ipa_dz", symbol: "/dʒ/", name: "Âm j bật rung", cat: "consonant", tip: "Khẩu hình giống /tʃ/ nhưng rung cổ họng khi bật âm.", mistake: "Đọc thành 'gi' nhẹ thiếu lực bật.", examples: [{ en: "job", ipa: "/dʒɑːb/", vi: "công việc" }, { en: "orange", ipa: "/ˈɒrɪndʒ/", vi: "quả cam" }, { en: "enjoy", ipa: "/ɪnˈdʒɔɪ/", vi: "tận hưởng" }] },
       { id: "ipa_r", symbol: "/r/", name: "Âm r cong lưỡi", cat: "consonant", tip: "Chu nhẹ môi, cuộn đầu lưỡi vào trong (KHÔNG chạm vòm miệng trên).", mistake: "Rung lưỡi giống 'r' tiếng Việt.", examples: [{ en: "red", ipa: "/red/", vi: "màu đỏ" }, { en: "rain", ipa: "/reɪn/", vi: "mưa" }, { en: "right", ipa: "/raɪt/", vi: "đúng / phải" }] },
       { id: "ipa_end_s", symbol: "-/s/", name: "Âm cuối s", cat: "ending", tip: "Khép nhẹ răng, xì luồng hơi mảnh ở cuối từ.", mistake: "Quên âm cuối khiến 'nice' thành 'nai'.", examples: [{ en: "nice", ipa: "/naɪs/", vi: "đẹp, tử tế" }, { en: "bus", ipa: "/bʌs/", vi: "xe buýt" }, { en: "books", ipa: "/bʊks/", vi: "những quyển sách" }] },
       { id: "ipa_end_t", symbol: "-/t/", name: "Âm cuối t", cat: "ending", tip: "Chạm đầu lưỡi vào chân răng trên rồi bật nhẹ hơi 't' ở cuối từ.", mistake: "Bỏ âm /t/ làm 'cat' giống 'can'.", examples: [{ en: "hot", ipa: "/hɒt/", vi: "nóng" }, { en: "night", ipa: "/naɪt/", vi: "ban đêm" }, { en: "student", ipa: "/ˈstuːdnt/", vi: "học sinh" }] },

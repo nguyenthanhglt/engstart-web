@@ -21,6 +21,9 @@
       srsData: {},         // { [wordId]: { box: 0..4, intervalDays: 0..14, nextReview: ms } }
       completedDialogues: [],
       completedGrammar: [],
+      bankLearnedIds: [],
+      bankDailySize: 15,
+      customBankWords: [],
       masteredIpa: [],
       notebook: '',
       // Account & Cloud Sync
@@ -90,6 +93,12 @@
     // Transient UI State
     let ui = {
       zenMode: false,
+      audienceFilter: 'all',
+      bankDay: 1,
+      bankViewMode: 'day',
+      bankFilter: 'all',
+      bankSearch: '',
+      bankPage: 1,
       selectedGrammarId: GRAMMAR_LESSONS[0].id,
       grammarAnswers: {},
       ipaCategory: 'all',
@@ -424,6 +433,9 @@
       if (navName === 'review') {
         document.getElementById('page-review').classList.remove('hidden');
         renderReviewPage();
+      } else if (navName === 'bank') {
+        document.getElementById('page-bank').classList.remove('hidden');
+        renderBankPage();
       } else {
         document.getElementById('page-roadmap').classList.remove('hidden');
         renderRoadmapPage();
@@ -466,7 +478,7 @@
 
       if (state.activeTrack === 'vocab') {
         const topic = TOPICS_DATA.find(t => t.id === state.selectedTopicId) || TOPICS_DATA[0];
-        if (kicker) kicker.textContent = `LỘ TRÌNH TỪ VỰNG A0–A1 · CHỦ ĐỀ ${topic.num}/10`;
+        if (kicker) kicker.textContent = `LỘ TRÌNH TỪ VỰNG A0–A1 · CHỦ ĐỀ ${topic.num}/24`;
         if (heading) heading.textContent = `${topic.title} (${topic.enTitle})`;
         if (desc) desc.textContent = topic.desc;
         renderVocabRoadmap();
@@ -502,9 +514,18 @@
       if (sbPct) sbPct.textContent = `${overallPct}%`;
       if (sbBar) sbBar.style.width = `${overallPct}%`;
 
+      document.querySelectorAll('.aud-filter-btn').forEach(btn => {
+        const active = btn.dataset.audFilter === ui.audienceFilter;
+        btn.className = `aud-filter-btn py-1.5 px-2 rounded-lg transition-all ${active ? 'bg-white text-indigo-600 shadow-2xs' : 'text-slate-600 hover:text-slate-900'}`;
+      });
+      const visibleTopics = TOPICS_DATA.filter(t => {
+        if (ui.audienceFilter === 'all') return true;
+        const aud = TOPIC_AUDIENCE[t.id] || 'both';
+        return aud === 'both' || aud === ui.audienceFilter;
+      });
       const listEl = document.getElementById('topic-sidebar-list');
       if (listEl) {
-        listEl.innerHTML = TOPICS_DATA.map(t => {
+        listEl.innerHTML = visibleTopics.map(t => {
           const active = t.id === state.selectedTopicId;
           const st = getTopicStats(t);
           return `
@@ -1101,9 +1122,10 @@
                   </div>
                 `}
 
+                ${s.frontLang === 'vi' ? `
                 <div class="max-w-md mx-auto pt-2 space-y-2">
                   <div class="flex gap-2">
-                    <input type="text" id="card-recall-input" value="${s.typedValue.replace(/"/g, '&quot;')}" placeholder="Gõ từ tiếng Anh để kiểm tra chính tả..." autocomplete="off" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm" />
+                    <input type="text" id="card-recall-input" value="${s.typedValue.replace(/"/g, '&quot;')}" placeholder="Gõ từ tiếng Anh tương ứng rồi nhấn Enter..." autocomplete="off" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm" />
                     <button type="button" id="card-check-recall-btn" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold">Kiểm tra</button>
                   </div>
                   <div class="flex items-center justify-between text-xs px-1">
@@ -1113,6 +1135,7 @@
                   ${s.recallResult === 'correct' ? `<div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">Chính xác! "${w.en}"</div>` : ''}
                   ${s.recallResult === 'wrong' ? `<div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold">Chưa khớp! Bấm Lật thẻ bên dưới để xem đáp án.</div>` : ''}
                 </div>
+                ` : '<p class="text-xs text-slate-400">Nghe phát âm, đoán nghĩa trong đầu rồi bấm lật thẻ (hoặc chọn <strong>Mặt trước: Việt</strong> để tự gõ từ).</p>'}
               </div>
               <button type="button" id="card-flip-btn" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold shadow-sm flex items-center justify-center gap-2">
                 <i data-lucide="rotate-cw" class="w-4 h-4"></i> Lật xem đáp án &amp; ví dụ (Space)
@@ -1439,6 +1462,187 @@
       refreshIcons();
     }
 
+
+    // ==================== 10K COMMUNICATION VOCAB BANK ENGINE ====================
+    function getFullVocabBank() {
+      const seen = new Set();
+      const list = [];
+      ALL_WORDS.forEach(w => {
+        const key = w.en.toLowerCase().trim();
+        if (!seen.has(key)) {
+          seen.add(key);
+          list.push({
+            id: w.id, en: w.en, ipa: w.ipa, pos: w.pos, vi: w.vi, level: 'A1',
+            usage: w.usage, exEn: w.exEn, exBlank: w.exBlank, exVi: w.exVi, topicId: w.topicId
+          });
+        }
+      });
+      if (typeof EXTRA_COMM_WORDS !== 'undefined' && Array.isArray(EXTRA_COMM_WORDS)) {
+        EXTRA_COMM_WORDS.forEach((row, idx) => {
+          const key = String(row[0] || '').toLowerCase().trim();
+          if (key && !seen.has(key)) {
+            seen.add(key);
+            list.push({
+              id: 'bk_' + idx, en: row[0], ipa: row[1] || '', pos: row[2] || 'từ vựng',
+              vi: row[3] || '', level: row[4] || 'A2',
+              usage: `Từ giao tiếp thông dụng (${row[2] || 'cơ bản'}) — cấp độ ${row[4] || 'A2'}.`,
+              exEn: `I use the word "${row[0]}" in daily conversation.`,
+              exBlank: `I use the word "____" in daily conversation.`,
+              exVi: `Tôi dùng từ "${row[3]}" trong giao tiếp hằng ngày.`,
+              topicId: 'greeting'
+            });
+          }
+        });
+      }
+      if (Array.isArray(state.customBankWords)) {
+        state.customBankWords.forEach((row, idx) => {
+          const key = String(row.en || '').toLowerCase().trim();
+          if (key && !seen.has(key)) {
+            seen.add(key);
+            list.push({
+              id: 'imp_' + idx, en: row.en, ipa: row.ipa || '', pos: row.pos || 'giao tiếp',
+              vi: row.vi || '', level: row.level || 'B1',
+              usage: 'Từ vựng bạn đã nạp thêm vào kho giao tiếp.',
+              exEn: row.exEn || row.en, exBlank: row.exEn || '____', exVi: row.vi || '',
+              topicId: 'greeting'
+            });
+          }
+        });
+      }
+      return list;
+    }
+
+    function renderBankPage() {
+      const el = document.getElementById('page-bank');
+      if (!el) return;
+      const bank = getFullVocabBank();
+      const learnedSet = new Set(state.bankLearnedIds || []);
+      const dailySize = state.bankDailySize || 15;
+      const totalDays = Math.max(1, Math.ceil(bank.length / dailySize));
+      const curDay = Math.min(Math.max(1, ui.bankDay || 1), totalDays);
+      ui.bankDay = curDay;
+
+      const dayStart = (curDay - 1) * dailySize;
+      const dayWords = bank.slice(dayStart, dayStart + dailySize);
+      const dayLearnedCount = dayWords.filter(w => learnedSet.has(w.id)).length;
+
+      const q = (ui.bankSearch || '').trim().toLowerCase();
+      let filtered = ui.bankViewMode === 'day' ? dayWords : bank;
+      if (q) {
+        filtered = bank.filter(w => w.en.toLowerCase().includes(q) || w.vi.toLowerCase().includes(q));
+      }
+      if (ui.bankFilter === 'learned') filtered = filtered.filter(w => learnedSet.has(w.id));
+      else if (ui.bankFilter === 'unlearned') filtered = filtered.filter(w => !learnedSet.has(w.id));
+      else if (['A1', 'A2', 'B1'].includes(ui.bankFilter)) filtered = filtered.filter(w => w.level === ui.bankFilter);
+
+      const pageSize = 24;
+      const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+      const curPage = Math.min(Math.max(1, ui.bankPage || 1), totalPages);
+      ui.bankPage = curPage;
+      const pageItems = filtered.slice((curPage - 1) * pageSize, curPage * pageSize);
+
+      const totalLearned = bank.filter(w => learnedSet.has(w.id)).length;
+      const pct = bank.length ? Math.round((totalLearned / bank.length) * 100) : 0;
+
+      el.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-5">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-bold uppercase tracking-wider">
+                Lộ trình tích lũy mỗi ngày · Mở rộng tới 10.000 từ
+              </div>
+              <h1 class="text-2xl font-extrabold text-slate-900 mt-1">Kho Từ Vựng Giao Tiếp (${bank.length.toLocaleString('vi-VN')} từ sẵn sàng)</h1>
+              <p class="text-sm text-slate-600 mt-1">Chia nhỏ tự động theo từng ngày để bạn học nhẹ nhàng mỗi ngày 1 ít. Hỗ trợ nạp thêm tệp CSV/JSON lên tới 10.000+ từ.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <button type="button" id="bank-study-day-btn" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-xs flex items-center gap-1.5">
+                <i data-lucide="play" class="w-4 h-4 fill-current"></i> Học Flashcard Ngày ${curDay} (${dayWords.length} từ)
+              </button>
+              <label class="px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center gap-1.5 cursor-pointer">
+                <i data-lucide="upload" class="w-4 h-4"></i> Nạp thêm CSV/JSON
+                <input type="file" id="bank-import-input" accept=".csv,.json,.txt" class="hidden" />
+              </label>
+              <button type="button" id="bank-sample-csv-btn" class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
+                Mẫu CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pt-3 border-t border-slate-100 items-center">
+            <div class="md:col-span-5 space-y-1.5">
+              <div class="flex items-center justify-between text-xs font-semibold">
+                <span class="text-slate-600">Đã thuộc: <strong>${totalLearned}/${bank.length}</strong> từ</span>
+                <span class="text-indigo-600">${pct}%</span>
+              </div>
+              <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+            </div>
+
+            <div class="md:col-span-7 flex flex-wrap items-center justify-start md:justify-end gap-2">
+              <span class="text-xs font-semibold text-slate-500">Mục tiêu/ngày:</span>
+              <div class="bg-slate-100 p-1 rounded-xl inline-flex text-xs font-bold">
+                ${[10, 15, 20, 30].map(sz => `<button type="button" data-bank-size="${sz}" class="px-2.5 py-1 rounded-lg ${dailySize === sz ? 'bg-white text-indigo-600 shadow-2xs' : 'text-slate-600'}">${sz} từ</button>`).join('')}
+              </div>
+              <div class="flex items-center gap-1.5 ml-1">
+                <button type="button" id="bank-prev-day" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700" title="Ngày trước"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <span class="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-extrabold">Ngày ${curDay}/${totalDays} (${dayLearnedCount}/${dayWords.length})</span>
+                <button type="button" id="bank-next-day" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700" title="Ngày sau"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="relative flex-1 max-w-md">
+            <input type="text" id="bank-search-input" value="${(ui.bankSearch || '').replace(/"/g, '&quot;')}" placeholder="Tìm nhanh từ tiếng Anh hoặc tiếng Việt..." class="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm" />
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button type="button" data-bank-mode="day" class="px-3 py-1.5 rounded-lg text-xs font-bold ${ui.bankViewMode === 'day' && !q ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">Chỉ Ngày ${curDay}</button>
+            <button type="button" data-bank-mode="all" class="px-3 py-1.5 rounded-lg text-xs font-bold ${ui.bankViewMode === 'all' || q ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">Toàn bộ kho</button>
+            ${['all', 'unlearned', 'learned', 'A1', 'A2', 'B1'].map(f => {
+              const lbl = f === 'all' ? 'Mọi cấp' : f === 'unlearned' ? 'Chưa thuộc' : f === 'learned' ? 'Đã thuộc' : f;
+              return `<button type="button" data-bank-filter="${f}" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold ${ui.bankFilter === f ? 'bg-emerald-100 text-emerald-800' : 'text-slate-500 hover:bg-slate-100'}">${lbl}</button>`;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          ${pageItems.length === 0 ? `<div class="sm:col-span-2 lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">Không tìm thấy từ nào phù hợp bộ lọc.</div>` : pageItems.map((w, i) => {
+            const isDone = learnedSet.has(w.id);
+            const globalNum = (curPage - 1) * pageSize + i + 1;
+            return `
+              <div class="bg-white rounded-2xl border ${isDone ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200/80'} p-4 flex items-start justify-between gap-2.5 hover:border-indigo-200 transition-colors">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold text-slate-400">#${globalNum}</span>
+                    <span class="text-base font-extrabold text-slate-900">${w.en}</span>
+                    <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-bold">${w.level}</span>
+                  </div>
+                  <div class="text-xs text-indigo-600 font-medium">${w.ipa} <span class="text-slate-400">· ${w.pos}</span></div>
+                  <div class="text-sm font-bold text-emerald-700 mt-1">${w.vi}</div>
+                </div>
+                <div class="flex items-center gap-1 shrink-0">
+                  <button type="button" data-speak="${w.en}" title="Nghe" class="p-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                  <button type="button" data-bank-toggle="${w.id}" title="${isDone ? 'Bỏ đánh dấu đã thuộc' : 'Đánh dấu đã thuộc (+5 XP)'}" class="p-2 rounded-lg border transition-colors ${isDone ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-400 hover:text-emerald-600'}"><i data-lucide="check" class="w-4 h-4"></i></button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        ${totalPages > 1 ? `
+          <div class="flex items-center justify-center gap-2 pt-2">
+            <button type="button" id="bank-prev-page" ${curPage <= 1 ? 'disabled' : ''} class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold disabled:opacity-40">Trang trước</button>
+            <span class="text-xs font-bold text-slate-600">Trang ${curPage} / ${totalPages} (${filtered.length} từ)</span>
+            <button type="button" id="bank-next-page" ${curPage >= totalPages ? 'disabled' : ''} class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold disabled:opacity-40">Trang sau</button>
+          </div>
+        ` : ''}
+      `;
+      refreshIcons();
+    }
+
     // ==================== GOOGLE LOGIN & AUTO CLOUD SYNC (SUPABASE AUTH) ====================
     function renderAuthPanel() {
       const box = document.getElementById('auth-panel-box');
@@ -1686,6 +1890,17 @@
       const trackBtn = e.target.closest('[data-track]');
       if (trackBtn) { switchTrack(trackBtn.dataset.track); return; }
 
+      const audBtn = e.target.closest('[data-aud-filter]');
+      if (audBtn) {
+        ui.audienceFilter = audBtn.dataset.audFilter;
+        const matched = TOPICS_DATA.filter(t => ui.audienceFilter === 'all' || (TOPIC_AUDIENCE[t.id] || 'both') === 'both' || TOPIC_AUDIENCE[t.id] === ui.audienceFilter);
+        if (matched.length && !matched.some(t => t.id === state.selectedTopicId)) {
+          state.selectedTopicId = matched[0].id;
+          saveState();
+        }
+        renderRoadmapPage();
+        return;
+      }
       const topicBtn = e.target.closest('[data-select-topic]');
       if (topicBtn) { state.selectedTopicId = topicBtn.dataset.selectTopic; saveState(); renderRoadmapPage(); return; }
 
@@ -1763,7 +1978,7 @@
       const startPlace = e.target.closest('[data-start-placement]'); if (startPlace) { startPlacementSession(startPlace.dataset.startPlacement); return; }
 
       // Exit Study / Zen
-      if (e.target.closest('#exit-study-btn') || e.target.closest('#exit-study-btn-2')) { showMainPage(state.mainNav === 'review' ? 'review' : 'roadmap'); return; }
+      if (e.target.closest('#exit-study-btn') || e.target.closest('#exit-study-btn-2')) { showMainPage(['review', 'bank'].includes(state.mainNav) ? state.mainNav : 'roadmap'); return; }
       if (e.target.closest('#toggle-zen-btn')) { setZenMode(!ui.zenMode); renderStudySession(); return; }
 
       // Flashcard actions
@@ -1940,6 +2155,49 @@
       }
 
       // SRS Review actions
+
+      // 10K Vocab Bank actions
+      const bankSizeBtn = e.target.closest('[data-bank-size]');
+      if (bankSizeBtn) { state.bankDailySize = Number(bankSizeBtn.dataset.bankSize); ui.bankDay = 1; ui.bankPage = 1; saveState(); renderBankPage(); return; }
+      if (e.target.closest('#bank-prev-day')) { ui.bankDay = Math.max(1, (ui.bankDay || 1) - 1); ui.bankPage = 1; renderBankPage(); return; }
+      if (e.target.closest('#bank-next-day')) { ui.bankDay = (ui.bankDay || 1) + 1; ui.bankPage = 1; renderBankPage(); return; }
+      const bankModeBtn = e.target.closest('[data-bank-mode]');
+      if (bankModeBtn) { ui.bankViewMode = bankModeBtn.dataset.bankMode; ui.bankSearch = ''; ui.bankPage = 1; renderBankPage(); return; }
+      const bankFilterBtn = e.target.closest('[data-bank-filter]');
+      if (bankFilterBtn) { ui.bankFilter = bankFilterBtn.dataset.bankFilter; ui.bankPage = 1; renderBankPage(); return; }
+      if (e.target.closest('#bank-prev-page')) { ui.bankPage = Math.max(1, (ui.bankPage || 1) - 1); renderBankPage(); return; }
+      if (e.target.closest('#bank-next-page')) { ui.bankPage = (ui.bankPage || 1) + 1; renderBankPage(); return; }
+      const bankToggle = e.target.closest('[data-bank-toggle]');
+      if (bankToggle) {
+        const id = bankToggle.dataset.bankToggle;
+        if (!Array.isArray(state.bankLearnedIds)) state.bankLearnedIds = [];
+        if (state.bankLearnedIds.includes(id)) {
+          state.bankLearnedIds = state.bankLearnedIds.filter(x => x !== id);
+          saveState();
+        } else {
+          state.bankLearnedIds.push(id);
+          addXp(5, 'Đã thuộc thêm 1 từ giao tiếp! (+5 XP)');
+        }
+        renderBankPage();
+        return;
+      }
+      if (e.target.closest('#bank-study-day-btn')) {
+        const bank = getFullVocabBank();
+        const sz = state.bankDailySize || 15;
+        const start = ((ui.bankDay || 1) - 1) * sz;
+        const words = bank.slice(start, start + sz);
+        startCardSession(null, words, `Kho Giao Tiếp · Ngày ${ui.bankDay || 1} (${words.length} từ)`);
+        return;
+      }
+      if (e.target.closest('#bank-sample-csv-btn')) {
+        const csv = "word,ipa,pos,meaning,level\nachieve,/əˈtʃiːv/,động từ,đạt được,B1\nbenefit,/ˈbenɪfɪt/,danh từ,lợi ích,B1\ncommunicate,/kəˈmjuːnɪkeɪt/,động từ,giao tiếp,B1\n";
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'mau_nap_10000_tu.csv'; a.click(); URL.revokeObjectURL(url);
+        showToast('Đã tải tệp mẫu CSV! Bạn có thể thêm hàng nghìn từ rồi nạp lên.');
+        return;
+      }
+
       if (e.target.closest('#start-srs-due-btn')) {
         const { due } = getSrsBuckets();
         startCardSession(null, due, `Ôn tập SRS (${due.length} từ đến hạn)`);
@@ -1985,9 +2243,50 @@
       if (e.target.id === 'notebook-textarea') { state.notebook = e.target.value; saveState(); }
       if (e.target.id === 'card-recall-input' && ui.session) ui.session.typedValue = e.target.value;
       if (e.target.id === 'dictation-input' && ui.session) ui.session.inputVal = e.target.value;
+      if (e.target.id === 'bank-search-input') { ui.bankSearch = e.target.value; ui.bankPage = 1; renderBankPage(); const inp = document.getElementById('bank-search-input'); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'bank-import-input') {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const raw = String(reader.result || '').trim();
+            let added = [];
+            if (file.name.endsWith('.json') || raw.startsWith('[')) {
+              const arr = JSON.parse(raw);
+              if (Array.isArray(arr)) {
+                arr.forEach(item => {
+                  if (Array.isArray(item) && item[0]) added.push({ en: String(item[0]), ipa: String(item[1]||''), pos: String(item[2]||''), vi: String(item[3]||''), level: String(item[4]||'B1') });
+                  else if (item && item.en) added.push({ en: String(item.en), ipa: String(item.ipa||''), pos: String(item.pos||''), vi: String(item.vi||item.meaning||''), level: String(item.level||'B1') });
+                });
+              }
+            } else {
+              const lines = raw.split(/\r?\n/).filter(Boolean);
+              lines.forEach((line, idx) => {
+                const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+                if (idx === 0 && cols[0].toLowerCase() === 'word') return;
+                if (cols.length >= 2 && cols[0]) {
+                  if (cols.length >= 4) added.push({ en: cols[0], ipa: cols[1], pos: cols[2], vi: cols[3], level: cols[4] || 'B1' });
+                  else added.push({ en: cols[0], ipa: '', pos: 'giao tiếp', vi: cols[1], level: 'B1' });
+                }
+              });
+            }
+            if (!Array.isArray(state.customBankWords)) state.customBankWords = [];
+            state.customBankWords = state.customBankWords.concat(added.slice(0, 10000));
+            saveState();
+            renderBankPage();
+            showToast(`Đã nạp thêm ${added.length} từ vào Kho Giao Tiếp!`);
+          } catch (err) {
+            showToast('Tệp CSV/JSON không đúng định dạng.');
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+        return;
+      }
       if (e.target.id === 'import-json-input') {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
