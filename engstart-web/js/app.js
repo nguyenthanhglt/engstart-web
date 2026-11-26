@@ -157,6 +157,53 @@
       }, 2600);
     }
 
+
+    // ==================== BULLETPROOF MANDARIN CHINESE AUDIO (NATIVE VOICE + ONLINE FALLBACK) ====================
+    let _zhAudioEl = null;
+    function playChineseAudioFallback(text, rate) {
+      try {
+        if (_zhAudioEl) { _zhAudioEl.pause(); _zhAudioEl = null; }
+        const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=zh`;
+        const audio = new Audio(url);
+        audio.playbackRate = Math.max(0.65, Math.min(1.2, rate || 1.0));
+        _zhAudioEl = audio;
+        audio.play().catch(() => {
+          // Secondary fallback to Web Speech API even if voice list was empty
+          if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'zh-CN';
+            u.rate = rate || state.speechRate || 0.92;
+            window.speechSynthesis.speak(u);
+          }
+        });
+      } catch (e) {}
+    }
+
+    function speakChinese(text, customRate) {
+      const clean = (text || '').trim();
+      if (!clean) return;
+      const rate = customRate || (state.speechRate === 0.7 ? 0.72 : 0.92);
+      if ('speechSynthesis' in window) {
+        const voices = window.speechSynthesis.getVoices() || [];
+        const zhVoice = voices.find(v => /^zh[-_]?(cn|hans|sg)/i.test(v.lang))
+          || voices.find(v => /^zh/i.test(v.lang))
+          || voices.find(v => /chinese|mandarin|putonghua|ting-ting|xiaoxiao/i.test(v.name));
+        if (zhVoice) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(clean);
+          u.voice = zhVoice;
+          u.lang = zhVoice.lang || 'zh-CN';
+          u.rate = rate;
+          u.onerror = () => playChineseAudioFallback(clean, rate);
+          window.speechSynthesis.speak(u);
+          return;
+        }
+      }
+      // If Windows/browser doesn't have a Chinese TTS voice installed, play crisp native Mandarin audio!
+      playChineseAudioFallback(clean, rate);
+    }
+
     function speakText(text, customRate, pitch, onEnd) {
       const rate = typeof customRate === 'number' ? customRate : state.speechRate;
       if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
@@ -1525,7 +1572,7 @@
               target: w.hanzi,
               sub: w.pinyin,
               vi: w.vi,
-              exampleTarget: w.ex || w.hanzi,
+              exampleTarget: w.exZh || w.ex || w.hanzi,
               exampleVi: w.exVi || w.vi,
               isZh: true
             });
@@ -3429,12 +3476,12 @@
       const zhList = [];
       if (typeof ZH_TOPICS !== 'undefined') {
         ZH_TOPICS.forEach(t => (t.words || []).forEach(w => zhList.push({
-          lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: t.title, vi: w.vi, ex: w.ex || '', exVi: w.exVi || ''
+          lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: t.title, vi: w.vi, ex: w.exZh || w.ex || '', exVi: w.exVi || ''
         })));
       }
       if (typeof EXTRA_ZH_WORDS !== 'undefined') {
         EXTRA_ZH_WORDS.forEach(w => zhList.push({
-          lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: w.topic || 'HSK', vi: w.vi, ex: w.ex || '', exVi: w.exVi || ''
+          lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: w.topic || 'HSK', vi: w.vi, ex: w.exZh || w.ex || '', exVi: w.exVi || ''
         }));
       }
       const allEntries = [
@@ -3530,8 +3577,8 @@
         const zhIcons = ['👋','🍜','🛍️','👨‍👩‍👧','⏰','🚕','❤️','🌤️','💼','📚','💻','✈️'];
         (typeof ZH_TOPICS !== 'undefined' ? ZH_TOPICS : []).forEach((t, idx) => {
           const sentences = (t.words || []).map(w => ({
-            target: w.ex || w.hanzi,
-            sub: w.exPinyin || w.pinyin,
+            target: w.exZh || w.ex || w.hanzi,
+            sub: w.exPy || w.exPinyin || w.pinyin,
             vi: w.exVi || w.vi,
             word: w.hanzi
           }));
