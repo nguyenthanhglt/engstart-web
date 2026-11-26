@@ -24,10 +24,15 @@
       bankLearnedIds: [],
       bankDailySize: 15,
       customBankWords: [],
+      geminiApiKey: "",
+      zhLearnedIds: [],
+      zhLessonProgress: {},
+      zhBankLearnedIds: [],
+      zhCustomBankWords: [],
       masteredIpa: [],
       notebook: '',
       // Account & Cloud Sync
-      profile: { name: '', email: '' },
+      profile: { name: '', email: '', customAvatar: '' },
       supabase: { url: '', key: '', lastSynced: null }
     };
 
@@ -99,6 +104,26 @@
       bankFilter: 'all',
       bankSearch: '',
       bankPage: 1,
+      aiScenarioId: 'intro',
+      aiTurnIdx: 0,
+      aiMessages: [],
+      aiLoading: false,
+      aiAutoSpeak: true,
+      aiShowVi: true,
+      aiInput: '',
+      zhTrack: 'vocab',
+      zhTopicId: 'zh_greet',
+      zhGrammarId: 'zhg1',
+      bankLang: 'en',
+      zhMode: 'list',
+      zhCardIdx: 0,
+      zhFlipped: false,
+      zhShowPinyin: true,
+      zhQuizItems: [],
+      zhQuizIdx: 0,
+      zhQuizPicked: null,
+      zhQuizScore: 0,
+      zhQuizDone: false,
       selectedGrammarId: GRAMMAR_LESSONS[0].id,
       grammarAnswers: {},
       ipaCategory: 'all',
@@ -381,17 +406,24 @@
       if (speedEl) speedEl.textContent = state.speechRate === 1.0 ? '1.0x' : '0.7x';
       const avatarEl = document.getElementById('header-user-avatar');
       const iconEl = document.getElementById('header-user-icon');
+      const customAvatar = (state.profile && state.profile.customAvatar) || '';
+      const googleAvatar = (currentAuthUser && currentAuthUser.user_metadata && currentAuthUser.user_metadata.avatar_url) || '';
+      const effectiveAvatar = customAvatar || googleAvatar;
+      const customName = (state.profile && state.profile.name && state.profile.name.trim()) || '';
+
       if (currentAuthUser) {
         const meta = currentAuthUser.user_metadata || {};
-        const displayName = meta.full_name || meta.name || (currentAuthUser.email ? currentAuthUser.email.split('@')[0] : 'Học viên');
+        const displayName = customName || meta.full_name || meta.name || (currentAuthUser.email ? currentAuthUser.email.split('@')[0] : 'Học viên');
         if (userEl) userEl.textContent = displayName;
-        if (avatarEl && meta.avatar_url) {
-          avatarEl.src = meta.avatar_url;
-          avatarEl.classList.remove('hidden');
-          if (iconEl) iconEl.classList.add('hidden');
-        }
       } else {
-        if (userEl) userEl.textContent = state.profile.name ? state.profile.name : 'Đăng nhập';
+        if (userEl) userEl.textContent = customName || 'Đăng nhập';
+      }
+
+      if (avatarEl && effectiveAvatar) {
+        avatarEl.src = effectiveAvatar;
+        avatarEl.classList.remove('hidden');
+        if (iconEl) iconEl.classList.add('hidden');
+      } else {
         if (avatarEl) avatarEl.classList.add('hidden');
         if (iconEl) iconEl.classList.remove('hidden');
       }
@@ -436,6 +468,12 @@
       } else if (navName === 'bank') {
         document.getElementById('page-bank').classList.remove('hidden');
         renderBankPage();
+      } else if (navName === 'tutor') {
+        document.getElementById('page-tutor').classList.remove('hidden');
+        renderAiTutorPage();
+      } else if (navName === 'chinese') {
+        document.getElementById('page-chinese').classList.remove('hidden');
+        renderChinesePage();
       } else {
         document.getElementById('page-roadmap').classList.remove('hidden');
         renderRoadmapPage();
@@ -1467,6 +1505,32 @@
     function getFullVocabBank() {
       const seen = new Set();
       const list = [];
+      if (ui.bankLang === 'zh') {
+        ZH_TOPICS.forEach(t => t.words.forEach(w => {
+          if (!seen.has(w.hanzi)) {
+            seen.add(w.hanzi);
+            list.push({ id: w.id, en: w.hanzi, ipa: w.pinyin, pos: t.title, vi: w.vi, level: 'HSK1', isZh: true, exEn: w.exZh, exVi: w.exVi });
+          }
+        }));
+        if (typeof EXTRA_ZH_WORDS !== 'undefined' && Array.isArray(EXTRA_ZH_WORDS)) {
+          EXTRA_ZH_WORDS.forEach((row, idx) => {
+            if (row[0] && !seen.has(row[0])) {
+              seen.add(row[0]);
+              list.push({ id: 'zhbk_' + idx, en: row[0], ipa: row[1] || '', pos: row[2] || 'từ vựng', vi: row[3] || '', level: row[4] || 'HSK2', isZh: true });
+            }
+          });
+        }
+        if (Array.isArray(state.zhCustomBankWords)) {
+          state.zhCustomBankWords.forEach((row, idx) => {
+            if (row.en && !seen.has(row.en)) {
+              seen.add(row.en);
+              list.push({ id: 'zhimp_' + idx, en: row.en, ipa: row.ipa || '', pos: row.pos || 'giao tiếp', vi: row.vi || '', level: row.level || 'HSK3', isZh: true });
+            }
+          });
+        }
+        return list;
+      }
+
       ALL_WORDS.forEach(w => {
         const key = w.en.toLowerCase().trim();
         if (!seen.has(key)) {
@@ -1515,8 +1579,10 @@
     function renderBankPage() {
       const el = document.getElementById('page-bank');
       if (!el) return;
+      const isZh = ui.bankLang === 'zh';
       const bank = getFullVocabBank();
-      const learnedSet = new Set(state.bankLearnedIds || []);
+      const learnedArr = isZh ? (state.zhBankLearnedIds || []) : (state.bankLearnedIds || []);
+      const learnedSet = new Set(learnedArr);
       const dailySize = state.bankDailySize || 15;
       const totalDays = Math.max(1, Math.ceil(bank.length / dailySize));
       const curDay = Math.min(Math.max(1, ui.bankDay || 1), totalDays);
@@ -1529,11 +1595,11 @@
       const q = (ui.bankSearch || '').trim().toLowerCase();
       let filtered = ui.bankViewMode === 'day' ? dayWords : bank;
       if (q) {
-        filtered = bank.filter(w => w.en.toLowerCase().includes(q) || w.vi.toLowerCase().includes(q));
+        filtered = bank.filter(w => w.en.toLowerCase().includes(q) || w.vi.toLowerCase().includes(q) || (w.ipa && w.ipa.toLowerCase().includes(q)));
       }
       if (ui.bankFilter === 'learned') filtered = filtered.filter(w => learnedSet.has(w.id));
       else if (ui.bankFilter === 'unlearned') filtered = filtered.filter(w => !learnedSet.has(w.id));
-      else if (['A1', 'A2', 'B1'].includes(ui.bankFilter)) filtered = filtered.filter(w => w.level === ui.bankFilter);
+      else if (['A1', 'A2', 'B1', 'HSK1', 'HSK2', 'HSK3'].includes(ui.bankFilter)) filtered = filtered.filter(w => w.level === ui.bankFilter);
 
       const pageSize = 24;
       const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -1543,28 +1609,33 @@
 
       const totalLearned = bank.filter(w => learnedSet.has(w.id)).length;
       const pct = bank.length ? Math.round((totalLearned / bank.length) * 100) : 0;
+      const levels = isZh ? ['HSK1', 'HSK2', 'HSK3'] : ['A1', 'A2', 'B1'];
 
       el.innerHTML = `
         <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-5">
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-bold uppercase tracking-wider">
-                Lộ trình tích lũy mỗi ngày · Mở rộng tới 10.000 từ
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="bg-slate-100 p-1 rounded-xl inline-flex text-xs font-bold">
+                  <button type="button" data-bank-lang="en" class="px-3 py-1.5 rounded-lg ${!isZh ? 'bg-white text-indigo-600 shadow-2xs' : 'text-slate-600'}">Kho Tiếng Anh</button>
+                  <button type="button" data-bank-lang="zh" class="px-3 py-1.5 rounded-lg ${isZh ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Kho Tiếng Trung</button>
+                </div>
+                <span class="px-2.5 py-1 rounded-full ${isZh ? 'bg-rose-50 text-rose-700' : 'bg-indigo-50 text-indigo-700'} text-[11px] font-bold uppercase tracking-wider">Mở rộng tới 10.000 từ</span>
               </div>
-              <h1 class="text-2xl font-extrabold text-slate-900 mt-1">Kho Từ Vựng Giao Tiếp (${bank.length.toLocaleString('vi-VN')} từ sẵn sàng)</h1>
-              <p class="text-sm text-slate-600 mt-1">Chia nhỏ tự động theo từng ngày để bạn học nhẹ nhàng mỗi ngày 1 ít. Hỗ trợ nạp thêm tệp CSV/JSON lên tới 10.000+ từ.</p>
+              <h1 class="text-2xl font-extrabold text-slate-900 mt-2">Kho ${isZh ? 'Tiếng Trung' : 'Tiếng Anh'} Giao Tiếp (${bank.length.toLocaleString('vi-VN')} từ sẵn sàng)</h1>
+              <p class="text-sm text-slate-600 mt-1">Chia nhỏ theo từng ngày để học mỗi ngày 1 ít. Hỗ trợ nạp thêm tệp CSV/JSON lên tới 10.000+ từ.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2 shrink-0">
-              <button type="button" id="bank-study-day-btn" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-xs flex items-center gap-1.5">
-                <i data-lucide="play" class="w-4 h-4 fill-current"></i> Học Flashcard Ngày ${curDay} (${dayWords.length} từ)
-              </button>
+              ${!isZh ? `
+                <button type="button" id="bank-study-day-btn" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-xs flex items-center gap-1.5">
+                  <i data-lucide="play" class="w-4 h-4 fill-current"></i> Học Flashcard Ngày ${curDay}
+                </button>
+              ` : ''}
               <label class="px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center gap-1.5 cursor-pointer">
                 <i data-lucide="upload" class="w-4 h-4"></i> Nạp thêm CSV/JSON
                 <input type="file" id="bank-import-input" accept=".csv,.json,.txt" class="hidden" />
               </label>
-              <button type="button" id="bank-sample-csv-btn" class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
-                Mẫu CSV
-              </button>
+              <button type="button" id="bank-sample-csv-btn" class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">Mẫu CSV</button>
             </div>
           </div>
 
@@ -1572,22 +1643,21 @@
             <div class="md:col-span-5 space-y-1.5">
               <div class="flex items-center justify-between text-xs font-semibold">
                 <span class="text-slate-600">Đã thuộc: <strong>${totalLearned}/${bank.length}</strong> từ</span>
-                <span class="text-indigo-600">${pct}%</span>
+                <span class="${isZh ? 'text-rose-600' : 'text-indigo-600'}">${pct}%</span>
               </div>
               <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all" style="width: ${pct}%"></div>
+                <div class="h-full bg-gradient-to-r ${isZh ? 'from-rose-500 to-amber-500' : 'from-indigo-500 to-emerald-500'} rounded-full transition-all" style="width: ${pct}%"></div>
               </div>
             </div>
-
             <div class="md:col-span-7 flex flex-wrap items-center justify-start md:justify-end gap-2">
               <span class="text-xs font-semibold text-slate-500">Mục tiêu/ngày:</span>
               <div class="bg-slate-100 p-1 rounded-xl inline-flex text-xs font-bold">
                 ${[10, 15, 20, 30].map(sz => `<button type="button" data-bank-size="${sz}" class="px-2.5 py-1 rounded-lg ${dailySize === sz ? 'bg-white text-indigo-600 shadow-2xs' : 'text-slate-600'}">${sz} từ</button>`).join('')}
               </div>
               <div class="flex items-center gap-1.5 ml-1">
-                <button type="button" id="bank-prev-day" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700" title="Ngày trước"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                <span class="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-extrabold">Ngày ${curDay}/${totalDays} (${dayLearnedCount}/${dayWords.length})</span>
-                <button type="button" id="bank-next-day" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700" title="Ngày sau"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                <button type="button" id="bank-prev-day" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                <span class="px-3 py-1 rounded-lg ${isZh ? 'bg-rose-50 text-rose-700' : 'bg-indigo-50 text-indigo-700'} text-xs font-extrabold">Ngày ${curDay}/${totalDays} (${dayLearnedCount}/${dayWords.length})</span>
+                <button type="button" id="bank-next-day" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
               </div>
             </div>
           </div>
@@ -1595,13 +1665,13 @@
 
         <div class="bg-white rounded-2xl border border-slate-200/80 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="relative flex-1 max-w-md">
-            <input type="text" id="bank-search-input" value="${(ui.bankSearch || '').replace(/"/g, '&quot;')}" placeholder="Tìm nhanh từ tiếng Anh hoặc tiếng Việt..." class="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm" />
+            <input type="text" id="bank-search-input" value="${(ui.bankSearch || '').replace(/"/g, '&quot;')}" placeholder="Tìm nhanh từ vựng, pinyin/phiên âm hoặc tiếng Việt..." class="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm" />
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
           </div>
           <div class="flex flex-wrap items-center gap-1.5">
             <button type="button" data-bank-mode="day" class="px-3 py-1.5 rounded-lg text-xs font-bold ${ui.bankViewMode === 'day' && !q ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">Chỉ Ngày ${curDay}</button>
             <button type="button" data-bank-mode="all" class="px-3 py-1.5 rounded-lg text-xs font-bold ${ui.bankViewMode === 'all' || q ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}">Toàn bộ kho</button>
-            ${['all', 'unlearned', 'learned', 'A1', 'A2', 'B1'].map(f => {
+            ${['all', 'unlearned', 'learned', ...levels].map(f => {
               const lbl = f === 'all' ? 'Mọi cấp' : f === 'unlearned' ? 'Chưa thuộc' : f === 'learned' ? 'Đã thuộc' : f;
               return `<button type="button" data-bank-filter="${f}" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold ${ui.bankFilter === f ? 'bg-emerald-100 text-emerald-800' : 'text-slate-500 hover:bg-slate-100'}">${lbl}</button>`;
             }).join('')}
@@ -1620,12 +1690,12 @@
                     <span class="text-base font-extrabold text-slate-900">${w.en}</span>
                     <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-bold">${w.level}</span>
                   </div>
-                  <div class="text-xs text-indigo-600 font-medium">${w.ipa} <span class="text-slate-400">· ${w.pos}</span></div>
+                  <div class="text-xs ${w.isZh ? 'text-rose-600' : 'text-indigo-600'} font-medium">${w.ipa} <span class="text-slate-400">· ${w.pos}</span></div>
                   <div class="text-sm font-bold text-emerald-700 mt-1">${w.vi}</div>
                 </div>
                 <div class="flex items-center gap-1 shrink-0">
-                  <button type="button" data-speak="${w.en}" title="Nghe" class="p-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-600"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
-                  <button type="button" data-bank-toggle="${w.id}" title="${isDone ? 'Bỏ đánh dấu đã thuộc' : 'Đánh dấu đã thuộc (+5 XP)'}" class="p-2 rounded-lg border transition-colors ${isDone ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-400 hover:text-emerald-600'}"><i data-lucide="check" class="w-4 h-4"></i></button>
+                  <button type="button" ${w.isZh ? `data-speak-zh="${w.en}"` : `data-speak="${w.en}"`} title="Nghe" class="p-2 rounded-lg ${w.isZh ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'}"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                  <button type="button" data-bank-toggle="${w.id}" class="p-2 rounded-lg border transition-colors ${isDone ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-400 hover:text-emerald-600'}"><i data-lucide="check" class="w-4 h-4"></i></button>
                 </div>
               </div>
             `;
@@ -1643,36 +1713,742 @@
       refreshIcons();
     }
 
+    // ==================== AI TEACHER (CÔ SARAH) ENGINE ====================
+    const AI_SCENARIOS = [
+      {
+        id: 'intro', title: 'Chào hỏi & Giới thiệu bản thân', level: 'A0 · Dễ nhất',
+        greetingEn: "Hello! I am Teacher Sarah. Nice to meet you! What is your name?",
+        greetingVi: "Xin chào! Cô là giáo viên Sarah. Rất vui được gặp bạn! Bạn tên là gì?",
+        suggestions: ["My name is Minh.", "Hello Sarah! I am Linh.", "Nice to meet you too!"],
+        turns: [
+          {
+            replyEn: "Nice to meet you! Where are you from?",
+            replyVi: "Rất vui được gặp bạn! Bạn đến từ đâu?",
+            suggestions: ["I am from Vietnam.", "I live in Ho Chi Minh City.", "I am from Hanoi."]
+          },
+          {
+            replyEn: "Vietnam is a wonderful country! What do you like to do in your free time?",
+            replyVi: "Việt Nam là một đất nước tuyệt vời! Bạn thích làm gì vào thời gian rảnh?",
+            suggestions: ["I like listening to music.", "I love drinking coffee and reading.", "I play football with my friends."]
+          },
+          {
+            replyEn: "That sounds fun! Why do you want to learn English?",
+            replyVi: "Nghe thật thú vị! Tại sao bạn muốn học tiếng Anh?",
+            suggestions: ["I want to travel and make friends.", "I need English for my job.", "I want to speak English confidently."]
+          },
+          {
+            replyEn: "You are doing a great job today! Keep practicing 15 minutes every day. Would you like to try another topic?",
+            replyVi: "Hôm nay bạn làm rất tốt! Hãy duy trì luyện 15 phút mỗi ngày nhé. Bạn có muốn thử chủ đề khác không?",
+            suggestions: ["Yes, thank you Teacher Sarah!", "I am very happy to practice with you."]
+          }
+        ]
+      },
+      {
+        id: 'cafe', title: 'Gọi đồ uống ở quán cà phê', level: 'A0 · Đời sống',
+        greetingEn: "Good morning! Welcome to EngStart Cafe. What would you like to order today?",
+        greetingVi: "Chào buổi sáng! Chào mừng đến EngStart Cafe. Hôm nay bạn muốn gọi món gì?",
+        suggestions: ["Can I have an iced coffee, please?", "I want a cup of tea.", "Can I see the menu, please?"],
+        turns: [
+          {
+            replyEn: "Sure! Would you like it with milk and sugar, or black?",
+            replyVi: "Vâng ạ! Bạn muốn dùng kèm sữa đường hay uống đen không đường?",
+            suggestions: ["With milk and a little sugar, please.", "Black coffee, no sugar please.", "Iced milk coffee, please!"]
+          },
+          {
+            replyEn: "Great choice! Would you like anything to eat, like a croissant or cake?",
+            replyVi: "Lựa chọn tuyệt vời! Bạn có muốn dùng thêm đồ ăn như bánh sừng bò hay bánh ngọt không?",
+            suggestions: ["No, thank you.", "Yes, one croissant please.", "How much is the cake?"]
+          },
+          {
+            replyEn: "Your total is 3 dollars. Would you like to pay by card or in cash?",
+            replyVi: "Tổng của bạn là 3 đô la. Bạn muốn thanh toán bằng thẻ hay tiền mặt?",
+            suggestions: ["Can I pay by card?", "I will pay in cash.", "Here you are. Thank you!"]
+          },
+          {
+            replyEn: "Thank you so much! Here is your drink. Have a wonderful day!",
+            replyVi: "Cảm ơn bạn rất nhiều! Đồ uống của bạn đây. Chúc bạn một ngày tuyệt vời!",
+            suggestions: ["Thank you! Goodbye!", "You too, have a nice day!"]
+          }
+        ]
+      },
+      {
+        id: 'travel', title: 'Du lịch & Hỏi đường', level: 'A1 · Du lịch',
+        greetingEn: "Hello! You look a little lost. Can I help you find a place?",
+        greetingVi: "Xin chào! Trông bạn có vẻ đang tìm đường. Mình có thể giúp bạn tìm chỗ nào không?",
+        suggestions: ["Excuse me, where is the hotel?", "I am looking for the nearest bus stop.", "How do I get to the airport?"],
+        turns: [
+          {
+            replyEn: "Oh, it is quite close! Go straight ahead for two minutes, then turn right.",
+            replyVi: "Ồ, chỗ đó khá gần! Bạn cứ đi thẳng khoảng hai phút rồi rẽ phải nhé.",
+            suggestions: ["Is it far from here?", "Should I walk or take a taxi?", "Thank you so much!"]
+          },
+          {
+            replyEn: "You can easily walk there in five minutes. You will see a big bank on your left.",
+            replyVi: "Bạn có thể đi bộ dễ dàng mất 5 phút. Bạn sẽ thấy một ngân hàng lớn ở bên trái.",
+            suggestions: ["Got it! Thank you for your help.", "Can you speak slowly, please?", "You are very kind!"]
+          },
+          {
+            replyEn: "You are very welcome! Enjoy your trip!",
+            replyVi: "Không có gì đâu! Chúc bạn có chuyến du lịch vui vẻ nhé!",
+            suggestions: ["Goodbye, have a great day!", "Thank you!"]
+          }
+        ]
+      },
+      {
+        id: 'interview', title: 'Phỏng vấn xin việc cơ bản', level: 'A2 · Người lớn',
+        greetingEn: "Good afternoon! Thank you for coming today. Could you tell me a little about yourself?",
+        greetingVi: "Chào buổi chiều! Cảm ơn bạn đã đến hôm nay. Bạn có thể giới thiệu một chút về bản thân không?",
+        suggestions: ["My name is Minh and I have three years of experience.", "I am a hard-working and friendly person.", "I work in sales and I love helping customers."],
+        turns: [
+          {
+            replyEn: "That is great! What are your strongest skills for this position?",
+            replyVi: "Tuyệt lắm! Kỹ năng mạnh nhất của bạn cho vị trí này là gì?",
+            suggestions: ["I have good communication and teamwork skills.", "I learn very fast and stay calm under pressure.", "I am good at solving problems."]
+          },
+          {
+            replyEn: "Impressive! Why do you want to work for our company?",
+            replyVi: "Ấn tượng đấy! Tại sao bạn muốn làm việc cho công ty chúng tôi?",
+            suggestions: ["I want to grow my career and learn new skills.", "Your company has a great team and culture.", "I want to contribute to your projects."]
+          },
+          {
+            replyEn: "Thank you for your thoughtful answers! We will contact you by email next week.",
+            replyVi: "Cảm ơn những câu trả lời chu đáo của bạn! Chúng tôi sẽ liên hệ qua email vào tuần tới.",
+            suggestions: ["Thank you for your time! I look forward to hearing from you.", "Have a nice day!"]
+          }
+        ]
+      },
+      {
+        id: 'kids_fun', title: 'Trò chuyện vui cho Bé (Màu sắc & Thú cưng)', level: 'A0 · Thiếu nhi',
+        greetingEn: "Hi little friend! I am Teacher Sarah. What is your favorite color?",
+        greetingVi: "Chào bạn nhỏ! Cô là cô Sarah. Màu sắc yêu thích của con là màu gì?",
+        suggestions: ["My favorite color is blue!", "I like pink and yellow.", "I love red!"],
+        turns: [
+          {
+            replyEn: "Ooh, that is a super pretty color! Do you like animals? What is your favorite animal?",
+            replyVi: "Ôi màu đó đẹp quá! Con có thích động vật không? Con thích con vật nào nhất?",
+            suggestions: ["I love cute dogs!", "My favorite animal is a cat.", "I like rabbits and elephants."]
+          },
+          {
+            replyEn: "Awesome! Can you count from one to five in English for me?",
+            replyVi: "Tuyệt vời! Con có thể đếm từ 1 đến 5 bằng tiếng Anh cho cô nghe không?",
+            suggestions: ["One, two, three, four, five!", "I can count to ten!"]
+          },
+          {
+            replyEn: "Yay! High five! You are a superstar today!",
+            replyVi: "Hoan hô! Đập tay nào! Hôm nay con là một siêu sao đấy!",
+            suggestions: ["Thank you Teacher Sarah!", "I am very happy!"]
+          }
+        ]
+      }
+    ];
+
+    function checkBasicVietnameseMistakes(userText) {
+      const t = (userText || '').trim();
+      const lower = t.toLowerCase();
+      if (/\bi\s+(happy|sad|tired|hungry|busy|fine|good|ready|sorry|excited)\b/.test(lower)) {
+        const adj = lower.match(/\bi\s+(happy|sad|tired|hungry|busy|fine|good|ready|sorry|excited)\b/)[1];
+        return `Mẹo ngữ pháp: Trước tính từ "${adj}" nhớ thêm "am" nhé → "I am ${adj}."`;
+      }
+      if (/\bi\s+from\b/.test(lower)) {
+        return 'Mẹo ngữ pháp: Nhớ thêm động từ "am" → "I am from Vietnam."';
+      }
+      if (/\bi\s+very\s+like\b/.test(lower)) {
+        return 'Mẹo tự nhiên: Người bản xứ nói "I really like..." hoặc "I like ... very much" thay vì "I very like".';
+      }
+      if (/\b(he|she)\s+go\b/.test(lower)) {
+        return 'Mẹo ngữ pháp: Với "He/She" ở thì hiện tại đơn, nhớ chia thành "goes" nhé!';
+      }
+      if (/\bthank\b/.test(lower) && !/\bthank\s+you\b|\bthanks\b/.test(lower)) {
+        return 'Mẹo giao tiếp: Nên nói đầy đủ "Thank you" hoặc "Thanks" thay vì chỉ nói "Thank".';
+      }
+      return '';
+    }
+
+    function getActiveGeminiKey() {
+      const cfgKey = (window.ENGSTART_CONFIG && window.ENGSTART_CONFIG.GEMINI_API_KEY) || '';
+      return (state.geminiApiKey || cfgKey || '').trim();
+    }
+
+    function initAiChatForScenario(scenarioId) {
+      const sc = AI_SCENARIOS.find(s => s.id === scenarioId) || AI_SCENARIOS[0];
+      ui.aiScenarioId = sc.id;
+      ui.aiTurnIdx = 0;
+      ui.aiMessages = [
+        { role: 'ai', en: sc.greetingEn, vi: sc.greetingVi, tip: '', suggestions: sc.suggestions }
+      ];
+      ui.aiLoading = false;
+      ui.aiInput = '';
+    }
+
+    async function sendAiMessage(text) {
+      const clean = (text || '').trim();
+      if (!clean || ui.aiLoading) return;
+      const sc = AI_SCENARIOS.find(s => s.id === ui.aiScenarioId) || AI_SCENARIOS[0];
+      const grammarTip = checkBasicVietnameseMistakes(clean);
+
+      ui.aiMessages.push({ role: 'user', en: clean, tip: grammarTip });
+      ui.aiInput = '';
+      ui.aiLoading = true;
+      renderAiTutorPage();
+
+      const apiKey = getActiveGeminiKey();
+      if (apiKey) {
+        try {
+          const historyText = ui.aiMessages.slice(-8).map(m => `${m.role === 'user' ? 'Student' : 'Teacher Sarah'}: ${m.en}`).join('\n');
+          const prompt = `You are Teacher Sarah, a warm, encouraging English teacher helping a Vietnamese beginner (A0-A2) practice the topic "${sc.title}".\nConversation so far:\n${historyText}\n\nReply strictly in JSON with keys: "en" (short, simple, natural English reply of 1-2 sentences ending with an easy follow-up question), "vi" (natural Vietnamese translation of your reply), "tip" (short Vietnamese grammar/wording correction if the student made a mistake, or "" if good), "suggestions" (array of 3 short simple English sample replies the student can say next). Return ONLY valid JSON.`;
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+          if (!jsonMatch) throw new Error('No JSON');
+          const parsed = JSON.parse(jsonMatch[0]);
+          ui.aiMessages.push({
+            role: 'ai',
+            en: parsed.en || "Great job! Tell me more.",
+            vi: parsed.vi || "Bạn làm tốt lắm! Kể thêm cho cô nghe nhé.",
+            tip: parsed.tip || '',
+            suggestions: Array.isArray(parsed.suggestions) ? parsed.suggestions.slice(0, 3) : []
+          });
+          ui.aiLoading = false;
+          addXp(10, 'Luyện hội thoại AI (+10 XP)');
+          renderAiTutorPage();
+          if (ui.aiAutoSpeak) speakText(parsed.en || '');
+          return;
+        } catch (err) {
+          showToast('Chưa kết nối được Gemini API, chuyển về Chế độ Cô giáo thông minh miễn phí.');
+        }
+      }
+
+      // Built-in Smart Offline Tutor Fallback (100% Free, instant, zero key needed!)
+      setTimeout(() => {
+        const turn = sc.turns[ui.aiTurnIdx] || sc.turns[sc.turns.length - 1];
+        ui.aiTurnIdx = Math.min(ui.aiTurnIdx + 1, sc.turns.length - 1);
+        ui.aiMessages.push({
+          role: 'ai',
+          en: turn.replyEn,
+          vi: turn.replyVi,
+          tip: '',
+          suggestions: turn.suggestions || []
+        });
+        ui.aiLoading = false;
+        addXp(10, 'Luyện phản xạ với Cô Sarah (+10 XP)');
+        renderAiTutorPage();
+        if (ui.aiAutoSpeak) speakText(turn.replyEn);
+      }, 450);
+    }
+
+    function renderAiTutorPage() {
+      const el = document.getElementById('page-tutor');
+      if (!el) return;
+      if (!ui.aiMessages || !ui.aiMessages.length) initAiChatForScenario(ui.aiScenarioId || 'intro');
+      const sc = AI_SCENARIOS.find(s => s.id === ui.aiScenarioId) || AI_SCENARIOS[0];
+      const lastAi = [...ui.aiMessages].reverse().find(m => m.role === 'ai');
+      const hasGemini = Boolean(getActiveGeminiKey());
+
+      el.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Left Sidebar: Scenarios & AI Settings -->
+          <aside class="lg:col-span-4 space-y-4">
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 space-y-3">
+              <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-500 text-white flex items-center justify-center shadow-xs shrink-0">
+                  <i data-lucide="bot" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <div class="font-extrabold text-slate-900 text-sm">Cô giáo AI Sarah</div>
+                  <div class="text-[11px] font-semibold ${hasGemini ? 'text-emerald-600' : 'text-indigo-600'}">
+                    ${hasGemini ? 'Đang bật Gemini AI tự do' : 'Chế độ Luyện nói miễn phí'}
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Chọn tình huống giao tiếp</div>
+              <div class="space-y-1.5">
+                ${AI_SCENARIOS.map(s => {
+                  const active = s.id === sc.id;
+                  return `
+                    <button type="button" data-ai-scenario="${s.id}" class="w-full text-left p-3 rounded-xl border transition-all ${
+                      active ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs' : 'bg-slate-50/80 border-transparent hover:border-indigo-200 text-slate-800'
+                    }">
+                      <div class="text-xs font-bold">${s.title}</div>
+                      <div class="text-[10px] mt-0.5 ${active ? 'text-indigo-200' : 'text-slate-500'}">${s.level}</div>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Optional Gemini API Key Box -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i> Mở khóa trò chuyện tự do (Tuỳ chọn)</span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">
+                Không cần Key bạn vẫn luyện theo 5 tình huống mẫu bên trên. Nếu muốn hỏi đáp tự do mọi chủ đề với Gemini AI, dán API Key miễn phí từ Google AI Studio vào đây:
+              </p>
+              <div class="flex gap-1.5">
+                <input type="password" id="ai-gemini-key-input" value="${(state.geminiApiKey || '').replace(/"/g, '&quot;')}" placeholder="AIzaSy... (tuỳ chọn)" class="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 text-xs outline-none focus:border-indigo-500" />
+                <button type="button" id="ai-save-key-btn" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold">Lưu</button>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Right Main Chat Area -->
+          <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex flex-col min-h-[540px] max-h-[680px]">
+            <!-- Chat Header -->
+            <div class="p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 class="font-extrabold text-slate-900 text-base">${sc.title}</h2>
+                <p class="text-xs text-slate-500">Bấm Micro để nói tiếng Anh hoặc gõ câu trả lời bên dưới</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" id="ai-toggle-autospeak" class="px-2.5 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 ${ui.aiAutoSpeak ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-white border-slate-200 text-slate-500'}">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> ${ui.aiAutoSpeak ? 'Tự đọc: Bật' : 'Tự đọc: Tắt'}
+                </button>
+                <button type="button" id="ai-toggle-vi" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
+                  ${ui.aiShowVi ? 'Ẩn dịch Việt' : 'Hiện dịch Việt'}
+                </button>
+                <button type="button" id="ai-restart-chat" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600" title="Bắt đầu lại cuộc trò chuyện">
+                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Messages List -->
+            <div id="ai-chat-scroll" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+              ${ui.aiMessages.map(m => {
+                if (m.role === 'ai') {
+                  return `
+                    <div class="flex items-start gap-2.5">
+                      <div class="w-8 h-8 rounded-full bg-indigo-600 text-white text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5">S</div>
+                      <div class="max-w-[85%] space-y-1.5">
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl rounded-tl-xs p-3.5 space-y-1.5">
+                          <div class="flex items-start justify-between gap-2">
+                            <div class="text-sm font-bold text-slate-900 leading-relaxed">${m.en}</div>
+                            <button type="button" data-speak="${m.en.replace(/"/g, '&quot;')}" class="p-1.5 rounded-lg bg-white border border-slate-200 text-indigo-600 hover:bg-indigo-50 shrink-0" title="Nghe cô giáo đọc">
+                              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                          </div>
+                          ${(ui.aiShowVi && m.vi) ? `<div class="text-xs text-slate-500">${m.vi}</div>` : ''}
+                        </div>
+                        ${m.tip ? `<div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 font-medium">${m.tip}</div>` : ''}
+                      </div>
+                    </div>
+                  `;
+                }
+                return `
+                  <div class="flex flex-col items-end gap-1">
+                    <div class="max-w-[85%] bg-indigo-600 text-white rounded-2xl rounded-tr-xs px-4 py-3 text-sm font-semibold shadow-2xs">
+                      ${m.en}
+                    </div>
+                    ${m.tip ? `<div class="max-w-[85%] p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 font-medium">${m.tip}</div>` : ''}
+                  </div>
+                `;
+              }).join('')}
+              ${ui.aiLoading ? `<div class="text-xs text-slate-400 italic pl-10">Cô Sarah đang trả lời...</div>` : ''}
+            </div>
+
+            <!-- Quick Reply Suggestions for Beginners -->
+            ${(lastAi && lastAi.suggestions && lastAi.suggestions.length && !ui.aiLoading) ? `
+              <div class="px-4 py-2.5 border-t border-slate-100 bg-slate-50/70 space-y-1.5">
+                <div class="text-[11px] font-bold text-slate-400">Gợi ý câu trả lời (bấm để gửi nhanh hoặc tập nói theo):</div>
+                <div class="flex flex-wrap gap-1.5">
+                  ${lastAi.suggestions.map(sg => `
+                    <button type="button" data-ai-suggest="${sg.replace(/"/g, '&quot;')}" class="px-3 py-1.5 rounded-xl bg-white border border-indigo-200 hover:bg-indigo-50 text-indigo-700 text-xs font-semibold transition-colors">
+                      ${sg}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            <!-- Input + Mic Bar -->
+            <div class="p-3.5 border-t border-slate-100 flex items-center gap-2">
+              <button type="button" id="ai-mic-btn" title="Bấm để nói tiếng Anh bằng Micro" class="w-11 h-11 rounded-xl ${ui.isListening ? 'bg-rose-600 mic-recording text-white' : 'bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200'} flex items-center justify-center shrink-0 transition-all">
+                <i data-lucide="mic" class="w-5 h-5"></i>
+              </button>
+              <input type="text" id="ai-chat-input" value="${(ui.aiInput || '').replace(/"/g, '&quot;')}" placeholder="Gõ tiếng Anh hoặc bấm Micro để nói với Cô Sarah..." autocomplete="off" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 outline-none text-sm" />
+              <button type="button" id="ai-send-btn" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold flex items-center gap-1.5 shrink-0">
+                Gửi <i data-lucide="send" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      refreshIcons();
+      const scroller = document.getElementById('ai-chat-scroll');
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    }
+
+
+    // ==================== CHINESE LEARNING MODULE (TIẾNG TRUNG HSK 1) ====================
+    function speakChinese(text, customRate) {
+      const rate = typeof customRate === 'number' ? customRate : state.speechRate;
+      if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+        showToast('Trình duyệt hiện chưa hỗ trợ đọc âm thanh.');
+        return;
+      }
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'zh-CN';
+        utter.rate = rate;
+        const voices = window.speechSynthesis.getVoices();
+        const zhVoice = voices.find(v => v.lang && (v.lang.toLowerCase() === 'zh-cn' || v.lang.toLowerCase().startsWith('zh')));
+        if (zhVoice) utter.voice = zhVoice;
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        showToast('Không thể phát giọng đọc tiếng Trung lúc này.');
+      }
+    }
+
+    function renderChinesePage() {
+      const el = document.getElementById('page-chinese');
+      if (!el) return;
+      const learned = new Set(state.zhLearnedIds || []);
+      const totalZh = ZH_TOPICS.reduce((a, t) => a + t.words.length, 0);
+      const doneZh = ZH_TOPICS.reduce((a, t) => a + t.words.filter(w => learned.has(w.id)).length, 0);
+      const pct = totalZh ? Math.round((doneZh / totalZh) * 100) : 0;
+      const curTopic = ZH_TOPICS.find(t => t.id === ui.zhTopicId) || ZH_TOPICS[0];
+
+      // Build active sub-view (list / flashcard / quiz)
+      let mainContent = '';
+
+      if (ui.zhMode === 'card') {
+        const words = curTopic.words;
+        const idx = Math.min(Math.max(0, ui.zhCardIdx || 0), words.length - 1);
+        ui.zhCardIdx = idx;
+        const w = words[idx];
+        const isDone = learned.has(w.id);
+
+        mainContent = `
+          <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-6 sm:p-8 space-y-5 text-center">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-400 pb-3 border-b border-slate-100">
+              <span>THẺ ${idx + 1} / ${words.length} · ${curTopic.title}</span>
+              <button type="button" id="zh-toggle-pinyin" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
+                ${ui.zhShowPinyin ? 'Ẩn Pinyin' : 'Hiện Pinyin'}
+              </button>
+            </div>
+
+            <div class="py-4 space-y-3">
+              <div class="text-5xl sm:text-6xl font-extrabold text-slate-900 tracking-wide">${w.hanzi}</div>
+              ${ui.zhShowPinyin ? `<div class="text-xl font-bold text-rose-600">${w.pinyin}</div>` : '<div class="text-xs text-slate-400">(Đang ẩn Pinyin để luyện nhớ chữ Hán)</div>'}
+              <div class="flex items-center justify-center gap-2 pt-2">
+                <button type="button" data-speak-zh="${w.hanzi}" class="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs sm:text-sm font-bold flex items-center gap-1.5">
+                  <i data-lucide="volume-2" class="w-4 h-4"></i> Nghe tiếng Trung
+                </button>
+                <button type="button" data-speak-zh-slow="${w.hanzi}" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold">
+                  Đọc chậm
+                </button>
+              </div>
+            </div>
+
+            ${ui.zhFlipped ? `
+              <div class="space-y-3 text-left bg-rose-50/50 border border-rose-100 rounded-2xl p-4 sm:p-5">
+                <div class="text-center text-2xl font-extrabold text-emerald-700">${w.vi}</div>
+                <div class="bg-white rounded-xl p-3.5 border border-rose-100 flex items-start justify-between gap-2">
+                  <div class="space-y-0.5">
+                    <div class="text-base font-bold text-slate-900">${w.exZh}</div>
+                    <div class="text-xs font-semibold text-rose-600">${w.exPy}</div>
+                    <div class="text-xs text-slate-600">${w.exVi}</div>
+                  </div>
+                  <button type="button" data-speak-zh="${w.exZh}" class="p-2 rounded-lg bg-rose-50 text-rose-600 shrink-0"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                </div>
+              </div>
+            ` : `
+              <button type="button" id="zh-flip-btn" class="w-full py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold shadow-xs">
+                Lật xem nghĩa &amp; câu ví dụ
+              </button>
+            `}
+
+            <div class="grid grid-cols-12 gap-2 pt-2 border-t border-slate-100">
+              <button type="button" id="zh-prev-card" class="col-span-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold">Trước</button>
+              <button type="button" data-zh-toggle="${w.id}" class="col-span-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold ${isDone ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}">
+                ${isDone ? 'Đã thuộc từ này ✓' : 'Đánh dấu đã thuộc (+10 XP)'}
+              </button>
+              <button type="button" id="zh-next-card" class="col-span-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold">Tiếp</button>
+            </div>
+          </div>
+        `;
+      } else if (ui.zhMode === 'quiz') {
+        const qList = ui.zhQuizItems || [];
+        if (!qList.length) {
+          mainContent = `<div class="bg-white rounded-2xl border p-8 text-center text-sm text-slate-500">Đang tạo bài trắc nghiệm...</div>`;
+        } else if (ui.zhQuizDone) {
+          mainContent = `
+            <div class="bg-white rounded-3xl border border-slate-200 p-8 text-center space-y-4">
+              <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto"><i data-lucide="trophy" class="w-8 h-8"></i></div>
+              <h3 class="text-2xl font-extrabold text-slate-900">Kết quả: ${ui.zhQuizScore}/${qList.length} câu đúng</h3>
+              <p class="text-sm text-slate-600">Tuyệt vời! Bạn đang làm quen chữ Hán và Pinyin rất nhanh.</p>
+              <button type="button" id="zh-restart-quiz" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold">Làm lại bài kiểm tra</button>
+            </div>
+          `;
+        } else {
+          const q = qList[ui.zhQuizIdx];
+          const picked = ui.zhQuizPicked;
+          const hasPicked = typeof picked === 'number';
+          mainContent = `
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-5">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-400">
+                <span>CÂU ${ui.zhQuizIdx + 1} / ${qList.length}</span>
+                <button type="button" data-speak-zh="${q.word.hanzi}" class="px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 flex items-center gap-1.5"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe lại</button>
+              </div>
+              <div class="text-center space-y-1 py-2">
+                <div class="text-4xl font-extrabold text-slate-900">${q.word.hanzi}</div>
+                <div class="text-base font-bold text-rose-600">${q.word.pinyin}</div>
+                <div class="text-xs text-slate-500 pt-1">Chọn nghĩa tiếng Việt đúng:</div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                ${q.options.map((opt, i) => {
+                  let cls = 'bg-white border-slate-200 hover:border-rose-400 text-slate-800';
+                  if (hasPicked) {
+                    if (opt.isCorrect) cls = 'bg-emerald-50 border-emerald-500 text-emerald-800 font-bold';
+                    else if (i === picked) cls = 'bg-rose-50 border-rose-400 text-rose-700';
+                    else cls = 'bg-slate-50 border-slate-200 text-slate-400';
+                  }
+                  return `<button type="button" data-zh-opt="${i}" ${hasPicked ? 'disabled' : ''} class="p-4 rounded-xl border text-left text-sm font-semibold ${cls}">${opt.label}</button>`;
+                }).join('')}
+              </div>
+              ${hasPicked ? `
+                <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                  <div class="text-xs sm:text-sm font-bold ${q.options[picked].isCorrect ? 'text-emerald-700' : 'text-rose-700'}">
+                    ${q.options[picked].isCorrect ? 'Chính xác!' : 'Chưa đúng.'} ${q.word.hanzi} (${q.word.pinyin}) = ${q.word.vi}
+                  </div>
+                  <button type="button" id="zh-next-quiz" class="px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold">${ui.zhQuizIdx + 1 === qList.length ? 'Xem kết quả' : 'Câu tiếp theo'}</button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }
+      } else {
+        // Default: Word List + 4 Tones intro
+        mainContent = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${curTopic.words.map(w => {
+              const isDone = learned.has(w.id);
+              return `
+                <div class="bg-white rounded-2xl border ${isDone ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200/80'} p-4 space-y-2.5 hover:border-rose-200 transition-colors">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <div class="flex items-baseline gap-2">
+                        <span class="text-2xl font-extrabold text-slate-900">${w.hanzi}</span>
+                        <span class="text-sm font-bold text-rose-600">${w.pinyin}</span>
+                      </div>
+                      <div class="text-sm font-bold text-emerald-700 mt-0.5">${w.vi}</div>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                      <button type="button" data-speak-zh="${w.hanzi}" title="Nghe tiếng Trung" class="p-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                      <button type="button" data-zh-toggle="${w.id}" title="Đánh dấu đã thuộc" class="p-2 rounded-lg border ${isDone ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-white border-slate-200 text-slate-400 hover:text-emerald-600'}"><i data-lucide="check" class="w-4 h-4"></i></button>
+                    </div>
+                  </div>
+                  <div class="bg-slate-50 rounded-xl p-2.5 text-xs flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-slate-800">${w.exZh} <span class="font-medium text-rose-600">(${w.exPy})</span></div>
+                      <div class="text-slate-500 mt-0.5">${w.exVi}</div>
+                    </div>
+                    <button type="button" data-speak-zh="${w.exZh}" class="p-1.5 rounded-lg bg-white border border-slate-200 text-rose-600 shrink-0"><i data-lucide="play" class="w-3.5 h-3.5"></i></button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      el.innerHTML = `
+        <!-- Chinese Hero Strip -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold uppercase tracking-wider">
+                Tiếng Trung từ con số 0 · HSK 1 (Giản thể + Pinyin)
+              </div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Học Tiếng Trung Giao Tiếp (120 từ HSK 1–2 & Hội thoại)</h1>
+              <p class="text-sm text-slate-600 mt-1">Làm quen 4 thanh điệu Pinyin, học 120 từ giao tiếp chia 12 chủ đề với giọng đọc bản xứ (zh-CN), Thẻ ghi nhớ ẩn/hiện Pinyin và trắc nghiệm nhanh.</p>
+            </div>
+            <div class="bg-slate-100 p-1 rounded-xl inline-flex text-xs font-bold shrink-0 self-start">
+              <button type="button" data-zh-mode="list" class="px-3.5 py-2 rounded-lg ${ui.zhMode === 'list' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Danh sách từ</button>
+              <button type="button" data-zh-mode="card" class="px-3.5 py-2 rounded-lg ${ui.zhMode === 'card' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Thẻ ghi nhớ</button>
+              <button type="button" data-zh-mode="quiz" class="px-3.5 py-2 rounded-lg ${ui.zhMode === 'quiz' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Trắc nghiệm</button>
+              <button type="button" data-zh-mode="dialogue" class="px-3.5 py-2 rounded-lg ${ui.zhMode === 'dialogue' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-600'}">Hội thoại</button>
+            </div>
+          </div>
+
+          <!-- 4 Pinyin Tones Bar -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 pt-2 border-t border-slate-100">
+            ${ZH_TONES.map(t => `
+              <button type="button" data-speak-zh="${t.sample}" class="text-left p-3 rounded-xl bg-rose-50/40 hover:bg-rose-50 border border-rose-100 transition-colors">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold text-rose-700">${t.mark}</span>
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rose-500"></i>
+                </div>
+                <div class="text-lg font-extrabold text-slate-900 mt-0.5">${t.sample} <span class="text-sm font-bold text-rose-600">${t.pinyin}</span> <span class="text-xs font-normal text-slate-500">(${t.meaning})</span></div>
+                <div class="text-[11px] text-slate-500 mt-1 leading-snug">${t.desc}</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- 2-Column Chinese Topics -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <aside class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 space-y-3">
+            <div class="space-y-1.5 pb-2 border-b border-slate-100">
+              <div class="flex items-center justify-between text-xs font-bold">
+                <span class="text-slate-600">Tiến độ Tiếng Trung</span>
+                <span class="text-rose-600">${doneZh}/${totalZh} từ (${pct}%)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-rose-500 to-amber-500 rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+            </div>
+            <div class="space-y-1.5 max-h-[500px] overflow-y-auto pr-1">
+              ${ZH_TOPICS.map(t => {
+                const active = t.id === curTopic.id;
+                const dCount = t.words.filter(w => learned.has(w.id)).length;
+                return `
+                  <button type="button" data-zh-topic="${t.id}" class="w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between gap-2 ${active ? 'bg-rose-600 border-rose-600 text-white shadow-xs' : 'bg-slate-50/70 border-transparent hover:border-rose-200 text-slate-800'}">
+                    <div>
+                      <div class="text-xs font-bold ${active ? 'text-rose-100' : 'text-rose-600'}">Chủ đề ${t.num}</div>
+                      <div class="text-sm font-bold">${t.title}</div>
+                      <div class="text-[11px] ${active ? 'text-rose-100' : 'text-slate-500'}">${dCount}/${t.words.length} từ đã thuộc</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 shrink-0"></i>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </aside>
+
+          <div class="lg:col-span-8 space-y-4">
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-4 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 class="text-lg font-extrabold text-slate-900">Chủ đề ${curTopic.num}: ${curTopic.title}</h2>
+                <p class="text-xs text-slate-500">${curTopic.desc}</p>
+              </div>
+            </div>
+            ${mainContent}
+          </div>
+        </div>
+      `;
+      refreshIcons();
+    }
+
+    function startChineseQuiz() {
+      const curTopic = ZH_TOPICS.find(t => t.id === ui.zhTopicId) || ZH_TOPICS[0];
+      const allZh = ZH_TOPICS.flatMap(t => t.words);
+      const selected = shuffleArray(curTopic.words).slice(0, 6);
+      ui.zhQuizItems = selected.map(w => {
+        const others = shuffleArray(allZh.filter(x => x.id !== w.id)).slice(0, 3);
+        return {
+          word: w,
+          options: shuffleArray([w, ...others]).map(x => ({ label: x.vi, isCorrect: x.id === w.id }))
+        };
+      });
+      ui.zhQuizIdx = 0;
+      ui.zhQuizPicked = null;
+      ui.zhQuizScore = 0;
+      ui.zhQuizDone = false;
+    }
+
     // ==================== GOOGLE LOGIN & AUTO CLOUD SYNC (SUPABASE AUTH) ====================
+    function handleCustomAvatarFile(file) {
+      if (!file) return;
+      if (!file.type || !file.type.startsWith('image/')) {
+        showToast('Vui lòng chọn tệp hình ảnh (JPG, PNG, WebP...).');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const size = 160;
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          const minSide = Math.min(img.width, img.height);
+          const sx = (img.width - minSide) / 2;
+          const sy = (img.height - minSide) / 2;
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.84);
+          if (!state.profile) state.profile = { name: '', email: '', customAvatar: '' };
+          state.profile.customAvatar = dataUrl;
+          saveState();
+          syncHeaderStats();
+          renderAuthPanel();
+          showToast('Đã lưu ảnh nhận diện cá nhân của bạn!');
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     function renderAuthPanel() {
       const box = document.getElementById('auth-panel-box');
       if (!box) return;
       const configured = Boolean(sbClient);
+      const customAvatar = (state.profile && state.profile.customAvatar) || '';
+      const customName = (state.profile && state.profile.name) || '';
+
+      const meta = (currentAuthUser && currentAuthUser.user_metadata) || {};
+      const googleName = meta.full_name || meta.name || (currentAuthUser && currentAuthUser.email ? currentAuthUser.email.split('@')[0] : 'Học viên EngStart');
+      const displayName = (customName && customName.trim()) || googleName;
+      const email = (currentAuthUser && currentAuthUser.email) || '';
+      const avatar = customAvatar || meta.avatar_url || '';
+
+      const personalCardHtml = `
+        <div class="bg-white rounded-2xl border border-indigo-100 p-3.5 space-y-3">
+          <div class="flex items-center gap-3.5">
+            <div class="relative shrink-0">
+              ${avatar
+                ? `<img src="${avatar}" alt="${displayName}" class="w-14 h-14 rounded-full border-2 border-indigo-100 shadow-xs object-cover" />`
+                : `<div class="w-14 h-14 rounded-full bg-indigo-600 text-white font-extrabold flex items-center justify-center text-xl">${displayName.charAt(0).toUpperCase()}</div>`
+              }
+            </div>
+            <div class="min-w-0 flex-1 space-y-1.5">
+              <div class="text-xs font-bold uppercase tracking-wider text-indigo-700">Nhận diện cá nhân</div>
+              <div class="flex flex-wrap items-center gap-2">
+                <label for="custom-avatar-input" class="cursor-pointer px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="camera" class="w-3.5 h-3.5"></i> ${customAvatar ? 'Đổi ảnh của bạn' : 'Tải ảnh của bạn'}
+                </label>
+                <input type="file" id="custom-avatar-input" accept="image/*" class="hidden" />
+                ${customAvatar ? `
+                  <button type="button" id="remove-custom-avatar-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-xs font-semibold transition-colors">
+                    Xóa ảnh riêng
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="text" id="profile-name-input" value="${customName.replace(/"/g, '&quot;')}" placeholder="Tên hiển thị của bạn (ví dụ: Minh Anh)" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none text-xs font-semibold text-slate-800" />
+            <button type="button" id="save-profile-name-btn" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shrink-0">Lưu tên</button>
+          </div>
+        </div>
+      `;
 
       if (currentAuthUser) {
-        const meta = currentAuthUser.user_metadata || {};
-        const name = meta.full_name || meta.name || 'Học viên EngStart';
-        const email = currentAuthUser.email || '';
-        const avatar = meta.avatar_url || '';
         const syncLabel = cloudSyncStatus === 'saving'
           ? 'Đang tự động lưu lên mây...'
           : (cloudSyncStatus === 'synced' ? 'Đã tự động đồng bộ lên đám mây' : 'Sẵn sàng đồng bộ tự động');
 
         box.innerHTML = `
-          <div class="flex items-center gap-3">
-            ${avatar
-              ? `<img src="${avatar}" alt="${name}" class="w-12 h-12 rounded-full border-2 border-white shadow-xs object-cover" />`
-              : `<div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-extrabold flex items-center justify-center text-lg">${name.charAt(0).toUpperCase()}</div>`
-            }
-            <div class="min-w-0 flex-1">
-              <div class="font-extrabold text-slate-900 text-sm sm:text-base truncate">${name}</div>
-              <div class="text-xs text-slate-500 truncate">${email}</div>
-              <div class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 mt-1">
+          ${personalCardHtml}
+          <div class="flex items-center justify-between gap-3 px-1">
+            <div class="min-w-0">
+              <div class="font-bold text-slate-900 text-xs sm:text-sm truncate">${displayName}</div>
+              <div class="text-[11px] text-slate-500 truncate">${email}</div>
+              <div class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 mt-0.5">
                 <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> ${syncLabel}
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-2 pt-2">
+          <div class="grid grid-cols-2 gap-2 pt-1">
             <button type="button" id="manual-cloud-sync-btn" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5">
               <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Đồng bộ ngay
             </button>
@@ -1683,7 +2459,8 @@
         `;
       } else {
         box.innerHTML = `
-          <div class="space-y-3">
+          ${personalCardHtml}
+          <div class="space-y-3 pt-1">
             <div class="text-xs font-bold uppercase tracking-wider text-indigo-700">Đăng nhập bằng tài khoản Google</div>
             <p class="text-xs text-slate-600 leading-relaxed">
               Đăng nhập bằng Gmail giúp tự động lưu mọi buổi học (XP, Streak, lịch ôn SRS, bài đã qua và Sổ tay) để bạn học tiếp trên cả điện thoại lẫn máy tính.
@@ -1941,6 +2718,24 @@
         if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
         return;
       }
+      if (e.target.closest('#remove-custom-avatar-btn')) {
+        if (state.profile) state.profile.customAvatar = '';
+        saveState();
+        syncHeaderStats();
+        renderAuthPanel();
+        showToast('Đã xóa ảnh riêng.');
+        return;
+      }
+      if (e.target.closest('#save-profile-name-btn')) {
+        const inp = document.getElementById('profile-name-input');
+        if (!state.profile) state.profile = { name: '', email: '', customAvatar: '' };
+        state.profile.name = inp ? inp.value.trim() : '';
+        saveState();
+        syncHeaderStats();
+        renderAuthPanel();
+        showToast('Đã lưu tên hiển thị!');
+        return;
+      }
       if (e.target.closest('#google-signin-btn')) { signInWithGoogle(); return; }
       if (e.target.closest('#google-signout-btn')) { signOutGoogle(); return; }
       if (e.target.closest('#manual-cloud-sync-btn')) { pushProgressToCloud(false); return; }
@@ -2156,6 +2951,206 @@
 
       // SRS Review actions
 
+
+
+      // Chinese Module actions
+      const spkZh = e.target.closest('[data-speak-zh]');
+      if (spkZh) { e.stopPropagation(); speakChinese(spkZh.dataset.speakZh); return; }
+      const spkZhSlow = e.target.closest('[data-speak-zh-slow]');
+      if (spkZhSlow) { e.stopPropagation(); speakChinese(spkZhSlow.dataset.speakZhSlow, 0.65); return; }
+      const zhTopicBtn = e.target.closest('[data-zh-topic]');
+      if (zhTopicBtn) {
+        ui.zhTopicId = zhTopicBtn.dataset.zhTopic;
+        ui.zhCardIdx = 0; ui.zhFlipped = false;
+        if (ui.zhMode === 'quiz') startChineseQuiz();
+        renderChinesePage();
+        return;
+      }
+      const zhModeBtn = e.target.closest('[data-zh-mode]');
+      if (zhModeBtn) {
+        ui.zhMode = zhModeBtn.dataset.zhMode;
+        ui.zhCardIdx = 0; ui.zhFlipped = false;
+        if (ui.zhMode === 'quiz') startChineseQuiz();
+        renderChinesePage();
+        return;
+      }
+      if (e.target.closest('#zh-toggle-pinyin')) { ui.zhShowPinyin = !ui.zhShowPinyin; renderChinesePage(); return; }
+      if (e.target.closest('#zh-flip-btn')) { ui.zhFlipped = true; renderChinesePage(); return; }
+      if (e.target.closest('#zh-prev-card')) { ui.zhCardIdx = Math.max(0, (ui.zhCardIdx || 0) - 1); ui.zhFlipped = false; renderChinesePage(); return; }
+      if (e.target.closest('#zh-next-card')) {
+        const curTopic = ZH_TOPICS.find(t => t.id === ui.zhTopicId) || ZH_TOPICS[0];
+        if ((ui.zhCardIdx || 0) + 1 >= curTopic.words.length) {
+          markZhStep(curTopic.id, 'cards', 15, 'Hoàn thành học thẻ Tiếng Trung! (+3 ⭐)');
+          ui.zhMode = 'overview';
+          ui.zhCardIdx = 0;
+        } else {
+          ui.zhCardIdx = (ui.zhCardIdx || 0) + 1;
+        }
+        ui.zhFlipped = false;
+        renderChinesePage();
+        return;
+      }
+      const zhTrackBtn = e.target.closest('[data-zh-track]');
+      if (zhTrackBtn) { ui.zhTrack = zhTrackBtn.dataset.zhTrack; ui.zhMode = 'overview'; renderChinesePage(); return; }
+      const zhGramBtn = e.target.closest('[data-zh-gram]');
+      if (zhGramBtn) { ui.zhGrammarId = zhGramBtn.dataset.zhGram; renderChinesePage(); return; }
+      const zhStartSpk = e.target.closest('[data-zh-start-speak]');
+      if (zhStartSpk) { startChineseSpeakingSession(zhStartSpk.dataset.zhStartSpeak); return; }
+      const zhStartLis = e.target.closest('[data-zh-start-listen]');
+      if (zhStartLis) { startChineseListeningSession(zhStartLis.dataset.zhStartListen); return; }
+      const zhListenOpt = e.target.closest('[data-zh-listen-opt]');
+      if (zhListenOpt && typeof ui.zhListenPicked !== 'number') {
+        const idx = Number(zhListenOpt.dataset.zhListenOpt);
+        ui.zhListenPicked = idx;
+        if (ui.zhListenItems[ui.zhListenIdx].options[idx].isCorrect) ui.zhListenScore += 1;
+        renderChinesePage();
+        return;
+      }
+      if (e.target.closest('#zh-next-listen')) {
+        if (ui.zhListenIdx + 1 < ui.zhListenItems.length) {
+          ui.zhListenIdx += 1; ui.zhListenPicked = null;
+          renderChinesePage();
+          speakChinese(ui.zhListenItems[ui.zhListenIdx].word.hanzi);
+        } else {
+          ui.zhListenDone = true;
+          markZhStep(ui.zhTopicId, 'listening', 15, 'Hoàn thành Luyện nghe Tiếng Trung! (+2 ⭐)');
+          renderChinesePage();
+        }
+        return;
+      }
+      if (e.target.closest('#zh-mic-btn')) {
+        const Ctor = getSpeechRecognitionCtor();
+        if (!Ctor) { showToast('Trình duyệt chưa hỗ trợ Micro (hãy dùng Chrome hoặc Edge).'); return; }
+        const curTopic = ZH_TOPICS.find(t => t.id === ui.zhTopicId) || ZH_TOPICS[0];
+        const w = curTopic.words[ui.zhSpeakIdx || 0];
+        try {
+          const rec = new Ctor();
+          rec.lang = 'zh-CN'; rec.interimResults = false; rec.maxAlternatives = 1;
+          ui.isListening = true; renderChinesePage();
+          rec.onresult = (ev) => {
+            const transcript = ev.results?.[0]?.[0]?.transcript || '';
+            ui.isListening = false;
+            const matched = transcript.includes(w.hanzi) || normalizeText(transcript) === normalizeText(w.hanzi);
+            ui.zhSpeakEval = { transcript, matched };
+            if (matched) addXp(10, 'Phát âm tiếng Trung chuẩn lắm! (+10 XP)');
+            renderChinesePage();
+          };
+          rec.onerror = () => { ui.isListening = false; showToast('Chưa nghe rõ giọng đọc, hãy thử lại!'); renderChinesePage(); };
+          rec.start();
+        } catch (err) { ui.isListening = false; }
+        return;
+      }
+      if (e.target.closest('#zh-speak-next')) {
+        const curTopic = ZH_TOPICS.find(t => t.id === ui.zhTopicId) || ZH_TOPICS[0];
+        if ((ui.zhSpeakIdx || 0) + 1 >= curTopic.words.length) {
+          markZhStep(curTopic.id, 'speaking', 20, 'Hoàn thành Luyện nói Tiếng Trung! (+2 ⭐)');
+          ui.zhMode = 'overview';
+        } else {
+          ui.zhSpeakIdx = (ui.zhSpeakIdx || 0) + 1;
+          ui.zhSpeakEval = null;
+        }
+        renderChinesePage();
+        return;
+      }
+      const zhToggle = e.target.closest('[data-zh-toggle]');
+      if (zhToggle) {
+        const id = zhToggle.dataset.zhToggle;
+        if (!Array.isArray(state.zhLearnedIds)) state.zhLearnedIds = [];
+        if (state.zhLearnedIds.includes(id)) {
+          state.zhLearnedIds = state.zhLearnedIds.filter(x => x !== id);
+          saveState();
+        } else {
+          state.zhLearnedIds.push(id);
+          addXp(10, 'Đã thuộc thêm 1 từ Tiếng Trung! (+10 XP)');
+        }
+        renderChinesePage();
+        return;
+      }
+      const zhOpt = e.target.closest('[data-zh-opt]');
+      if (zhOpt && typeof ui.zhQuizPicked !== 'number') {
+        const idx = Number(zhOpt.dataset.zhOpt);
+        ui.zhQuizPicked = idx;
+        if (ui.zhQuizItems[ui.zhQuizIdx].options[idx].isCorrect) ui.zhQuizScore += 1;
+        renderChinesePage();
+        return;
+      }
+      if (e.target.closest('#zh-next-quiz')) {
+        if (ui.zhQuizIdx + 1 < ui.zhQuizItems.length) { ui.zhQuizIdx += 1; ui.zhQuizPicked = null; }
+        else {
+          ui.zhQuizDone = true;
+          if (ui.zhQuizScore >= 4) {
+            markZhStep(ui.zhTopicId, 'quiz', 20, 'Vượt qua Trắc nghiệm Tiếng Trung! (+3 ⭐)');
+            if (typeof confetti === 'function') confetti({ particleCount: 70, spread: 65, origin: { y: 0.7 } });
+          } else {
+            addXp(ui.zhQuizScore * 5, `Hoàn thành Trắc nghiệm Tiếng Trung! (+${ui.zhQuizScore * 5} XP)`);
+          }
+        }
+        renderChinesePage();
+        return;
+      }
+      if (e.target.closest('#zh-restart-quiz')) { startChineseQuiz(); renderChinesePage(); return; }
+      const zhPlayDlg = e.target.closest('[data-zh-play-dlg]');
+      if (zhPlayDlg) {
+        const d = ZH_DIALOGUES.find(x => x.id === zhPlayDlg.dataset.zhPlayDlg);
+        if (d) {
+          let i = 0;
+          const playNext = () => {
+            if (i >= d.lines.length) return;
+            const text = d.lines[i].zh; i += 1;
+            if ('speechSynthesis' in window) {
+              window.speechSynthesis.cancel();
+              const u = new SpeechSynthesisUtterance(text); u.lang = 'zh-CN'; u.rate = state.speechRate;
+              u.onend = () => setTimeout(playNext, 450);
+              window.speechSynthesis.speak(u);
+            }
+          };
+          playNext();
+        }
+        return;
+      }
+
+      // AI Teacher actions
+      const aiScBtn = e.target.closest('[data-ai-scenario]');
+      if (aiScBtn) {
+        initAiChatForScenario(aiScBtn.dataset.aiScenario);
+        renderAiTutorPage();
+        const sc = AI_SCENARIOS.find(s => s.id === ui.aiScenarioId);
+        if (sc && ui.aiAutoSpeak) speakText(sc.greetingEn);
+        return;
+      }
+      const aiSugBtn = e.target.closest('[data-ai-suggest]');
+      if (aiSugBtn) { sendAiMessage(aiSugBtn.dataset.aiSuggest); return; }
+      if (e.target.closest('#ai-send-btn')) {
+        const inp = document.getElementById('ai-chat-input');
+        sendAiMessage(inp ? inp.value : ui.aiInput);
+        return;
+      }
+      if (e.target.closest('#ai-mic-btn')) {
+        const Ctor = getSpeechRecognitionCtor();
+        if (!Ctor) { showToast('Trình duyệt chưa hỗ trợ Micro (hãy dùng Chrome hoặc Edge).'); return; }
+        showToast('Đang lắng nghe... Hãy nói câu tiếng Anh của bạn!');
+        startSpeechCapture('hello', (res) => {
+          if (res && res.transcript) {
+            sendAiMessage(res.transcript);
+          } else {
+            renderAiTutorPage();
+          }
+        });
+        renderAiTutorPage();
+        return;
+      }
+      if (e.target.closest('#ai-toggle-autospeak')) { ui.aiAutoSpeak = !ui.aiAutoSpeak; renderAiTutorPage(); return; }
+      if (e.target.closest('#ai-toggle-vi')) { ui.aiShowVi = !ui.aiShowVi; renderAiTutorPage(); return; }
+      if (e.target.closest('#ai-restart-chat')) { initAiChatForScenario(ui.aiScenarioId); renderAiTutorPage(); return; }
+      if (e.target.closest('#ai-save-key-btn')) {
+        const inp = document.getElementById('ai-gemini-key-input');
+        state.geminiApiKey = inp ? inp.value.trim() : '';
+        saveState();
+        renderAiTutorPage();
+        showToast(state.geminiApiKey ? 'Đã lưu Gemini API Key! Cô Sarah đã sẵn sàng trò chuyện tự do.' : 'Đã xóa Key, dùng Chế độ Cô giáo miễn phí.');
+        return;
+      }
+
       // 10K Vocab Bank actions
       const bankSizeBtn = e.target.closest('[data-bank-size]');
       if (bankSizeBtn) { state.bankDailySize = Number(bankSizeBtn.dataset.bankSize); ui.bankDay = 1; ui.bankPage = 1; saveState(); renderBankPage(); return; }
@@ -2167,15 +3162,18 @@
       if (bankFilterBtn) { ui.bankFilter = bankFilterBtn.dataset.bankFilter; ui.bankPage = 1; renderBankPage(); return; }
       if (e.target.closest('#bank-prev-page')) { ui.bankPage = Math.max(1, (ui.bankPage || 1) - 1); renderBankPage(); return; }
       if (e.target.closest('#bank-next-page')) { ui.bankPage = (ui.bankPage || 1) + 1; renderBankPage(); return; }
+      const bankLangBtn = e.target.closest('[data-bank-lang]');
+      if (bankLangBtn) { ui.bankLang = bankLangBtn.dataset.bankLang; ui.bankDay = 1; ui.bankPage = 1; ui.bankFilter = 'all'; ui.bankSearch = ''; renderBankPage(); return; }
       const bankToggle = e.target.closest('[data-bank-toggle]');
       if (bankToggle) {
         const id = bankToggle.dataset.bankToggle;
-        if (!Array.isArray(state.bankLearnedIds)) state.bankLearnedIds = [];
-        if (state.bankLearnedIds.includes(id)) {
-          state.bankLearnedIds = state.bankLearnedIds.filter(x => x !== id);
+        const arrKey = ui.bankLang === 'zh' ? 'zhBankLearnedIds' : 'bankLearnedIds';
+        if (!Array.isArray(state[arrKey])) state[arrKey] = [];
+        if (state[arrKey].includes(id)) {
+          state[arrKey] = state[arrKey].filter(x => x !== id);
           saveState();
         } else {
-          state.bankLearnedIds.push(id);
+          state[arrKey].push(id);
           addXp(5, 'Đã thuộc thêm 1 từ giao tiếp! (+5 XP)');
         }
         renderBankPage();
@@ -2243,10 +3241,16 @@
       if (e.target.id === 'notebook-textarea') { state.notebook = e.target.value; saveState(); }
       if (e.target.id === 'card-recall-input' && ui.session) ui.session.typedValue = e.target.value;
       if (e.target.id === 'dictation-input' && ui.session) ui.session.inputVal = e.target.value;
+      if (e.target.id === 'ai-chat-input') { ui.aiInput = e.target.value; }
       if (e.target.id === 'bank-search-input') { ui.bankSearch = e.target.value; ui.bankPage = 1; renderBankPage(); const inp = document.getElementById('bank-search-input'); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'custom-avatar-input' && e.target.files && e.target.files[0]) {
+        handleCustomAvatarFile(e.target.files[0]);
+        e.target.value = '';
+        return;
+      }
       if (e.target.id === 'bank-import-input') {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
@@ -2274,8 +3278,9 @@
                 }
               });
             }
-            if (!Array.isArray(state.customBankWords)) state.customBankWords = [];
-            state.customBankWords = state.customBankWords.concat(added.slice(0, 10000));
+            const targetKey = ui.bankLang === 'zh' ? 'zhCustomBankWords' : 'customBankWords';
+            if (!Array.isArray(state[targetKey])) state[targetKey] = [];
+            state[targetKey] = state[targetKey].concat(added.slice(0, 10000));
             saveState();
             renderBankPage();
             showToast(`Đã nạp thêm ${added.length} từ vào Kho Giao Tiếp!`);
@@ -2311,7 +3316,8 @@
     document.addEventListener('keydown', (e) => {
       const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
       if (tag === 'input' || tag === 'textarea') {
-        if (e.key === 'Enter' && e.target.id === 'card-recall-input') { e.preventDefault(); checkCardRecall(); }
+        if (e.key === 'Enter' && e.target.id === 'ai-chat-input') { e.preventDefault(); sendAiMessage(e.target.value); }
+        else if (e.key === 'Enter' && e.target.id === 'card-recall-input') { e.preventDefault(); checkCardRecall(); }
         else if (e.key === 'Enter' && e.target.id === 'dictation-input') {
           e.preventDefault();
           if (ui.session && ui.session.status === 'correct') { const b = document.getElementById('dictation-next-btn'); if (b) b.click(); }

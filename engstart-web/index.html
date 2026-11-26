@@ -40,23 +40,26 @@
         </div>
       </button>
 
-      <!-- Main Navigation -->
-      <nav aria-label="Điều hướng chính" class="hidden md:flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl">
-        <button type="button" data-main-nav="roadmap" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
-          <i data-lucide="map" class="w-4 h-4"></i> Lộ trình
+      <!-- Main Navigation (Single-line compact) -->
+      <nav aria-label="Điều hướng chính" class="hidden md:flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl shrink-0">
+        <button type="button" data-main-nav="roadmap" class="main-nav-btn whitespace-nowrap px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="map" class="w-3.5 h-3.5 shrink-0"></i> Tiếng Anh
         </button>
-        <button type="button" data-main-nav="bank" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
-          <i data-lucide="library" class="w-4 h-4"></i> Kho 10K từ
+        <button type="button" data-main-nav="chinese" class="main-nav-btn whitespace-nowrap px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="languages" class="w-3.5 h-3.5 shrink-0 text-rose-500"></i> Tiếng Trung
         </button>
-        <button type="button" data-main-nav="review" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
-          <i data-lucide="brain" class="w-4 h-4"></i> Ôn tập SRS
+        <button type="button" data-main-nav="bank" class="main-nav-btn whitespace-nowrap px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="library" class="w-3.5 h-3.5 shrink-0"></i> Kho 10K
+        </button>
+        <button type="button" data-main-nav="tutor" class="main-nav-btn whitespace-nowrap px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="bot" class="w-3.5 h-3.5 shrink-0"></i> Cô giáo AI
+        </button>
+        <button type="button" data-main-nav="review" class="main-nav-btn whitespace-nowrap px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="brain" class="w-3.5 h-3.5 shrink-0"></i> Ôn SRS
           <span id="nav-review-badge" class="ml-0.5 px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-700 text-[11px] font-bold hidden">0</span>
         </button>
-        <button type="button" data-main-nav="ipa" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
-          <i data-lucide="volume-2" class="w-4 h-4"></i> Phát âm
-        </button>
-        <button type="button" id="header-notebook-btn" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
-          <i data-lucide="notebook-pen" class="w-4 h-4"></i> Sổ tay
+        <button type="button" id="header-notebook-btn" class="whitespace-nowrap px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
+          <i data-lucide="notebook-pen" class="w-3.5 h-3.5 shrink-0"></i> Sổ tay
         </button>
       </nav>
 
@@ -88,7 +91,7 @@
 
         <!-- Account / Google Login & Cloud Sync Button -->
         <button type="button" id="open-account-modal-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors">
-          <img id="header-user-avatar" src="" alt="" class="w-4 h-4 rounded-full hidden object-cover" />
+          <img id="header-user-avatar" src="" alt="" class="w-5 h-5 rounded-full hidden object-cover ring-1 ring-white/40" />
           <i id="header-user-icon" data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
           <span id="header-user-label" class="max-w-[96px] truncate">Đăng nhập</span>
         </button>
@@ -107,6 +110,12 @@
         </button>
         <button type="button" data-main-nav="bank" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
           <i data-lucide="library" class="w-3.5 h-3.5"></i> Kho 10K từ
+        </button>
+        <button type="button" data-main-nav="tutor" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="bot" class="w-3.5 h-3.5"></i> Giáo viên AI
+        </button>
+        <button type="button" data-main-nav="chinese" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="languages" class="w-3.5 h-3.5"></i> Tiếng Trung
         </button>
         <button type="button" data-main-nav="review" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
           <i data-lucide="brain" class="w-3.5 h-3.5"></i> Ôn tập SRS
@@ -247,6 +256,12 @@
 
     <!-- ========== PAGE 4: 10K COMMUNICATION VOCAB BANK ========== -->
     <section id="page-bank" class="page-section hidden space-y-6 animate-pop"></section>
+
+    <!-- ========== PAGE 5: AI TEACHER (CÔ SARAH) ========== -->
+    <section id="page-tutor" class="page-section hidden space-y-6 animate-pop"></section>
+
+    <!-- ========== PAGE 6: CHINESE HSK 1 ========== -->
+    <section id="page-chinese" class="page-section hidden space-y-6 animate-pop"></section>
   </main>
 
   <!-- ==================== NOTEBOOK DRAWER ==================== -->
@@ -354,6 +369,13 @@
   <script src="./js/config.js"></script>
   <script src="./js/data.js"></script>
   <script src="./js/vocab_bank.js"></script>
+  <script src="./js/chinese.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>  <script src="./js/config.js"></script>
+  <script src="./js/data.js"></script>
+  <script src="./js/vocab_bank.js"></script>
+  <script src="./js/chinese.js"></script>
   <script src="./js/app.js"></script>
 </body>
 </html>
