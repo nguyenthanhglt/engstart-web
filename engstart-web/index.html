@@ -10,6 +10,7 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.10/dist/umd/supabase.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -82,10 +83,11 @@
           <span id="speed-label">1.0x</span>
         </button>
 
-        <!-- Account / Cloud Sync Button -->
+        <!-- Account / Google Login & Cloud Sync Button -->
         <button type="button" id="open-account-modal-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors">
-          <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span id="header-user-label" class="max-w-[84px] truncate">Tài khoản</span>
+          <img id="header-user-avatar" src="" alt="" class="w-4 h-4 rounded-full hidden object-cover" />
+          <i id="header-user-icon" data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span id="header-user-label" class="max-w-[96px] truncate">Đăng nhập</span>
         </button>
 
         <button type="button" id="open-reset-modal-btn" title="Đặt lại tiến độ học" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" aria-label="Đặt lại tiến độ">
@@ -268,8 +270,8 @@
             <i data-lucide="cloud" class="w-5 h-5"></i>
           </div>
           <div>
-            <h3 class="text-lg font-extrabold text-slate-900">Tài khoản &amp; Đồng bộ Đám mây</h3>
-            <p class="text-xs text-slate-500">Lưu tiến độ đa thiết bị qua Supabase hoặc xuất file JSON</p>
+            <h3 class="text-lg font-extrabold text-slate-900">Đăng nhập &amp; Lưu tiến độ</h3>
+            <p class="text-xs text-slate-500">Đăng nhập Gmail để tự động lưu từng buổi học lên đám mây</p>
           </div>
         </div>
         <button type="button" id="close-account-modal-btn" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100" aria-label="Đóng">
@@ -277,56 +279,14 @@
         </button>
       </div>
 
-      <!-- Profile Section -->
-      <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
-        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">1. Hồ sơ người học</div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <input type="text" id="acc-name-input" placeholder="Tên hiển thị (VD: Minh Anh)" class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm outline-none focus:border-indigo-500" />
-          <input type="email" id="acc-email-input" placeholder="Email (dùng làm ID đồng bộ)" class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <button type="button" id="save-profile-btn" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold transition-colors">
-          Lưu thông tin tài khoản
-        </button>
-      </div>
-
-      <!-- Supabase Cloud Sync Section -->
-      <div class="space-y-3 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100">
-        <div class="flex items-center justify-between">
-          <div class="text-xs font-bold uppercase tracking-wider text-indigo-700">2. Kết nối Supabase (Đám mây)</div>
-          <span id="cloud-sync-badge" class="px-2 py-0.5 rounded-full bg-white border border-indigo-200 text-[11px] font-bold text-slate-600">Chưa kết nối</span>
-        </div>
-        <p class="text-xs text-slate-600 leading-relaxed">
-          Nhập <strong>Project URL</strong> và <strong>Anon Key</strong> từ dự án Supabase miễn phí của bạn để đồng bộ XP, Streak, SRS giữa điện thoại và máy tính.
-        </p>
-        <div class="space-y-2">
-          <input type="url" id="sb-url-input" placeholder="https://xxxx.supabase.co" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm outline-none focus:border-indigo-500" />
-          <input type="password" id="sb-key-input" placeholder="Supabase Anon Public Key (eyJ...)" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" id="sb-push-btn" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5">
-            <i data-lucide="cloud-upload" class="w-4 h-4"></i> Đẩy lên Đám mây
-          </button>
-          <button type="button" id="sb-pull-btn" class="py-2.5 px-3 rounded-xl bg-white border border-indigo-200 hover:bg-indigo-50 text-indigo-700 text-xs font-bold flex items-center justify-center gap-1.5">
-            <i data-lucide="cloud-download" class="w-4 h-4"></i> Tải về máy này
-          </button>
-        </div>
-        <details class="text-xs text-slate-600 pt-1">
-          <summary class="cursor-pointer font-semibold text-indigo-700 hover:underline">Xem lệnh SQL tạo bảng trên Supabase (10 giây)</summary>
-          <div class="mt-2 bg-slate-900 text-emerald-300 p-3 rounded-xl font-mono text-[11px] overflow-x-auto leading-relaxed">
-create table if not exists engstart_progress (<br/>
-&nbsp;&nbsp;user_email text primary key,<br/>
-&nbsp;&nbsp;payload jsonb not null,<br/>
-&nbsp;&nbsp;updated_at timestamptz default now()<br/>
-);<br/>
-alter table engstart_progress disable row level security;
-          </div>
-          <button type="button" id="copy-sql-btn" class="mt-2 px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-[11px] font-bold">Sao chép lệnh SQL</button>
-        </details>
+      <!-- Google Auth Box (Dynamic) -->
+      <div id="auth-panel-box" class="space-y-3 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100">
+        <!-- Rendered by JS -->
       </div>
 
       <!-- Local JSON Backup -->
       <div class="space-y-2.5 pt-1">
-        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">3. Sao lưu nhanh bằng tệp JSON (Không cần server)</div>
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Sao lưu dự phòng bằng tệp JSON</div>
         <div class="grid grid-cols-2 gap-2.5">
           <button type="button" id="export-json-btn" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5">
             <i data-lucide="download" class="w-4 h-4"></i> Xuất file tiến độ
@@ -337,6 +297,16 @@ alter table engstart_progress disable row level security;
           </label>
         </div>
       </div>
+
+      <!-- Admin Setup Hint (Collapsible) -->
+      <details class="text-xs text-slate-500 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+        <summary class="cursor-pointer font-bold text-slate-700">Dành cho chủ web: Cách bật nút Đăng nhập Google (Gmail)</summary>
+        <ol class="list-decimal pl-4 mt-2 space-y-1.5 leading-relaxed">
+          <li>Tạo dự án miễn phí tại <strong>supabase.com</strong> và chạy tệp <code>supabase_schema.sql</code> trong SQL Editor.</li>
+          <li>Bật <strong>Google Provider</strong> trong <em>Authentication → Providers</em> (dán OAuth Client ID từ Google Cloud Console).</li>
+          <li>Điền <code>SUPABASE_URL</code> và <code>SUPABASE_ANON_KEY</code> vào tệp <code>js/config.js</code> rồi đẩy lên GitHub.</li>
+        </ol>
+      </details>
     </div>
   </div>
 
@@ -365,6 +335,7 @@ alter table engstart_progress disable row level security;
     </div>
   </div>
 
+  <script src="./js/config.js"></script>
   <script src="./js/data.js"></script>
   <script src="./js/app.js"></script>
 </body>

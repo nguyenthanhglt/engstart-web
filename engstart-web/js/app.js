@@ -56,8 +56,35 @@
 
     let state = loadState();
 
-    function saveState() {
+    let sbClient = null;
+    let currentAuthUser = null;
+    let cloudSyncStatus = 'local'; // 'local' | 'saving' | 'synced' | 'error'
+    let cloudSaveTimer = null;
+
+    function initSupabaseClient() {
+      try {
+        const cfg = window.ENGSTART_CONFIG || {};
+        if (cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && window.supabase && typeof window.supabase.createClient === 'function') {
+          sbClient = window.supabase.createClient(cfg.SUPABASE_URL.trim(), cfg.SUPABASE_ANON_KEY.trim());
+        }
+      } catch (e) {
+        sbClient = null;
+      }
+    }
+
+    function scheduleCloudSave() {
+      if (!sbClient || !currentAuthUser) return;
+      cloudSyncStatus = 'saving';
+      if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+      cloudSaveTimer = setTimeout(async () => {
+        await pushProgressToCloud(true);
+      }, 1200);
+    }
+
+    function saveState(skipCloud) {
+      state.updatedAt = Date.now();
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+      if (!skipCloud) scheduleCloudSave();
     }
 
     // Transient UI State
@@ -343,7 +370,22 @@
       if (starEl) starEl.textContent = getTotalStars();
       if (streakEl) streakEl.textContent = state.streak;
       if (speedEl) speedEl.textContent = state.speechRate === 1.0 ? '1.0x' : '0.7x';
-      if (userEl) userEl.textContent = state.profile.name ? state.profile.name : 'Tài khoản';
+      const avatarEl = document.getElementById('header-user-avatar');
+      const iconEl = document.getElementById('header-user-icon');
+      if (currentAuthUser) {
+        const meta = currentAuthUser.user_metadata || {};
+        const displayName = meta.full_name || meta.name || (currentAuthUser.email ? currentAuthUser.email.split('@')[0] : 'Học viên');
+        if (userEl) userEl.textContent = displayName;
+        if (avatarEl && meta.avatar_url) {
+          avatarEl.src = meta.avatar_url;
+          avatarEl.classList.remove('hidden');
+          if (iconEl) iconEl.classList.add('hidden');
+        }
+      } else {
+        if (userEl) userEl.textContent = state.profile.name ? state.profile.name : 'Đăng nhập';
+        if (avatarEl) avatarEl.classList.add('hidden');
+        if (iconEl) iconEl.classList.remove('hidden');
+      }
       if (goalEl) {
         const done = state.todayXp >= state.dailyGoalXp;
         goalEl.textContent = done
@@ -1392,77 +1434,181 @@
       refreshIcons();
     }
 
-    // ==================== CLOUD SYNC (SUPABASE REST API + JSON) ====================
-    function openAccountModal() {
-      document.getElementById('acc-name-input').value = state.profile.name || '';
-      document.getElementById('acc-email-input').value = state.profile.email || '';
-      document.getElementById('sb-url-input').value = state.supabase.url || '';
-      document.getElementById('sb-key-input').value = state.supabase.key || '';
-      const badge = document.getElementById('cloud-sync-badge');
-      if (badge) {
-        badge.textContent = state.supabase.lastSynced
-          ? `Đồng bộ lúc ${new Date(state.supabase.lastSynced).toLocaleTimeString('vi-VN')}`
-          : (state.supabase.url ? 'Sẵn sàng đồng bộ' : 'Chưa kết nối');
+    // ==================== GOOGLE LOGIN & AUTO CLOUD SYNC (SUPABASE AUTH) ====================
+    function renderAuthPanel() {
+      const box = document.getElementById('auth-panel-box');
+      if (!box) return;
+      const configured = Boolean(sbClient);
+
+      if (currentAuthUser) {
+        const meta = currentAuthUser.user_metadata || {};
+        const name = meta.full_name || meta.name || 'Học viên EngStart';
+        const email = currentAuthUser.email || '';
+        const avatar = meta.avatar_url || '';
+        const syncLabel = cloudSyncStatus === 'saving'
+          ? 'Đang tự động lưu lên mây...'
+          : (cloudSyncStatus === 'synced' ? 'Đã tự động đồng bộ lên đám mây' : 'Sẵn sàng đồng bộ tự động');
+
+        box.innerHTML = `
+          <div class="flex items-center gap-3">
+            ${avatar
+              ? `<img src="${avatar}" alt="${name}" class="w-12 h-12 rounded-full border-2 border-white shadow-xs object-cover" />`
+              : `<div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-extrabold flex items-center justify-center text-lg">${name.charAt(0).toUpperCase()}</div>`
+            }
+            <div class="min-w-0 flex-1">
+              <div class="font-extrabold text-slate-900 text-sm sm:text-base truncate">${name}</div>
+              <div class="text-xs text-slate-500 truncate">${email}</div>
+              <div class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 mt-1">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> ${syncLabel}
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-2">
+            <button type="button" id="manual-cloud-sync-btn" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Đồng bộ ngay
+            </button>
+            <button type="button" id="google-signout-btn" class="py-2.5 px-3 rounded-xl bg-white border border-rose-200 hover:bg-rose-50 text-rose-600 text-xs font-bold flex items-center justify-center gap-1.5">
+              <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Đăng xuất
+            </button>
+          </div>
+        `;
+      } else {
+        box.innerHTML = `
+          <div class="space-y-3">
+            <div class="text-xs font-bold uppercase tracking-wider text-indigo-700">Đăng nhập bằng tài khoản Google</div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Đăng nhập bằng Gmail giúp tự động lưu mọi buổi học (XP, Streak, lịch ôn SRS, bài đã qua và Sổ tay) để bạn học tiếp trên cả điện thoại lẫn máy tính.
+            </p>
+            <button type="button" id="google-signin-btn" class="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs text-slate-800 text-sm font-bold flex items-center justify-center gap-2.5 transition-all">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/>
+                <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96h-3.98v3.09C3.515 21.3 7.615 24 12.255 24z"/>
+                <path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62h-3.98a11.86 11.86 0 0 0 0 10.76l3.98-3.09z"/>
+                <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
+              </svg>
+              Tiếp tục với Google (Gmail)
+            </button>
+            ${!configured ? `
+              <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-800 leading-relaxed">
+                <strong>Chưa gắn khóa Supabase:</strong> Hiện web đang tự lưu tiến độ trên máy này. Hãy điền <code>SUPABASE_URL</code> và <code>SUPABASE_ANON_KEY</code> vào <code>js/config.js</code> để bật đăng nhập Gmail thật.
+              </div>
+            ` : ''}
+          </div>
+        `;
       }
+      refreshIcons();
+    }
+
+    function openAccountModal() {
+      renderAuthPanel();
       const m = document.getElementById('account-modal');
       if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
       refreshIcons();
     }
 
-    async function syncToSupabase(direction) {
-      const url = document.getElementById('sb-url-input').value.trim().replace(/\/+$/, '');
-      const key = document.getElementById('sb-key-input').value.trim();
-      const email = document.getElementById('acc-email-input').value.trim().toLowerCase();
-
-      if (!email) { showToast('Vui lòng nhập Email ở mục 1 để định danh tài khoản.'); return; }
-      if (!url || !key || !url.startsWith('https://')) {
-        showToast('Vui lòng nhập đúng Supabase Project URL (https://...) và Anon Key.');
+    async function signInWithGoogle() {
+      if (!sbClient) {
+        showToast('Hãy điền SUPABASE_URL và SUPABASE_ANON_KEY trong tệp js/config.js trước nhé!');
         return;
       }
-
-      state.profile.email = email;
-      state.profile.name = document.getElementById('acc-name-input').value.trim() || state.profile.name;
-      state.supabase.url = url;
-      state.supabase.key = key;
-      saveState();
-
-      const endpoint = `${url}/rest/v1/engstart_progress`;
-      const headers = {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json'
-      };
-
       try {
-        if (direction === 'push') {
-          const payload = { ...state, supabase: { url: '', key: '', lastSynced: Date.now() } };
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { ...headers, 'Prefer': 'resolution=merge-duplicates' },
-            body: JSON.stringify({ user_email: email, payload, updated_at: new Date().toISOString() })
-          });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          state.supabase.lastSynced = Date.now();
-          saveState();
-          openAccountModal();
-          showToast('Đã đồng bộ tiến độ lên Supabase thành công!');
-        } else {
-          const res = await fetch(`${endpoint}?user_email=eq.${encodeURIComponent(email)}&select=payload`, { headers });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const rows = await res.json();
-          if (!rows || !rows.length || !rows[0].payload) {
-            showToast('Chưa tìm thấy dữ liệu lưu trên Supabase cho email này.');
-            return;
+        const redirectUrl = window.location.origin + window.location.pathname;
+        const { error } = await sbClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: redirectUrl }
+        });
+        if (error) showToast('Lỗi đăng nhập Google: ' + error.message);
+      } catch (e) {
+        showToast('Không thể kết nối đăng nhập Google lúc này.');
+      }
+    }
+
+    async function signOutGoogle() {
+      if (!sbClient) return;
+      try {
+        await sbClient.auth.signOut();
+        currentAuthUser = null;
+        cloudSyncStatus = 'local';
+        updateHeader();
+        renderAuthPanel();
+        showToast('Đã đăng xuất khỏi tài khoản Google.');
+      } catch (e) {
+        showToast('Có lỗi khi đăng xuất.');
+      }
+    }
+
+    async function pushProgressToCloud(silent) {
+      if (!sbClient || !currentAuthUser) return;
+      try {
+        cloudSyncStatus = 'saving';
+        const { error } = await sbClient
+          .from('engstart_progress')
+          .upsert({
+            user_id: currentAuthUser.id,
+            user_email: currentAuthUser.email || '',
+            payload: state,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id' });
+        if (error) throw error;
+        cloudSyncStatus = 'synced';
+        renderAuthPanel();
+        if (!silent) showToast('Đã lưu tiến độ học lên đám mây!');
+      } catch (e) {
+        cloudSyncStatus = 'error';
+        if (!silent) showToast('Không thể lưu lên đám mây. Hãy kiểm tra bảng SQL trên Supabase.');
+      }
+    }
+
+    async function pullProgressFromCloud() {
+      if (!sbClient || !currentAuthUser) return;
+      try {
+        const { data, error } = await sbClient
+          .from('engstart_progress')
+          .select('payload, updated_at')
+          .eq('user_id', currentAuthUser.id)
+          .maybeSingle();
+        if (error) throw error;
+        if (data && data.payload) {
+          const cloudUpdated = data.payload.updatedAt || 0;
+          const localUpdated = state.updatedAt || 0;
+          if (cloudUpdated >= localUpdated || state.xp === 0) {
+            state = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...data.payload };
+            saveState(true);
+            updateHeader();
+            showMainPage(state.mainNav || 'roadmap');
+          } else {
+            await pushProgressToCloud(true);
           }
-          state = { ...loadState(), ...rows[0].payload, supabase: { url, key, lastSynced: Date.now() } };
-          saveState();
-          updateHeader();
-          showMainPage('roadmap');
-          openAccountModal();
-          showToast('Đã tải tiến độ từ Supabase về thiết bị này!');
+          cloudSyncStatus = 'synced';
+        } else {
+          await pushProgressToCloud(true);
         }
-      } catch (err) {
-        showToast('Không kết nối được Supabase. Hãy kiểm tra URL, Key và bảng SQL.');
+        renderAuthPanel();
+      } catch (e) {
+        cloudSyncStatus = 'error';
+      }
+    }
+
+    async function setupAuthSession() {
+      initSupabaseClient();
+      if (!sbClient) return;
+      try {
+        const { data } = await sbClient.auth.getSession();
+        if (data && data.session && data.session.user) {
+          currentAuthUser = data.session.user;
+          updateHeader();
+          await pullProgressFromCloud();
+        }
+        sbClient.auth.onAuthStateChange(async (event, session) => {
+          currentAuthUser = session && session.user ? session.user : null;
+          updateHeader();
+          if (event === 'SIGNED_IN' && currentAuthUser) {
+            showToast('Đăng nhập Gmail thành công! Đang đồng bộ buổi học...');
+            await pullProgressFromCloud();
+          }
+        });
+      } catch (e) {
+        // Fallback to offline local mode
       }
     }
 
@@ -1575,27 +1721,9 @@
         if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
         return;
       }
-      if (e.target.closest('#save-profile-btn')) {
-        state.profile.name = document.getElementById('acc-name-input').value.trim();
-        state.profile.email = document.getElementById('acc-email-input').value.trim();
-        saveState();
-        updateHeader();
-        showToast('Đã lưu thông tin tài khoản!');
-        return;
-      }
-      if (e.target.closest('#sb-push-btn')) { syncToSupabase('push'); return; }
-      if (e.target.closest('#sb-pull-btn')) { syncToSupabase('pull'); return; }
-      if (e.target.closest('#copy-sql-btn')) {
-        const sql = "create table if not exists engstart_progress (\n  user_email text primary key,\n  payload jsonb not null,\n  updated_at timestamptz default now()\n);\nalter table engstart_progress disable row level security;";
-        try {
-          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(sql);
-          else {
-            const ta = document.createElement('textarea'); ta.value = sql; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-          }
-          showToast('Đã sao chép lệnh SQL!');
-        } catch (err) { showToast('Hãy bôi đen đoạn SQL để sao chép.'); }
-        return;
-      }
+      if (e.target.closest('#google-signin-btn')) { signInWithGoogle(); return; }
+      if (e.target.closest('#google-signout-btn')) { signOutGoogle(); return; }
+      if (e.target.closest('#manual-cloud-sync-btn')) { pushProgressToCloud(false); return; }
       if (e.target.closest('#export-json-btn')) {
         const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -1900,4 +2028,5 @@
       if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
       updateHeader();
       showMainPage(state.mainNav || 'roadmap');
+      setupAuthSession();
     });
