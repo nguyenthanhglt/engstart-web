@@ -354,6 +354,33 @@
       });
     });
 
+    const TOPIC_IMAGES = {
+      greeting: "./assets/topics/greeting.jpg",
+      education: "./assets/topics/education.jpg",
+      family: "./assets/topics/family.jpg",
+      work: "./assets/topics/work.jpg",
+      food: "./assets/topics/food.jpg",
+      shopping: "./assets/topics/shopping.jpg",
+      daily: "./assets/topics/daily.jpg",
+      travel: "./assets/topics/travel.jpg",
+      health: "./assets/topics/health.jpg",
+      tech: "./assets/topics/tech.jpg",
+    };
+    const ENABLE_CUSTOM_WORD_IMAGES = true;
+    function getWordSlug(en) {
+      return String(en || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+    function renderWordVisual(word, sizeClass) {
+      const topicId = word.topicId || (ALL_WORDS.find(x => x.id === word.id) || {}).topicId || 'greeting';
+      const fallback = TOPIC_IMAGES[topicId] || TOPIC_IMAGES.greeting;
+      const cls = sizeClass || 'w-52 sm:w-60 aspect-[4/3] rounded-2xl object-cover shadow-sm border-2 border-indigo-100 mx-auto';
+      if (!ENABLE_CUSTOM_WORD_IMAGES) {
+        return `<img src="${fallback}" alt="${word.en}" class="${cls}" />`;
+      }
+      const slug = getWordSlug(word.en);
+      return `<img src="./assets/words/${slug}.jpg" data-png="./assets/words/${slug}.png" data-fallback="${fallback}" alt="${word.en}" class="${cls}" onerror="if(this.dataset.png){const p=this.dataset.png;this.dataset.png='';this.src=p;}else{this.onerror=null;this.src=this.dataset.fallback;}" />`;
+    }
+
     // ==================== 6 TWO-PERSON BEGINNER DIALOGUES (Hội thoại 2 vai) ====================
     const DIALOGUES_DATA = [
       {

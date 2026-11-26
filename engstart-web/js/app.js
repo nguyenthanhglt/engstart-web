@@ -512,9 +512,7 @@
               active ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs' : 'bg-slate-50/70 border-transparent hover:border-indigo-200 hover:bg-indigo-50/40 text-slate-800'
             }">
               <div class="flex items-center gap-2.5 min-w-0">
-                <span class="w-7 h-7 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 ${
-                  active ? 'bg-white/20 text-white' : 'bg-white border border-slate-200 text-indigo-600'
-                }">${t.num}</span>
+                <img src="${TOPIC_IMAGES[t.id]}" alt="${t.title}" class="w-10 h-10 rounded-xl object-cover shrink-0 border ${active ? 'border-white/50' : 'border-slate-200'}" />
                 <div class="min-w-0">
                   <div class="text-xs sm:text-sm font-bold truncate">${t.title}</div>
                   <div class="text-[11px] ${active ? 'text-indigo-100' : 'text-slate-500'}">${st.doneLessons}/${st.totalLessons} bài · ${st.stars}/${st.maxStars} ⭐</div>
@@ -534,7 +532,7 @@
       mainEl.innerHTML = `
         <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-wrap items-center justify-between gap-4">
           <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 font-extrabold text-lg flex items-center justify-center">${topic.num}</div>
+            <img src="${TOPIC_IMAGES[topic.id]}" alt="${topic.title}" class="w-24 h-18 sm:w-28 sm:h-20 rounded-2xl object-cover border border-indigo-100 shadow-xs shrink-0" />
             <div>
               <div class="text-xs font-bold uppercase tracking-wider text-indigo-600">Chủ đề ${topic.num} · ${topic.lessons.reduce((a, l) => a + l.words.length, 0)} từ cơ bản</div>
               <div class="flex items-center gap-3 mt-1 text-xs sm:text-sm font-semibold text-slate-600">
@@ -940,6 +938,7 @@
         const distractors = shuffleArray(ALL_WORDS.filter(x => x.id !== w.id)).slice(0, 3);
         if (i % 2 === 1) {
           return {
+            word: w,
             prompt: `Điền từ đúng vào câu: "${w.exBlank}"`,
             subPrompt: `Nghĩa tiếng Việt: ${w.exVi}`,
             speak: w.exEn,
@@ -948,6 +947,7 @@
           };
         }
         return {
+          word: w,
           prompt: `Từ "${w.en}" (${w.ipa}) có nghĩa là gì?`,
           subPrompt: `Ví dụ: ${w.exEn}`,
           subPromptVi: w.exVi,
@@ -1001,6 +1001,7 @@
       const questions = selected.map((w, i) => {
         const distractors = shuffleArray(ALL_WORDS.filter(x => x.id !== w.id)).slice(0, 3);
         return {
+          word: w,
           prompt: i % 2 === 0 ? `Nghĩa tiếng Việt của "${w.en}" (${w.ipa}) là gì?` : `Từ tiếng Anh nào có nghĩa là "${w.vi}"?`,
           subPrompt: i % 2 === 0 ? `Gợi ý câu: ${w.exEn}` : `Điền vào câu: ${w.exBlank}`,
           subPromptVi: w.exVi,
@@ -1081,7 +1082,8 @@
             </div>
 
             ${!s.flipped ? `
-              <div class="py-6 sm:py-8 text-center space-y-5">
+              <div class="py-4 sm:py-6 text-center space-y-4">
+                ${renderWordVisual(w, 'w-48 sm:w-56 aspect-[4/3] rounded-2xl object-cover shadow-sm border-2 border-indigo-100 mx-auto')}
                 ${s.frontLang === 'en' ? `
                   <div class="space-y-2">
                     <div class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">${w.en}</div>
@@ -1210,7 +1212,8 @@
               </div>
             </div>
 
-            <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-6 space-y-2">
+            <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 space-y-3">
+              ${renderWordVisual(w, 'w-44 sm:w-52 aspect-[4/3] rounded-2xl object-cover shadow-xs border border-slate-200 mx-auto')}
               <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">${targetText}</div>
               <div class="text-sm text-indigo-600 font-medium">${targetSub}</div>
               <div class="pt-2 flex items-center justify-center gap-2">
@@ -1281,7 +1284,7 @@
               <span>CÂU ${s.idx + 1} / ${s.items.length}</span>
               <button type="button" data-speak="${q.speak}" class="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 flex items-center gap-1.5"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe</button>
             </div>
-            <div><h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${q.prompt}</h2><p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">${q.subPrompt}</p>${q.subPromptVi ? `<p class="text-xs sm:text-sm text-indigo-600 italic mt-0.5">Dịch: ${q.subPromptVi}</p>` : ''}</div>
+            <div class="flex flex-col sm:flex-row items-center gap-4">${q.word ? renderWordVisual(q.word, 'w-36 sm:w-40 aspect-[4/3] rounded-2xl object-cover shadow-xs border border-indigo-100 shrink-0') : ''}<div class="flex-1 text-center sm:text-left"><h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${q.prompt}</h2><p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">${q.subPrompt}</p>${(q.subPromptVi && hasPicked) ? `<p class="text-xs sm:text-sm text-indigo-600 italic mt-0.5">Dịch: ${q.subPromptVi}</p>` : ''}</div></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               ${q.options.map((opt, i) => {
                 let cls = 'bg-white border-slate-200 hover:border-indigo-400 text-slate-800';

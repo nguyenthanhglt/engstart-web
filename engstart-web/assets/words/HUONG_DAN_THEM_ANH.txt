@@ -1,0 +1,13 @@
+HƯỚNG DẪN THÊM ẢNH RIÊNG CHO TỪNG TỪ VỰNG (DÀNH CHO BÉ HỌC)
+
+1. Chọn ảnh hoạt hình hoặc ảnh thật (.jpg hoặc .png) cho từ bạn muốn.
+2. Đổi tên tệp ảnh giống với từ tiếng Anh viết thường (khoảng trắng đổi thành dấu gạch ngang "-"):
+   - Ví dụ:
+     + school     -> school.jpg  (hoặc school.png)
+     + coffee     -> coffee.jpg
+     + thank you  -> thank-you.jpg
+     + excuse me  -> excuse-me.jpg
+     + doctor     -> doctor.jpg
+3. Thả tệp ảnh vào đúng thư mục assets/words/ này rồi tải lên GitHub.
+4. Web EngStart sẽ tự động ưu tiên hiện ảnh riêng của từ đó lên thẻ Flashcard, Bài tập và Luyện nói!
+   (Nếu từ nào chưa có ảnh riêng, web tự động hiện tranh hoạt hình dễ thương của chủ đề đó.)
