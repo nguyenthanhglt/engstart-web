@@ -950,6 +950,7 @@
         return {
           prompt: `Từ "${w.en}" (${w.ipa}) có nghĩa là gì?`,
           subPrompt: `Ví dụ: ${w.exEn}`,
+          subPromptVi: w.exVi,
           speak: w.en,
           options: shuffleArray([w, ...distractors]).map(x => ({ label: x.vi, isCorrect: x.id === w.id })),
           answerText: `${w.en} = ${w.vi}`
@@ -1002,6 +1003,7 @@
         return {
           prompt: i % 2 === 0 ? `Nghĩa tiếng Việt của "${w.en}" (${w.ipa}) là gì?` : `Từ tiếng Anh nào có nghĩa là "${w.vi}"?`,
           subPrompt: i % 2 === 0 ? `Gợi ý câu: ${w.exEn}` : `Điền vào câu: ${w.exBlank}`,
+          subPromptVi: w.exVi,
           speak: w.en,
           options: shuffleArray([w, ...distractors]).map(x => ({ label: i % 2 === 0 ? x.vi : x.en, isCorrect: x.id === w.id })),
           answerText: `${w.en} (${w.vi})`
@@ -1279,7 +1281,7 @@
               <span>CÂU ${s.idx + 1} / ${s.items.length}</span>
               <button type="button" data-speak="${q.speak}" class="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 flex items-center gap-1.5"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe</button>
             </div>
-            <div><h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${q.prompt}</h2><p class="text-xs sm:text-sm text-slate-500 mt-1">${q.subPrompt}</p></div>
+            <div><h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${q.prompt}</h2><p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">${q.subPrompt}</p>${q.subPromptVi ? `<p class="text-xs sm:text-sm text-indigo-600 italic mt-0.5">Dịch: ${q.subPromptVi}</p>` : ''}</div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               ${q.options.map((opt, i) => {
                 let cls = 'bg-white border-slate-200 hover:border-indigo-400 text-slate-800';
