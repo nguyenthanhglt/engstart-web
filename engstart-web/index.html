@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EngStart Pro — Học Tiếng Anh Từ Con Số 0 (Lộ Trình, SRS, Luyện Nói & Hội Thoại)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- ==================== HEADER ==================== -->
+  <header id="main-header" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-3">
+      <!-- Brand -->
+      <button type="button" id="brand-home-btn" class="flex items-center gap-2.5 text-left group focus:outline-none shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-emerald-500 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div class="leading-tight">
+          <span class="font-extrabold text-lg tracking-tight text-slate-900">Eng<span class="text-indigo-600">Start</span></span>
+          <span class="hidden lg:block text-[11px] font-medium text-slate-500">Tiếng Anh A0–A1 cho người mất gốc</span>
+        </div>
+      </button>
+
+      <!-- Main Navigation -->
+      <nav aria-label="Điều hướng chính" class="hidden md:flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl">
+        <button type="button" data-main-nav="roadmap" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="map" class="w-4 h-4"></i> Lộ trình
+        </button>
+        <button type="button" data-main-nav="review" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="brain" class="w-4 h-4"></i> Ôn tập SRS
+          <span id="nav-review-badge" class="ml-0.5 px-1.5 py-0.2 rounded-full bg-rose-100 text-rose-700 text-[11px] font-bold hidden">0</span>
+        </button>
+        <button type="button" data-main-nav="ipa" class="main-nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="volume-2" class="w-4 h-4"></i> Phát âm
+        </button>
+        <button type="button" id="header-notebook-btn" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
+          <i data-lucide="notebook-pen" class="w-4 h-4"></i> Sổ tay
+        </button>
+      </nav>
+
+      <!-- Right Status Controls -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Daily Streak -->
+        <div class="px-2.5 py-1.5 rounded-lg bg-orange-50 border border-orange-200/80 text-orange-700 text-xs font-bold flex items-center gap-1" title="Chuỗi ngày học liên tiếp (Streak)">
+          <i data-lucide="flame" class="w-3.5 h-3.5 fill-orange-500 text-orange-500"></i>
+          <span id="header-streak">0</span>
+        </div>
+
+        <!-- Stars -->
+        <div class="px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-bold flex items-center gap-1" title="Tổng số sao đã đạt">
+          <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-500"></i>
+          <span id="header-stars">0</span>
+        </div>
+
+        <!-- XP -->
+        <div class="hidden sm:flex px-2.5 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200/80 text-indigo-700 text-xs font-bold items-center gap-1" title="Điểm kinh nghiệm & Mục tiêu hôm nay">
+          <i data-lucide="zap" class="w-3.5 h-3.5 fill-indigo-500 text-indigo-500"></i>
+          <span id="header-xp">0</span> XP
+        </div>
+
+        <!-- Speed Toggle -->
+        <button type="button" id="speed-toggle-btn" title="Đổi tốc độ đọc tiếng Anh" class="px-2 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1 transition-colors">
+          <i data-lucide="gauge" class="w-3.5 h-3.5 text-indigo-600"></i>
+          <span id="speed-label">1.0x</span>
+        </button>
+
+        <!-- Account / Cloud Sync Button -->
+        <button type="button" id="open-account-modal-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors">
+          <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span id="header-user-label" class="max-w-[84px] truncate">Tài khoản</span>
+        </button>
+
+        <button type="button" id="open-reset-modal-btn" title="Đặt lại tiến độ học" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" aria-label="Đặt lại tiến độ">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="md:hidden border-t border-slate-100 bg-white px-3 py-1.5 overflow-x-auto no-scrollbar">
+      <div class="flex items-center gap-1 min-w-max">
+        <button type="button" data-main-nav="roadmap" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="map" class="w-3.5 h-3.5"></i> Lộ trình
+        </button>
+        <button type="button" data-main-nav="review" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="brain" class="w-3.5 h-3.5"></i> Ôn tập SRS
+        </button>
+        <button type="button" data-main-nav="ipa" class="main-nav-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
+          <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Phát âm
+        </button>
+        <button type="button" id="mobile-notebook-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+          <i data-lucide="notebook-pen" class="w-3.5 h-3.5"></i> Sổ tay
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+    <!-- ========== PAGE 1: ROADMAP ========== -->
+    <section id="page-roadmap" class="page-section space-y-6 animate-pop">
+
+      <!-- Top Header, Daily Goal & 4-Track Switcher -->
+      <div id="roadmap-chrome" class="space-y-4">
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div class="space-y-2.5 max-w-2xl">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[11px] font-bold uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span id="track-kicker">Lộ trình từ vựng chủ đề · 100 từ A0–A1</span>
+              </span>
+              <span id="daily-goal-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-orange-700 text-[11px] font-bold">
+                Mục tiêu hôm nay: 0/50 XP
+              </span>
+            </div>
+            <h1 id="track-heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              Chào hỏi &amp; Giao tiếp (Greetings &amp; Basics)
+            </h1>
+            <p id="track-desc" class="text-sm text-slate-600 leading-relaxed">
+              10 chủ đề đời sống thiết yếu (100 từ A0–A1), Hội thoại 2 vai luyện phản xạ, Luyện nói chấm phát âm bằng mic và thuật toán SRS nhắc lịch ôn tự động.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
+            <!-- 4-Track Switcher -->
+            <div class="bg-slate-100 p-1 rounded-xl inline-flex flex-wrap gap-1">
+              <button type="button" data-track="vocab" class="track-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all">Từ vựng (100)</button>
+              <button type="button" data-track="dialogue" class="track-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all">Hội thoại 2 vai</button>
+              <button type="button" data-track="grammar" class="track-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all">Ngữ pháp</button>
+              <button type="button" data-track="ipa" class="track-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all">Phát âm IPA</button>
+            </div>
+            <img
+              src="./assets/hero-illustration.jpg"
+              alt="Học tiếng Anh từ con số 0"
+              class="hidden xl:block w-36 h-20 rounded-xl object-cover border border-slate-200/80 shadow-2xs"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TRACK A: VOCABULARY TOPICS (2-Column Layout, 10 Topics = 100 Words) -->
+      <div id="track-view-vocab" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <aside class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 sm:p-5 space-y-4 lg:sticky lg:top-20">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600">Thư viện A0–A1</div>
+              <div class="text-sm font-extrabold text-slate-900 mt-0.5">10 chủ đề · 100 từ thiết yếu</div>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-bold">Mở 100%</span>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs font-semibold">
+              <span class="text-slate-500" id="sidebar-total-lessons">0/20 bài đã hoàn thành</span>
+              <span class="text-indigo-600" id="sidebar-total-pct">0%</span>
+            </div>
+            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div id="sidebar-total-bar" class="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div id="topic-sidebar-list" class="space-y-1.5 max-h-[520px] overflow-y-auto pr-1">
+            <!-- Rendered by JS -->
+          </div>
+        </aside>
+
+        <div class="lg:col-span-8 space-y-5" id="topic-main-panel">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- SUB-TRACK B: 2-ROLE DIALOGUES (Hội thoại mẫu ngắn 2 vai) -->
+      <div id="track-view-dialogue" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <aside class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 space-y-2 lg:sticky lg:top-20" id="dialogue-sidebar-list">
+          <!-- Rendered by JS -->
+        </aside>
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-7 space-y-5" id="dialogue-detail-panel">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- SUB-TRACK C: GRAMMAR (5 Core Beginner Lessons) -->
+      <div id="track-view-grammar" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <aside class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 space-y-2 lg:sticky lg:top-20" id="grammar-sidebar-list"></aside>
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-7 space-y-6" id="grammar-detail-panel"></div>
+      </div>
+
+      <!-- SUB-TRACK D: IPA PRONUNCIATION (16 Core Sounds) -->
+      <div id="track-view-ipa" class="hidden space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap gap-2" id="ipa-filter-bar">
+            <button type="button" data-ipa-cat="all" class="ipa-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all">Tất cả (16)</button>
+            <button type="button" data-ipa-cat="vowel" class="ipa-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all">Nguyên âm dễ nhầm (6)</button>
+            <button type="button" data-ipa-cat="consonant" class="ipa-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all">Phụ âm khó (7)</button>
+            <button type="button" data-ipa-cat="ending" class="ipa-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all">Âm cuối quan trọng (3)</button>
+          </div>
+          <div class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100">
+            Đã nắm: <span id="ipa-progress-count">0</span> / 16 âm
+          </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3" id="ipa-grid"></div>
+          <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6 lg:sticky lg:top-20" id="ipa-detail-panel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PAGE 2: ACTIVE STUDY SESSION ========== -->
+    <section id="page-study" class="page-section hidden max-w-3xl mx-auto space-y-5 animate-pop"></section>
+
+    <!-- ========== PAGE 3: SRS REVIEW DECK ========== -->
+    <section id="page-review" class="page-section hidden space-y-6 animate-pop"></section>
+  </main>
+
+  <!-- ==================== NOTEBOOK DRAWER ==================== -->
+  <div id="notebook-drawer" class="fixed inset-0 z-50 hidden justify-end bg-slate-900/40 backdrop-blur-xs">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-200 flex flex-col animate-pop">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="notebook-pen" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-base">Sổ tay học tập</h3>
+            <p class="text-[11px] text-slate-500">Tự động lưu cùng tiến độ tài khoản</p>
+          </div>
+        </div>
+        <button type="button" id="close-notebook-btn" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100" aria-label="Đóng sổ tay">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 flex-1 flex flex-col gap-3">
+        <label for="notebook-textarea" class="text-xs font-semibold text-slate-600">Ghi chú từ khó, mẹo nhớ hoặc mẫu câu giao tiếp của riêng bạn:</label>
+        <textarea id="notebook-textarea" class="flex-1 w-full p-3.5 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none text-sm text-slate-800 leading-relaxed resize-none" placeholder="Ví dụ:&#10;- thank you (/θæŋk juː/): nhớ đặt lưỡi giữa hai hàm răng&#10;- How much is this? (Cái này bao nhiêu tiền?)"></textarea>
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span>Đã lưu tự động</span>
+          <button type="button" id="clear-notebook-btn" class="text-rose-500 hover:text-rose-700 font-semibold">Xóa ghi chú</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ACCOUNT & CLOUD SYNC MODAL ==================== -->
+  <div id="account-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-slate-200 space-y-5 animate-pop">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <i data-lucide="cloud" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900">Tài khoản &amp; Đồng bộ Đám mây</h3>
+            <p class="text-xs text-slate-500">Lưu tiến độ đa thiết bị qua Supabase hoặc xuất file JSON</p>
+          </div>
+        </div>
+        <button type="button" id="close-account-modal-btn" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100" aria-label="Đóng">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">1. Hồ sơ người học</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <input type="text" id="acc-name-input" placeholder="Tên hiển thị (VD: Minh Anh)" class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm outline-none focus:border-indigo-500" />
+          <input type="email" id="acc-email-input" placeholder="Email (dùng làm ID đồng bộ)" class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <button type="button" id="save-profile-btn" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold transition-colors">
+          Lưu thông tin tài khoản
+        </button>
+      </div>
+
+      <!-- Supabase Cloud Sync Section -->
+      <div class="space-y-3 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-bold uppercase tracking-wider text-indigo-700">2. Kết nối Supabase (Đám mây)</div>
+          <span id="cloud-sync-badge" class="px-2 py-0.5 rounded-full bg-white border border-indigo-200 text-[11px] font-bold text-slate-600">Chưa kết nối</span>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Nhập <strong>Project URL</strong> và <strong>Anon Key</strong> từ dự án Supabase miễn phí của bạn để đồng bộ XP, Streak, SRS giữa điện thoại và máy tính.
+        </p>
+        <div class="space-y-2">
+          <input type="url" id="sb-url-input" placeholder="https://xxxx.supabase.co" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm outline-none focus:border-indigo-500" />
+          <input type="password" id="sb-key-input" placeholder="Supabase Anon Public Key (eyJ...)" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="sb-push-btn" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5">
+            <i data-lucide="cloud-upload" class="w-4 h-4"></i> Đẩy lên Đám mây
+          </button>
+          <button type="button" id="sb-pull-btn" class="py-2.5 px-3 rounded-xl bg-white border border-indigo-200 hover:bg-indigo-50 text-indigo-700 text-xs font-bold flex items-center justify-center gap-1.5">
+            <i data-lucide="cloud-download" class="w-4 h-4"></i> Tải về máy này
+          </button>
+        </div>
+        <details class="text-xs text-slate-600 pt-1">
+          <summary class="cursor-pointer font-semibold text-indigo-700 hover:underline">Xem lệnh SQL tạo bảng trên Supabase (10 giây)</summary>
+          <div class="mt-2 bg-slate-900 text-emerald-300 p-3 rounded-xl font-mono text-[11px] overflow-x-auto leading-relaxed">
+create table if not exists engstart_progress (<br/>
+&nbsp;&nbsp;user_email text primary key,<br/>
+&nbsp;&nbsp;payload jsonb not null,<br/>
+&nbsp;&nbsp;updated_at timestamptz default now()<br/>
+);<br/>
+alter table engstart_progress disable row level security;
+          </div>
+          <button type="button" id="copy-sql-btn" class="mt-2 px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-[11px] font-bold">Sao chép lệnh SQL</button>
+        </details>
+      </div>
+
+      <!-- Local JSON Backup -->
+      <div class="space-y-2.5 pt-1">
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">3. Sao lưu nhanh bằng tệp JSON (Không cần server)</div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <button type="button" id="export-json-btn" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5">
+            <i data-lucide="download" class="w-4 h-4"></i> Xuất file tiến độ
+          </button>
+          <label class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer">
+            <i data-lucide="upload" class="w-4 h-4"></i> Nhập file tiến độ
+            <input type="file" id="import-json-input" accept="application/json" class="hidden" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RESET MODAL ==================== -->
+  <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/45 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-200 space-y-4 animate-pop">
+      <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-slate-900">Đặt lại toàn bộ tiến độ?</h3>
+        <p class="text-sm text-slate-600 mt-1">Số sao, XP, chuỗi Streak, lịch SRS và các bài đã hoàn thành sẽ được đưa về 0.</p>
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button type="button" id="cancel-reset-btn" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Hủy</button>
+        <button type="button" id="confirm-reset-btn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white">Đặt lại</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+    <div class="bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+      <span id="toast-msg">Đã lưu!</span>
+    </div>
+  </div>
+
+  <script src="./js/data.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
