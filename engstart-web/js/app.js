@@ -3494,7 +3494,7 @@
 
               <button type="button" data-main-nav="videos" class="w-full p-3.5 rounded-2xl bg-white hover:bg-pink-50/40 border border-[#E5D6B5] flex items-center justify-between gap-3 text-left transition-all">
                 <div>
-                  <div class="text-[11px] font-bold text-pink-600">Dictation &amp; Shadowing</div>
+                  <div class="text-[11px] font-bold text-pink-600">Học qua video</div>
                   <div class="font-extrabold text-sm text-slate-900">Xem 1 video song ngữ &amp; tập nói đuổi theo mic</div>
                 </div>
                 <span class="text-xs font-bold text-slate-400 shrink-0">~6 phút</span>
@@ -4309,33 +4309,29 @@
     function mountYouTubeLivePlayer(videoId) {
       const host = document.getElementById('yt-player-host');
       if (!host) return;
-      if (_ytPlayer && _ytMountedVideoId === videoId && typeof _ytPlayer.getCurrentTime === 'function') return;
-
+      // Attach YT.Player directly to the already-visible <iframe> so the video is NEVER a black box!
       ensureYouTubeApiLoaded(() => {
         const elHost = document.getElementById('yt-player-host');
         if (!elHost) return;
-        try { if (_ytPlayer && _ytPlayer.destroy) _ytPlayer.destroy(); } catch {}
         _ytMountedVideoId = videoId;
-        _ytPlayer = new YT.Player('yt-player-host', {
-          videoId: videoId,
-          width: '100%',
-          height: '100%',
-          playerVars: { rel: 0, modestbranding: 1, cc_load_policy: 0 },
-          events: {
-            onStateChange: (ev) => {
-              if (ev.data === YT.PlayerState.PLAYING) {
-                if (_ytSyncTimer) clearInterval(_ytSyncTimer);
-                _ytSyncTimer = setInterval(() => {
-                  if (state.mainNav !== 'videos' || !_ytPlayer || typeof _ytPlayer.getCurrentTime !== 'function') {
-                    clearInterval(_ytSyncTimer);
-                    return;
-                  }
-                  updateLiveCaptionUI(_ytPlayer.getCurrentTime());
-                }, 250);
+        try {
+          _ytPlayer = new YT.Player('yt-player-host', {
+            events: {
+              onStateChange: (ev) => {
+                if (ev.data === YT.PlayerState.PLAYING) {
+                  if (_ytSyncTimer) clearInterval(_ytSyncTimer);
+                  _ytSyncTimer = setInterval(() => {
+                    if (state.mainNav !== 'videos' || !_ytPlayer || typeof _ytPlayer.getCurrentTime !== 'function') {
+                      clearInterval(_ytSyncTimer);
+                      return;
+                    }
+                    updateLiveCaptionUI(_ytPlayer.getCurrentTime());
+                  }, 250);
+                }
               }
             }
-          }
-        });
+          });
+        } catch (e) {}
       });
     }
 
@@ -4504,7 +4500,7 @@
               <div class="aspect-video w-full bg-black relative">
                 ${ui.localVideoUrl
                   ? `<video id="local-video-player" src="${ui.localVideoUrl}" controls class="w-full h-full"></video>`
-                  : `<div id="yt-player-host" class="w-full h-full"></div>`
+                  : `<iframe id="yt-player-host" class="w-full h-full" src="https://www.youtube.com/embed/${activeYtId}?enablejsapi=1&rel=0&modestbranding=1" title="${activeVideo.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
               </div>
               <!-- Corodomo-style Live Floating Subtitle Bar directly under video -->
