@@ -48,8 +48,9 @@ function parsePastedYoutubeTranscript(raw) {
 }
 
 async function translateGroupWithGoogle(texts, tl) {
-  // Send up to 15 lines in ONE single POST request (avoids URL length limit & avoids 429 rate-limit!)
-  const joined = texts.join('\n');
+  // Dùng dấu phân tách [@@@] để Google Translate không bao giờ gộp mất dòng (đặc biệt với Tiếng Trung zh-CN!)
+  const SEP = '\n@@@\n';
+  const joined = texts.join(SEP);
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(tl)}&dt=t&dt=rm`;
   const r = await fetchWithTimeout(url, {
     method: 'POST',
@@ -59,11 +60,15 @@ async function translateGroupWithGoogle(texts, tl) {
   if (!r.ok) throw new Error('Google Translate HTTP ' + r.status);
   const data = await r.json();
   const fullTranslated = Array.isArray(data?.[0]) ? data[0].map(seg => seg?.[0] || '').join('') : '';
-  const splitLines = fullTranslated.split('\n').map(s => s.trim());
+  const fullPinyin = Array.isArray(data?.[0]) ? data[0].map(seg => seg?.[2] || '').filter(Boolean).join(' ') : '';
+  const splitLines = fullTranslated.split(/@{2,4}/).map(s => s.trim()).filter(Boolean);
+  const splitPinyin = fullPinyin ? fullPinyin.split(/@{2,4}/).map(s => s.trim()) : [];
   if (splitLines.length >= texts.length) {
-    return texts.map((orig, idx) => splitLines[idx] || orig);
+    return texts.map((orig, idx) => ({
+      text: splitLines[idx] || orig,
+      ipa: tl.startsWith('zh') ? (splitPinyin[idx] || '') : ''
+    }));
   }
-  // Fallback: translate line-by-line via MyMemory if line count shifted
   return null;
 }
 
@@ -78,11 +83,11 @@ async function translateLineWithMyMemory(text, sl, tl) {
 async function translateBatchFallback(chunk, isZh) {
   const tl = isZh ? 'zh-CN' : 'en';
   const results = [];
-  const groupSize = 12;
+  const groupSize = 5;
 
   for (let i = 0; i < chunk.length; i += groupSize) {
     const slice = chunk.slice(i, i + groupSize);
-    const originals = slice.map(x => x.text);
+    const originals = slice.map(x => x.text.slice(0, 420));
     let translatedList = null;
 
     try {
@@ -90,27 +95,28 @@ async function translateBatchFallback(chunk, isZh) {
     } catch {}
 
     if (!translatedList) {
-      // Secondary fallback: MyMemory API
-      translatedList = await Promise.all(originals.map(t => {
+      translatedList = await Promise.all(originals.map(async t => {
         const isVi = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(t);
-        return translateLineWithMyMemory(t, isVi ? 'vi' : 'en', tl).catch(() => t);
+        const out = await translateLineWithMyMemory(t.slice(0, 400), isVi ? 'vi' : 'en', tl).catch(() => t);
+        return { text: out, ipa: '' };
       }));
     }
 
-    // Check if originals are Vietnamese; if not, also translate to Vietnamese
     const sampleVi = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(originals.join(' '));
-    let viList = originals;
+    let viList = originals.map(t => ({ text: t }));
     if (!sampleVi) {
-      try { viList = (await translateGroupWithGoogle(originals, 'vi')) || originals; } catch {}
+      try { viList = (await translateGroupWithGoogle(originals, 'vi')) || viList; } catch {}
     }
 
     slice.forEach((ln, idx) => {
+      const tr = translatedList[idx] || { text: ln.text, ipa: '' };
+      const viObj = viList[idx] || { text: ln.text };
       results.push({
         start: ln.start,
         end: ln.end,
-        text: translatedList[idx] || ln.text,
-        ipa: '',
-        vi: viList[idx] || ln.text
+        text: tr.text || ln.text,
+        ipa: tr.ipa || '',
+        vi: viObj.text || ln.text
       });
     });
   }
