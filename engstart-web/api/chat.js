@@ -94,6 +94,15 @@ module.exports = async function handler(req, res) {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    if (body.mode === 'reading') {
+      const isZhRead = body.lang === 'zh';
+      const topic = String(body.topic || (isZhRead ? 'cuộc sống hằng ngày' : 'daily life')).trim().slice(0, 100);
+      const readPrompt = isZhRead
+        ? `Tạo 1 bài đọc hiểu điền từ ngắn (2-3 câu trình độ HSK 1-2, phù hợp cho bé và người mới học) bằng tiếng Trung về chủ đề "${topic}". Chỉ trả về ĐÚNG 1 JSON hợp lệ (không markdown): {"title":"Tiêu đề tiếng Trung (dịch Việt)","level":"HSK 1-2 · AI tạo","before":"đoạn trước chỗ trống","blank":"1 từ tiếng Trung 1-2 chữ","after":"đoạn sau chỗ trống","pinyin":"phiên âm đầy đủ có dấu thanh","vi":"dịch tiếng Việt tự nhiên","question":"1 câu hỏi đọc hiểu bằng tiếng Việt","options":["đáp án A","đáp án B","đáp án C","đáp án D"],"correctIdx":0,"explanation":"giải thích ngắn bằng tiếng Việt"}`
+        : `Create 1 short beginner A1-A2 English fill-in-the-blank reading passage (2-3 fun, clear sentences suitable for kids and beginners) about "${topic}". Return ONLY valid JSON (no markdown): {"title":"Short title","level":"A1–A2 · AI tạo","before":"text before blank ending with a space ","blank":"1 simple English word","after":" text after blank.","vi":"natural Vietnamese translation","question":"1 short English comprehension question","options":["option A","option B","option C","option D"],"correctIdx":0,"explanation":"short explanation in Vietnamese"}`;
+      const { parsed, model } = await callGeminiSmart(readPrompt, apiKey);
+      return res.status(200).json({ ...parsed, _model: model });
+    }
     const isZh = body.lang === 'zh';
     const topicTitle = String(body.topicTitle || 'Trò chuyện tự do').slice(0, 120);
     const historyArr = Array.isArray(body.history) ? body.history.slice(-10) : [];
