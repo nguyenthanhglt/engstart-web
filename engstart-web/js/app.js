@@ -4391,7 +4391,7 @@
       renderVideoStudioPage();
       try {
         const ctrl = new AbortController();
-        const tId = setTimeout(() => ctrl.abort(), 30000);
+        const tId = setTimeout(() => ctrl.abort(), 65000);
         const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}&start=${startSec}`, { signal: ctrl.signal }).finally(() => clearTimeout(tId));
         const rawTxt = await res.text();
         let data = {};
@@ -4616,8 +4616,15 @@
                     ${ui.videoLoadingSubs ? '✨ Phụ đề AI (Gemini 3.8 Flash) đang nghe &amp; dịch video...' : (ui.videoLastError ? 'Phụ đề AI gặp sự cố:' : 'Video đã sẵn sàng cho Phụ đề AI')}
                   </div>
                   <p class="text-xs ${ui.videoLastError ? 'text-rose-800' : 'text-emerald-800'} leading-relaxed break-words">
-                    ${ui.videoLoadingSubs ? 'AI đang trích xuất và dịch song ngữ 45 giây đầu tiên, vui lòng đợi vài giây nhé!' : (ui.videoLastError || 'Bấm nút <strong>Tạo video</strong> màu xanh bên trên để Gemini AI tự nghe &amp; tạo phụ đề song ngữ chạy khớp từng giây.')}
+                    ${ui.videoLoadingSubs ? 'AI đang nghe và dịch song ngữ 30 giây đầu tiên (có thể mất 15–35 giây)...' : (ui.videoLastError || 'Bấm nút <strong>Tạo video</strong> màu xanh bên trên để Gemini AI tự nghe &amp; tạo phụ đề song ngữ chạy khớp từng giây.')}
                   </p>
+                  ${!ui.videoLoadingSubs ? `
+                    <div class="pt-2 border-t border-slate-200/70 text-left space-y-2">
+                      <div class="text-[11px] font-extrabold text-slate-700">⚡ Cách siêu nhanh (2 giây) cho mọi video dài:</div>
+                      <textarea id="vid-paste-transcript" rows="3" placeholder="Dán lời thoại copy từ mục 'Hiện bản chép lời' trên YouTube vào đây (ví dụ:&#10;0:00&#10;Xin chào các bạn...)" class="w-full p-2.5 rounded-xl border border-slate-200 bg-white text-xs outline-none focus:border-emerald-500">${ui.videoPasteDraft || ''}</textarea>
+                      <button type="button" id="vid-ai-translate-paste-btn" class="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold">✨ Gemini AI dịch song ngữ ngay (2 giây)</button>
+                    </div>
+                  ` : ''}
                 </div>
               ` : `
               <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
@@ -5996,6 +6003,32 @@
       if (vSrcTab) {
         ui.videoSrcTab = vSrcTab.dataset.vidSrcTab;
         renderVideoStudioPage();
+        return;
+      }
+      if (e.target.closest('#vid-ai-translate-paste-btn') && !ui.videoLoadingSubs) {
+        const ta = document.getElementById('vid-paste-transcript');
+        const rawText = (ta ? ta.value : '').trim();
+        ui.videoPasteDraft = rawText;
+        if (!rawText) { showToast('Hãy dán vài dòng lời thoại từ YouTube vào ô trống trước nhé!'); return; }
+        ui.videoLoadingSubs = true;
+        ui.videoLastError = '';
+        renderVideoStudioPage();
+        fetch('/api/transcript', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lang: ui.customVideoLang || 'en', rawTranscript: rawText })
+        })
+          .then(r => r.json().then(d => ({ ok: r.ok, d })))
+          .then(({ ok, d }) => {
+            if (!ok) { ui.videoLastError = d.error || 'Lỗi dịch lời thoại.'; showToast(ui.videoLastError); return; }
+            if (d.lines && d.lines.length) {
+              ui.customVideoLines = d.lines;
+              ui.videoLineIdx = 0;
+              showToast(`Gemini AI đã dịch xong ${d.lines.length} dòng chạy khớp từng giây!`);
+            }
+          })
+          .catch(err => { ui.videoLastError = 'Lỗi kết nối: ' + err.message; })
+          .finally(() => { ui.videoLoadingSubs = false; renderVideoStudioPage(); });
         return;
       }
       if (e.target.closest('#vid-load-more-ai-btn') && ui.customYoutubeId && !ui.videoLoadingSubs) {

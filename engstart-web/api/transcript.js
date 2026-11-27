@@ -1,6 +1,6 @@
-// Vercel Serverless Function: /api/transcript?v=VIDEO_ID&lang=en|zh&start=0
-// Tầng 1 (2–3 giây): Lấy text phụ đề gốc cực nhanh từ YouTube -> dùng Gemini 3.8 Flash dịch song ngữ siêu mượt!
-// Tầng 2 (Fallback nếu video không có CC): Gemini 3.8 Flash nghe trực tiếp 30 giây đầu (có timeout chống treo).
+// Vercel Serverless Function: /api/transcript
+// - GET ?v=VIDEO_ID&lang=en|zh&start=0 : Tự động lấy & dịch phụ đề (YouTube InnerTube -> Gemini 3.8 Flash video 55s).
+// - POST { lang, rawTranscript }       : Nhận lời thoại copy từ YouTube ("Hiện bản chép lời") -> Gemini 3.8 Flash dịch song ngữ trong 2–3 giây!
 
 function fetchWithTimeout(url, options, ms) {
   const controller = new AbortController();
@@ -41,6 +41,36 @@ function parseXml(xml) {
   return out;
 }
 
+function parsePastedYoutubeTranscript(raw) {
+  const lines = String(raw || '').replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
+  const out = [];
+  const tsRe = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/;
+  let curStart = null;
+  let buf = [];
+  const flush = () => {
+    if (curStart !== null && buf.length) {
+      out.push({ start: curStart, end: curStart + 4, text: buf.join(' ') });
+    }
+    buf = [];
+  };
+  for (const ln of lines) {
+    const m = ln.match(tsRe);
+    if (m) {
+      flush();
+      const parts = m[3] ? [Number(m[1]), Number(m[2]), Number(m[3])] : [0, Number(m[1]), Number(m[2])];
+      curStart = parts[0] * 3600 + parts[1] * 60 + parts[2];
+    } else {
+      if (curStart === null) curStart = out.length * 4;
+      buf.push(ln);
+    }
+  }
+  flush();
+  for (let i = 0; i < out.length - 1; i++) {
+    out[i].end = Math.max(out[i].start + 1.5, out[i + 1].start);
+  }
+  return out;
+}
+
 async function getFastYoutubeCaptions(videoId) {
   try {
     const r = await fetchWithTimeout('https://www.youtube.com/youtubei/v1/player?prettyPrint=false', {
@@ -53,16 +83,14 @@ async function getFastYoutubeCaptions(videoId) {
         videoId,
         context: { client: { clientName: 'ANDROID', clientVersion: '19.29.37', androidSdkVersion: 30, hl: 'vi', gl: 'VN' } }
       })
-    }, 5000);
+    }, 4500);
     if (!r.ok) return null;
     const data = await r.json();
     const tracks = data?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
     if (!Array.isArray(tracks) || !tracks.length) return null;
-    const chosen = tracks.find(t => /^vi/i.test(t.languageCode || ''))
-      || tracks.find(t => /^en/i.test(t.languageCode || ''))
-      || tracks[0];
+    const chosen = tracks.find(t => /^vi/i.test(t.languageCode || '')) || tracks.find(t => /^en/i.test(t.languageCode || '')) || tracks[0];
     const capUrl = chosen.baseUrl.includes('fmt=') ? chosen.baseUrl : `${chosen.baseUrl}&fmt=json3`;
-    const capRes = await fetchWithTimeout(capUrl, {}, 5000);
+    const capRes = await fetchWithTimeout(capUrl, {}, 4500);
     if (!capRes.ok) return null;
     const txt = await capRes.text();
     const lines = txt.trim().startsWith('{') ? parseJson3(JSON.parse(txt)) : parseXml(txt);
@@ -88,7 +116,7 @@ async function translateTextLinesWithGemini(chunk, isZh, apiKey) {
         generationConfig: { temperature: 0.2, responseMimeType: 'application/json' }
       })
     },
-    18000
+    25000
   );
   if (!r.ok) {
     const errTxt = await r.text();
@@ -115,40 +143,47 @@ async function translateTextLinesWithGemini(chunk, isZh, apiKey) {
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  const apiKey = (process.env.GEMINI_API_KEY || '').trim();
+  if (!apiKey) return res.status(503).json({ error: 'Chưa cài GEMINI_API_KEY trên Vercel.' });
+
+  // POST: Instant 2-3s AI bilingual translation of pasted YouTube transcript!
+  if (req.method === 'POST') {
+    try {
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+      const isZh = String(body.lang || 'en').toLowerCase() === 'zh';
+      const parsed = parsePastedYoutubeTranscript(body.rawTranscript || '');
+      if (!parsed.length) return res.status(400).json({ error: 'Chưa thấy nội dung lời thoại để dịch.' });
+      const translated = await translateTextLinesWithGemini(parsed.slice(0, 50), isZh, apiKey);
+      return res.status(200).json({ lang: isZh ? 'zh' : 'en', count: translated.length, lines: translated });
+    } catch (err) {
+      return res.status(500).json({ error: 'Lỗi dịch lời thoại: ' + String(err.message || err) });
+    }
+  }
 
   const videoId = String(req.query.v || '').trim();
   const isZh = String(req.query.lang || 'en').toLowerCase() === 'zh';
   const startSec = Math.max(0, parseInt(req.query.start || '0', 10) || 0);
-  const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
   if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
     return res.status(400).json({ error: 'Link YouTube không hợp lệ.' });
   }
-  if (!apiKey) {
-    return res.status(503).json({ error: 'Chưa cài GEMINI_API_KEY trên Vercel.' });
-  }
 
   try {
-    // TẦNG 1: Lấy text phụ đề siêu nhanh (0.5s) rồi dịch bằng Gemini 3.8 Flash (2–3s!)
     const rawCaptions = await getFastYoutubeCaptions(videoId);
     if (rawCaptions && rawCaptions.length) {
       const slice = rawCaptions.filter(l => l.start >= startSec).slice(0, 35);
       if (slice.length) {
         const translated = await translateTextLinesWithGemini(slice, isZh, apiKey);
         const lastEnd = Math.ceil(translated[translated.length - 1].end || (startSec + 60));
-        return res.status(200).json({
-          lang: isZh ? 'zh' : 'en',
-          translatedBy: 'gemini-3.8-flash-fast-text',
-          nextStart: lastEnd,
-          count: translated.length,
-          lines: translated
-        });
+        return res.status(200).json({ lang: isZh ? 'zh' : 'en', nextStart: lastEnd, count: translated.length, lines: translated });
       }
     }
 
-    // TẦNG 2: Video không có CC -> Gemini 3.8 Flash nghe trực tiếp 30 giây (timeout 22s chống treo)
+    // Fallback: Gemini 3.8 Flash listens directly to 30s with generous 55s timeout
     const endSec = startSec + 30;
     const ytUrl = `https://www.youtube.com/watch?v=${videoId}`;
     const prompt = isZh
@@ -170,7 +205,7 @@ module.exports = async function handler(req, res) {
           generationConfig: { temperature: 0.2, responseMimeType: 'application/json' }
         })
       },
-      22000
+      55000
     );
 
     if (!gRes.ok) {
@@ -186,13 +221,13 @@ module.exports = async function handler(req, res) {
       const s = Number(x.start) >= startSec ? Number(x.start) : (startSec + idx * 4);
       const nextS = arr[idx + 1] ? Number(arr[idx + 1].start) : (s + 4);
       const e = Number(x.end) > s ? Number(x.end) : Math.max(s + 2, nextS);
-      return { start: Number(s.toFixed(2)), end: Number(e.toFixed(2)), text: String(x.text).trim(), ipa: String(x.ipa || '').trim(), vi: String(x.vi || '').trim() };
+      return { start: Number(s.toFixed(2)), end: Number(e.toFixed(2)), text: String(x.text || '').trim(), ipa: String(x.ipa || '').trim(), vi: String(x.vi || '').trim() };
     });
 
-    return res.status(200).json({ lang: isZh ? 'zh' : 'en', translatedBy: 'gemini-3.8-flash-video', nextStart: endSec, count: lines.length, lines });
+    return res.status(200).json({ lang: isZh ? 'zh' : 'en', nextStart: endSec, count: lines.length, lines });
   } catch (err) {
     const msg = err.name === 'AbortError'
-      ? 'Video này quá dài để AI nghe trực tiếp trong 1 lượt (quá 22 giây). Hãy thử video ngắn hơn (dưới 5 phút) hoặc nạp file .SRT/.VTT!'
+      ? 'Video này quá dài để AI nghe trực tiếp. Bạn bấm nút "Dán lời thoại YouTube để AI dịch trong 2 giây" ngay bên dưới nhé!'
       : ('Lỗi AI: ' + String(err.message || err));
     return res.status(504).json({ error: msg });
   }
