@@ -1691,25 +1691,14 @@
       ui.oqAiGenerating = true;
       if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
       try {
-        const prompt = isZh
-          ? `Tạo 1 bài đọc hiểu điền từ ngắn (2-3 câu trình độ HSK 1-2) bằng tiếng Trung về chủ đề "${topic}". Chỉ trả về ĐÚNG 1 JSON hợp lệ (không markdown, không giải thích thêm) với các khóa: title (tiếng Trung kèm dịch Việt trong ngoặc), level ("HSK 1-2 · AI tạo"), before (đoạn trước chỗ trống), blank (1 từ tiếng Trung 1-2 chữ ngắn gọn), after (đoạn sau chỗ trống), pinyin (phiên âm đầy đủ của cả đoạn), vi (dịch tiếng Việt tự nhiên), question (1 câu hỏi đọc hiểu bằng tiếng Việt), options (mảng đúng 4 đáp án ngắn bằng tiếng Việt), correctIdx (số 0-3), explanation (giải thích ngắn bằng tiếng Việt).`
-          : `Create 1 short beginner A1-A2 English fill-in-the-blank reading passage (2-3 sentences) about "${topic}". Return ONLY valid JSON (no markdown, no extra text) with keys: title, level ("A1–A2 · AI tạo"), before (text before blank ending with a space if needed), blank (1 simple 1-word English answer), after (text after blank), vi (natural Vietnamese translation), question (1 short English comprehension question), options (array of exactly 4 short English options), correctIdx (0-3), explanation (short explanation in Vietnamese).`;
-
         const resp = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            messages: [{ role: 'user', content: prompt }],
-            system: 'You are a strict JSON generator for language learning exercises. Output ONLY raw JSON.'
-          })
+          body: JSON.stringify({ mode: 'reading', lang: isZh ? 'zh' : 'en', topic })
         });
         if (!resp.ok) throw new Error('AI server unavailable');
-        const data = await resp.json();
-        const raw = String(data.reply || data.text || '').trim();
-        const m = raw.match(/\{[\s\S]*\}/);
-        if (!m) throw new Error('Invalid JSON');
-        const obj = JSON.parse(m[0]);
-        if (!obj.before || !obj.blank || !Array.isArray(obj.options) || obj.options.length < 2) {
+        const obj = await resp.json();
+        if (!obj || !obj.before || !obj.blank || !Array.isArray(obj.options) || obj.options.length < 2) {
           throw new Error('Incomplete passage');
         }
         const newItem = {
@@ -1736,7 +1725,7 @@
         ui.oqReadQuizPicked = null;
         showToast('✨ Đã tạo bài đọc mới bằng AI!');
       } catch (e) {
-        showToast('Chưa gọi được AI tạo bài — bạn hãy dùng nút "Đổi bài ngẫu nhiên" nhé!');
+        showToast('Chưa gọi được AI tạo bài — bạn hãy dùng nút "Đổi câu khác" nhé!');
       } finally {
         ui.oqAiGenerating = false;
         if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
