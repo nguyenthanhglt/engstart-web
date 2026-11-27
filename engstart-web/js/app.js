@@ -6016,7 +6016,7 @@
         fetch('/api/transcript', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ lang: ui.customVideoLang || 'en', rawTranscript: rawText })
+          body: JSON.stringify({ lang: (ui.customVideoLang = (document.getElementById('vid-lang-select')?.value || ui.customVideoLang || 'en')), rawTranscript: rawText })
         })
           .then(r => r.json().then(d => ({ ok: r.ok, d })))
           .then(({ ok, d }) => {
@@ -6489,6 +6489,10 @@
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'vid-lang-select') {
+        ui.customVideoLang = e.target.value === 'zh' ? 'zh' : 'en';
+        return;
+      }
       if (e.target.id === 'vid-sub-mode-select') {
         ui.videoSubMode = e.target.value;
         if (ui.videoSubMode === 'srt') {

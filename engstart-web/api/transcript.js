@@ -50,7 +50,7 @@ function parsePastedYoutubeTranscript(raw) {
 async function translateGroupWithGoogle(texts, tl) {
   // Send up to 15 lines in ONE single POST request (avoids URL length limit & avoids 429 rate-limit!)
   const joined = texts.join('\n');
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(tl)}&dt=t`;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(tl)}&dt=t&dt=rm`;
   const r = await fetchWithTimeout(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
