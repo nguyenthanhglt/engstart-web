@@ -1,0 +1,69 @@
+body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #F6F2E9;
+      color: #1E293B;
+      overflow-x: hidden;
+    }
+    .aio-sidebar {
+      background-color: #FDFBF6;
+      border-right: 1px solid #EAE2D3;
+    }
+    .aio-grid-paper {
+      background-color: #FCFBF7;
+      background-image:
+        linear-gradient(to right, rgba(214, 204, 184, 0.28) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(214, 204, 184, 0.28) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .aio-sky-banner {
+      background: linear-gradient(115deg, #DCEEFF 0%, #C6E2FF 55%, #D7ECFF 100%);
+      border: 1px solid #9CCBF8;
+    }
+    .aio-honey-panel {
+      background-color: #EFE2C6;
+      border: 1px solid #E2CFA8;
+    }
+    .aio-peach-panel {
+      background-color: #F4DFCE;
+      border: 1px solid #E8C9B1;
+    }
+    .aio-nav-active {
+      background-color: #CCE5FE !important;
+      color: #0B4F8A !important;
+      border: 1px solid #9CCBF8 !important;
+      box-shadow: 0 1px 2px rgba(14, 116, 204, 0.08);
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes popIn {
+      0% { opacity: 0; transform: translateY(6px) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-pop { animation: popIn 0.22s ease-out forwards; }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); }
+      70% { transform: scale(1.03); box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .mic-recording { animation: pulseRing 1.4s infinite; }
+    body.zen-mode #main-header,
+    body.zen-mode #aio-sidebar,
+    body.zen-mode #roadmap-chrome {
+      display: none !important;
+    }
+
+    .aio-lavender-banner { background: linear-gradient(115deg, #ECE2FE 0%, #DFCEF9 100%); border: 1px solid #C9B2F4; }
+    .aio-orange-banner   { background: linear-gradient(115deg, #FDE4CF 0%, #FAD3B4 100%); border: 1px solid #F0B98D; }
+    .aio-mint-banner     { background: linear-gradient(115deg, #DCF4E6 0%, #C7EBD6 100%); border: 1px solid #9BD9B4; }
+    .aio-cyan-banner     { background: linear-gradient(115deg, #D2F1F5 0%, #BCE7EE 100%); border: 1px solid #8AD3DF; }
+    .aio-pink-banner     { background: linear-gradient(115deg, #FCE0EB 0%, #F7CADE 100%); border: 1px solid #EBA5C5; }
+    .aio-sand-banner     { background: linear-gradient(115deg, #F4EAD4 0%, #EADAB7 100%); border: 1px solid #D8C190; }
+    .aio-coral-banner    { background: linear-gradient(115deg, #FDE2DA 0%, #F8CEC3 100%); border: 1px solid #EBAFA0; }
+
+    .coro-green-banner {
+      background-color: #1FA97C;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
