@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
       : `You are Teacher Sarah, a warm, friendly English teacher helping a Vietnamese learner practice free-flowing conversation (topic: "${topicTitle}").\nConversation so far:\n${historyText}\n\nReply naturally to whatever the student said. Return ONLY valid JSON with keys: "en" (1-2 natural, encouraging English sentences ending with a friendly follow-up question), "vi" (natural Vietnamese translation), "tip" (short Vietnamese grammar/wording tip if the student made a mistake, else ""), "suggestions" (array of 3 short natural English sample replies).`;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

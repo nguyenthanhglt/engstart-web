@@ -2745,7 +2745,7 @@
           const prompt = isZh
             ? `You are Teacher Xiaomei (小美老师), a warm, encouraging Mandarin Chinese teacher helping a Vietnamese beginner (HSK 1-2) practice "${sc.title}".\nConversation so far:\n${historyText}\n\nReply strictly in JSON with keys: "zh" (1-2 simple Simplified Chinese sentences ending with an easy question), "pinyin" (Pinyin with tone marks), "vi" (natural Vietnamese translation), "tip" (short Vietnamese feedback if needed, else ""), "suggestions" (array of 3 objects with {"zh":"...","pinyin":"..."}). Return ONLY valid JSON.`
             : `You are Teacher Sarah, a warm, encouraging English teacher helping a Vietnamese beginner (A0-A2) practice "${sc.title}".\nConversation so far:\n${historyText}\n\nReply strictly in JSON with keys: "en" (short, simple English reply of 1-2 sentences ending with an easy follow-up question), "vi" (natural Vietnamese translation), "tip" (short Vietnamese grammar correction if needed, else ""), "suggestions" (array of 3 short English sample replies). Return ONLY valid JSON.`;
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -3822,14 +3822,14 @@
           lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: w.topic || 'HSK', vi: w.vi, ex: w.exZh || w.ex || '', exVi: w.exVi || ''
         }));
       }
-      const allEntries = [
-        ...enBank.map(w => ({ lang: 'en', head: w.en, sub: w.ipa || '', pos: w.pos || 'Từ vựng', vi: w.vi, ex: w.exEn || w.example || '', exVi: w.exVi || w.exampleVi || '' })),
-        ...zhList
-      ];
+      const enEntries = enBank.map(w => ({ lang: 'en', head: w.en, sub: w.ipa || '', pos: w.pos || 'Từ vựng', vi: w.vi, ex: w.exEn || w.example || '', exVi: w.exVi || w.exampleVi || '' }));
+      const dictLang = ui.dictLang || 'all'; // 'all' | 'en' | 'zh'
+      const scopedEntries = dictLang === 'en' ? enEntries : (dictLang === 'zh' ? zhList : [...enEntries, ...zhList]);
+      const allEntries = [...enEntries, ...zhList];
 
       const matches = q
-        ? allEntries.filter(e => e.head.toLowerCase().includes(q) || e.sub.toLowerCase().includes(q) || e.vi.toLowerCase().includes(q)).slice(0, 12)
-        : allEntries.slice(0, 8);
+        ? scopedEntries.filter(e => e.head.toLowerCase().includes(q) || e.sub.toLowerCase().includes(q) || e.vi.toLowerCase().includes(q)).slice(0, 20)
+        : (dictLang === 'all' ? [...enEntries.slice(0, 5), ...zhList.slice(0, 5)] : scopedEntries.slice(0, 15));
       const active = matches[ui.dictPickIdx || 0] || matches[0] || allEntries[0];
       const isZh = active && active.lang === 'zh';
 
@@ -3843,10 +3843,16 @@
               <button type="button" id="aio-dict-search-btn" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-amber-50 border border-[#D8C190] text-xs font-extrabold text-slate-900 shrink-0">Tra từ</button>
             </div>
           </div>
-          <div class="flex flex-wrap gap-1.5 text-[11px] font-bold text-amber-900/80">
-            <span class="px-2.5 py-0.5 rounded-full bg-white/75">Tra được ${allEntries.length}+ từ Anh &amp; Trung</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-white/75">Phát âm chuẩn + Câu ví dụ thật</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-white/75">Lưu ngay vào Sổ tay</span>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="bg-white/85 p-1 rounded-xl inline-flex text-xs font-bold border border-[#D8C190]">
+              <button type="button" data-dict-lang="all" class="px-3 py-1 rounded-lg ${dictLang === 'all' ? 'bg-amber-600 text-white' : 'text-slate-600'}">Tất cả (${allEntries.length})</button>
+              <button type="button" data-dict-lang="en" class="px-3 py-1 rounded-lg ${dictLang === 'en' ? 'bg-sky-600 text-white' : 'text-slate-600'}">Tiếng Anh (${enEntries.length})</button>
+              <button type="button" data-dict-lang="zh" class="px-3 py-1 rounded-lg ${dictLang === 'zh' ? 'bg-rose-600 text-white' : 'text-slate-600'}">Tiếng Trung (${zhList.length})</button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 text-[11px] font-bold text-amber-900/80">
+              <span class="px-2.5 py-0.5 rounded-full bg-white/75">Phát âm chuẩn + Câu ví dụ thật</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-white/75">Lưu ngay vào Sổ tay</span>
+            </div>
           </div>
         </div>
 
@@ -5570,6 +5576,8 @@
         ui.oqLang = chosen;
         ui.aioGrammarLang = chosen;
         ui.pronLang = chosen;
+        ui.dictLang = chosen;
+        ui.dictPickIdx = 0;
         if (ui.exLang !== chosen) initExerciseSession(chosen, ui.exMode || 'mcq');
         ui.videoLangFilter = chosen;
         ui.typingActiveTopicId = null;
@@ -5705,6 +5713,13 @@
       if (pronLangBtn) {
         ui.pronLang = pronLangBtn.dataset.pronLang;
         renderAioPronunciationPage();
+        return;
+      }
+      const dLangBtn = e.target.closest('[data-dict-lang]');
+      if (dLangBtn) {
+        ui.dictLang = dLangBtn.dataset.dictLang;
+        ui.dictPickIdx = 0;
+        renderAioDictionaryPage();
         return;
       }
       if (e.target.closest('#aio-dict-search-btn')) {
