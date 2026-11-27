@@ -1546,10 +1546,7 @@
     // ==================== OPENQUIZ-STYLE PRACTICE HUB (TRANSLATION, SPEAKING USE, READING, SPEED DASH) ====================
     const OQ_READING_PASSAGES = [
       {
-        id: 'oq-read-en-1',
-        lang: 'en',
-        title: 'A Morning at the Coffee Shop',
-        level: 'A1 · Tiếng Anh',
+        id: 'oq-read-en-1', lang: 'en', title: 'A Morning at the Coffee Shop', level: 'A1 · Tiếng Anh',
         before: 'Every morning, Linh walks to a small coffee shop near her office. She always orders an iced latte and says ',
         blank: 'thank you',
         after: ' with a big smile. After drinking her coffee, she feels happy and ready to start work at nine.',
@@ -1560,10 +1557,7 @@
         explanation: 'Đoạn văn nói: "ready to start work at nine" (sẵn sàng bắt đầu công việc lúc 9 giờ).'
       },
       {
-        id: 'oq-read-en-2',
-        lang: 'en',
-        title: 'Finding the Train Station',
-        level: 'A1–A2 · Tiếng Anh',
+        id: 'oq-read-en-2', lang: 'en', title: 'Finding the Train Station', level: 'A1–A2 · Tiếng Anh',
         before: 'Nam is visiting a new city for the first time. He wants to take a train, so he asks a local person: "Excuse me, where is the ',
         blank: 'station',
         after: '?" The local person smiles and says it is only five minutes away on foot.',
@@ -1574,10 +1568,51 @@
         explanation: 'Đoạn văn nói: "only five minutes away on foot" (chỉ cách 5 phút đi bộ).'
       },
       {
-        id: 'oq-read-zh-1',
-        lang: 'zh',
-        title: '小明的周末 (Cuối tuần của Tiểu Minh)',
-        level: 'HSK 1 · Tiếng Trung',
+        id: 'oq-read-en-3', lang: 'en', title: 'A Cute Puppy in the Park', level: 'A1 · Bé & Mới học',
+        before: 'On Sunday afternoon, Mia goes to the green park with her little dog, Milo. Milo loves running after a red ',
+        blank: 'ball',
+        after: ' on the grass. When Milo gets tired, Mia gives him fresh water and a small biscuit.',
+        vi: 'Vào chiều Chủ nhật, Mia đi ra công viên xanh cùng chú cún nhỏ Milo. Milo rất thích chạy theo quả bóng màu đỏ trên bãi cỏ. Khi Milo mệt, Mia cho chú uống nước mát và ăn một chiếc bánh quy nhỏ.',
+        question: 'What does Milo love running after?',
+        options: ['A blue bird', 'A red ball', 'A yellow bike', 'A white cat'],
+        correctIdx: 1,
+        explanation: 'Đoạn văn nói: "Milo loves running after a red ball on the grass."'
+      },
+      {
+        id: 'oq-read-en-4', lang: 'en', title: 'Shopping at the Supermarket', level: 'A1 · Đời sống',
+        before: 'Today Mom and Ben are buying food for dinner. They put six sweet apples, two bottles of milk, and fresh ',
+        blank: 'bread',
+        after: ' into the basket. Before leaving, Ben helps his mom carry the shopping bag to the car.',
+        vi: 'Hôm nay mẹ và Ben đang mua đồ ăn cho bữa tối. Họ bỏ 6 quả táo ngọt, 2 chai sữa và bánh mì tươi vào giỏ. Trước khi về, Ben giúp mẹ xách túi đồ ra xe.',
+        question: 'How many apples do they buy?',
+        options: ['Two apples', 'Four apples', 'Six apples', 'Ten apples'],
+        correctIdx: 2,
+        explanation: 'Đoạn văn nói: "They put six sweet apples..." (Họ bỏ 6 quả táo ngọt).'
+      },
+      {
+        id: 'oq-read-en-5', lang: 'en', title: 'My Favorite School Subject', level: 'A1 · Trường học',
+        before: 'Tom is ten years old and he loves going to school every day. His favorite subject is ',
+        blank: 'English',
+        after: ' because he enjoys singing songs and reading short stories with his teacher.',
+        vi: 'Tom 10 tuổi và cậu bé rất thích đi học mỗi ngày. Môn học yêu thích của cậu là tiếng Anh vì cậu thích hát các bài hát và đọc truyện ngắn cùng cô giáo.',
+        question: 'Why does Tom like his favorite subject?',
+        options: ['He likes drawing maps', 'He enjoys singing songs and reading stories', 'He plays football after class', 'He has no homework'],
+        correctIdx: 1,
+        explanation: 'Đoạn văn nói: "because he enjoys singing songs and reading short stories with his teacher."'
+      },
+      {
+        id: 'oq-read-en-6', lang: 'en', title: 'A Rainy Sunday at Home', level: 'A2 · Giao tiếp',
+        before: 'It is raining heavily outside, so our family decides to stay at home. Dad cooks a big pot of hot ',
+        blank: 'soup',
+        after: ', and we watch a funny movie together in the living room.',
+        vi: 'Bên ngoài trời đang mưa to nên cả nhà mình quyết định ở nhà. Bố nấu một nồi súp nóng lớn, và cả nhà cùng nhau xem một bộ phim hài trong phòng khách.',
+        question: 'Where do they watch the movie?',
+        options: ['At the cinema', 'In the kitchen', 'In the living room', 'In the garden'],
+        correctIdx: 2,
+        explanation: 'Đoạn văn nói: "we watch a funny movie together in the living room."'
+      },
+      {
+        id: 'oq-read-zh-1', lang: 'zh', title: '小明的周末 (Cuối tuần của Tiểu Minh)', level: 'HSK 1 · Tiếng Trung',
         before: '今天是星期六，小明不用工作。上午他和朋友去咖啡店喝茶，中午一起吃面条。下午他们去看电影，小明觉得非常',
         blank: '开心',
         after: '。',
@@ -1587,8 +1622,126 @@
         options: ['Cơm chiên (炒饭)', 'Mì sợi (面条)', 'Bánh bao (包子)', 'Phở (河粉)'],
         correctIdx: 1,
         explanation: 'Trong bài viết: "中午一起吃面条" (buổi trưa cùng nhau ăn mì sợi).'
+      },
+      {
+        id: 'oq-read-zh-2', lang: 'zh', title: '去超市买水果 (Đi siêu thị mua hoa quả)', level: 'HSK 1 · Đời sống',
+        before: '妈妈和妹妹一起去超市。妹妹很喜欢吃甜的',
+        blank: '苹果',
+        after: '，所以妈妈买了五个，还买了一瓶牛奶。',
+        pinyin: 'Māma hé mèimei yìqǐ qù chāoshì. Mèimei hěn xǐhuan chī tián de píngguǒ, suǒyǐ māma mǎile wǔ gè, hái mǎile yì píng niúnǎi.',
+        vi: 'Mẹ và em gái cùng đi siêu thị. Em gái rất thích ăn táo ngọt nên mẹ mua 5 quả, và còn mua thêm 1 chai sữa bò.',
+        question: 'Mẹ đã mua bao nhiêu quả táo?',
+        options: ['3 quả', '5 quả', '6 quả', '8 quả'],
+        correctIdx: 1,
+        explanation: 'Trong bài viết: "所以妈妈买了五个" (nên mẹ đã mua 5 quả).'
+      },
+      {
+        id: 'oq-read-zh-3', lang: 'zh', title: '我的小猫 (Chú mèo nhỏ của tôi)', level: 'HSK 1 · Cho bé',
+        before: '我家有一只白色的小猫，它今年两岁了。它每天喜欢喝温水，吃小',
+        blank: '鱼',
+        after: '，晚上喜欢睡在我的床边。',
+        pinyin: 'Wǒ jiā yǒu yì zhī báisè de xiǎomāo, tā jīnnián liǎng suì le. Tā měitiān xǐhuan hē wēnshuǐ, chī xiǎoyú, wǎnshang xǐhuan shuì zài wǒ de chuángbiān.',
+        vi: 'Nhà tôi có một chú mèo nhỏ màu trắng, năm nay nó 2 tuổi rồi. Mỗi ngày nó thích uống nước ấm, ăn cá nhỏ, buổi tối thích ngủ bên cạnh giường tôi.',
+        question: 'Chú mèo nhỏ có màu gì?',
+        options: ['Màu đen', 'Màu vàng', 'Màu trắng', 'Màu xám'],
+        correctIdx: 2,
+        explanation: 'Trong bài viết: "一只白色的小猫" (một chú mèo nhỏ màu trắng).'
+      },
+      {
+        id: 'oq-read-zh-4', lang: 'zh', title: '早饭时间 (Giờ ăn sáng)', level: 'HSK 1 · Gia đình',
+        before: '每天早上七点，爸爸都会给我们做早饭。我吃一个鸡蛋，喝一杯热',
+        blank: '牛奶',
+        after: '，然后背着书包去学校。',
+        pinyin: 'Měitiān zǎoshang qī diǎn, bàba dōu huì gěi wǒmen zuò zǎofàn. Wǒ chī yí gè jīdàn, hē yì bēi rè niúnǎi, ránhòu bēizhe shūbāo qù xuéxiào.',
+        vi: 'Mỗi sáng lúc 7 giờ, bố đều làm bữa sáng cho chúng tôi. Tôi ăn một quả trứng gà, uống một ly sữa nóng, sau đó đeo cặp sách đi học.',
+        question: 'Ai là người nấu bữa sáng trong gia đình?',
+        options: ['Mẹ', 'Bố', 'Chị gái', 'Bà nội'],
+        correctIdx: 1,
+        explanation: 'Trong bài viết: "爸爸都会给我们做早饭" (bố đều làm bữa sáng cho chúng tôi).'
+      },
+      {
+        id: 'oq-read-zh-5', lang: 'zh', title: '春天的天气 (Thời tiết mùa xuân)', level: 'HSK 2 · Thiên nhiên',
+        before: '春天来了，天气很暖和，公园里有很多漂亮的花。周末我喜欢和家人去公园',
+        blank: '散步',
+        after: '，拍照留念。',
+        pinyin: 'Chūntiān lái le, tiānqì hěn nuǎnhuo, gōngyuán lǐ yǒu hěn duō piàoliang de huā. Zhōumò wǒ xǐhuan hé jiārén qù gōngyuán sànbù, pāizhào liúniàn.',
+        vi: 'Mùa xuân đến rồi, thời tiết rất ấm áp, trong công viên có rất nhiều hoa đẹp. Cuối tuần tôi thích cùng gia đình đi dạo công viên và chụp ảnh kỷ niệm.',
+        question: 'Thời tiết mùa xuân trong bài như thế nào?',
+        options: ['Rất lạnh', 'Rất nóng', 'Rất ấm áp', 'Mưa to'],
+        correctIdx: 2,
+        explanation: 'Trong bài viết: "天气很暖和" (thời tiết rất ấm áp).'
+      },
+      {
+        id: 'oq-read-zh-6', lang: 'zh', title: '学习中文 (Học tiếng Trung)', level: 'HSK 2 · Học tập',
+        before: '安娜每天晚上学习中文三十分钟。她先听录音练习发音，再写十个汉字。现在她已经会说很多日常',
+        blank: '句子',
+        after: '了。',
+        pinyin: 'Ānnà měitiān wǎnshang xuéxí Zhōngwén sānshí fēnzhōng. Tā xiān tīng lùyīn liànxí fāyīn, zài xiě shí gè Hànzì. Xiànzài tā yǐjīng huì shuō hěn duō rìcháng jùzi le.',
+        vi: 'Anna học tiếng Trung 30 phút mỗi tối. Cô ấy nghe ghi âm luyện phát âm trước, sau đó viết 10 chữ Hán. Bây giờ cô ấy đã biết nói rất nhiều câu giao tiếp hằng ngày rồi.',
+        question: 'Mỗi tối Anna học tiếng Trung bao lâu?',
+        options: ['15 phút', '30 phút', '1 tiếng', '2 tiếng'],
+        correctIdx: 1,
+        explanation: 'Trong bài viết: "每天晚上学习中文三十分钟" (mỗi tối học tiếng Trung 30 phút).'
       }
     ];
+
+    async function generateAiReadingPassage(topicInput, lang) {
+      const topic = String(topicInput || '').trim() || (lang === 'zh' ? 'đi mua sắm cuối tuần' : 'a fun day at the zoo');
+      const isZh = lang === 'zh';
+      ui.oqAiGenerating = true;
+      if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
+      try {
+        const prompt = isZh
+          ? `Tạo 1 bài đọc hiểu điền từ ngắn (2-3 câu trình độ HSK 1-2) bằng tiếng Trung về chủ đề "${topic}". Chỉ trả về ĐÚNG 1 JSON hợp lệ (không markdown, không giải thích thêm) với các khóa: title (tiếng Trung kèm dịch Việt trong ngoặc), level ("HSK 1-2 · AI tạo"), before (đoạn trước chỗ trống), blank (1 từ tiếng Trung 1-2 chữ ngắn gọn), after (đoạn sau chỗ trống), pinyin (phiên âm đầy đủ của cả đoạn), vi (dịch tiếng Việt tự nhiên), question (1 câu hỏi đọc hiểu bằng tiếng Việt), options (mảng đúng 4 đáp án ngắn bằng tiếng Việt), correctIdx (số 0-3), explanation (giải thích ngắn bằng tiếng Việt).`
+          : `Create 1 short beginner A1-A2 English fill-in-the-blank reading passage (2-3 sentences) about "${topic}". Return ONLY valid JSON (no markdown, no extra text) with keys: title, level ("A1–A2 · AI tạo"), before (text before blank ending with a space if needed), blank (1 simple 1-word English answer), after (text after blank), vi (natural Vietnamese translation), question (1 short English comprehension question), options (array of exactly 4 short English options), correctIdx (0-3), explanation (short explanation in Vietnamese).`;
+
+        const resp = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: prompt }],
+            system: 'You are a strict JSON generator for language learning exercises. Output ONLY raw JSON.'
+          })
+        });
+        if (!resp.ok) throw new Error('AI server unavailable');
+        const data = await resp.json();
+        const raw = String(data.reply || data.text || '').trim();
+        const m = raw.match(/\{[\s\S]*\}/);
+        if (!m) throw new Error('Invalid JSON');
+        const obj = JSON.parse(m[0]);
+        if (!obj.before || !obj.blank || !Array.isArray(obj.options) || obj.options.length < 2) {
+          throw new Error('Incomplete passage');
+        }
+        const newItem = {
+          id: 'oq-read-ai-' + Date.now(),
+          lang: isZh ? 'zh' : 'en',
+          title: String(obj.title || topic),
+          level: String(obj.level || (isZh ? 'HSK 1–2 · AI tạo' : 'A1–A2 · AI tạo')),
+          before: String(obj.before),
+          blank: String(obj.blank).trim(),
+          after: String(obj.after || '.'),
+          pinyin: isZh ? String(obj.pinyin || '') : '',
+          vi: String(obj.vi || ''),
+          question: String(obj.question || 'What is the passage about?'),
+          options: obj.options.slice(0, 4).map(String),
+          correctIdx: Math.max(0, Math.min(3, Number(obj.correctIdx) || 0)),
+          explanation: String(obj.explanation || '')
+        };
+        OQ_READING_PASSAGES.push(newItem);
+        ui.oqReadLangFilter = 'all';
+        ui.oqReadIdx = OQ_READING_PASSAGES.length - 1;
+        ui.oqReadBlank = '';
+        ui.oqReadBlankOk = null;
+        ui.oqReadShowVi = false;
+        ui.oqReadQuizPicked = null;
+        showToast('✨ Đã tạo bài đọc mới bằng AI!');
+      } catch (e) {
+        showToast('Chưa gọi được AI tạo bài — bạn hãy dùng nút "Đổi bài ngẫu nhiên" nhé!');
+      } finally {
+        ui.oqAiGenerating = false;
+        if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
+      }
+    }
 
     function getOqPool(lang) {
       if (lang === 'zh') {
@@ -1730,25 +1883,54 @@
       }
 
       if (subTab === 'reading') {
-        const pIdx = Math.max(0, Math.min(ui.oqReadIdx || 0, OQ_READING_PASSAGES.length - 1));
+        const langFilter = ui.oqReadLangFilter || 'all';
+        const filteredList = OQ_READING_PASSAGES.map((item, idx) => ({ item, idx }))
+          .filter(x => langFilter === 'all' || x.item.lang === langFilter);
+        let pIdx = Math.max(0, Math.min(ui.oqReadIdx || 0, OQ_READING_PASSAGES.length - 1));
+        if (filteredList.length && !filteredList.some(x => x.idx === pIdx)) {
+          pIdx = filteredList[0].idx;
+          ui.oqReadIdx = pIdx;
+        }
         const p = OQ_READING_PASSAGES[pIdx];
+        const posInFiltered = Math.max(0, filteredList.findIndex(x => x.idx === pIdx));
+        const prevIdx = filteredList.length ? filteredList[(posInFiltered - 1 + filteredList.length) % filteredList.length].idx : 0;
+        const nextIdx = filteredList.length ? filteredList[(posInFiltered + 1) % filteredList.length].idx : 0;
         const fullText = p.before + p.blank + p.after;
         const speakAttr = p.lang === 'zh'
           ? `data-speak-zh="${fullText.replace(/"/g, '&quot;')}"`
           : `data-speak="${fullText.replace(/"/g, '&quot;')}"`;
+        const aiLang = ui.oqAiLang || 'en';
 
         return `
           <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
               <div>
-                <div class="text-xs font-bold uppercase tracking-wider text-emerald-600">Đọc hiểu &amp; Điền từ theo ngữ cảnh</div>
+                <div class="text-xs font-bold uppercase tracking-wider text-emerald-600">Đọc hiểu &amp; Điền từ theo ngữ cảnh · Bài ${posInFiltered + 1}/${filteredList.length}</div>
                 <h2 class="text-lg font-extrabold text-slate-900">${p.title} <span class="text-xs font-semibold text-slate-400">(${p.level})</span></h2>
               </div>
-              <div class="flex items-center gap-1.5">
-                ${OQ_READING_PASSAGES.map((item, i) => `
-                  <button type="button" data-oq-read="${i}" class="px-3 py-1.5 rounded-lg text-xs font-bold border ${i === pIdx ? 'bg-emerald-600 text-white border-transparent' : 'bg-white border-slate-200 text-slate-600'}">Bài ${i + 1}</button>
-                `).join('')}
+              <div class="flex flex-wrap items-center gap-1.5">
+                <div class="bg-slate-100 p-0.5 rounded-lg inline-flex text-xs font-bold">
+                  <button type="button" data-oq-read-lang="all" class="px-2.5 py-1 rounded-md ${langFilter === 'all' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500'}">Tất cả (${OQ_READING_PASSAGES.length})</button>
+                  <button type="button" data-oq-read-lang="en" class="px-2.5 py-1 rounded-md ${langFilter === 'en' ? 'bg-white text-sky-700 shadow-2xs' : 'text-slate-500'}">🇬🇧 Anh</button>
+                  <button type="button" data-oq-read-lang="zh" class="px-2.5 py-1 rounded-md ${langFilter === 'zh' ? 'bg-white text-rose-600 shadow-2xs' : 'text-slate-500'}">🇨🇳 Trung</button>
+                </div>
+                <button type="button" data-oq-read="${prevIdx}" class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700">← Trước</button>
+                <button type="button" data-oq-read="${nextIdx}" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold">Bài tiếp →</button>
+                <button type="button" id="oq-read-random-btn" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 text-xs font-extrabold">🔀 Đổi câu khác</button>
               </div>
+            </div>
+
+            <!-- AI Generate New Passage Bar -->
+            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50/70 to-sky-50/70 border border-emerald-200/70 flex flex-col sm:flex-row sm:items-center gap-2.5">
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="text-xs font-extrabold text-emerald-800">✨ AI tạo bài mới:</span>
+                <button type="button" data-oq-ai-lang="en" class="px-2 py-1 rounded-lg text-[11px] font-bold border ${aiLang === 'en' ? 'bg-sky-600 text-white border-transparent' : 'bg-white text-slate-600 border-slate-200'}">Anh</button>
+                <button type="button" data-oq-ai-lang="zh" class="px-2 py-1 rounded-lg text-[11px] font-bold border ${aiLang === 'zh' ? 'bg-rose-600 text-white border-transparent' : 'bg-white text-slate-600 border-slate-200'}">Trung</button>
+              </div>
+              <input type="text" id="oq-ai-topic-input" value="${(ui.oqAiTopic || '').replace(/"/g, '&quot;')}" placeholder="Nhập chủ đề (VD: động vật cho bé, đi siêu thị, du lịch...)" class="flex-1 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-medium text-slate-800 outline-none focus:border-emerald-500" />
+              <button type="button" id="oq-ai-gen-btn" ${ui.oqAiGenerating ? 'disabled' : ''} class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shrink-0 disabled:opacity-60">
+                ${ui.oqAiGenerating ? 'Đang tạo bài...' : '✨ Tạo bài đọc'}
+              </button>
             </div>
 
             <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
@@ -7304,6 +7486,37 @@
         ui.oqReadBlankOk = ok;
         if (ok) addXp(10, 'Điền từ đọc hiểu chính xác (+10 XP)');
         if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
+        return;
+      }
+      const oqReadLangBtn = e.target.closest('[data-oq-read-lang]');
+      if (oqReadLangBtn) {
+        ui.oqReadLangFilter = oqReadLangBtn.dataset.oqReadLang;
+        ui.oqReadBlank = ''; ui.oqReadBlankOk = null; ui.oqReadShowVi = false; ui.oqReadQuizPicked = null;
+        if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
+        return;
+      }
+      if (e.target.closest('#oq-read-random-btn')) {
+        const lf = ui.oqReadLangFilter || 'all';
+        const pool = OQ_READING_PASSAGES.map((x, i) => ({ x, i })).filter(o => lf === 'all' || o.x.lang === lf);
+        if (pool.length > 1) {
+          const others = pool.filter(o => o.i !== (ui.oqReadIdx || 0));
+          const pick = others[Math.floor(Math.random() * others.length)] || pool[0];
+          ui.oqReadIdx = pick.i;
+          ui.oqReadBlank = ''; ui.oqReadBlankOk = null; ui.oqReadShowVi = false; ui.oqReadQuizPicked = null;
+        }
+        if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
+        return;
+      }
+      const oqAiLangBtn = e.target.closest('[data-oq-ai-lang]');
+      if (oqAiLangBtn) {
+        ui.oqAiLang = oqAiLangBtn.dataset.oqAiLang;
+        if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
+        return;
+      }
+      if (e.target.closest('#oq-ai-gen-btn')) {
+        const inp = document.getElementById('oq-ai-topic-input');
+        ui.oqAiTopic = inp ? inp.value.trim() : '';
+        generateAiReadingPassage(ui.oqAiTopic, ui.oqAiLang || 'en');
         return;
       }
       if (e.target.closest('#oq-read-toggle-vi')) {
