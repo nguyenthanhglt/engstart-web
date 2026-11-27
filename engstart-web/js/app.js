@@ -3448,12 +3448,12 @@
       ],
       consonantsVoiced: [
         { sym: 'b', ex: 'bag', diff: 'Dễ' }, { sym: 'd', ex: 'day', diff: 'Dễ' },
-        { sym: 'g', ex: 'go', diff: 'Dễ' }, { sym: 'v', ex: 'voice', diff: 'Dễ' },
+        { sym: 'g', ex: 'girl', diff: 'Dễ' }, { sym: 'v', ex: 'voice', diff: 'Dễ' },
         { sym: 'ð', ex: 'this', diff: 'Khó' }, { sym: 'z', ex: 'zoo', diff: 'Vừa' },
         { sym: 'ʒ', ex: 'measure', diff: 'Khó' }, { sym: 'dʒ', ex: 'job', diff: 'Khó' }
       ],
       endings: [
-        { sym: '-t', ex: 'cat', diff: 'Khó' }, { sym: '-k', ex: 'back', diff: 'Khó' },
+        { sym: '-t', ex: 'sit', diff: 'Khó' }, { sym: '-k', ex: 'back', diff: 'Khó' },
         { sym: '-s', ex: 'nice', diff: 'Khó' }, { sym: '-ed', ex: 'played', diff: 'Khó' },
         { sym: '-st', ex: 'past', diff: 'Khó' }, { sym: '-nd', ex: 'friend', diff: 'Khó' }
       ]
