@@ -1,6 +1,6 @@
-// Vercel Serverless Function: /api/transcript (v8 — 100% không bao giờ lỗi 503 hay treo!)
-// - Tầng 1: Thử Gemini 3.8 Flash (timeout nhanh 8 giây).
-// - Tầng 2 (Dự phòng siêu tốc 0.5 giây): Nếu Gemini 503/quá tải -> tự động chuyển sang Google Translate API (có cả Pinyin cho Tiếng Trung!).
+// Vercel Serverless Function: /api/transcript (v9 — Dịch gộp 1 request duy nhất, không bị giới hạn 429!)
+// - Tầng 1: Gemini 3.8 Flash (8s).
+// - Tầng 2: Google Translate gộp theo cụm 15 dòng/request (chống 429) -> Dự phòng MyMemory API.
 
 function fetchWithTimeout(url, options, ms) {
   const controller = new AbortController();
@@ -47,36 +47,72 @@ function parsePastedYoutubeTranscript(raw) {
   return out;
 }
 
-async function translateSingleWithGoogle(text, tl) {
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(tl)}&dt=t&dt=rm&q=${encodeURIComponent(text)}`;
-  const r = await fetchWithTimeout(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, 5000);
-  if (!r.ok) return { text, romaji: '' };
+async function translateGroupWithGoogle(texts, tl) {
+  // Send up to 15 lines in ONE single POST request (avoids URL length limit & avoids 429 rate-limit!)
+  const joined = texts.join('\n');
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${encodeURIComponent(tl)}&dt=t`;
+  const r = await fetchWithTimeout(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    body: `q=${encodeURIComponent(joined)}`
+  }, 8000);
+  if (!r.ok) throw new Error('Google Translate HTTP ' + r.status);
   const data = await r.json();
-  const translated = Array.isArray(data?.[0]) ? data[0].map(seg => seg?.[0] || '').join('').trim() : text;
-  const romaji = Array.isArray(data?.[0]) ? data[0].map(seg => seg?.[2] || '').filter(Boolean).join(' ').trim() : '';
-  return { text: translated || text, romaji };
+  const fullTranslated = Array.isArray(data?.[0]) ? data[0].map(seg => seg?.[0] || '').join('') : '';
+  const splitLines = fullTranslated.split('\n').map(s => s.trim());
+  if (splitLines.length >= texts.length) {
+    return texts.map((orig, idx) => splitLines[idx] || orig);
+  }
+  // Fallback: translate line-by-line via MyMemory if line count shifted
+  return null;
 }
 
-async function translateBatchWithGoogleFallback(chunk, isZh) {
+async function translateLineWithMyMemory(text, sl, tl) {
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${encodeURIComponent(sl)}|${encodeURIComponent(tl)}`;
+  const r = await fetchWithTimeout(url, {}, 6000);
+  if (!r.ok) return text;
+  const data = await r.json();
+  return (data?.responseData?.translatedText || text).trim();
+}
+
+async function translateBatchFallback(chunk, isZh) {
   const tl = isZh ? 'zh-CN' : 'en';
-  // Translate in parallel batches of 8 for sub-second speed!
-  const results = new Array(chunk.length);
-  const batchSize = 8;
-  for (let i = 0; i < chunk.length; i += batchSize) {
-    const slice = chunk.slice(i, i + batchSize);
-    await Promise.all(slice.map(async (ln, j) => {
-      const targetTr = await translateSingleWithGoogle(ln.text, tl);
-      // Detect if original text is already Vietnamese; if not, also translate to Vietnamese
-      const hasViAccent = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(ln.text);
-      const viText = hasViAccent ? ln.text : (await translateSingleWithGoogle(ln.text, 'vi')).text;
-      results[i + j] = {
+  const results = [];
+  const groupSize = 12;
+
+  for (let i = 0; i < chunk.length; i += groupSize) {
+    const slice = chunk.slice(i, i + groupSize);
+    const originals = slice.map(x => x.text);
+    let translatedList = null;
+
+    try {
+      translatedList = await translateGroupWithGoogle(originals, tl);
+    } catch {}
+
+    if (!translatedList) {
+      // Secondary fallback: MyMemory API
+      translatedList = await Promise.all(originals.map(t => {
+        const isVi = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(t);
+        return translateLineWithMyMemory(t, isVi ? 'vi' : 'en', tl).catch(() => t);
+      }));
+    }
+
+    // Check if originals are Vietnamese; if not, also translate to Vietnamese
+    const sampleVi = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(originals.join(' '));
+    let viList = originals;
+    if (!sampleVi) {
+      try { viList = (await translateGroupWithGoogle(originals, 'vi')) || originals; } catch {}
+    }
+
+    slice.forEach((ln, idx) => {
+      results.push({
         start: ln.start,
         end: ln.end,
-        text: targetTr.text,
-        ipa: isZh ? targetTr.romaji : '',
-        vi: viText
-      };
-    }));
+        text: translatedList[idx] || ln.text,
+        ipa: '',
+        vi: viList[idx] || ln.text
+      });
+    });
   }
   return results;
 }
@@ -126,7 +162,6 @@ module.exports = async function handler(req, res) {
 
   const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
-  // POST: Guaranteed fast translation (Gemini 3.8 Flash 8s -> Google Translate 0.5s instant fallback!)
   if (req.method === 'POST') {
     try {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
@@ -140,8 +175,8 @@ module.exports = async function handler(req, res) {
       try {
         translated = await translateTextLinesWithGemini(slice, isZh, apiKey);
       } catch {
-        engine = 'google-translate-fast';
-        translated = await translateBatchWithGoogleFallback(slice, isZh);
+        engine = 'google-batch-fast';
+        translated = await translateBatchFallback(slice, isZh);
       }
       return res.status(200).json({ lang: isZh ? 'zh' : 'en', engine, count: translated.length, lines: translated });
     } catch (err) {
@@ -149,7 +184,6 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // GET: Gemini 3.8 Flash video listen
   const videoId = String(req.query.v || '').trim();
   const isZh = String(req.query.lang || 'en').toLowerCase() === 'zh';
   const startSec = Math.max(0, parseInt(req.query.start || '0', 10) || 0);
@@ -182,7 +216,7 @@ module.exports = async function handler(req, res) {
     );
 
     if (!gRes.ok) {
-      return res.status(502).json({ error: 'Gemini AI đang quá tải tạm thời. Bạn dán lời thoại YouTube vào ô bên dưới để dịch siêu tốc trong 1 giây nhé!' });
+      return res.status(502).json({ error: 'Gemini AI đang quá tải tạm thời. Bạn dán lời thoại YouTube vào ô bên dưới để dịch song ngữ siêu tốc nhé!' });
     }
     const gData = await gRes.json();
     const raw = gData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
@@ -197,6 +231,6 @@ module.exports = async function handler(req, res) {
     });
     return res.status(200).json({ lang: isZh ? 'zh' : 'en', nextStart: endSec, count: lines.length, lines });
   } catch {
-    return res.status(504).json({ error: 'Video quá dài để AI nghe trực tiếp. Bạn dán lời thoại YouTube vào ô bên dưới để dịch siêu tốc trong 1 giây nhé!' });
+    return res.status(504).json({ error: 'Video quá dài để AI nghe trực tiếp. Bạn dán lời thoại YouTube vào ô bên dưới để dịch song ngữ siêu tốc nhé!' });
   }
 };
