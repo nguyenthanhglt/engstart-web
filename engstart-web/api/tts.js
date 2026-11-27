@@ -128,22 +128,33 @@ module.exports = async function handler(req, res) {
     if (mode === 'ipa-word') {
       if (!/^en-(?:gb|us)$/i.test(lang)) return res.status(400).end('Unsupported IPA word accent');
       if (!/^[a-zA-Z]+(?:['-][a-zA-Z]+)*$/.test(text)) return res.status(400).end('IPA word requires one English word');
+      const exactLang = lang.toLowerCase() === 'en-gb' ? 'en-GB' : 'en-US';
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 6000);
       try {
-        const buf = await fetchIpaDictionaryWordMp3(text, lang, controller.signal);
-        if (!buf) return res.status(404).end('IPA word recording not found for requested accent');
-        const hasId3 = buf.length >= 3 && buf.subarray(0, 3).toString('ascii') === 'ID3';
-        const hasMpegFrame = buf.length >= 2 && buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0;
-        if (!hasId3 && !hasMpegFrame) return res.status(502).end('IPA word MP3 audio unavailable');
-        res.setHeader('Content-Type', 'audio/mpeg');
-        res.setHeader('Cache-Control', 'public, max-age=604800');
-        return res.status(200).send(buf);
+        const buf = await fetchIpaDictionaryWordMp3(text, exactLang, controller.signal);
+        if (buf) {
+          const hasId3 = buf.length >= 3 && buf.subarray(0, 3).toString('ascii') === 'ID3';
+          const hasMpegFrame = buf.length >= 2 && buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0;
+          if (hasId3 || hasMpegFrame) {
+            res.setHeader('Content-Type', 'audio/mpeg');
+            res.setHeader('Cache-Control', 'public, max-age=604800');
+            return res.status(200).send(buf);
+          }
+        }
       } catch (e) {
-        return res.status(502).end('IPA word audio upstream failed');
+        // Fall through to exact-accent MP3 TTS below
       } finally {
         clearTimeout(timeout);
       }
+      // Fallback giữ đúng tuyệt đối giọng en-GB hoặc en-US đã chọn (không bao giờ trộn giọng)
+      const ttsAudio = await fetchGoogleTtsMp3(text, exactLang);
+      if (ttsAudio) {
+        res.setHeader('Content-Type', ttsAudio.ct);
+        res.setHeader('Cache-Control', 'public, max-age=604800');
+        return res.status(200).send(ttsAudio.buf);
+      }
+      return res.status(502).end('IPA word audio upstream failed');
     }
 
     if (!text) return res.status(400).end('Missing text');
