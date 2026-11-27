@@ -1,4 +1,4 @@
-// Vercel Serverless Function: /api/chat (v13 — Trò chuyện AI tự nhiên thật sự + tự chuyển model dự phòng khi 503!)
+// Vercel Serverless Function: /api/chat (v15 — Tự dò model Gemini đang mở cho Key + hỗ trợ ?test=1 để kiểm tra trực tiếp!)
 
 function fetchWithTimeout(url, options, ms) {
   const controller = new AbortController();
@@ -6,12 +6,36 @@ function fetchWithTimeout(url, options, ms) {
   return fetch(url, { ...(options || {}), signal: controller.signal }).finally(() => clearTimeout(timer));
 }
 
-async function callGeminiWaterfall(prompt, apiKey) {
-  // Tự động thử lần lượt các model Flash mới nhất nếu 1 model đang nghẽn 503
-  const models = ['gemini-3.8-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite'];
-  let lastErr = '';
+async function discoverFlashModels(apiKey) {
+  try {
+    const r = await fetchWithTimeout(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`,
+      {},
+      6000
+    );
+    if (!r.ok) return [];
+    const data = await r.json();
+    const list = (data.models || [])
+      .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+      .map(m => String(m.name || '').replace(/^models\//, ''))
+      .filter(name => /gemini/i.test(name));
+    // Prefer flash / lite models first for speed
+    const flashFirst = [
+      ...list.filter(n => /flash-lite|flash/i.test(n) && !/image|tts|audio|live|thinking/i.test(n)),
+      ...list.filter(n => !/flash/i.test(n) && !/embedding|imagen|veo|aqa/i.test(n))
+    ];
+    return [...new Set(flashFirst)].slice(0, 6);
+  } catch {
+    return [];
+  }
+}
 
-  for (const model of models) {
+async function callGeminiSmart(prompt, apiKey) {
+  const discovered = await discoverFlashModels(apiKey);
+  const candidates = [...new Set([...discovered, 'gemini-3.8-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite'])];
+  const errors = [];
+
+  for (const model of candidates) {
     try {
       const res = await fetchWithTimeout(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`,
@@ -20,13 +44,10 @@ async function callGeminiWaterfall(prompt, apiKey) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.75,
-              responseMimeType: 'application/json'
-            }
+            generationConfig: { temperature: 0.75 }
           })
         },
-        14000
+        12000
       );
 
       if (res.ok) {
@@ -36,28 +57,38 @@ async function callGeminiWaterfall(prompt, apiKey) {
         if (jsonMatch) {
           return { parsed: JSON.parse(jsonMatch[0]), model };
         }
+        errors.push(`${model}: non-JSON reply`);
       } else {
         const txt = await res.text();
-        lastErr = `${model} (${res.status}): ${txt.slice(0, 140)}`;
+        errors.push(`${model} (${res.status}): ${txt.slice(0, 120)}`);
       }
     } catch (e) {
-      lastErr = `${model}: ${String(e.message || e)}`;
+      errors.push(`${model}: ${String(e.message || e)}`);
     }
   }
-  throw new Error(lastErr || 'All Gemini models unavailable');
+  throw new Error(errors.join(' | '));
 }
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const apiKey = (process.env.GEMINI_API_KEY || '').trim();
   if (req.method === 'GET') {
+    if (req.query && req.query.test === '1') {
+      const models = await discoverFlashModels(apiKey);
+      try {
+        const out = await callGeminiSmart('Student asks: "Bạn có biết Gia Lai ở đâu không?". Reply ONLY JSON: {"en":"short friendly answer about Gia Lai in English","vi":"Vietnamese translation","tip":"","suggestions":["Yes!"]}', apiKey);
+        return res.status(200).json({ ok: true, discoveredModels: models, usedModel: out.model, reply: out.parsed });
+      } catch (err) {
+        return res.status(502).json({ ok: false, discoveredModels: models, error: String(err.message || err) });
+      }
+    }
     return res.status(200).json({ enabled: Boolean(apiKey) });
   }
+
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!apiKey) return res.status(503).json({ error: 'Server GEMINI_API_KEY is not configured' });
 
@@ -72,28 +103,21 @@ module.exports = async function handler(req, res) {
 
     const prompt = isZh
       ? `You are Teacher Xiaomei (小美老师), a warm, witty, genuinely knowledgeable Mandarin Chinese teacher chatting freely with a Vietnamese learner (topic: "${topicTitle}").
-IMPORTANT: Actually answer the student's EXACT message or question first (if they mention a place like Gia Lai, ask a real question, or write in Vietnamese, respond directly and warmly to what they just said!). Keep it natural like a real friend/teacher, never give generic scripted replies.
+IMPORTANT: Directly answer the student's EXACT message or question first (if they mention Gia Lai or ask a real question in Vietnamese/Chinese, answer about it warmly and specifically!). Never give generic scripted replies.
 Conversation so far:
 ${historyText}
 
-Return ONLY valid JSON with keys:
-- "zh": 1-3 natural Simplified Chinese sentences directly answering the student + a friendly follow-up question
-- "pinyin": Pinyin with tone marks for "zh"
-- "vi": natural Vietnamese translation of "zh"
-- "tip": if the student wrote in Vietnamese or made a small mistake, briefly show how to say their sentence in Chinese (with Pinyin), otherwise ""
-- "suggestions": array of 3 natural follow-up replies the student can say next: [{"zh":"...","pinyin":"..."}]`
+Return ONLY valid JSON:
+{"zh":"1-3 natural Simplified Chinese sentences answering the student + a friendly follow-up question","pinyin":"Pinyin with tone marks","vi":"natural Vietnamese translation","tip":"short Vietnamese tip or how to say their sentence in Chinese, or empty string","suggestions":[{"zh":"...","pinyin":"..."},{"zh":"...","pinyin":"..."},{"zh":"...","pinyin":"..."}]}`
       : `You are Teacher Sarah, a warm, witty, genuinely knowledgeable English teacher chatting freely with a Vietnamese learner (topic: "${topicTitle}").
-IMPORTANT: Actually answer the student's EXACT message or question first (if they mention a place like Gia Lai, ask a real-world question, or write in Vietnamese, respond directly and warmly to what they just said!). Keep it natural like a real friend/teacher, never give generic scripted replies.
+IMPORTANT: Directly answer the student's EXACT message or question first (if they mention Gia Lai or ask a real question in Vietnamese/English, answer about it warmly and specifically!). Never give generic scripted replies.
 Conversation so far:
 ${historyText}
 
-Return ONLY valid JSON with keys:
-- "en": 1-3 natural, friendly English sentences directly answering the student + a natural follow-up question
-- "vi": natural Vietnamese translation of "en"
-- "tip": if the student wrote in Vietnamese or made a grammar mistake, briefly show the natural English way to say what they meant, otherwise ""
-- "suggestions": array of 3 short natural English follow-up replies the student can say next`;
+Return ONLY valid JSON:
+{"en":"1-3 natural English sentences answering the student + a friendly follow-up question","vi":"natural Vietnamese translation","tip":"short Vietnamese tip or how to say their sentence in English, or empty string","suggestions":["reply 1","reply 2","reply 3"]}`;
 
-    const { parsed, model } = await callGeminiWaterfall(prompt, apiKey);
+    const { parsed, model } = await callGeminiSmart(prompt, apiKey);
     return res.status(200).json({ ...parsed, _model: model });
   } catch (err) {
     return res.status(502).json({ error: 'Gemini AI tạm bận', detail: String(err.message || err) });
