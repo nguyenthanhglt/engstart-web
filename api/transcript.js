@@ -1,6 +1,5 @@
 // Vercel Serverless Function: /api/transcript?v=VIDEO_ID&lang=en|zh
-// 1. Lấy phụ đề gốc kèm mốc thời gian (timestamps) từ YouTube.
-// 2. Tự động dịch song ngữ Anh/Trung <-> Việt (ưu tiên YouTube tlang, nếu YouTube không có dịch thì tự dùng Gemini AI trên Vercel!).
+// Dùng YouTube InnerTube API (ANDROID client) để lấy phụ đề ổn định từ máy chủ Vercel + tự dịch song ngữ bằng YouTube tlang & Gemini AI.
 
 function decodeEntities(str) {
   return String(str || '')
@@ -27,10 +26,89 @@ function parseXmlCaptions(xml) {
   return lines;
 }
 
+function parseJson3Captions(json) {
+  const lines = [];
+  const events = (json && json.events) || [];
+  for (const ev of events) {
+    if (!ev.segs || typeof ev.tStartMs !== 'number') continue;
+    const text = decodeEntities(ev.segs.map(s => s.utf8 || '').join('')).replace(/\n/g, ' ').trim();
+    if (!text) continue;
+    const start = Number((ev.tStartMs / 1000).toFixed(2));
+    const dur = Number(((ev.dDurationMs || 3000) / 1000).toFixed(2));
+    lines.push({ start, end: Number((start + dur).toFixed(2)), text });
+  }
+  return lines;
+}
+
+async function fetchCaptionTrack(url) {
+  // Try json3 first (cleaner), fallback to XML
+  try {
+    const jUrl = url.includes('fmt=') ? url : `${url}&fmt=json3`;
+    const r = await fetch(jUrl);
+    if (r.ok) {
+      const txt = await r.text();
+      if (txt.trim().startsWith('{')) {
+        const parsed = parseJson3Captions(JSON.parse(txt));
+        if (parsed.length) return parsed;
+      } else {
+        const parsed = parseXmlCaptions(txt);
+        if (parsed.length) return parsed;
+      }
+    }
+  } catch {}
+  try {
+    const r = await fetch(url);
+    if (r.ok) {
+      const txt = await r.text();
+      return parseXmlCaptions(txt);
+    }
+  } catch {}
+  return [];
+}
+
+async function getCaptionTracksViaInnerTube(videoId) {
+  const res = await fetch('https://www.youtube.com/youtubei/v1/player?prettyPrint=false', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'com.google.android.youtube/19.29.37 (Linux; U; Android 11) gzip'
+    },
+    body: JSON.stringify({
+      videoId,
+      context: {
+        client: {
+          clientName: 'ANDROID',
+          clientVersion: '19.29.37',
+          androidSdkVersion: 30,
+          hl: 'en',
+          gl: 'US'
+        }
+      }
+    })
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  const tracks = data?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+  return Array.isArray(tracks) && tracks.length ? tracks : null;
+}
+
+async function getCaptionTracksViaHtml(videoId) {
+  const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}&hl=en`, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept-Language': 'en-US,en;q=0.9,vi;q=0.8'
+    }
+  });
+  const html = await pageRes.text();
+  const match = html.match(/"captionTracks":(\[[\s\S]*?\])/);
+  if (!match) return null;
+  const tracks = JSON.parse(match[1]);
+  return Array.isArray(tracks) && tracks.length ? tracks : null;
+}
+
 async function translateBatchWithGemini(lines, targetLang, apiKey) {
   if (!apiKey || !lines.length) return null;
   const isZh = targetLang.startsWith('zh');
-  // Translate up to first 80 lines in a fast single Gemini 2.5 Flash call
   const chunk = lines.slice(0, 80);
   const numbered = chunk.map((l, i) => `${i}: ${l.text}`).join('\n');
   const prompt = isZh
@@ -86,68 +164,44 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}&hl=en`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9,vi;q=0.8'
-      }
-    });
-    const html = await pageRes.text();
-    const match = html.match(/"captionTracks":(\[[\s\S]*?\])/);
-    if (!match) {
-      return res.status(404).json({ error: 'Video này chưa có phụ đề công khai trên YouTube.' });
-    }
-
-    const tracks = JSON.parse(match[1]);
-    if (!Array.isArray(tracks) || !tracks.length) {
-      return res.status(404).json({ error: 'Không tìm thấy track phụ đề.' });
+    let tracks = await getCaptionTracksViaInnerTube(videoId);
+    if (!tracks) tracks = await getCaptionTracksViaHtml(videoId);
+    if (!tracks || !tracks.length) {
+      return res.status(404).json({ error: 'YouTube chặn lấy phụ đề tự động từ máy chủ cho video này — bạn có thể nạp file .SRT/.VTT.' });
     }
 
     const baseTrack = tracks.find(t => (t.languageCode || '').toLowerCase().startsWith(targetLang.slice(0, 2)))
       || tracks.find(t => /^vi/i.test(t.languageCode || ''))
       || tracks[0];
 
-    const baseXml = await (await fetch(baseTrack.baseUrl)).text();
-    const baseLines = parseXmlCaptions(baseXml);
+    const baseLines = await fetchCaptionTrack(baseTrack.baseUrl);
     if (!baseLines.length) {
-      return res.status(404).json({ error: 'Phụ đề YouTube bị rỗng.' });
+      return res.status(404).json({ error: 'Không đọc được nội dung phụ đề của video này.' });
     }
 
     const baseLangShort = (baseTrack.languageCode || '').toLowerCase().slice(0, 2);
     const needTranslateTarget = baseLangShort !== targetLang.slice(0, 2);
 
-    // Try YouTube's built-in tlang first
     let targetLines = baseLines;
     let ytTranslatedOk = !needTranslateTarget;
     if (needTranslateTarget) {
-      try {
-        const tXml = await (await fetch(`${baseTrack.baseUrl}&tlang=${encodeURIComponent(targetLang)}`)).text();
-        const parsedT = parseXmlCaptions(tXml);
-        if (parsedT.length > 0 && parsedT[0].text !== baseLines[0].text) {
-          targetLines = parsedT;
-          ytTranslatedOk = true;
-        }
-      } catch {}
+      const parsedT = await fetchCaptionTrack(`${baseTrack.baseUrl}&tlang=${encodeURIComponent(targetLang)}`);
+      if (parsedT.length > 0 && parsedT[0].text !== baseLines[0].text) {
+        targetLines = parsedT;
+        ytTranslatedOk = true;
+      }
     }
 
-    // Try YouTube Vietnamese track
     let viLines = [];
     const viTrack = tracks.find(t => /^vi/i.test(t.languageCode || ''));
     if (viTrack) {
-      try {
-        const viXml = await (await fetch(viTrack.baseUrl)).text();
-        viLines = parseXmlCaptions(viXml);
-      } catch {}
+      viLines = await fetchCaptionTrack(viTrack.baseUrl);
     } else if (baseLangShort === 'vi') {
       viLines = baseLines;
     } else {
-      try {
-        const viXml = await (await fetch(`${baseTrack.baseUrl}&tlang=vi`)).text();
-        viLines = parseXmlCaptions(viXml);
-      } catch {}
+      viLines = await fetchCaptionTrack(`${baseTrack.baseUrl}&tlang=vi`);
     }
 
-    // If YouTube didn't have translation (or Vietnamese track is missing) AND Gemini API Key is set -> auto-translate with Gemini AI!
     if ((!ytTranslatedOk || !viLines.length) && apiKey) {
       try {
         const aiTranslated = await translateBatchWithGemini(baseLines, targetLang, apiKey);
@@ -176,6 +230,6 @@ module.exports = async function handler(req, res) {
       lines
     });
   } catch (err) {
-    return res.status(500).json({ error: 'Không thể tải phụ đề YouTube', detail: String(err.message || err) });
+    return res.status(500).json({ error: 'Lỗi tải phụ đề YouTube: ' + String(err.message || err) });
   }
 };
