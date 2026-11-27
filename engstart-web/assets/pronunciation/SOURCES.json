@@ -1,0 +1,1935 @@
+{
+  "version": "2026.11.27-original-pronunciation-v5",
+  "clips": {
+    "i-long": {
+      "src": "../assets/pronunciation/phonemes/i-long-68ef4cda3cb8.mp3",
+      "symbol": "iː",
+      "title": "File:Close front unrounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Close_front_unrounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.757551,
+      "sha256": "68ef4cda3cb8fc9de3dd95d765bf7ffd9a6674b35ead4150f5b7a404e2f61bbe"
+    },
+    "i-short": {
+      "src": "../assets/pronunciation/phonemes/i-short-2cf08eae61a8.mp3",
+      "symbol": "ɪ",
+      "title": "File:Near-close near-front unrounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Near-close_near-front_unrounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.731429,
+      "sha256": "2cf08eae61a86329374bc9be1af028a09fe8cf45d6f5fdd097200f15950914ca"
+    },
+    "u-short": {
+      "src": "../assets/pronunciation/phonemes/u-short-f1f87462fc40.mp3",
+      "symbol": "ʊ",
+      "title": "File:Near-close near-back rounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Near-close_near-back_rounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.757551,
+      "sha256": "f1f87462fc40fdf201dd9fa90232c45d966e429ea7276758f9c8ed2ab6435911"
+    },
+    "u-long": {
+      "src": "../assets/pronunciation/phonemes/u-long-6113a28dfe49.mp3",
+      "symbol": "uː",
+      "title": "File:Close back rounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Close_back_rounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.835918,
+      "sha256": "6113a28dfe491585550d66826fc1d1074791fea4e3be244461bf83b54ee18c16"
+    },
+    "e-short": {
+      "src": "../assets/pronunciation/phonemes/e-short-9d5a327ff3f7.mp3",
+      "symbol": "e",
+      "title": "File:Mid front unrounded vowel.ogg",
+      "author": "TFighterPilot",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mid_front_unrounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.436735,
+      "sha256": "9d5a327ff3f7215685d2cd4b9e468f68dd8dfb5048bbb3db844b9e429f2ccd32"
+    },
+    "schwa": {
+      "src": "../assets/pronunciation/phonemes/schwa-23acd0ce75a8.mp3",
+      "symbol": "ə",
+      "title": "File:Mid-central vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mid-central_vowel.ogg",
+      "changes": "Downloaded directly from Wikimedia Commons and converted from Ogg to mono 44.1 kHz MP3 at 96 kbps. No pitch, speed or phonetic editing.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.626939,
+      "sha256": "23acd0ce75a85e416b10b5c7c7ef52525b4e40f2426020d004b7f2bc08b08d0e"
+    },
+    "er-long": {
+      "src": "../assets/pronunciation/phonemes/er-long-a29bd8613747.mp3",
+      "symbol": "ɜː",
+      "title": "File:Open-mid central unrounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Open-mid_central_unrounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.731429,
+      "sha256": "a29bd8613747ad3b21685413ba95733c08c2267049f2e376a8e6017beaba4e3d"
+    },
+    "aw-long": {
+      "src": "../assets/pronunciation/phonemes/aw-long-559a6fff3e73.mp3",
+      "symbol": "ɔː",
+      "title": "File:Open-mid back rounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Open-mid_back_rounded_vowel.ogg",
+      "changes": "Downloaded directly from Wikimedia Commons and converted from Ogg to mono 44.1 kHz MP3 at 96 kbps. No pitch, speed or phonetic editing.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.600816,
+      "sha256": "559a6fff3e73ce44dde392568ddc10e5a6c381e6ca3ca107a7f6d3376c800dba"
+    },
+    "ae-short": {
+      "src": "../assets/pronunciation/phonemes/ae-short-764e1e51016e.mp3",
+      "symbol": "æ",
+      "title": "File:Near-open front unrounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Near-open_front_unrounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.862041,
+      "sha256": "764e1e51016eebc5fa93c660b40508dc4fabf4d52fb2bd2c02ccfdcde1138987"
+    },
+    "uh-short": {
+      "src": "../assets/pronunciation/phonemes/uh-short-3daa359b2c22.mp3",
+      "symbol": "ʌ",
+      "title": "ʌ.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "WAV converted to mono 44.1 kHz MP3, 96 kbps. No phonetic edits.",
+      "note": "Chất âm /ʌ/ trong từ thực tế có thể thay đổi theo giọng.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.783673,
+      "sha256": "3daa359b2c2245ddab3caed8b892d334f977e9f7b1b716e33f53d1f9d4e0f1f6"
+    },
+    "ah-long": {
+      "src": "../assets/pronunciation/phonemes/ah-long-25c210d47999.mp3",
+      "symbol": "ɑː",
+      "title": "File:Open back unrounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Open_back_unrounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.731429,
+      "sha256": "25c210d47999a238fe8972bce62dbfb150e1b1916cc3e9b8d2302db6628c67db"
+    },
+    "o-short": {
+      "src": "../assets/pronunciation/phonemes/o-short-0f7e2429e649.mp3",
+      "symbol": "ɒ",
+      "title": "File:Open back rounded vowel.ogg",
+      "author": "Denelson83",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Open_back_rounded_vowel.ogg",
+      "changes": "Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 0.835918,
+      "sha256": "0f7e2429e6494e4a62303cec41631a427852a5c068043b76814f5c142e10a463"
+    },
+    "p": {
+      "src": "../assets/pronunciation/phonemes/p-88cdd514a85e.mp3",
+      "symbol": "p",
+      "title": "pʰ.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.287–0.427 s; 0.4 ms edge fades; scalar gain 2.092 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản có bật hơi cho phụ âm đầu; không dùng thay mẫu âm cuối.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.567347,
+      "sha256": "88cdd514a85e0cfd5567641d7726f61a58670d206b21fc8fb05788d9c304ab13",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.287,
+        0.427
+      ],
+      "gainDb": 2.092,
+      "rawEventDurationMs": 140.0,
+      "rawActiveDurationMs": 140.0,
+      "audioAudit": {
+        "before": {
+          "durationMs": 140.0,
+          "peakDbfs": -9.75,
+          "rmsDbfs": -18.09,
+          "activeAboveMinus40DbfsMs": 140.0
+        },
+        "after": {
+          "durationMs": 1520.0,
+          "peakDbfs": -8.06,
+          "rmsDbfs": -22.04,
+          "activeAboveMinus40DbfsMs": 434.01
+        },
+        "eventAfter": {
+          "durationMs": 140.0,
+          "peakDbfs": -7.66,
+          "rmsDbfs": -16.01,
+          "activeAboveMinus40DbfsMs": 140.0
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/p%CA%B0.wav"
+    },
+    "b": {
+      "src": "../assets/pronunciation/phonemes/b-791318177ffc.mp3",
+      "symbol": "b",
+      "title": "b.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.185–0.356 s; 0.4 ms edge fades; scalar gain 5.707 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Âm tắc rất ngắn; nghe tiếng nhả hơi, không thêm nguyên âm.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.645714,
+      "sha256": "791318177ffc8262d06a3cbff4138be73262a1cf63d7528a642d8257b0acd89e",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.185,
+        0.356
+      ],
+      "gainDb": 5.707,
+      "rawEventDurationMs": 171.02,
+      "rawActiveDurationMs": 171.02,
+      "audioAudit": {
+        "before": {
+          "durationMs": 171.02,
+          "peakDbfs": -10.34,
+          "rmsDbfs": -21.71,
+          "activeAboveMinus40DbfsMs": 171.02
+        },
+        "after": {
+          "durationMs": 1613.06,
+          "peakDbfs": -5.05,
+          "rmsDbfs": -21.45,
+          "activeAboveMinus40DbfsMs": 528.8
+        },
+        "eventAfter": {
+          "durationMs": 171.02,
+          "peakDbfs": -4.63,
+          "rmsDbfs": -16.03,
+          "activeAboveMinus40DbfsMs": 171.02
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/b.wav"
+    },
+    "t": {
+      "src": "../assets/pronunciation/phonemes/t-fb2712138723.mp3",
+      "symbol": "t",
+      "title": "tʰ.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.336–0.445 s; 0.4 ms edge fades; scalar gain 11.128 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản có bật hơi cho phụ âm đầu; không dùng thay mẫu âm cuối.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.462857,
+      "sha256": "fb27121387231cb4cff125dfda83ab31b33649db672536848930360c01d1f086",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.336,
+        0.445
+      ],
+      "gainDb": 11.128,
+      "rawEventDurationMs": 108.98,
+      "rawActiveDurationMs": 108.98,
+      "audioAudit": {
+        "before": {
+          "durationMs": 108.98,
+          "peakDbfs": -14.63,
+          "rmsDbfs": -29.15,
+          "activeAboveMinus40DbfsMs": 108.98
+        },
+        "after": {
+          "durationMs": 1426.94,
+          "peakDbfs": -3.88,
+          "rmsDbfs": -24.85,
+          "activeAboveMinus40DbfsMs": 329.25
+        },
+        "eventAfter": {
+          "durationMs": 108.98,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -18.02,
+          "activeAboveMinus40DbfsMs": 108.98
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/t%CA%B0.wav"
+    },
+    "d": {
+      "src": "../assets/pronunciation/phonemes/d-5b1f708aff14.mp3",
+      "symbol": "d",
+      "title": "d.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.170–0.321 s; 0.4 ms edge fades; scalar gain 13.208 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Âm tắc rất ngắn; nghe tiếng nhả hơi, không thêm nguyên âm.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.593469,
+      "sha256": "5b1f708aff1421b8a774fb3659092c2bedbc23adf993cf6d0ff38db850082c2f",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.17,
+        0.321
+      ],
+      "gainDb": 13.208,
+      "rawEventDurationMs": 151.0,
+      "rawActiveDurationMs": 151.0,
+      "audioAudit": {
+        "before": {
+          "durationMs": 151.0,
+          "peakDbfs": -16.71,
+          "rmsDbfs": -29.78,
+          "activeAboveMinus40DbfsMs": 151.0
+        },
+        "after": {
+          "durationMs": 1552.99,
+          "peakDbfs": -3.71,
+          "rmsDbfs": -22.37,
+          "activeAboveMinus40DbfsMs": 468.93
+        },
+        "eventAfter": {
+          "durationMs": 151.0,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -16.58,
+          "activeAboveMinus40DbfsMs": 151.0
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/d.wav"
+    },
+    "ch": {
+      "src": "../assets/pronunciation/phonemes/ch-293a29f6ac4a.mp3",
+      "symbol": "tʃ",
+      "title": "File:Voiceless palato-alveolar affricate.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiceless_palato-alveolar_affricate.ogg",
+      "changes": "Extracted source 0.000–0.125 s; 0.4 ms edge fades; scalar gain 6.517 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.515102,
+      "sha256": "293a29f6ac4afeeb292a8350e6d1a44ca0d35e03319772ff33a724f7d140491b",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.0,
+        0.125
+      ],
+      "gainDb": 6.517,
+      "rawEventDurationMs": 124.99,
+      "rawActiveDurationMs": 119.73,
+      "audioAudit": {
+        "before": {
+          "durationMs": 124.99,
+          "peakDbfs": -10.02,
+          "rmsDbfs": -23.44,
+          "activeAboveMinus40DbfsMs": 119.73
+        },
+        "after": {
+          "durationMs": 1474.97,
+          "peakDbfs": -3.94,
+          "rmsDbfs": -23.31,
+          "activeAboveMinus40DbfsMs": 369.16
+        },
+        "eventAfter": {
+          "durationMs": 124.99,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -16.92,
+          "activeAboveMinus40DbfsMs": 124.72
+        },
+        "listenedToByHuman": false
+      }
+    },
+    "j-affricate": {
+      "src": "../assets/pronunciation/phonemes/j-affricate-28d84e3026f5.mp3",
+      "symbol": "dʒ",
+      "title": "File:Voiced palato-alveolar affricate.ogg",
+      "author": "Octane (English Wikipedia)",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_affricate.ogg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_affricate.ogg",
+      "changes": "Extracted source 0.040–0.132 s; 0.4 ms edge fades; scalar gain 8.507 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.410612,
+      "sha256": "28d84e3026f5f8edc149eb4268701b5210441d29a81eea185d57e9415a23f8c9",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.04,
+        0.132
+      ],
+      "gainDb": 8.507,
+      "rawEventDurationMs": 92.0,
+      "rawActiveDurationMs": 84.81,
+      "audioAudit": {
+        "before": {
+          "durationMs": 92.0,
+          "peakDbfs": -12.01,
+          "rmsDbfs": -26.54,
+          "activeAboveMinus40DbfsMs": 84.81
+        },
+        "after": {
+          "durationMs": 1375.99,
+          "peakDbfs": -3.85,
+          "rmsDbfs": -25.5,
+          "activeAboveMinus40DbfsMs": 284.35
+        },
+        "eventAfter": {
+          "durationMs": 92.0,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -18.07,
+          "activeAboveMinus40DbfsMs": 92.0
+        },
+        "listenedToByHuman": false
+      }
+    },
+    "k": {
+      "src": "../assets/pronunciation/phonemes/k-eaee09233d67.mp3",
+      "symbol": "k",
+      "title": "kʰ.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.385–0.482 s; 0.4 ms edge fades; scalar gain 12.365 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản có bật hơi cho phụ âm đầu; không dùng thay mẫu âm cuối.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.436735,
+      "sha256": "eaee09233d67fd4b3a6d6419d40a42333a0f8dc7135f1f7ed050744f4f90e17a",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.385,
+        0.482
+      ],
+      "gainDb": 12.365,
+      "rawEventDurationMs": 97.01,
+      "rawActiveDurationMs": 97.01,
+      "audioAudit": {
+        "before": {
+          "durationMs": 97.01,
+          "peakDbfs": -15.94,
+          "rmsDbfs": -28.37,
+          "activeAboveMinus40DbfsMs": 97.01
+        },
+        "after": {
+          "durationMs": 1391.02,
+          "peakDbfs": -3.85,
+          "rmsDbfs": -23.26,
+          "activeAboveMinus40DbfsMs": 304.31
+        },
+        "eventAfter": {
+          "durationMs": 97.01,
+          "peakDbfs": -3.57,
+          "rmsDbfs": -16.02,
+          "activeAboveMinus40DbfsMs": 97.01
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/k%CA%B0.wav"
+    },
+    "g": {
+      "src": "../assets/pronunciation/phonemes/g-7e9b52618a88.mp3",
+      "symbol": "ɡ",
+      "title": "g.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.175–0.302 s; 0.4 ms edge fades; scalar gain 6.825 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Âm tắc rất ngắn; nghe tiếng nhả hơi, không thêm nguyên âm.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.515102,
+      "sha256": "7e9b52618a88a92171253a66617c1a48c59060f5617ea25534d585ae94f8499e",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.175,
+        0.302
+      ],
+      "gainDb": 6.825,
+      "rawEventDurationMs": 127.01,
+      "rawActiveDurationMs": 127.01,
+      "audioAudit": {
+        "before": {
+          "durationMs": 127.01,
+          "peakDbfs": -10.67,
+          "rmsDbfs": -22.83,
+          "activeAboveMinus40DbfsMs": 127.01
+        },
+        "after": {
+          "durationMs": 1481.02,
+          "peakDbfs": -4.22,
+          "rmsDbfs": -22.4,
+          "activeAboveMinus40DbfsMs": 394.1
+        },
+        "eventAfter": {
+          "durationMs": 127.01,
+          "peakDbfs": -3.84,
+          "rmsDbfs": -16.05,
+          "activeAboveMinus40DbfsMs": 127.01
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/g.wav"
+    },
+    "f": {
+      "src": "../assets/pronunciation/phonemes/f-6f3394016f69.mp3",
+      "symbol": "f",
+      "title": "File:Voiceless labiodental fricative.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiceless_labiodental_fricative.ogg",
+      "changes": "Extracted source 0.250–0.510 s; 2.0 ms edge fades; scalar gain 22.626 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.906939,
+      "sha256": "6f3394016f69646df49a628ea6e398e8778d36ef12506a7d58d075fd7852eca9",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.25,
+        0.51
+      ],
+      "gainDb": 22.626,
+      "rawEventDurationMs": 260.0,
+      "rawActiveDurationMs": 114.74,
+      "audioAudit": {
+        "before": {
+          "durationMs": 260.0,
+          "peakDbfs": -26.13,
+          "rmsDbfs": -39.75,
+          "activeAboveMinus40DbfsMs": 114.74
+        },
+        "after": {
+          "durationMs": 1880.0,
+          "peakDbfs": -3.91,
+          "rmsDbfs": -21.4,
+          "activeAboveMinus40DbfsMs": 793.2
+        },
+        "eventAfter": {
+          "durationMs": 260.0,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -17.14,
+          "activeAboveMinus40DbfsMs": 259.41
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/f.mp3"
+    },
+    "v": {
+      "src": "../assets/pronunciation/phonemes/v-c0624a3a1172.mp3",
+      "symbol": "v",
+      "title": "v.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.245–0.438 s; 2.0 ms edge fades; scalar gain 7.127 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.724082,
+      "sha256": "c0624a3a1172cecaeb780f74e9993f442732b282c0f45f784f28a686cd04834f",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.245,
+        0.438
+      ],
+      "gainDb": 7.127,
+      "rawEventDurationMs": 193.02,
+      "rawActiveDurationMs": 193.02,
+      "audioAudit": {
+        "before": {
+          "durationMs": 193.02,
+          "peakDbfs": -12.78,
+          "rmsDbfs": -23.13,
+          "activeAboveMinus40DbfsMs": 193.02
+        },
+        "after": {
+          "durationMs": 1679.05,
+          "peakDbfs": -6.07,
+          "rmsDbfs": -21.16,
+          "activeAboveMinus40DbfsMs": 588.66
+        },
+        "eventAfter": {
+          "durationMs": 193.02,
+          "peakDbfs": -5.65,
+          "rmsDbfs": -16.09,
+          "activeAboveMinus40DbfsMs": 193.02
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/v.wav"
+    },
+    "theta": {
+      "src": "../assets/pronunciation/phonemes/theta-bf7bca95b270.mp3",
+      "symbol": "θ",
+      "title": "File:Voiceless dental fricative.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiceless_dental_fricative.ogg",
+      "changes": "Extracted source 0.030–0.245 s; 2.0 ms edge fades; scalar gain 26.411 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.776327,
+      "sha256": "bf7bca95b27025bb68c1dc8f45322049694fe053cfb58b0293e17a02d202c4a7",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.03,
+        0.245
+      ],
+      "gainDb": 26.411,
+      "rawEventDurationMs": 214.99,
+      "rawActiveDurationMs": 19.95,
+      "audioAudit": {
+        "before": {
+          "durationMs": 214.99,
+          "peakDbfs": -29.91,
+          "rmsDbfs": -43.95,
+          "activeAboveMinus40DbfsMs": 19.95
+        },
+        "after": {
+          "durationMs": 1744.97,
+          "peakDbfs": -3.9,
+          "rmsDbfs": -22.36,
+          "activeAboveMinus40DbfsMs": 653.51
+        },
+        "eventAfter": {
+          "durationMs": 214.99,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -17.59,
+          "activeAboveMinus40DbfsMs": 214.51
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/th.mp3"
+    },
+    "eth": {
+      "src": "../assets/pronunciation/phonemes/eth-0f2573490afa.mp3",
+      "symbol": "ð",
+      "title": "File:Voiced dental fricative.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiced_dental_fricative.ogg",
+      "changes": "Extracted source 0.020–0.190 s; 2.0 ms edge fades; scalar gain 22.792 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.645714,
+      "sha256": "0f2573490afa16577e12a5b59da8e7b9f42b84087d4fe2af1583430e5f9aa8b6",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.02,
+        0.19
+      ],
+      "gainDb": 22.792,
+      "rawEventDurationMs": 170.0,
+      "rawActiveDurationMs": 114.74,
+      "audioAudit": {
+        "before": {
+          "durationMs": 170.0,
+          "peakDbfs": -30.57,
+          "rmsDbfs": -38.79,
+          "activeAboveMinus40DbfsMs": 114.74
+        },
+        "after": {
+          "durationMs": 1610.0,
+          "peakDbfs": -8.12,
+          "rmsDbfs": -21.47,
+          "activeAboveMinus40DbfsMs": 518.82
+        },
+        "eventAfter": {
+          "durationMs": 170.0,
+          "peakDbfs": -7.78,
+          "rmsDbfs": -16.04,
+          "activeAboveMinus40DbfsMs": 169.61
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/dh.mp3"
+    },
+    "s": {
+      "src": "../assets/pronunciation/phonemes/s-a063ceb2c371.mp3",
+      "symbol": "s",
+      "title": "File:Voiceless alveolar sibilant.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_sibilant.ogg",
+      "changes": "Extracted source 1.480–1.745 s; 2.0 ms edge fades; scalar gain 7.542 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.933061,
+      "sha256": "a063ceb2c37102a4280c0f7e851dd3faf533201e98adde205fb195c767746843",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        1.48,
+        1.745
+      ],
+      "gainDb": 7.542,
+      "rawEventDurationMs": 264.99,
+      "rawActiveDurationMs": 264.99,
+      "audioAudit": {
+        "before": {
+          "durationMs": 264.99,
+          "peakDbfs": -11.04,
+          "rmsDbfs": -25.37,
+          "activeAboveMinus40DbfsMs": 264.99
+        },
+        "after": {
+          "durationMs": 1894.97,
+          "peakDbfs": -5.33,
+          "rmsDbfs": -22.19,
+          "activeAboveMinus40DbfsMs": 808.16
+        },
+        "eventAfter": {
+          "durationMs": 264.99,
+          "peakDbfs": -5.01,
+          "rmsDbfs": -17.99,
+          "activeAboveMinus40DbfsMs": 264.99
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/s.mp3"
+    },
+    "z": {
+      "src": "../assets/pronunciation/phonemes/z-825862692602.mp3",
+      "symbol": "z",
+      "title": "File:Voiced alveolar sibilant.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_sibilant.ogg",
+      "changes": "Extracted source 0.025–0.230 s; 2.0 ms edge fades; scalar gain 17.476 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.750204,
+      "sha256": "8258626926022f729ad189d3285078f4ab06a675537a3fdb33fcc79504e0d21f",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.025,
+        0.23
+      ],
+      "gainDb": 17.476,
+      "rawEventDurationMs": 205.01,
+      "rawActiveDurationMs": 199.55,
+      "audioAudit": {
+        "before": {
+          "durationMs": 205.01,
+          "peakDbfs": -20.98,
+          "rmsDbfs": -34.53,
+          "activeAboveMinus40DbfsMs": 199.55
+        },
+        "after": {
+          "durationMs": 1715.03,
+          "peakDbfs": -3.76,
+          "rmsDbfs": -22.1,
+          "activeAboveMinus40DbfsMs": 628.57
+        },
+        "eventAfter": {
+          "durationMs": 205.01,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -17.21,
+          "activeAboveMinus40DbfsMs": 205.01
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/z.mp3"
+    },
+    "sh": {
+      "src": "../assets/pronunciation/phonemes/sh-00774bc9c23e.mp3",
+      "symbol": "ʃ",
+      "title": "File:Voiceless palato-alveolar sibilant.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiceless_palato-alveolar_sibilant.ogg",
+      "changes": "Extracted source 1.430–1.730 s; 2.0 ms edge fades; scalar gain 8.086 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 2.037551,
+      "sha256": "00774bc9c23e28ccb4f36a7e4f04a7928fd4a1597d7c81f4a4f8e90d1e41cb8b",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        1.43,
+        1.73
+      ],
+      "gainDb": 8.086,
+      "rawEventDurationMs": 300.0,
+      "rawActiveDurationMs": 300.0,
+      "audioAudit": {
+        "before": {
+          "durationMs": 300.0,
+          "peakDbfs": -12.26,
+          "rmsDbfs": -24.09,
+          "activeAboveMinus40DbfsMs": 300.0
+        },
+        "after": {
+          "durationMs": 2000.0,
+          "peakDbfs": -4.48,
+          "rmsDbfs": -19.94,
+          "activeAboveMinus40DbfsMs": 912.93
+        },
+        "eventAfter": {
+          "durationMs": 300.0,
+          "peakDbfs": -4.17,
+          "rmsDbfs": -16.02,
+          "activeAboveMinus40DbfsMs": 299.32
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/sh.mp3"
+    },
+    "zh": {
+      "src": "../assets/pronunciation/phonemes/zh-620efebc782d.mp3",
+      "symbol": "ʒ",
+      "title": "File:Voiced palato-alveolar sibilant.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_sibilant.ogg",
+      "changes": "Extracted source 0.025–0.270 s; 2.0 ms edge fades; scalar gain 6.866 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.880816,
+      "sha256": "620efebc782d57c22e2f5848db98dd2c886d6f44b222909acc02965b7b024f96",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.025,
+        0.27
+      ],
+      "gainDb": 6.866,
+      "rawEventDurationMs": 245.01,
+      "rawActiveDurationMs": 244.44,
+      "audioAudit": {
+        "before": {
+          "durationMs": 245.01,
+          "peakDbfs": -10.37,
+          "rmsDbfs": -24.88,
+          "activeAboveMinus40DbfsMs": 244.44
+        },
+        "after": {
+          "durationMs": 1835.03,
+          "peakDbfs": -3.91,
+          "rmsDbfs": -22.45,
+          "activeAboveMinus40DbfsMs": 743.31
+        },
+        "eventAfter": {
+          "durationMs": 245.01,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -18.04,
+          "activeAboveMinus40DbfsMs": 244.44
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/zh.mp3"
+    },
+    "m": {
+      "src": "../assets/pronunciation/phonemes/m-53ec30bfdc17.mp3",
+      "symbol": "m",
+      "title": "File:Bilabial nasal.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bilabial_nasal.ogg",
+      "changes": "Extracted source 0.020–0.180 s; 2.0 ms edge fades; scalar gain 13.533 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.619592,
+      "sha256": "53ec30bfdc17673dc4dd7103a52afe9870f03ddb3b2e892bdb8144f455e7e8a1",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.02,
+        0.18
+      ],
+      "gainDb": 13.533,
+      "rawEventDurationMs": 160.0,
+      "rawActiveDurationMs": 159.64,
+      "audioAudit": {
+        "before": {
+          "durationMs": 160.0,
+          "peakDbfs": -21.09,
+          "rmsDbfs": -29.53,
+          "activeAboveMinus40DbfsMs": 159.64
+        },
+        "after": {
+          "durationMs": 1580.0,
+          "peakDbfs": -8.0,
+          "rmsDbfs": -21.65,
+          "activeAboveMinus40DbfsMs": 488.89
+        },
+        "eventAfter": {
+          "durationMs": 160.0,
+          "peakDbfs": -7.56,
+          "rmsDbfs": -16.03,
+          "activeAboveMinus40DbfsMs": 159.64
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/m.mp3"
+    },
+    "n": {
+      "src": "../assets/pronunciation/phonemes/n-2dc120cceb47.mp3",
+      "symbol": "n",
+      "title": "File:Alveolar nasal.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alveolar_nasal.ogg",
+      "changes": "Extracted source 0.020–0.245 s; 2.0 ms edge fades; scalar gain 20.948 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.802449,
+      "sha256": "2dc120cceb47267512dbcc28e61de5d2f959f6e1488dd04c715a47343983f9bd",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.02,
+        0.245
+      ],
+      "gainDb": 20.948,
+      "rawEventDurationMs": 224.99,
+      "rawActiveDurationMs": 134.69,
+      "audioAudit": {
+        "before": {
+          "durationMs": 224.99,
+          "peakDbfs": -26.53,
+          "rmsDbfs": -36.95,
+          "activeAboveMinus40DbfsMs": 134.69
+        },
+        "after": {
+          "durationMs": 1774.97,
+          "peakDbfs": -6.02,
+          "rmsDbfs": -20.71,
+          "activeAboveMinus40DbfsMs": 688.44
+        },
+        "eventAfter": {
+          "durationMs": 224.99,
+          "peakDbfs": -5.58,
+          "rmsDbfs": -16.06,
+          "activeAboveMinus40DbfsMs": 224.99
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/n.mp3"
+    },
+    "ng": {
+      "src": "../assets/pronunciation/phonemes/ng-144dd99ec212.mp3",
+      "symbol": "ŋ",
+      "title": "File:Velar nasal.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Velar_nasal.ogg",
+      "changes": "Extracted source 0.020–0.170 s; 2.0 ms edge fades; scalar gain 10.901 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.593469,
+      "sha256": "144dd99ec21270d91c91b6a59aeca8256ff996f4c53a1c17da72a0038717dc71",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.02,
+        0.17
+      ],
+      "gainDb": 10.901,
+      "rawEventDurationMs": 150.0,
+      "rawActiveDurationMs": 150.0,
+      "audioAudit": {
+        "before": {
+          "durationMs": 150.0,
+          "peakDbfs": -18.71,
+          "rmsDbfs": -26.9,
+          "activeAboveMinus40DbfsMs": 150.0
+        },
+        "after": {
+          "durationMs": 1550.0,
+          "peakDbfs": -8.24,
+          "rmsDbfs": -21.86,
+          "activeAboveMinus40DbfsMs": 463.95
+        },
+        "eventAfter": {
+          "durationMs": 150.0,
+          "peakDbfs": -7.81,
+          "rmsDbfs": -16.05,
+          "activeAboveMinus40DbfsMs": 149.66
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/ng.mp3"
+    },
+    "h": {
+      "src": "../assets/pronunciation/phonemes/h-9aba6be4fa75.mp3",
+      "symbol": "h",
+      "title": "File:Voiceless glottal fricative.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Voiceless_glottal_fricative.ogg",
+      "changes": "Extracted source 0.020–0.235 s; 2.0 ms edge fades; scalar gain 16.616 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.776327,
+      "sha256": "9aba6be4fa7599eafc0c95c6d107bfc9214d692ce8691f87710939c9e30f3b73",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.02,
+        0.235
+      ],
+      "gainDb": 16.616,
+      "rawEventDurationMs": 215.01,
+      "rawActiveDurationMs": 189.57,
+      "audioAudit": {
+        "before": {
+          "durationMs": 215.01,
+          "peakDbfs": -20.12,
+          "rmsDbfs": -32.86,
+          "activeAboveMinus40DbfsMs": 189.57
+        },
+        "after": {
+          "durationMs": 1745.03,
+          "peakDbfs": -3.88,
+          "rmsDbfs": -21.03,
+          "activeAboveMinus40DbfsMs": 658.5
+        },
+        "eventAfter": {
+          "durationMs": 215.01,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -16.27,
+          "activeAboveMinus40DbfsMs": 214.51
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/h.mp3"
+    },
+    "l": {
+      "src": "../assets/pronunciation/phonemes/l-4af5c51979e1.mp3",
+      "symbol": "l",
+      "title": "File:Alveolar lateral approximant.ogg",
+      "author": "Peter Isotalo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alveolar_lateral_approximant.ogg",
+      "changes": "Extracted source 0.020–0.270 s; 2.0 ms edge fades; scalar gain 9.382 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu IPA tham chiếu dùng chung hai chế độ; tác giả không được giới thiệu là người bản ngữ Anh/Mỹ.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.880816,
+      "sha256": "4af5c51979e193a910d49b91bae17a11eb7b02a34d7806ccdb4829173237da67",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.02,
+        0.27
+      ],
+      "gainDb": 9.382,
+      "rawEventDurationMs": 250.0,
+      "rawActiveDurationMs": 249.43,
+      "audioAudit": {
+        "before": {
+          "durationMs": 250.0,
+          "peakDbfs": -15.5,
+          "rmsDbfs": -25.38,
+          "activeAboveMinus40DbfsMs": 249.43
+        },
+        "after": {
+          "durationMs": 1850.0,
+          "peakDbfs": -6.57,
+          "rmsDbfs": -20.38,
+          "activeAboveMinus40DbfsMs": 763.27
+        },
+        "eventAfter": {
+          "durationMs": 250.0,
+          "peakDbfs": -6.12,
+          "rmsDbfs": -16.01,
+          "activeAboveMinus40DbfsMs": 249.43
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/Nico-Sanchez/schwa/720907443ddd1811756dc4a73b686c774fc277d7/site/audio/l.mp3"
+    },
+    "r": {
+      "src": "../assets/pronunciation/phonemes/r-d7e014e54fee.mp3",
+      "symbol": "r",
+      "title": "File:Alveolar approximant.ogg",
+      "author": "Erutuon",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alveolar_approximant.ogg",
+      "changes": "Extracted source 0.305–0.430 s; 2.0 ms edge fades; scalar gain 7.601 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Âm lướt / tiếp cận được trích ngắn. Luyện thêm trong từ để nghe rõ chuyển động của âm.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.515102,
+      "sha256": "d7e014e54fee8c437e5623f7e0607b8fa5d8feac41999b265d5a63d3febb557d",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.305,
+        0.43
+      ],
+      "gainDb": 7.601,
+      "rawEventDurationMs": 125.01,
+      "rawActiveDurationMs": 124.72,
+      "audioAudit": {
+        "before": {
+          "durationMs": 125.01,
+          "peakDbfs": -14.23,
+          "rmsDbfs": -23.6,
+          "activeAboveMinus40DbfsMs": 124.72
+        },
+        "after": {
+          "durationMs": 1475.03,
+          "peakDbfs": -7.06,
+          "rmsDbfs": -22.43,
+          "activeAboveMinus40DbfsMs": 384.13
+        },
+        "eventAfter": {
+          "durationMs": 125.01,
+          "peakDbfs": -6.63,
+          "rmsDbfs": -16.04,
+          "activeAboveMinus40DbfsMs": 124.72
+        },
+        "listenedToByHuman": false
+      }
+    },
+    "w": {
+      "src": "../assets/pronunciation/phonemes/w-17f963a7ef2a.mp3",
+      "symbol": "w",
+      "title": "w.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.210–0.310 s; 2.0 ms edge fades; scalar gain 4.728 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Âm lướt / tiếp cận được trích ngắn. Luyện thêm trong từ để nghe rõ chuyển động của âm.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.436735,
+      "sha256": "17f963a7ef2a521acfc6aee383aae53c4a9ea19e691b8230dc527578c48e3604",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.21,
+        0.31
+      ],
+      "gainDb": 4.728,
+      "rawEventDurationMs": 100.0,
+      "rawActiveDurationMs": 99.77,
+      "audioAudit": {
+        "before": {
+          "durationMs": 100.0,
+          "peakDbfs": -10.43,
+          "rmsDbfs": -20.73,
+          "activeAboveMinus40DbfsMs": 99.77
+        },
+        "after": {
+          "durationMs": 1400.0,
+          "peakDbfs": -6.14,
+          "rmsDbfs": -23.17,
+          "activeAboveMinus40DbfsMs": 309.3
+        },
+        "eventAfter": {
+          "durationMs": 100.0,
+          "peakDbfs": -5.7,
+          "rmsDbfs": -16.04,
+          "activeAboveMinus40DbfsMs": 99.77
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/w.wav"
+    },
+    "y": {
+      "src": "../assets/pronunciation/phonemes/y-f1d8749c083f.mp3",
+      "symbol": "j",
+      "title": "j.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.245–0.385 s; 2.0 ms edge fades; scalar gain 6.070 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Âm lướt / tiếp cận được trích ngắn. Luyện thêm trong từ để nghe rõ chuyển động của âm.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.567347,
+      "sha256": "f1d8749c083fcad8ec508f3db3a3ff58243114ee77f896cb6039b334e900baab",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.245,
+        0.385
+      ],
+      "gainDb": 6.07,
+      "rawEventDurationMs": 140.0,
+      "rawActiveDurationMs": 140.0,
+      "audioAudit": {
+        "before": {
+          "durationMs": 140.0,
+          "peakDbfs": -12.72,
+          "rmsDbfs": -22.07,
+          "activeAboveMinus40DbfsMs": 140.0
+        },
+        "after": {
+          "durationMs": 1520.0,
+          "peakDbfs": -7.13,
+          "rmsDbfs": -22.18,
+          "activeAboveMinus40DbfsMs": 429.02
+        },
+        "eventAfter": {
+          "durationMs": 140.0,
+          "peakDbfs": -6.65,
+          "rmsDbfs": -16.14,
+          "activeAboveMinus40DbfsMs": 139.68
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/j.wav"
+    },
+    "ei-uk": {
+      "src": "../assets/pronunciation/phonemes/ei-uk-781f5bb320c5.mp3",
+      "symbol": "eɪ",
+      "title": "En-uk-a.ogg",
+      "author": "Chris Melville",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:En-uk-a.ogg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-uk-a.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "",
+      "origin": "en-GB",
+      "durationSeconds": 0.626939,
+      "sha256": "781f5bb320c5156e44c0dfcdb359a22ed3e2b57bb0d0133c733465ad7f753e2a"
+    },
+    "ai-uk": {
+      "src": "../assets/pronunciation/phonemes/ai-uk-1ea7f6a71f02.mp3",
+      "symbol": "aɪ",
+      "title": "En-uk-I.ogg",
+      "author": "Association Shtooka, Judith Franck",
+      "license": "CC BY 3.0 us",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/us/deed.en",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-uk-I.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "",
+      "origin": "en-GB",
+      "durationSeconds": 1.227755,
+      "sha256": "1ea7f6a71f027f20c8c149db31ab1f6b216312d244ad595d6a9e29c5f94a604e"
+    },
+    "ou-uk": {
+      "src": "../assets/pronunciation/phonemes/ou-uk-6b78bc83b419.mp3",
+      "symbol": "əʊ",
+      "title": "En-uk-oh.ogg",
+      "author": "Rockrunnerthecard",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-uk-oh.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "",
+      "origin": "en-GB",
+      "durationSeconds": 1.410612,
+      "sha256": "6b78bc83b419809af71c181c05dfd0f843589d975c6b6ced76d65b6ec8aee000"
+    },
+    "oi-uk": {
+      "src": "../assets/pronunciation/phonemes/oi-uk-6851b93ba4b9.mp3",
+      "symbol": "ɔɪ",
+      "title": "En-uk-oi.ogg",
+      "author": "Wonderfool",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-uk-oi.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "Bản thu /ɔɪ/ của người nói giọng Hampshire, Anh; dùng chung trong hai chế độ học.",
+      "origin": "en-GB",
+      "durationSeconds": 0.888163,
+      "sha256": "6851b93ba4b99a8d9b2d4a73411de9aa355f5f522998e4e6a758dde6418748ae"
+    },
+    "au-us": {
+      "src": "../assets/pronunciation/phonemes/au-us-2432e6cdcb71.mp3",
+      "symbol": "aʊ",
+      "title": "En-us-ow.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-ow.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "Bản thu /aʊ/ của người nói giọng Mỹ; dùng chung trong hai chế độ học.",
+      "origin": "en-US",
+      "durationSeconds": 0.548571,
+      "sha256": "2432e6cdcb71a6038588e3d9f662d37b56f029948252a89718bee21128169dcf"
+    },
+    "ei-us": {
+      "src": "../assets/pronunciation/phonemes/ei-us-539dc0101744.mp3",
+      "symbol": "eɪ",
+      "title": "En-us-A.ogg",
+      "author": "Muke Tever",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:En-us-A.ogg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-A.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "",
+      "origin": "en-US",
+      "durationSeconds": 1.201633,
+      "sha256": "539dc0101744561d03c7d642b5e300a07137acb08eb88a42550469f8727022b8"
+    },
+    "ai-us": {
+      "src": "../assets/pronunciation/phonemes/ai-us-11db72c779b6.mp3",
+      "symbol": "aɪ",
+      "title": "En-us-I.ogg",
+      "author": "Muke Tever",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:En-us-I.ogg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-I.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.",
+      "note": "",
+      "origin": "en-US",
+      "durationSeconds": 0.522449,
+      "sha256": "11db72c779b6cc0c8c5bab548c6e0191e7bcb9d7b48c7d899530e3c1a010afac"
+    },
+    "ou-us": {
+      "src": "../assets/pronunciation/phonemes/ou-us-abb2ce04effe.mp3",
+      "symbol": "oʊ",
+      "title": "En-us-O.ogg",
+      "author": "DroEsperanto",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:En-us-O.ogg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-O.ogg",
+      "changes": "Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech.",
+      "note": "",
+      "origin": "en-US",
+      "durationSeconds": 0.653061,
+      "sha256": "abb2ce04effec4932975f400b8a9a79b2f43d6ee6634331c41926d907a6ca490"
+    },
+    "uk-ia": {
+      "src": "../assets/pronunciation/phonemes/uk-ia-3aa924f43ec3.mp3",
+      "symbol": "ɪə",
+      "title": "En-uk-ear.ogg",
+      "author": "Chris Melville",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:En-uk-ear.ogg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-uk-ear.ogg",
+      "changes": "Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "",
+      "origin": "en-GB",
+      "durationSeconds": 0.470204,
+      "sha256": "3aa924f43ec3d46037154daec9a461d3260e325fb4e4e7278fd15a32a496e899"
+    },
+    "us-er": {
+      "src": "../assets/pronunciation/phonemes/us-er-4fb277db800f.mp3",
+      "symbol": "ɝː",
+      "title": "En-us-er.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-er.ogg",
+      "changes": "Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "",
+      "origin": "en-US",
+      "durationSeconds": 0.600816,
+      "sha256": "4fb277db800f7d71e668704dabb979453592c4248aa0d6e469b44ba350564abf"
+    },
+    "us-ia": {
+      "src": "../assets/pronunciation/phonemes/us-ia-f521ab7cca71.mp3",
+      "symbol": "ɪr",
+      "title": "En-us-ear.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-ear.ogg",
+      "changes": "Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "",
+      "origin": "en-US",
+      "durationSeconds": 0.496327,
+      "sha256": "f521ab7cca71915f06e13f537bebc7ae11d9d21f5558b55740c3b1cd4fa7d1f2"
+    },
+    "us-ea": {
+      "src": "../assets/pronunciation/phonemes/us-ea-6fc4736c7cc6.mp3",
+      "symbol": "er",
+      "title": "En-us-air.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-air.ogg",
+      "changes": "Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "",
+      "origin": "en-US",
+      "durationSeconds": 0.679184,
+      "sha256": "6fc4736c7cc660af93042811da76c04b8b5a0bbb623dc1403db7064a3c34862f"
+    },
+    "us-ua": {
+      "src": "../assets/pronunciation/phonemes/us-ua-b75e2b4c1420.mp3",
+      "symbol": "ʊr",
+      "title": "En-us-tour.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-tour.ogg",
+      "changes": "Extracted 0.123–0.410 s from tour after visible /t/ release and aspiration; applied 4 ms onset fade and 10 ms offset fade; encoded Ogg Vorbis. No synthesis, pitch shift or vowel concatenation. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "Phần /ʊr/ được tách từ bản thu “tour”, đã bỏ phụ âm /t/ ở đầu.",
+      "origin": "en-US",
+      "durationSeconds": 0.313469,
+      "sha256": "b75e2b4c14201c03ffdd0266e8d1f15d83c04d611d586f80b97c480ee8f6ceab"
+    },
+    "uk-ea-diphthong": {
+      "src": "../assets/pronunciation/phonemes/uk-ea-diphthong-dac22c98c2eb.mp3",
+      "symbol": "eə",
+      "title": "LL-Q1860 (eng)-Pvanp7-ɛə (diphthong).wav",
+      "author": "Pvanp7",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ALL-Q1860_%28eng%29-Pvanp7-%C9%9B%C9%99_%28diphthong%29.wav",
+      "changes": "WAV converted to Ogg Vorbis. No timing, pitch, phoneme or loudness changes. Original WAV retained. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "",
+      "origin": "en-GB",
+      "durationSeconds": 0.992653,
+      "sha256": "dac22c98c2eb7b610457be0b0eb472eac0a224a0b2aa4bf6ad725a69694f6e4f"
+    },
+    "uk-ua": {
+      "src": "../assets/pronunciation/phonemes/uk-ua-3001348c27d3.mp3",
+      "symbol": "ʊə",
+      "title": "LL-Q1860 (eng)-Pvanp7-ʊə (diphthong).wav",
+      "author": "Pvanp7",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File%3ALL-Q1860_%28eng%29-Pvanp7-%CA%8A%C9%99_%28diphthong%29.wav",
+      "changes": "WAV converted to Ogg Vorbis. No timing, pitch, phoneme or loudness changes. Original WAV retained. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.",
+      "note": "",
+      "origin": "en-GB",
+      "durationSeconds": 0.940408,
+      "sha256": "3001348c27d3a6e9ecb61ba0c8d506a9eae2bf7d2b903f918fad99e65808190c"
+    },
+    "ending-st": {
+      "src": "../assets/pronunciation/phonemes/ending-st-cfa31782dba7.mp3",
+      "symbol": "st",
+      "title": "En-us-past.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-past.ogg",
+      "changes": "Extracted source 0.324–0.585 s; 0.4 ms edge fades; scalar gain 10.864 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Cụm /st/ trích từ giọng Mỹ; dùng làm mẫu cụm phụ âm, không phải hai bản thu Anh/Mỹ khác nhau.",
+      "origin": "en-US",
+      "durationSeconds": 1.933061,
+      "sha256": "cfa31782dba7a42586ff4fe91a5aa13b1ceff55170f96351cca35eaa2c2a98a8",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.324,
+        0.585
+      ],
+      "gainDb": 10.864,
+      "rawEventDurationMs": 261.0,
+      "rawActiveDurationMs": 189.57,
+      "audioAudit": {
+        "before": {
+          "durationMs": 261.0,
+          "peakDbfs": -14.36,
+          "rmsDbfs": -29.14,
+          "activeAboveMinus40DbfsMs": 189.57
+        },
+        "after": {
+          "durationMs": 1882.99,
+          "peakDbfs": -4.05,
+          "rmsDbfs": -22.52,
+          "activeAboveMinus40DbfsMs": 768.25
+        },
+        "eventAfter": {
+          "durationMs": 261.0,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -18.28,
+          "activeAboveMinus40DbfsMs": 254.42
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b0/En-us-past.ogg"
+    },
+    "ending-iz": {
+      "src": "../assets/pronunciation/phonemes/ending-iz-ef5bbd2a66e7.mp3",
+      "symbol": "ɪz",
+      "title": "En-us-is.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-is.ogg",
+      "changes": "Extracted source 0.095–0.540 s; 2.0 ms edge fades; scalar gain 0.641 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu giọng Mỹ của is; dùng làm mẫu chuỗi /ɪz/, không phải hai bản thu Anh/Mỹ khác nhau.",
+      "origin": "en-US",
+      "durationSeconds": 2.481633,
+      "sha256": "ef5bbd2a66e7a26deea31bffa5aa27050c7a3600921f12c9b53ca6e385f8eb39",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.095,
+        0.54
+      ],
+      "gainDb": 0.641,
+      "rawEventDurationMs": 444.99,
+      "rawActiveDurationMs": 399.09,
+      "audioAudit": {
+        "before": {
+          "durationMs": 444.99,
+          "peakDbfs": -4.14,
+          "rmsDbfs": -18.37,
+          "activeAboveMinus40DbfsMs": 399.09
+        },
+        "after": {
+          "durationMs": 2434.97,
+          "peakDbfs": -3.92,
+          "rmsDbfs": -20.78,
+          "activeAboveMinus40DbfsMs": 1192.29
+        },
+        "eventAfter": {
+          "durationMs": 444.99,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -17.73,
+          "activeAboveMinus40DbfsMs": 399.09
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5d/En-us-is.ogg"
+    },
+    "ending-id": {
+      "src": "../assets/pronunciation/phonemes/ending-id-a5443b3cad7e.mp3",
+      "symbol": "ɪd",
+      "title": "En-us-id.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-id.ogg",
+      "changes": "Extracted source 0.312–0.665 s; 2.0 ms edge fades; scalar gain -2.784 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Bản thu giọng Mỹ của id; dùng làm mẫu chuỗi /ɪd/, không phải hai bản thu Anh/Mỹ khác nhau.",
+      "origin": "en-US",
+      "durationSeconds": 2.194286,
+      "sha256": "a5443b3cad7e4563ac7edc6c614958346497fd7aee01e544895c12e51c2b3557",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.312,
+        0.665
+      ],
+      "gainDb": -2.784,
+      "rawEventDurationMs": 352.99,
+      "rawActiveDurationMs": 334.24,
+      "audioAudit": {
+        "before": {
+          "durationMs": 352.99,
+          "peakDbfs": -0.72,
+          "rmsDbfs": -14.69,
+          "activeAboveMinus40DbfsMs": 334.24
+        },
+        "after": {
+          "durationMs": 2158.98,
+          "peakDbfs": -3.91,
+          "rmsDbfs": -21.01,
+          "activeAboveMinus40DbfsMs": 917.91
+        },
+        "eventAfter": {
+          "durationMs": 352.99,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -17.47,
+          "activeAboveMinus40DbfsMs": 319.27
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c1/En-us-id.ogg"
+    },
+    "final-t-release": {
+      "src": "../assets/pronunciation/phonemes/final-t-release-f274b8d6d4c4.mp3",
+      "symbol": "t",
+      "title": "t.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.305–0.335 s; 0.4 ms edge fades; scalar gain 6.697 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Mẫu nhả âm cuối ngắn, không thêm bật hơi dài; nghe lặp ba lần.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.227755,
+      "sha256": "f274b8d6d4c45097d7a43c6384581659ea5ce850a0a2766d47e3e2ad88e4f5e5",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.305,
+        0.335
+      ],
+      "gainDb": 6.697,
+      "rawEventDurationMs": 30.02,
+      "rawActiveDurationMs": 19.95,
+      "audioAudit": {
+        "before": {
+          "durationMs": 30.02,
+          "peakDbfs": -10.2,
+          "rmsDbfs": -23.99,
+          "activeAboveMinus40DbfsMs": 19.95
+        },
+        "after": {
+          "durationMs": 1190.07,
+          "peakDbfs": -3.96,
+          "rmsDbfs": -28.97,
+          "activeAboveMinus40DbfsMs": 94.78
+        },
+        "eventAfter": {
+          "durationMs": 30.02,
+          "peakDbfs": -3.5,
+          "rmsDbfs": -17.31,
+          "activeAboveMinus40DbfsMs": 24.94
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/t.wav"
+    },
+    "final-k-release": {
+      "src": "../assets/pronunciation/phonemes/final-k-release-d7a3fa881fba.mp3",
+      "symbol": "k",
+      "title": "k.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.298–0.331 s; 0.4 ms edge fades; scalar gain 5.715 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Mẫu nhả âm cuối ngắn, không thêm bật hơi dài; nghe lặp ba lần.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.227755,
+      "sha256": "d7a3fa881fba30bec6fc6a69deeed8a96f9656a411d2d9971529be84f02450de",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.298,
+        0.331
+      ],
+      "gainDb": 5.715,
+      "rawEventDurationMs": 32.99,
+      "rawActiveDurationMs": 24.94,
+      "audioAudit": {
+        "before": {
+          "durationMs": 32.99,
+          "peakDbfs": -9.49,
+          "rmsDbfs": -21.72,
+          "activeAboveMinus40DbfsMs": 24.94
+        },
+        "after": {
+          "durationMs": 1198.98,
+          "peakDbfs": -4.23,
+          "rmsDbfs": -27.31,
+          "activeAboveMinus40DbfsMs": 74.83
+        },
+        "eventAfter": {
+          "durationMs": 32.99,
+          "peakDbfs": -3.77,
+          "rmsDbfs": -16.01,
+          "activeAboveMinus40DbfsMs": 24.94
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/k.wav"
+    },
+    "final-p-release": {
+      "src": "../assets/pronunciation/phonemes/final-p-release-4155d90ebfd4.mp3",
+      "symbol": "p",
+      "title": "p.wav — IPA-sound-files",
+      "author": "Ruben Schachtenhaufen",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "sourceUrl": "https://github.com/NewDanishPhonetics/IPA-sound-files",
+      "changes": "Extracted source 0.226–0.260 s; 0.4 ms edge fades; scalar gain 10.025 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.",
+      "note": "Mẫu nhả âm cuối ngắn, không thêm bật hơi dài; nghe lặp ba lần.",
+      "origin": "Mẫu tham chiếu IPA",
+      "durationSeconds": 1.253878,
+      "sha256": "4155d90ebfd45579b36c635cc7da6998f2a4075b623d47483a6f9ffe73283927",
+      "repetitions": 3,
+      "gapSeconds": 0.35,
+      "sourceSegmentSeconds": [
+        0.226,
+        0.26
+      ],
+      "gainDb": 10.025,
+      "rawEventDurationMs": 33.99,
+      "rawActiveDurationMs": 24.94,
+      "audioAudit": {
+        "before": {
+          "durationMs": 33.99,
+          "peakDbfs": -15.44,
+          "rmsDbfs": -26.02,
+          "activeAboveMinus40DbfsMs": 24.94
+        },
+        "after": {
+          "durationMs": 1202.7,
+          "peakDbfs": -5.86,
+          "rmsDbfs": -27.41,
+          "activeAboveMinus40DbfsMs": 104.76
+        },
+        "eventAfter": {
+          "durationMs": 33.99,
+          "peakDbfs": -5.41,
+          "rmsDbfs": -16.24,
+          "activeAboveMinus40DbfsMs": 33.99
+        },
+        "listenedToByHuman": false
+      },
+      "downloadUrl": "https://raw.githubusercontent.com/NewDanishPhonetics/IPA-sound-files/81c8086257d84f5e434790603bb39b901df8143c/p.wav"
+    },
+    "ending-nd": {
+      "symbol": "nd",
+      "title": "En-us-friend.ogg",
+      "author": "Dvortygirl",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-friend.ogg",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/En-us-friend.ogg",
+      "origin": "en-US",
+      "note": "Cụm /nd/ trích từ bản thu friend giọng Mỹ; dùng làm mẫu cụm âm cuối, không phải hai bản thu Anh/Mỹ khác nhau.",
+      "sourceSegmentSeconds": [
+        0.405,
+        0.65
+      ],
+      "sourceSha1": "9b6abd3736925d60b169ef883644541593aff73a",
+      "sourceSha256": "6f4c93c530d48d4c3f0c07f7d1b123055c4a09cc5e64710fae1af6e2bbc5d069",
+      "sha256": "9e6cfd7b635ab0f43f225e577bc215062a9fcd29bfcd96cdee8b21766fa177d1",
+      "durationSeconds": 1.835034,
+      "repetitions": 3,
+      "rawEventDurationMs": 245.01,
+      "rawActiveDurationMs": 194.56,
+      "before": {
+        "durationMs": 245.01,
+        "peakDbfs": -15.78,
+        "rmsDbfs": -29.1,
+        "activeAboveMinus40DbfsMs": 194.56
+      },
+      "after": {
+        "durationMs": 1835.03,
+        "peakDbfs": -3.87,
+        "rmsDbfs": -21.26,
+        "activeAboveMinus40DbfsMs": 743.31
+      },
+      "eventAfter": {
+        "durationMs": 245.01,
+        "peakDbfs": -3.5,
+        "rmsDbfs": -16.85,
+        "activeAboveMinus40DbfsMs": 244.44
+      },
+      "gainDb": 12.276,
+      "edgeFadeMs": 0.4,
+      "changes": "Cropped 0.405–0.650 s from friend to remove /frɛ/ and retain only /nd/. Applied 0.4 ms edge fades and scalar gain 12.276 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of the natural cluster event, 350 ms silence between repetitions, 150 ms leading / 250 ms trailing silence. Mono44.1kHz MP3 at128kbps. No highpass, synthesis, added vowel, internal looping, pitch change or time stretch. Adaptation retains CC BY-SA3.0.",
+      "verification": {
+        "sourceHashVerified": true,
+        "waveformAndSpectrogramChecked": true,
+        "listenedToByHuman": false,
+        "boundaryBasis": "Carrier-vowel periodic/formant region ends around0.40s; selected0.405s begins in lower-amplitude nasal voicing. Nasal portion continues to about0.55s, followed by reduced-energy closure and an identifiable stop-release burst around0.586s. Crop retains the release tail through0.650s. Thus it retains n plus d release, rather than substituting a lone n or d."
+      },
+      "retrievedAt": "2026-11-27T10:05:29.436430+00:00",
+      "src": "../assets/pronunciation/phonemes/ending-nd-9e6cfd7b635a.mp3"
+    }
+  },
+  "accents": {
+    "en-GB": {
+      "i-long": "i-long",
+      "i-short": "i-short",
+      "u-short": "u-short",
+      "u-long": "u-long",
+      "e-short": "e-short",
+      "schwa": "schwa",
+      "er-long": "er-long",
+      "aw-long": "aw-long",
+      "ae-short": "ae-short",
+      "uh-short": "uh-short",
+      "ah-long": "ah-long",
+      "o-short": "o-short",
+      "p": "p",
+      "b": "b",
+      "t": "t",
+      "d": "d",
+      "ch": "ch",
+      "j-affricate": "j-affricate",
+      "k": "k",
+      "g": "g",
+      "f": "f",
+      "v": "v",
+      "theta": "theta",
+      "eth": "eth",
+      "s": "s",
+      "z": "z",
+      "sh": "sh",
+      "zh": "zh",
+      "m": "m",
+      "n": "n",
+      "ng": "ng",
+      "h": "h",
+      "l": "l",
+      "r": "r",
+      "w": "w",
+      "y": "y",
+      "ei": "ei-uk",
+      "ai": "ai-uk",
+      "ou": "ou-uk",
+      "oi": "oi-uk",
+      "au": "au-us",
+      "ia": "uk-ia",
+      "ea": "uk-ea-diphthong",
+      "ua": "uk-ua",
+      "final-t": "final-t-release",
+      "final-k": "final-k-release",
+      "final-s": "s",
+      "ending-s": "s",
+      "ending-ed": "d",
+      "final-st": "ending-st",
+      "ending-iz": "ending-iz",
+      "ending-id": "ending-id",
+      "final-p": "final-p-release",
+      "final-nd": "ending-nd",
+      "ei-uk": "ei-uk",
+      "ai-uk": "ai-uk",
+      "ou-uk": "ou-uk",
+      "oi-uk": "oi-uk",
+      "au-us": "au-us",
+      "ei-us": "ei-us",
+      "ai-us": "ai-us",
+      "ou-us": "ou-us",
+      "uk-ia": "uk-ia",
+      "us-er": "us-er",
+      "us-ia": "us-ia",
+      "us-ea": "us-ea",
+      "us-ua": "us-ua",
+      "uk-ea-diphthong": "uk-ea-diphthong",
+      "uk-ua": "uk-ua",
+      "ending-st": "ending-st",
+      "final-t-release": "final-t-release",
+      "final-k-release": "final-k-release",
+      "final-p-release": "final-p-release",
+      "ending-nd": "ending-nd"
+    },
+    "en-US": {
+      "i-long": "i-long",
+      "i-short": "i-short",
+      "u-short": "u-short",
+      "u-long": "u-long",
+      "e-short": "e-short",
+      "schwa": "schwa",
+      "er-long": "us-er",
+      "aw-long": "ah-long",
+      "ae-short": "ae-short",
+      "uh-short": "uh-short",
+      "ah-long": "ah-long",
+      "o-short": "ah-long",
+      "p": "p",
+      "b": "b",
+      "t": "t",
+      "d": "d",
+      "ch": "ch",
+      "j-affricate": "j-affricate",
+      "k": "k",
+      "g": "g",
+      "f": "f",
+      "v": "v",
+      "theta": "theta",
+      "eth": "eth",
+      "s": "s",
+      "z": "z",
+      "sh": "sh",
+      "zh": "zh",
+      "m": "m",
+      "n": "n",
+      "ng": "ng",
+      "h": "h",
+      "l": "l",
+      "r": "r",
+      "w": "w",
+      "y": "y",
+      "au": "au-us",
+      "ei": "ei-us",
+      "ai": "ai-us",
+      "ou": "ou-us",
+      "oi": "oi-uk",
+      "ia": "us-ia",
+      "ea": "us-ea",
+      "ua": "us-ua",
+      "final-t": "final-t-release",
+      "final-k": "final-k-release",
+      "final-s": "s",
+      "ending-s": "s",
+      "ending-ed": "d",
+      "final-st": "ending-st",
+      "ending-iz": "ending-iz",
+      "ending-id": "ending-id",
+      "final-p": "final-p-release",
+      "final-nd": "ending-nd",
+      "ei-uk": "ei-uk",
+      "ai-uk": "ai-uk",
+      "ou-uk": "ou-uk",
+      "oi-uk": "oi-uk",
+      "au-us": "au-us",
+      "ei-us": "ei-us",
+      "ai-us": "ai-us",
+      "ou-us": "ou-us",
+      "uk-ia": "uk-ia",
+      "us-er": "us-er",
+      "us-ia": "us-ia",
+      "us-ea": "us-ea",
+      "us-ua": "us-ua",
+      "uk-ea-diphthong": "uk-ea-diphthong",
+      "uk-ua": "uk-ua",
+      "ending-st": "ending-st",
+      "final-t-release": "final-t-release",
+      "final-k-release": "final-k-release",
+      "final-p-release": "final-p-release",
+      "ending-nd": "ending-nd"
+    }
+  }
+}

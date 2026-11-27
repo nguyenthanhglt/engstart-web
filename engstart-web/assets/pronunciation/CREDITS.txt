@@ -1,0 +1,459 @@
+NGUỒN BẢN THU ÂM RIÊNG / ISOLATED SOUND CREDITS
+
+Audio is licensed per file below. Original Vietnamese explanations and app code are separate.
+CC BY-SA derivatives retain their stated source license. No endorsement by any speaker is implied.
+General IPA reference recordings may be shared between the two accent modes.
+Source wording and edit history are preserved below. File hashes are in SOURCES.json.
+
+i-long — /iː/
+File:Close front unrounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Close_front_unrounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+i-short — /ɪ/
+File:Near-close near-front unrounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Near-close_near-front_unrounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+u-short — /ʊ/
+File:Near-close near-back rounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Near-close_near-back_rounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+u-long — /uː/
+File:Close back rounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Close_back_rounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+e-short — /e/
+File:Mid front unrounded vowel.ogg
+Author: TFighterPilot
+Source: https://commons.wikimedia.org/wiki/File:Mid_front_unrounded_vowel.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+schwa — /ə/
+File:Mid-central vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Mid-central_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Downloaded directly from Wikimedia Commons and converted from Ogg to mono 44.1 kHz MP3 at 96 kbps. No pitch, speed or phonetic editing.
+
+er-long — /ɜː/
+File:Open-mid central unrounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Open-mid_central_unrounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+aw-long — /ɔː/
+File:Open-mid back rounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Open-mid_back_rounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Downloaded directly from Wikimedia Commons and converted from Ogg to mono 44.1 kHz MP3 at 96 kbps. No pitch, speed or phonetic editing.
+
+ae-short — /æ/
+File:Near-open front unrounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Near-open_front_unrounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+uh-short — /ʌ/
+ʌ.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: WAV converted to mono 44.1 kHz MP3, 96 kbps. No phonetic edits.
+
+ah-long — /ɑː/
+File:Open back unrounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Open_back_unrounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+o-short — /ɒ/
+File:Open back rounded vowel.ogg
+Author: Denelson83
+Source: https://commons.wikimedia.org/wiki/File:Open_back_rounded_vowel.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted to mono MP3, silence trimmed and loudness normalized by Nico-Sanchez/schwa; downloaded unchanged, renamed only.
+
+p — /p/
+pʰ.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.287–0.427 s; 0.4 ms edge fades; scalar gain 2.092 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+b — /b/
+b.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.185–0.356 s; 0.4 ms edge fades; scalar gain 5.707 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+t — /t/
+tʰ.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.336–0.445 s; 0.4 ms edge fades; scalar gain 11.128 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+d — /d/
+d.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.170–0.321 s; 0.4 ms edge fades; scalar gain 13.208 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+ch — /tʃ/
+File:Voiceless palato-alveolar affricate.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiceless_palato-alveolar_affricate.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0
+Changes: Extracted source 0.000–0.125 s; 0.4 ms edge fades; scalar gain 6.517 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+j-affricate — /dʒ/
+File:Voiced palato-alveolar affricate.ogg
+Author: Octane (English Wikipedia)
+Source: https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_affricate.ogg
+License: Public domain · https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_affricate.ogg
+Changes: Extracted source 0.040–0.132 s; 0.4 ms edge fades; scalar gain 8.507 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+k — /k/
+kʰ.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.385–0.482 s; 0.4 ms edge fades; scalar gain 12.365 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+g — /ɡ/
+g.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.175–0.302 s; 0.4 ms edge fades; scalar gain 6.825 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+f — /f/
+File:Voiceless labiodental fricative.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiceless_labiodental_fricative.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.250–0.510 s; 2.0 ms edge fades; scalar gain 22.626 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+v — /v/
+v.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.245–0.438 s; 2.0 ms edge fades; scalar gain 7.127 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+theta — /θ/
+File:Voiceless dental fricative.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiceless_dental_fricative.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.030–0.245 s; 2.0 ms edge fades; scalar gain 26.411 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+eth — /ð/
+File:Voiced dental fricative.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiced_dental_fricative.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.020–0.190 s; 2.0 ms edge fades; scalar gain 22.792 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+s — /s/
+File:Voiceless alveolar sibilant.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_sibilant.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 1.480–1.745 s; 2.0 ms edge fades; scalar gain 7.542 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+z — /z/
+File:Voiced alveolar sibilant.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiced_alveolar_sibilant.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.025–0.230 s; 2.0 ms edge fades; scalar gain 17.476 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+sh — /ʃ/
+File:Voiceless palato-alveolar sibilant.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiceless_palato-alveolar_sibilant.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 1.430–1.730 s; 2.0 ms edge fades; scalar gain 8.086 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+zh — /ʒ/
+File:Voiced palato-alveolar sibilant.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_sibilant.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.025–0.270 s; 2.0 ms edge fades; scalar gain 6.866 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+m — /m/
+File:Bilabial nasal.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Bilabial_nasal.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.020–0.180 s; 2.0 ms edge fades; scalar gain 13.533 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+n — /n/
+File:Alveolar nasal.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Alveolar_nasal.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.020–0.245 s; 2.0 ms edge fades; scalar gain 20.948 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+ng — /ŋ/
+File:Velar nasal.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Velar_nasal.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.020–0.170 s; 2.0 ms edge fades; scalar gain 10.901 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+h — /h/
+File:Voiceless glottal fricative.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Voiceless_glottal_fricative.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.020–0.235 s; 2.0 ms edge fades; scalar gain 16.616 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+l — /l/
+File:Alveolar lateral approximant.ogg
+Author: Peter Isotalo
+Source: https://commons.wikimedia.org/wiki/File:Alveolar_lateral_approximant.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.020–0.270 s; 2.0 ms edge fades; scalar gain 9.382 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+r — /r/
+File:Alveolar approximant.ogg
+Author: Erutuon
+Source: https://commons.wikimedia.org/wiki/File:Alveolar_approximant.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.305–0.430 s; 2.0 ms edge fades; scalar gain 7.601 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+w — /w/
+w.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.210–0.310 s; 2.0 ms edge fades; scalar gain 4.728 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+y — /j/
+j.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.245–0.385 s; 2.0 ms edge fades; scalar gain 6.070 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+ei-uk — /eɪ/
+En-uk-a.ogg
+Author: Chris Melville
+Source: https://commons.wikimedia.org/wiki/File:En-uk-a.ogg
+License: Public domain · https://commons.wikimedia.org/wiki/File:En-uk-a.ogg
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+ai-uk — /aɪ/
+En-uk-I.ogg
+Author: Association Shtooka, Judith Franck
+Source: https://commons.wikimedia.org/wiki/File:En-uk-I.ogg
+License: CC BY 3.0 us · https://creativecommons.org/licenses/by/3.0/us/deed.en
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+ou-uk — /əʊ/
+En-uk-oh.ogg
+Author: Rockrunnerthecard
+Source: https://commons.wikimedia.org/wiki/File:En-uk-oh.ogg
+License: CC BY-SA 4.0 · https://creativecommons.org/licenses/by-sa/4.0
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+oi-uk — /ɔɪ/
+En-uk-oi.ogg
+Author: Wonderfool
+Source: https://commons.wikimedia.org/wiki/File:En-uk-oi.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+au-us — /aʊ/
+En-us-ow.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-ow.ogg
+License: CC BY-SA 3.0 · http://creativecommons.org/licenses/by-sa/3.0/
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+ei-us — /eɪ/
+En-us-A.ogg
+Author: Muke Tever
+Source: https://commons.wikimedia.org/wiki/File:En-us-A.ogg
+License: Public domain · https://commons.wikimedia.org/wiki/File:En-us-A.ogg
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+ai-us — /aɪ/
+En-us-I.ogg
+Author: Muke Tever
+Source: https://commons.wikimedia.org/wiki/File:En-us-I.ogg
+License: Public domain · https://commons.wikimedia.org/wiki/File:En-us-I.ogg
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech. Adapted audio retains the listed source license.
+
+ou-us — /oʊ/
+En-us-O.ogg
+Author: DroEsperanto
+Source: https://commons.wikimedia.org/wiki/File:En-us-O.ogg
+License: Public domain · https://commons.wikimedia.org/wiki/File:En-us-O.ogg
+Changes: Converted original Ogg Vorbis to mono MP3 at 44.1 kHz / 96 kbps. No gain adjustment, trimming, splicing, time stretching or added speech.
+
+uk-ia — /ɪə/
+En-uk-ear.ogg
+Author: Chris Melville
+Source: https://commons.wikimedia.org/wiki/File:En-uk-ear.ogg
+License: Public domain · https://commons.wikimedia.org/wiki/File:En-uk-ear.ogg
+Changes: Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+us-er — /ɝː/
+En-us-er.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-er.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+us-ia — /ɪr/
+En-us-ear.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-ear.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+us-ea — /er/
+En-us-air.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-air.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Original recording; unchanged bytes. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+us-ua — /ʊr/
+En-us-tour.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-tour.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted 0.123–0.410 s from tour after visible /t/ release and aspiration; applied 4 ms onset fade and 10 ms offset fade; encoded Ogg Vorbis. No synthesis, pitch shift or vowel concatenation. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+uk-ea-diphthong — /eə/
+LL-Q1860 (eng)-Pvanp7-ɛə (diphthong).wav
+Author: Pvanp7
+Source: https://commons.wikimedia.org/wiki/File%3ALL-Q1860_%28eng%29-Pvanp7-%C9%9B%C9%99_%28diphthong%29.wav
+License: CC0 · http://creativecommons.org/publicdomain/zero/1.0/deed.en
+Changes: WAV converted to Ogg Vorbis. No timing, pitch, phoneme or loudness changes. Original WAV retained. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+uk-ua — /ʊə/
+LL-Q1860 (eng)-Pvanp7-ʊə (diphthong).wav
+Author: Pvanp7
+Source: https://commons.wikimedia.org/wiki/File%3ALL-Q1860_%28eng%29-Pvanp7-%CA%8A%C9%99_%28diphthong%29.wav
+License: CC0 · http://creativecommons.org/publicdomain/zero/1.0/deed.en
+Changes: WAV converted to Ogg Vorbis. No timing, pitch, phoneme or loudness changes. Original WAV retained. Chuyển sang MP3 mono 44.1 kHz / 96 kbps; không đổi cao độ hoặc tốc độ.
+
+ending-st — /st/
+En-us-past.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-past.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.324–0.585 s; 0.4 ms edge fades; scalar gain 10.864 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+ending-iz — /ɪz/
+En-us-is.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-is.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.095–0.540 s; 2.0 ms edge fades; scalar gain 0.641 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+ending-id — /ɪd/
+En-us-id.ogg
+Author: Dvortygirl
+Source: https://commons.wikimedia.org/wiki/File:En-us-id.ogg
+License: CC BY-SA 3.0 · https://creativecommons.org/licenses/by-sa/3.0/
+Changes: Extracted source 0.312–0.665 s; 2.0 ms edge fades; scalar gain -2.784 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+final-t-release — /t/
+t.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.305–0.335 s; 0.4 ms edge fades; scalar gain 6.697 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+final-k-release — /k/
+k.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.298–0.331 s; 0.4 ms edge fades; scalar gain 5.715 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+final-p-release — /p/
+p.wav — IPA-sound-files
+Author: Ruben Schachtenhaufen
+Source: https://github.com/NewDanishPhonetics/IPA-sound-files
+License: CC0 1.0 · https://creativecommons.org/publicdomain/zero/1.0/
+Changes: Extracted source 0.226–0.260 s; 0.4 ms edge fades; scalar gain 10.025 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of this natural event, 350 ms silence between events, 150 ms leading and 250 ms trailing silence. Mono 44.1 kHz MP3 128 kbps. No highpass, synthesized speech, added vowel, internal loop, pitch change or time stretch. Derivative retains source license.
+
+
+ADDITIONAL FINAL /nd/ SAMPLE
+{
+  "symbol": "nd",
+  "title": "En-us-friend.ogg",
+  "author": "Dvortygirl",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:En-us-friend.ogg",
+  "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/En-us-friend.ogg",
+  "origin": "en-US",
+  "note": "Cụm /nd/ trích từ bản thu friend giọng Mỹ; dùng làm mẫu cụm âm cuối, không phải hai bản thu Anh/Mỹ khác nhau.",
+  "sourceSegmentSeconds": [
+    0.405,
+    0.65
+  ],
+  "sourceSha1": "9b6abd3736925d60b169ef883644541593aff73a",
+  "sourceSha256": "6f4c93c530d48d4c3f0c07f7d1b123055c4a09cc5e64710fae1af6e2bbc5d069",
+  "sha256": "9e6cfd7b635ab0f43f225e577bc215062a9fcd29bfcd96cdee8b21766fa177d1",
+  "durationSeconds": 1.835034,
+  "repetitions": 3,
+  "rawEventDurationMs": 245.01,
+  "rawActiveDurationMs": 194.56,
+  "before": {
+    "durationMs": 245.01,
+    "peakDbfs": -15.78,
+    "rmsDbfs": -29.1,
+    "activeAboveMinus40DbfsMs": 194.56
+  },
+  "after": {
+    "durationMs": 1835.03,
+    "peakDbfs": -3.87,
+    "rmsDbfs": -21.26,
+    "activeAboveMinus40DbfsMs": 743.31
+  },
+  "eventAfter": {
+    "durationMs": 245.01,
+    "peakDbfs": -3.5,
+    "rmsDbfs": -16.85,
+    "activeAboveMinus40DbfsMs": 244.44
+  },
+  "gainDb": 12.276,
+  "edgeFadeMs": 0.4,
+  "changes": "Cropped 0.405–0.650 s from friend to remove /frɛ/ and retain only /nd/. Applied 0.4 ms edge fades and scalar gain 12.276 dB with decoded peak ceiling -3.5 dBFS. Three complete copies of the natural cluster event, 350 ms silence between repetitions, 150 ms leading / 250 ms trailing silence. Mono44.1kHz MP3 at128kbps. No highpass, synthesis, added vowel, internal looping, pitch change or time stretch. Adaptation retains CC BY-SA3.0.",
+  "verification": {
+    "sourceHashVerified": true,
+    "waveformAndSpectrogramChecked": true,
+    "listenedToByHuman": false,
+    "boundaryBasis": "Carrier-vowel periodic/formant region ends around0.40s; selected0.405s begins in lower-amplitude nasal voicing. Nasal portion continues to about0.55s, followed by reduced-energy closure and an identifiable stop-release burst around0.586s. Crop retains the release tail through0.650s. Thus it retains n plus d release, rather than substituting a lone n or d."
+  },
+  "retrievedAt": "2026-11-27T10:05:29.436430+00:00",
+  "src": "../assets/pronunciation/phonemes/ending-nd-9e6cfd7b635a.mp3"
+}
