@@ -6065,9 +6065,8 @@
         ui.localVideoUrl = '';
         ui.localVideoName = '';
         const lSel = document.getElementById('vid-lang-select');
-        ui.customVideoLang = lSel ? lSel.value : 'en';
+        ui.customVideoLang = lSel ? lSel.value : (ui.customVideoLang || 'en');
         ui.customVideoLines = null;
-        ui.customVideoLang = null;
         ui.videoLineIdx = 0;
         _ytMountedVideoId = null;
         renderVideoStudioPage();
