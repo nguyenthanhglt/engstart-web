@@ -4390,7 +4390,9 @@
       showToast(append ? 'Phụ đề AI đang dịch tiếp 45 giây tiếp theo...' : 'Phụ đề AI đang nghe & dịch 45 giây đầu (khoảng 5–10 giây)...');
       renderVideoStudioPage();
       try {
-        const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}&start=${startSec}`);
+        const ctrl = new AbortController();
+        const tId = setTimeout(() => ctrl.abort(), 30000);
+        const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}&start=${startSec}`, { signal: ctrl.signal }).finally(() => clearTimeout(tId));
         const rawTxt = await res.text();
         let data = {};
         try { data = JSON.parse(rawTxt); } catch { data = { error: `HTTP ${res.status}: ${rawTxt.slice(0, 180)}` }; }
