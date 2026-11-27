@@ -189,7 +189,12 @@
     function speakChinese(text, customRate) {
       const clean = (text || '').trim();
       if (!clean) return;
-      const rate = customRate || (state.speechRate === 0.7 ? 0.72 : 0.92);
+      const rate = customRate || (state.speechRate === 0.7 ? 0.75 : 0.96);
+      const isHttp = typeof window !== 'undefined' && window.location && /^https?:$/.test(window.location.protocol);
+      if (isHttp) {
+        playChineseAudioFallback(clean, rate);
+        return;
+      }
       if ('speechSynthesis' in window) {
         const voices = window.speechSynthesis.getVoices() || [];
         const zhVoice = voices.find(v => /^zh[-_]?(cn|hans|sg)/i.test(v.lang))
@@ -206,7 +211,6 @@
           return;
         }
       }
-      // If Windows/browser doesn't have a Chinese TTS voice installed, play crisp native Mandarin audio!
       playChineseAudioFallback(clean, rate);
     }
 
@@ -312,6 +316,11 @@
     function refreshIcons() {
       if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
     }
+
+    window.EngStartPracticeLabSpeaker = function(text, language, rate) {
+      if (language === 'zh') speakChinese(text, rate || 0.9);
+      else speakText(text, rate || 0.9);
+    };
 
     // ==================== STREAK, XP & SRS LOGIC ====================
     function recordDailyActivity(xpAmount) {
@@ -539,6 +548,9 @@
       } else if (navName === 'pronunciation') {
         document.getElementById('page-pronunciation').classList.remove('hidden');
         renderAioPronunciationPage();
+      } else if (navName === 'practice-lab') {
+        document.getElementById('page-practice-lab').classList.remove('hidden');
+        if (window.EngStartPracticeLab) window.EngStartPracticeLab.render();
       } else if (navName === 'dictionary') {
         document.getElementById('page-dictionary').classList.remove('hidden');
         renderAioDictionaryPage();
@@ -4248,8 +4260,82 @@
       { sym: 'j', ex: '家 (jiā)', tip: 'Đầu lưỡi chạm răng dưới, nhẹ' },
       { sym: 'q', ex: '请 (qǐng)', tip: 'Như ch nhẹ nhưng bật hơi mạnh' },
       { sym: 'x', ex: '谢谢 (xièxie)', tip: 'Miệng cười nhẹ, xì hơi mềm' },
-      { sym: 'z / c', ex: '再见 / 菜', tip: 'z không bật hơi, c bật hơi mạnh' }
+      { sym: 'z', ex: '再见 (zàijiàn)', tip: 'Đầu lưỡi chạm răng trên, không bật hơi' },
+      { sym: 'c', ex: '菜 (cài)', tip: 'Như z nhưng bật hơi mạnh ra ngoài' },
+      { sym: 's', ex: '三 (sān)', tip: 'Đầu lưỡi phẳng gần răng, xì nhẹ' }
     ];
+
+    const ZH_FOUR_TONE_MATRIX = [
+      {
+        vowel: 'a', label: 'Vận mẫu a (m-)',
+        tones: [
+          { py: 'mā', mark: 'ā', hanzi: '妈', vi: 'mẹ' },
+          { py: 'má', mark: 'á', hanzi: '麻', vi: 'cây gai / tê' },
+          { py: 'mǎ', mark: 'ǎ', hanzi: '马', vi: 'con ngựa' },
+          { py: 'mà', mark: 'à', hanzi: '骂', vi: 'mắng' }
+        ]
+      },
+      {
+        vowel: 'o', label: 'Vận mẫu o (m-)',
+        tones: [
+          { py: 'mō', mark: 'ō', hanzi: '摸', vi: 'sờ, chạm' },
+          { py: 'mó', mark: 'ó', hanzi: '磨', vi: 'mài' },
+          { py: 'mǒ', mark: 'ǒ', hanzi: '抹', vi: 'bôi, quẹt' },
+          { py: 'mò', mark: 'ò', hanzi: '墨', vi: 'mực' }
+        ]
+      },
+      {
+        vowel: 'e', label: 'Vận mẫu e',
+        tones: [
+          { py: 'ē', mark: 'ē', hanzi: '婀', vi: 'thướt tha' },
+          { py: 'é', mark: 'é', hanzi: '鹅', vi: 'con ngỗng' },
+          { py: 'ě', mark: 'ě', hanzi: '噁', vi: 'buồn nôn' },
+          { py: 'è', mark: 'è', hanzi: '饿', vi: 'đói bụng' }
+        ]
+      },
+      {
+        vowel: 'i', label: 'Vận mẫu i (y-)',
+        tones: [
+          { py: 'yī', mark: 'ī', hanzi: '衣', vi: 'quần áo' },
+          { py: 'yí', mark: 'í', hanzi: '移', vi: 'di chuyển' },
+          { py: 'yǐ', mark: 'ǐ', hanzi: '椅', vi: 'cái ghế' },
+          { py: 'yì', mark: 'ì', hanzi: '意', vi: 'ý nghĩa' }
+        ]
+      },
+      {
+        vowel: 'u', label: 'Vận mẫu u (w-)',
+        tones: [
+          { py: 'wū', mark: 'ū', hanzi: '屋', vi: 'ngôi nhà' },
+          { py: 'wú', mark: 'ú', hanzi: '无', vi: 'không có' },
+          { py: 'wǔ', mark: 'ǔ', hanzi: '五', vi: 'số 5' },
+          { py: 'wù', mark: 'ù', hanzi: '物', vi: 'đồ vật' }
+        ]
+      },
+      {
+        vowel: 'ü', label: 'Vận mẫu ü (y-)',
+        tones: [
+          { py: 'yū', mark: 'ǖ', hanzi: '淤', vi: 'bùn phù sa' },
+          { py: 'yú', mark: 'ǘ', hanzi: '鱼', vi: 'con cá' },
+          { py: 'yǔ', mark: 'ǚ', hanzi: '雨', vi: 'mưa' },
+          { py: 'yù', mark: 'ǜ', hanzi: '玉', vi: 'ngọc' }
+        ]
+      }
+    ];
+
+    let _zhRowTimer = null;
+    function playChineseToneRow(vowel) {
+      if (_zhRowTimer) { clearTimeout(_zhRowTimer); _zhRowTimer = null; }
+      const row = ZH_FOUR_TONE_MATRIX.find(r => r.vowel === vowel);
+      if (!row) return;
+      let i = 0;
+      const step = () => {
+        if (i >= row.tones.length) return;
+        speakChinese(row.tones[i].hanzi, 0.88);
+        i++;
+        if (i < row.tones.length) _zhRowTimer = setTimeout(step, 950);
+      };
+      step();
+    }
 
     function renderHomePage() {
       const el = document.getElementById('page-home');
@@ -4937,16 +5023,43 @@
             </div>
           </div>
         ` : `
-          <div class="aio-honey-panel rounded-3xl p-5 space-y-3">
-            <div class="font-extrabold text-sm text-slate-900">4 Thanh điệu cốt lõi Tiếng Trung (Bấm để nghe)</div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              ${(typeof ZH_TONES !== 'undefined' ? ZH_TONES : []).map(t => `
-                <button type="button" data-speak-zh="${t.sample}" class="p-4 rounded-2xl bg-white hover:bg-rose-50/50 border border-[#E5D6B5] text-left space-y-1 shadow-2xs">
-                  <div class="text-xs font-extrabold text-rose-600">${t.mark}</div>
-                  <div class="text-2xl font-extrabold text-slate-900">${t.sample} <span class="text-sm font-mono text-rose-500">${t.pinyin}</span></div>
-                  <div class="text-xs font-bold text-emerald-700">${t.meaning}</div>
-                  <div class="text-[11px] text-slate-500">${t.desc}</div>
-                </button>
+          <div class="aio-honey-panel rounded-3xl p-5 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="font-extrabold text-base text-slate-900">Bảng 4 Thanh điệu Tiếng Trung chuẩn Bắc Kinh (单韵母 × 4 thanh)</div>
+                <div class="text-xs text-slate-600 mt-0.5">Bấm từng ô để nghe rõ độ cao khác biệt giữa 4 thanh: <strong>Thanh 1 (55)</strong> ngang cao · <strong>Thanh 2 (35)</strong> đi lên · <strong>Thanh 3 (214)</strong> xuống trầm rồi uốn lên · <strong>Thanh 4 (51)</strong> rơi mạnh dứt khoát.</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px] font-extrabold text-rose-700 px-1">
+              <div class="bg-white/85 rounded-xl py-1.5 border border-rose-200/70">Thanh 1 (55) — Ngang cao</div>
+              <div class="bg-white/85 rounded-xl py-1.5 border border-rose-200/70">Thanh 2 (35) — Đi lên</div>
+              <div class="bg-white/85 rounded-xl py-1.5 border border-rose-200/70">Thanh 3 (214) — Trầm rồi lên</div>
+              <div class="bg-white/85 rounded-xl py-1.5 border border-rose-200/70">Thanh 4 (51) — Rơi dứt khoát</div>
+            </div>
+
+            <div class="space-y-2.5">
+              ${ZH_FOUR_TONE_MATRIX.map(row => `
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between px-1">
+                    <span class="text-xs font-extrabold text-slate-700">${row.label}</span>
+                    <button type="button" data-zh-tone-row="${row.vowel}" class="px-2.5 py-1 rounded-lg bg-white hover:bg-rose-50 border border-[#E5D6B5] text-[11px] font-bold text-rose-700 flex items-center gap-1">
+                      <i data-lucide="play" class="w-3 h-3"></i> Nghe liền 4 thanh
+                    </button>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    ${row.tones.map((t, ti) => `
+                      <button type="button" data-speak-zh="${t.hanzi}" class="p-3 rounded-2xl bg-white hover:bg-rose-50/70 border border-[#E5D6B5] hover:border-rose-400 text-left transition-all shadow-2xs group">
+                        <div class="flex items-center justify-between">
+                          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-600">Thanh ${ti + 1}</span>
+                          <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rose-500 opacity-75 group-hover:opacity-100"></i>
+                        </div>
+                        <div class="text-2xl font-extrabold text-slate-900 mt-1">${t.mark} <span class="text-sm font-mono text-rose-600">${t.py}</span></div>
+                        <div class="text-xs font-semibold text-slate-600 mt-0.5">${t.hanzi} · <span class="text-emerald-700">${t.vi}</span></div>
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
               `).join('')}
             </div>
           </div>
@@ -7433,6 +7546,8 @@
       }
 
       // Chinese Module actions
+      const zhToneRowBtn = e.target.closest('[data-zh-tone-row]');
+      if (zhToneRowBtn) { e.stopPropagation(); playChineseToneRow(zhToneRowBtn.dataset.zhToneRow); return; }
       const spkZh = e.target.closest('[data-speak-zh]');
       if (spkZh) { e.stopPropagation(); speakChinese(spkZh.dataset.speakZh); return; }
       const spkZhSlow = e.target.closest('[data-speak-zh-slow]');
