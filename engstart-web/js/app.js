@@ -4379,31 +4379,37 @@
       });
     }
 
-    async function fetchYoutubeTranscript(videoId) {
+    async function fetchYoutubeTranscript(videoId, startSec = 0, append = false) {
       if (!window.location || !window.location.protocol.startsWith('http')) {
-        showToast('Đã mở video! Để Gemini AI tự nghe & dịch trực tiếp video, hãy dùng trên web Vercel nhé.');
+        ui.videoLastError = 'Bản xem trước (Canvas) không có máy chủ Vercel. Hãy dùng trên web thật của bạn để chạy Phụ đề AI!';
+        renderVideoStudioPage();
         return;
       }
       ui.videoLoadingSubs = true;
-      showToast('Gemini AI đang trực tiếp nghe & dịch video của bạn (khoảng 10–20 giây)...');
+      ui.videoLastError = '';
+      showToast(append ? 'Phụ đề AI đang dịch tiếp 45 giây tiếp theo...' : 'Phụ đề AI đang nghe & dịch 45 giây đầu (khoảng 5–10 giây)...');
       renderVideoStudioPage();
       try {
-        const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}`);
-        const data = await res.json().catch(() => ({}));
+        const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}&start=${startSec}`);
+        const rawTxt = await res.text();
+        let data = {};
+        try { data = JSON.parse(rawTxt); } catch { data = { error: `HTTP ${res.status}: ${rawTxt.slice(0, 180)}` }; }
         if (!res.ok) {
-          showToast(data.error || `Không gọi được AI dịch video (HTTP ${res.status}).`);
+          ui.videoLastError = data.error || `Lỗi máy chủ (HTTP ${res.status}).`;
+          showToast(ui.videoLastError);
           return;
         }
         if (data && Array.isArray(data.lines) && data.lines.length) {
-          ui.customVideoLines = data.lines;
+          ui.customVideoLines = append && ui.customVideoLines ? [...ui.customVideoLines, ...data.lines] : data.lines;
           ui.customVideoLang = data.lang || 'en';
-          ui.videoLineIdx = 0;
-          showToast(`Gemini AI đã dịch xong ${data.lines.length} dòng phụ đề chạy đồng bộ!`);
+          ui.videoNextStart = data.nextStart || (startSec + 45);
+          if (!append) ui.videoLineIdx = 0;
+          showToast(`Phụ đề AI đã dịch xong ${data.lines.length} dòng chạy đồng bộ!`);
         } else {
-          showToast('AI chưa trích xuất được phụ đề cho video này.');
+          ui.videoLastError = 'AI chưa nghe thấy lời thoại trong đoạn video này.';
         }
       } catch (err) {
-        showToast('Lỗi kết nối tới máy chủ AI (/api/transcript).');
+        ui.videoLastError = 'Không kết nối được tới /api/transcript: ' + String(err.message || err);
       } finally {
         ui.videoLoadingSubs = false;
         renderVideoStudioPage();
@@ -4504,9 +4510,10 @@
                     </div>
                     <div class="lg:col-span-2 space-y-1">
                       <label class="text-[11px] font-bold text-slate-500">Phụ đề</label>
-                      <label for="upload-srt-input" class="cursor-pointer w-full px-3 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-center gap-1 truncate">
-                        + Nạp .SRT/.VTT
-                      </label>
+                      <select id="vid-sub-mode-select" class="w-full px-3 py-2.5 rounded-xl border border-emerald-200 bg-emerald-50/50 text-xs font-extrabold text-emerald-800 outline-none">
+                        <option value="ai" ${(ui.videoSubMode || 'ai') === 'ai' ? 'selected' : ''}>✨ Phụ đề AI</option>
+                        <option value="srt" ${ui.videoSubMode === 'srt' ? 'selected' : ''}>📄 Nạp .SRT/.VTT</option>
+                      </select>
                       <input type="file" id="upload-srt-input" accept=".srt,.vtt,.txt" class="hidden" />
                     </div>
                     <div class="lg:col-span-2">
@@ -4602,10 +4609,12 @@
 
             ${mode === 'subs' ? `
               ${!lines.length ? `
-                <div class="p-6 rounded-2xl bg-amber-50/70 border border-amber-200 text-center space-y-2.5">
-                  <div class="text-sm font-extrabold text-amber-900">Video của bạn đã mở — Chưa có phụ đề đồng bộ</div>
-                  <p class="text-xs text-amber-800 leading-relaxed">
-                    Trong bản xem trước (Canvas) chưa chạy máy chủ tự lấy phụ đề YouTube. Bạn hãy bấm <strong>+ Nạp .SRT/.VTT</strong> ở thanh xanh phía trên, hoặc đẩy thư mục <code>api/</code> lên <strong>Vercel</strong> để web tự động kéo &amp; dịch phụ đề chuẩn khớp 100% theo từng giây video!
+                <div class="p-6 rounded-2xl ${ui.videoLastError ? 'bg-rose-50/80 border-rose-200' : 'bg-emerald-50/60 border-emerald-200'} border text-center space-y-2.5">
+                  <div class="text-sm font-extrabold ${ui.videoLastError ? 'text-rose-900' : 'text-emerald-900'}">
+                    ${ui.videoLoadingSubs ? '✨ Phụ đề AI (Gemini 3.8 Flash) đang nghe &amp; dịch video...' : (ui.videoLastError ? 'Phụ đề AI gặp sự cố:' : 'Video đã sẵn sàng cho Phụ đề AI')}
+                  </div>
+                  <p class="text-xs ${ui.videoLastError ? 'text-rose-800' : 'text-emerald-800'} leading-relaxed break-words">
+                    ${ui.videoLoadingSubs ? 'AI đang trích xuất và dịch song ngữ 45 giây đầu tiên, vui lòng đợi vài giây nhé!' : (ui.videoLastError || 'Bấm nút <strong>Tạo video</strong> màu xanh bên trên để Gemini AI tự nghe &amp; tạo phụ đề song ngữ chạy khớp từng giây.')}
                   </p>
                 </div>
               ` : `
@@ -4625,6 +4634,11 @@
                     ${ui.videoShowVi !== false && ln.vi ? `<div class="text-xs text-slate-600 pl-11">${ln.vi}</div>` : ''}
                   </div>
                 `).join('')}
+                ${ui.customYoutubeId && ui.videoNextStart ? `
+                  <button type="button" id="vid-load-more-ai-btn" class="w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 text-xs font-extrabold">
+                    ${ui.videoLoadingSubs ? 'Đang dịch tiếp...' : `✨ Dịch tiếp 45 giây tiếp theo (từ ${formatSec(ui.videoNextStart)}) →`}
+                  </button>
+                ` : ''}
               </div>`}
             ` : ''}
 
@@ -5982,6 +5996,10 @@
         renderVideoStudioPage();
         return;
       }
+      if (e.target.closest('#vid-load-more-ai-btn') && ui.customYoutubeId && !ui.videoLoadingSubs) {
+        fetchYoutubeTranscript(ui.customYoutubeId, ui.videoNextStart || 45, true);
+        return;
+      }
       if (e.target.closest('#vid-toggle-loop-btn')) {
         ui.videoLoopActive = !ui.videoLoopActive;
         renderVideoStudioPage();
@@ -6436,6 +6454,14 @@
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'vid-sub-mode-select') {
+        ui.videoSubMode = e.target.value;
+        if (ui.videoSubMode === 'srt') {
+          const fInp = document.getElementById('upload-srt-input');
+          if (fInp) fInp.click();
+        }
+        return;
+      }
       if (e.target.id === 'upload-local-video-input' && e.target.files && e.target.files[0]) {
         const f = e.target.files[0];
         if (ui.localVideoUrl) { try { URL.revokeObjectURL(ui.localVideoUrl); } catch {} }

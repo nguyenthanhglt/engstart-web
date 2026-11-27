@@ -1,7 +1,7 @@
-// Vercel Serverless Function: /api/transcript?v=VIDEO_ID&lang=en|zh
-// Dùng Gemini 3.8 Flash với videoMetadata (0s–90s, fps: 0.2) để nghe & dịch cực nhanh (~5–7 giây), không bao giờ bị timeout trên Vercel!
+// Vercel Serverless Function: /api/transcript?v=VIDEO_ID&lang=en|zh&start=0
+// Tạo Phụ đề AI song ngữ trực tiếp bằng Gemini 3.8 Flash theo từng chặng 45 giây cực nhanh (tránh timeout 10s của Vercel Hobby).
 
-async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -9,7 +9,7 @@ async function handler(req, res) {
   const videoId = String(req.query.v || '').trim();
   const isZh = String(req.query.lang || 'en').toLowerCase() === 'zh';
   const startSec = Math.max(0, parseInt(req.query.start || '0', 10) || 0);
-  const endSec = startSec + 90;
+  const endSec = startSec + 45;
   const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
   if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
@@ -21,12 +21,10 @@ async function handler(req, res) {
 
   const ytUrl = `https://www.youtube.com/watch?v=${videoId}`;
   const prompt = isZh
-    ? `Listen to the spoken audio in this video clip (${startSec}s to ${endSec}s).
-Split into 15-25 short subtitle segments with exact timestamps in seconds (relative to the full video starting at ${startSec}).
-Return ONLY a valid JSON array: [{"start":${startSec},"end":${startSec + 4},"text":"Simplified Chinese","ipa":"Pinyin with tone marks","vi":"Vietnamese"}]`
-    : `Listen to the spoken audio in this video clip (${startSec}s to ${endSec}s).
-Split into 15-25 short subtitle segments with exact timestamps in seconds (relative to the full video starting at ${startSec}).
-Return ONLY a valid JSON array: [{"start":${startSec},"end":${startSec + 4},"text":"Natural English","ipa":"","vi":"Vietnamese"}]`;
+    ? `Transcribe & translate the speech from ${startSec}s to ${endSec}s into 8-14 short bilingual subtitle lines.
+Return ONLY valid JSON array: [{"start":${startSec},"end":${startSec + 4},"text":"Simplified Chinese","ipa":"Pinyin","vi":"Vietnamese"}]`
+    : `Transcribe & translate the speech from ${startSec}s to ${endSec}s into 8-14 short bilingual subtitle lines.
+Return ONLY valid JSON array: [{"start":${startSec},"end":${startSec + 4},"text":"Natural English","ipa":"","vi":"Vietnamese"}]`;
 
   try {
     const geminiRes = await fetch(
@@ -38,7 +36,7 @@ Return ONLY a valid JSON array: [{"start":${startSec},"end":${startSec + 4},"tex
           contents: [{
             parts: [
               {
-                fileData: { fileUri: ytUrl },
+                fileData: { fileUri: ytUrl, mimeType: 'video/mp4' },
                 videoMetadata: {
                   startOffset: `${startSec}s`,
                   endOffset: `${endSec}s`,
@@ -59,8 +57,7 @@ Return ONLY a valid JSON array: [{"start":${startSec},"end":${startSec + 4},"tex
     if (!geminiRes.ok) {
       const errBody = await geminiRes.text();
       return res.status(502).json({
-        error: `Gemini AI báo lỗi (${geminiRes.status}).`,
-        detail: errBody.slice(0, 350)
+        error: `Gemini AI báo lỗi (${geminiRes.status}): ${errBody.slice(0, 220)}`
       });
     }
 
@@ -68,7 +65,7 @@ Return ONLY a valid JSON array: [{"start":${startSec},"end":${startSec + 4},"tex
     const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const arrMatch = raw.match(/\[[\s\S]*\]/);
     if (!arrMatch) {
-      return res.status(502).json({ error: 'AI chưa trả về đúng mảng phụ đề, hãy bấm Tạo video lại.' });
+      return res.status(502).json({ error: 'Gemini AI chưa trả về mảng phụ đề hợp lệ, hãy bấm Tạo video lại.' });
     }
 
     const parsed = JSON.parse(arrMatch[0]);
@@ -93,14 +90,11 @@ Return ONLY a valid JSON array: [{"start":${startSec},"end":${startSec + 4},"tex
 
     return res.status(200).json({
       lang: isZh ? 'zh' : 'en',
-      translatedBy: 'gemini-3.8-flash-fast',
+      nextStart: endSec,
       count: lines.length,
       lines
     });
   } catch (err) {
     return res.status(500).json({ error: 'Lỗi máy chủ AI: ' + String(err.message || err) });
   }
-}
-
-handler.config = { maxDuration: 60 };
-module.exports = handler;
+};
