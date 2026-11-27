@@ -4236,7 +4236,10 @@
       const filtered = VIDEO_STUDIO_LESSONS.filter(v => langFilter === 'all' || v.lang === langFilter);
       const base = VIDEO_STUDIO_LESSONS.find(v => v.id === ui.videoId) || filtered[0] || VIDEO_STUDIO_LESSONS[0];
       ui.videoId = base.id;
-      const lines = (ui.customVideoLines && ui.customVideoLines.length) ? ui.customVideoLines : base.lines;
+      const isCustom = Boolean(ui.customYoutubeId || ui.localVideoUrl);
+      const lines = (ui.customVideoLines && ui.customVideoLines.length)
+        ? ui.customVideoLines
+        : (isCustom ? [] : base.lines);
       const lang = ui.customVideoLang || base.lang;
       const youtubeId = ui.customYoutubeId || base.youtubeId;
       return { base, filtered, lines, lang, youtubeId };
@@ -4553,6 +4556,14 @@
             </div>
 
             ${mode === 'subs' ? `
+              ${!lines.length ? `
+                <div class="p-6 rounded-2xl bg-amber-50/70 border border-amber-200 text-center space-y-2.5">
+                  <div class="text-sm font-extrabold text-amber-900">Video của bạn đã mở — Chưa có phụ đề đồng bộ</div>
+                  <p class="text-xs text-amber-800 leading-relaxed">
+                    Trong bản xem trước (Canvas) chưa chạy máy chủ tự lấy phụ đề YouTube. Bạn hãy bấm <strong>+ Nạp .SRT/.VTT</strong> ở thanh xanh phía trên, hoặc đẩy thư mục <code>api/</code> lên <strong>Vercel</strong> để web tự động kéo &amp; dịch phụ đề chuẩn khớp 100% theo từng giây video!
+                  </p>
+                </div>
+              ` : `
               <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
                 ${lines.map((ln, idx) => `
                   <div data-vid-row="${idx}" data-vid-seek="${ln.start || 0}" class="cursor-pointer p-3 rounded-2xl border transition-all ${idx === lineIdx ? 'bg-emerald-50 border-emerald-400 ring-1 ring-emerald-200' : 'bg-white border-slate-200/80 hover:bg-slate-50'} space-y-1">
@@ -4569,7 +4580,7 @@
                     ${ui.videoShowVi !== false && ln.vi ? `<div class="text-xs text-slate-600 pl-11">${ln.vi}</div>` : ''}
                   </div>
                 `).join('')}
-              </div>
+              </div>`}
             ` : ''}
 
             ${mode === 'shadowing' ? `
