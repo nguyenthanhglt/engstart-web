@@ -163,19 +163,25 @@
     function playChineseAudioFallback(text, rate) {
       try {
         if (_zhAudioEl) { _zhAudioEl.pause(); _zhAudioEl = null; }
-        const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=zh`;
-        const audio = new Audio(url);
+        const isHttp = window.location && window.location.protocol.startsWith('http');
+        const primaryUrl = isHttp
+          ? `/api/tts?lang=zh-CN&text=${encodeURIComponent(text.slice(0, 160))}`
+          : `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text.slice(0, 80))}&le=zh`;
+        const audio = new Audio(primaryUrl);
         audio.playbackRate = Math.max(0.65, Math.min(1.2, rate || 1.0));
         _zhAudioEl = audio;
         audio.play().catch(() => {
-          // Secondary fallback to Web Speech API even if voice list was empty
-          if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = 'zh-CN';
-            u.rate = rate || state.speechRate || 0.92;
-            window.speechSynthesis.speak(u);
-          }
+          const backup = new Audio(`https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text.slice(0, 80))}&le=zh`);
+          _zhAudioEl = backup;
+          backup.play().catch(() => {
+            if ('speechSynthesis' in window) {
+              window.speechSynthesis.cancel();
+              const u = new SpeechSynthesisUtterance(text);
+              u.lang = 'zh-CN';
+              u.rate = rate || state.speechRate || 0.92;
+              window.speechSynthesis.speak(u);
+            }
+          });
         });
       } catch (e) {}
     }
