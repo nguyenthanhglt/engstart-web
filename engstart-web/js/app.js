@@ -516,6 +516,7 @@
 
     // ==================== NAVIGATION ====================
     function showMainPage(navName) {
+      stopIpaAudio(); stopIpaPracticeRecording();
       ui.session = null;
       setZenMode(false);
       state.mainNav = navName;
@@ -569,6 +570,7 @@
     }
 
     function switchTrack(trackName) {
+      stopIpaAudio(); stopIpaPracticeRecording();
       ui.session = null;
       setZenMode(false);
       state.activeTrack = trackName;
@@ -1016,34 +1018,38 @@
           return `
             <button type="button" data-ipa-id="${item.id}" class="ipa-card relative p-4 rounded-2xl border text-left transition-all ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : 'bg-white border-slate-200/90 hover:border-indigo-300 text-slate-900'}">
               ${isMastered ? `<span class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full ${isSelected ? 'bg-emerald-400 text-slate-900' : 'bg-emerald-100 text-emerald-600'} flex items-center justify-center"><i data-lucide="check" class="w-3 h-3"></i></span>` : ''}
-              <div class="text-2xl font-extrabold">${item.symbol}</div>
+              <div class="text-2xl font-extrabold">${ipaSymbol(item.symbol,item.examples[0].en)}</div>
               <div class="text-xs font-medium mt-1 ${isSelected ? 'text-indigo-100' : 'text-slate-500'}">${item.name}</div>
-              <div class="text-[11px] mt-2 font-semibold ${isSelected ? 'text-white/90' : 'text-indigo-600'}">VD: ${item.examples[0].en}</div>
+              <div class="text-[11px] mt-2 font-semibold ${isSelected ? 'text-white/90' : 'text-indigo-600'}">VD: ${ipaHighlight(item.symbol,item.examples[0].en)}</div>
             </button>
           `;
         }).join('');
       }
       const current = IPA_DATA.find(i => i.id === ui.selectedIpaId) || IPA_DATA[0];
       const isMastered = state.masteredIpa.includes(current.id);
+      const guide = NTPronunciation.guide(current.symbol,ipaAccent());
       const panel = document.getElementById('ipa-detail-panel');
       if (!panel) return;
       panel.innerHTML = `
         <div class="flex items-start justify-between gap-3 pb-4 border-b border-slate-100">
           <div class="inline-flex items-center gap-2">
-            <span class="text-3xl font-extrabold text-indigo-600">${current.symbol}</span>
+            <span class="text-3xl font-extrabold text-indigo-600">${ipaSymbol(current.symbol,current.examples[0].en)}</span>
             <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">${current.name}</span>
           </div>
-          <button type="button" data-speak="${current.examples[0].en}" class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4"></i> Nghe mẫu</button>
+          <button type="button" data-speak-phoneme="${NTPronunciation.normal(current.symbol)}" data-ipa-context="${current.examples[0].en}" class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4"></i> Nghe âm riêng</button>
         </div>
+        ${ipaStatusHTML}
+        <p class="nt-ipa-note">Loa /âm/ phát phần gạch chân. “Cả từ” đọc đầy đủ từ. Phụ âm và âm cuối phát 3 lần.</p>
         <div class="space-y-4 py-4">
-          <div class="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-100"><div class="text-xs font-bold text-emerald-800 mb-1">Mẹo đặt khẩu hình</div><p class="text-sm text-slate-700">${current.tip}</p></div>
-          <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-100"><div class="text-xs font-bold text-amber-800 mb-1">Lỗi hay gặp</div><p class="text-sm text-slate-700">${current.mistake}</p></div>
+          <div class="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-100"><div class="text-xs font-bold text-emerald-800 mb-1">Mẹo đặt khẩu hình</div><p class="text-sm text-slate-700">${guide ? guide.tip : current.tip}</p></div>
+          <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-100"><div class="text-xs font-bold text-amber-800 mb-1">Lỗi hay gặp</div><p class="text-sm text-slate-700">${guide ? guide.mistake : current.mistake}</p></div>
           <div class="space-y-2">
-            ${current.examples.map(ex => `<div class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-100"><div><span class="font-bold text-slate-900">${ex.en}</span> <span class="text-xs text-indigo-600">${ex.ipa}</span> <span class="text-xs text-slate-500">— ${ex.vi}</span></div><div class="flex items-center gap-1.5"><button type="button" data-speak="${ex.en}" class="p-1.5 rounded-lg bg-white border border-slate-200 text-indigo-600"><i data-lucide="volume-2" class="w-4 h-4"></i></button><button type="button" data-speak-slow="${ex.en}" class="px-2 py-1 rounded-lg bg-white border border-slate-200 text-[11px] font-semibold text-slate-600">Chậm</button></div></div>`).join('')}
+            ${current.examples.map(ex => NTPronunciation.exampleHTML(current.symbol,ex.en,ipaAccent(),{slow:true,meaning:ex.vi})).join('')}
           </div>
         </div>
         <button type="button" id="toggle-ipa-master-btn" data-ipa-master="${current.id}" class="w-full py-2.5 px-4 rounded-xl text-sm font-semibold ${isMastered ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' : 'bg-indigo-600 hover:bg-indigo-700 text-white'}">${isMastered ? 'Đã nắm âm này (Bỏ đánh dấu)' : 'Đánh dấu đã nắm âm này (+1 ⭐)'}</button>
       `;
+      updateIpaAudioStatus();
     }
 
     // ==================== STUDY SESSION ENGINE ====================
@@ -3789,58 +3795,83 @@
       }
     };
 
-    function getIpaGuide(item) {
-      if (IPA_DETAIL_GUIDES[item.sym]) return IPA_DETAIL_GUIDES[item.sym];
-      const cat = item.sym.startsWith('-') ? 'Âm cuối hay quên' : (item.sym.length > 1 && /[ɪʊə]/.test(item.sym) ? 'Nguyên âm đôi' : 'Âm vị IPA cốt lõi');
-      return {
-        cat,
-        ipaEx: `/${item.sym}/`,
-        viEx: 'từ khóa mẫu',
-        mouth: 'Mở miệng vừa phải theo đúng khẩu hình của âm.',
-        lips: item.tip,
-        tongue: 'Giữ lưỡi ổn định khi phát âm và bật gọn ở cuối.',
-        note: `Tập trung nghe kỹ phần gạch chân "${item.hi || item.ex}" trong từ "${item.ex}".`,
-        pitfall: 'Nên nghe riêng âm mẫu trước 2–3 lần rồi mới ghép vào từ khóa để không đọc theo thói quen tiếng Việt.',
-        pairs: [[item.ex, `/${item.sym}/`, item.ex, 'đọc chậm']],
-        words: [item.ex],
-        phrases: [`Say "${item.ex}" clearly`],
-        sentences: [`Listen and repeat the sound /${item.sym}/ in "${item.ex}".`]
-      };
-    }
+    function ipaAccent() { return (ui.ipaPractice && ui.ipaPractice.accent) || ui.ipaAccent || 'en-GB'; }
+    function ipaSymbol(sym, word) { return NTPronunciation.symbol(sym, ipaAccent(), word); }
+    function ipaHighlight(sym, word) { return NTPronunciation.highlight(sym, word, ipaAccent()); }
+    function ipaWordIPA(word) { return NTPronunciation.wordIPA(word, ipaAccent()); }
+    const ipaStatusHTML = '<p class="nt-ipa-status" data-ipa-audio-status role="status" aria-live="polite"></p>';
+    let _ipaController = null;
+    let _ipaAudioMessage = '';
+    let _ipaAudioError = false;
 
-    let _ipaAudioEl = null;
-    function canUseServerTts() {
-      return typeof window !== 'undefined' && window.location && /^https?:$/.test(window.location.protocol) && window.location.hostname !== '';
+    function updateIpaAudioStatus() {
+      document.querySelectorAll('[data-ipa-audio-status]').forEach(node => {
+        node.textContent = _ipaAudioMessage;
+        node.dataset.error = String(_ipaAudioError);
+      });
     }
-
-    function playServerAudio(url, rate, onFail) {
-      if (_ipaAudioEl) { try { _ipaAudioEl.pause(); } catch {} _ipaAudioEl = null; }
-      const a = new Audio(url);
-      if (rate && rate !== 1) a.playbackRate = rate;
-      _ipaAudioEl = a;
-      let failed = false;
-      const failOnce = () => { if (!failed) { failed = true; if (onFail) onFail(); } };
-      a.onerror = failOnce;
-      a.play().catch(failOnce);
-    }
-
-    function playIpaPhoneme(file, fallbackText) {
-      if (_ipaAudioEl) { try { _ipaAudioEl.pause(); } catch {} _ipaAudioEl = null; }
-      const accent = (ui.ipaPractice && ui.ipaPractice.accent) || ui.ipaAccent || 'en-GB';
-      if (file) {
-        if (canUseServerTts()) {
-          const proxyUrl = `/api/tts?mode=ipa&file=${encodeURIComponent(file)}&lang=${encodeURIComponent(accent)}&text=${encodeURIComponent(fallbackText || '')}`;
-          playServerAudio(proxyUrl, 1.0, () => {
-            const directUrl = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}`;
-            playServerAudio(directUrl, 1.0, () => { if (fallbackText) speakIpaPracticeText(fallbackText); });
-          });
-          return;
+    function getIpaController() {
+      if (!_ipaController) _ipaController = new EngStartPronunciationController({
+        manifest: window.ENGSTART_PHONEME_AUDIO,
+        onStatus: event => {
+          _ipaAudioMessage = event.message || '';
+          _ipaAudioError = event.type === 'error';
+          updateIpaAudioStatus();
+          if (_ipaAudioError) showToast(_ipaAudioMessage);
         }
-        const url = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}`;
-        playServerAudio(url, 1.0, () => { if (fallbackText) speakText(fallbackText); });
+      });
+      return _ipaController;
+    }
+    function stopIpaAudio() { if (_ipaController && _ipaController.isPlaying) _ipaController.stop(); }
+    function finishIpaPlayback(promise) {
+      Promise.resolve(promise).catch(error => {
+        if (error && error.code === 'CANCELED') return;
+        _ipaAudioMessage = error && error.message || 'Chưa phát được âm thanh. Hãy bấm nghe lại.';
+        _ipaAudioError = true;
+        updateIpaAudioStatus();
+      });
+    }
+    function playIpaPhoneme(sym, word, rate = 1) {
+      const target = NTPronunciation.target(sym, word, ipaAccent());
+      if (!target || !target.id) {
+        stopIpaAudio();
+        _ipaAudioError = true;
+        _ipaAudioMessage = 'Chưa có bản thu riêng cho âm này. Không chuyển sang đọc cả từ.';
+        updateIpaAudioStatus();
+        showToast(_ipaAudioMessage);
         return;
       }
-      if (fallbackText) speakIpaPracticeText(fallbackText);
+      stopIpaPracticeRecording();
+      finishIpaPlayback(getIpaController().playSound(target.id, {accent:ipaAccent(),rate}));
+    }
+    function getIpaGuide(item) {
+      const fix = NTPronunciation.guide(item.sym, ipaAccent());
+      const old = IPA_DETAIL_GUIDES[item.sym];
+      const pair = fix && fix.pair;
+      const isUS = ipaAccent() === 'en-US';
+      const fallbackPairs = pair ? [[pair.a,pair[isUS?'ipaAUS':'ipaAUK'],pair.b,pair[isUS?'ipaBUS':'ipaBUK']]] : [];
+      const base = old || {
+        cat:item.sym.startsWith('-') ? 'Âm cuối' : 'Âm tiếng Anh',
+        pairs:fallbackPairs, words:[item.ex],
+        phrases:[item.ex], sentences:[`Please say ${item.ex} clearly.`]
+      };
+      const primary = NTPronunciation.target(item.sym,item.ex,ipaAccent());
+      return {...base,
+        ipaEx:primary && primary.wordIPA || '',
+        viEx:fix && fix.meaning || (old && item.sym !== '-t' ? old.viEx : '') || '',
+        mouth:fix && fix.tip || item.tip,
+        lips:fix && fix.steps[0] || '',
+        tongue:fix && fix.steps.slice(1).join(' ') || '',
+        note:[fix && fix.accentNote,'Nghe âm riêng trước; “Cả từ” dùng để nghe âm trong từ. Phụ âm và âm cuối được lặp 3 lần, không thêm nguyên âm đệm.'].filter(Boolean).join(' '),
+        pitfall:fix && fix.mistake || '',
+        pairs:(base.pairs || []).filter(pair => {
+          const words = [pair[0].toLowerCase(),pair[2].toLowerCase()];
+          if (words[0] === words[1]) return false;
+          if (words.some(word=>['book','took','accept','except','affect','effect','addition','edition'].includes(word))) return false;
+          if (isUS && ['ɔː','ɒ'].includes(item.sym) && words.some(word=>['walk','wok','stalk','stock'].includes(word))) return false;
+          return true;
+        })
+      };
     }
 
     // ==================== AIO IPA PRACTICE MODE (Cụm từ / Câu / Thử thách nghe) ====================
@@ -3990,11 +4021,18 @@
         items.push({ key: `s_${i}`, type: 'sentence', label: 'Câu', text: s, vi: 'Nghe mẫu và bấm ghi âm để luyện nói tự nhiên', ipa: '' });
       });
       (g.words || []).forEach((w, i) => {
-        const c = IPA_MINIMAL_CONTRASTS[w.toLowerCase()];
-        const pairFallback = (g.pairs && g.pairs[i % g.pairs.length]) || [w, `/${cur.sym}/`, cur.ex, ''];
-        const targetIpa = c ? c[1] : `/${cur.sym}/`;
-        const altWord = c ? c[0] : (pairFallback[2] !== w ? pairFallback[2] : pairFallback[0]);
-        const altIpa = c ? c[2] : (pairFallback[2] !== w ? pairFallback[3] : pairFallback[1]);
+        const blocked = ['book','took','accept','except','affect','effect','addition','edition'];
+        if (blocked.includes(w.toLowerCase())) return;
+        const isVowelLesson = [...AIO_IPA_TABLE.vowelsLong,...AIO_IPA_TABLE.vowelsShort,...AIO_IPA_TABLE.diphthongs].some(item=>item.sym === cur.sym);
+        const c = isVowelLesson ? IPA_MINIMAL_CONTRASTS[w.toLowerCase()] : null;
+        if (ipaAccent() === 'en-US' && ['ɔː','ɒ'].includes(cur.sym) && ['walk','wok','stalk','stock'].includes(w.toLowerCase())) return;
+        const pairFallback = (g.pairs || []).find(pair => pair[0].toLowerCase() === w.toLowerCase() || pair[2].toLowerCase() === w.toLowerCase());
+        if (!pairFallback && !c) return;
+        const targetIpa = ipaWordIPA(w) || (ipaAccent() === 'en-GB' ? (c ? c[1] : (pairFallback[0] === w ? pairFallback[1] : pairFallback[3])) : '');
+        const altWord = pairFallback ? (pairFallback[2] !== w ? pairFallback[2] : pairFallback[0]) : c[0];
+        if (!altWord || altWord.toLowerCase() === w.toLowerCase()) return;
+        const altIpa = ipaWordIPA(altWord) || (ipaAccent() === 'en-GB' ? (pairFallback ? (pairFallback[2] !== w ? pairFallback[3] : pairFallback[1]) : c[2]) : '');
+        if (targetIpa && altIpa && targetIpa === altIpa) return;
         const swap = ((w.charCodeAt(0) + i) % 2) === 1;
         const opts = swap
           ? [{ word: altWord, ipa: altIpa, isTarget: false }, { word: w, ipa: targetIpa, isTarget: true }]
@@ -4005,6 +4043,7 @@
     }
 
     function startIpaPractice(sym, startType) {
+      stopIpaAudio(); stopIpaPracticeRecording();
       const allEnIpaList = [
         ...AIO_IPA_TABLE.vowelsLong, ...AIO_IPA_TABLE.vowelsShort, ...AIO_IPA_TABLE.diphthongs,
         ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.endings
@@ -4035,126 +4074,113 @@
       renderAioPronunciationPage();
       const first = items[idx];
       if (first && first.type === 'listen') {
-        setTimeout(() => speakIpaPracticeText(first.target), 180);
+        const owner = ui.ipaPractice;
+        setTimeout(() => { if (!document.hidden && ui.ipaPractice === owner && owner.items[owner.idx] === first && state.mainNav === 'pronunciation') speakIpaPracticeText(first.target); }, 180);
       }
     }
 
-    function speakIpaPracticeText(text) {
+    function speakIpaPracticeText(text, customRate) {
       if (!text) return;
+      stopIpaPracticeRecording();
+      const rate = customRate || (ui.ipaPractice && ui.ipaPractice.speed) || 1;
+      finishIpaPlayback(getIpaController().playWord(text, {accent:ipaAccent(),rate}));
+    }
+
+    function refreshIpaPracticeAccent() {
       const p = ui.ipaPractice;
-      const accent = (p && p.accent) || ui.ipaAccent || 'en-GB';
-      const rate = (p && p.speed) || 1.0;
-      const isSingleWord = /^[a-zA-Z'-]{1,28}$/.test(String(text).trim());
-
-      const fallbackBrowserTts = () => {
-        if (!('speechSynthesis' in window)) return;
-        try {
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = accent;
-          u.rate = rate;
-          const voices = window.speechSynthesis.getVoices();
-          const preferred = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(accent.toLowerCase()));
-          if (preferred) u.voice = preferred;
-          window.speechSynthesis.speak(u);
-        } catch {
-          speakText(text);
-        }
-      };
-
-      if (canUseServerTts()) {
-        const modeParam = isSingleWord ? 'word' : 'phrase';
-        const url = `/api/tts?mode=${modeParam}&lang=${encodeURIComponent(accent)}&text=${encodeURIComponent(text)}`;
-        playServerAudio(url, rate, fallbackBrowserTts);
-        return;
-      }
-      fallbackBrowserTts();
+      if (!p) return;
+      const previousKey = p.items[p.idx]?.key;
+      p.accent = ui.ipaAccent || 'en-GB';
+      const cur = Object.values(AIO_IPA_TABLE).flat().find(item=>item.sym === p.sym);
+      if (!cur) return;
+      p.items = buildIpaPracticeItems(cur,getIpaGuide(cur));
+      p.idx = Math.max(0,p.items.findIndex(item=>item.key === previousKey));
+      p.answeredIdx = null; p.transcript = ''; p.score = null; p.hasRecording = false;
+      if (_ipaRecUrl) { URL.revokeObjectURL(_ipaRecUrl); _ipaRecUrl = null; }
     }
 
-    function stopIpaPracticeRecording() {
-      if (_ipaRecMedia && _ipaRecMedia.state !== 'inactive') {
-        try { _ipaRecMedia.stop(); } catch {}
+    let _ipaRecordingSession = null;
+    let _ipaRecordingGeneration = 0;
+
+    function stopIpaPracticeRecording(keep = false) {
+      const session = _ipaRecordingSession;
+      if (!session) return;
+      clearTimeout(session.timer);
+      session.keep = keep && Boolean(session.media);
+      if (!session.keep) {
+        _ipaRecordingGeneration += 1;
+        _ipaRecordingSession = null;
       }
-      if (_ipaSpeechRec) {
-        try { _ipaSpeechRec.stop(); } catch {}
+      if (session.owner) session.owner.recording = false;
+      if (session.media && session.media.state !== 'inactive') {
+        try { session.media.stop(); } catch (_) { session.stream?.getTracks().forEach(track=>track.stop()); }
       }
-      if (ui.ipaPractice) ui.ipaPractice.recording = false;
+      if (!session.keep) session.stream?.getTracks().forEach(track=>track.stop());
     }
 
-    function toggleIpaPracticeRecording() {
+    async function toggleIpaPracticeRecording() {
       const p = ui.ipaPractice;
       if (!p) return;
       const item = p.items[p.idx];
       if (!item || item.type === 'listen') return;
-      if (p.recording) {
-        stopIpaPracticeRecording();
-        renderAioPronunciationPage();
+      if (p.recording) { stopIpaPracticeRecording(true); renderAioPronunciationPage(); return; }
+      stopIpaAudio();
+      stopIpaPracticeRecording();
+      if (_ipaRecUrl) { URL.revokeObjectURL(_ipaRecUrl); _ipaRecUrl = null; }
+      p.hasRecording = false;
+      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+        showToast('Thiết bị chưa hỗ trợ ghi âm ở trang này. Hãy mở bằng HTTPS và dùng trình duyệt có hỗ trợ micro.');
         return;
       }
-      p.recording = true;
-      p.transcript = '';
-      p.score = null;
+      const session = {generation:++_ipaRecordingGeneration,owner:p,itemKey:item.key,media:null,stream:null,timer:null,keep:false};
+      _ipaRecordingSession = session;
+      const current = () => _ipaRecordingSession === session && session.generation === _ipaRecordingGeneration && ui.ipaPractice === p && p.items[p.idx]?.key === item.key;
+      p.recording = true; p.transcript = ''; p.score = null;
       renderAioPronunciationPage();
-
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-          _ipaRecChunks = [];
-          const mr = new MediaRecorder(stream);
-          _ipaRecMedia = mr;
-          mr.ondataavailable = ev => { if (ev.data && ev.data.size > 0) _ipaRecChunks.push(ev.data); };
-          mr.onstop = () => {
-            stream.getTracks().forEach(t => t.stop());
-            if (_ipaRecChunks.length) {
-              if (_ipaRecUrl) { try { URL.revokeObjectURL(_ipaRecUrl); } catch {} }
-              const blob = new Blob(_ipaRecChunks, { type: 'audio/webm' });
-              _ipaRecUrl = URL.createObjectURL(blob);
-              if (ui.ipaPractice) ui.ipaPractice.hasRecording = true;
-              markIpaItemDone(p.sym, item.key);
-              renderAioPronunciationPage();
-            }
-          };
-          mr.start();
-          setTimeout(() => { if (_ipaRecMedia === mr && mr.state === 'recording') stopIpaPracticeRecording(); }, 30000);
-        }).catch(() => {
-          showToast('Trình duyệt chưa cấp quyền Micro — bạn vẫn có thể bấm Nghe mẫu & Tiếp theo nhé!');
-        });
-      }
-
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SR) {
-        try {
-          const rec = new SR();
-          _ipaSpeechRec = rec;
-          rec.lang = p.accent || 'en-GB';
-          rec.interimResults = false;
-          rec.maxAlternatives = 1;
-          rec.onresult = ev => {
-            const said = (ev.results[0] && ev.results[0][0] && ev.results[0][0].transcript) || '';
-            if (ui.ipaPractice) {
-              ui.ipaPractice.transcript = said;
-              const norm = s => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean);
-              const expWords = norm(item.text);
-              const gotWords = norm(said);
-              const matched = expWords.filter(w => gotWords.includes(w)).length;
-              ui.ipaPractice.score = expWords.length ? Math.round((matched / expWords.length) * 100) : 100;
-              markIpaItemDone(p.sym, item.key);
-              stopIpaPracticeRecording();
-              renderAioPronunciationPage();
-            }
-          };
-          rec.onerror = () => {
-            if (ui.ipaPractice) { ui.ipaPractice.recording = false; renderAioPronunciationPage(); }
-          };
-          rec.onend = () => {
-            if (ui.ipaPractice && ui.ipaPractice.recording) {
-              stopIpaPracticeRecording();
-              renderAioPronunciationPage();
-            }
-          };
-          rec.start();
-        } catch {}
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+        if (!current()) { stream.getTracks().forEach(track=>track.stop()); return; }
+        session.stream = stream;
+        const choices = ['audio/webm;codecs=opus','audio/mp4','audio/webm'];
+        const mimeType = choices.find(type => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(type));
+        const media = mimeType ? new MediaRecorder(stream,{mimeType}) : new MediaRecorder(stream);
+        session.media = media;
+        const chunks = [];
+        media.ondataavailable = event => { if (event.data?.size) chunks.push(event.data); };
+        media.onstop = () => {
+          stream.getTracks().forEach(track=>track.stop());
+          clearTimeout(session.timer);
+          if (!current()) return;
+          _ipaRecordingSession = null;
+          p.recording = false;
+          if (session.keep && chunks.length) {
+            if (_ipaRecUrl) URL.revokeObjectURL(_ipaRecUrl);
+            const blob = new Blob(chunks,{type:media.mimeType || chunks[0].type || 'audio/webm'});
+            _ipaRecUrl = URL.createObjectURL(blob);
+            p.hasRecording = true;
+            markIpaItemDone(p.sym,item.key);
+          }
+          renderAioPronunciationPage();
+        };
+        media.onerror = () => {
+          if (current()) { stopIpaPracticeRecording(); showToast('Ghi âm bị gián đoạn. Bạn có thể thử lại.'); renderAioPronunciationPage(); }
+          stream.getTracks().forEach(track=>track.stop());
+        };
+        media.start();
+        session.timer = setTimeout(()=>{ if (current()) stopIpaPracticeRecording(true); },30000);
+      } catch (_) {
+        session.stream?.getTracks().forEach(track=>track.stop());
+        if (current()) { stopIpaPracticeRecording(); showToast('Chưa ghi âm được. Hãy kiểm tra quyền micro của trang.'); renderAioPronunciationPage(); }
       }
     }
+
+    window.addEventListener('pagehide', () => { stopIpaAudio(); stopIpaPracticeRecording(); });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopIpaAudio(); stopIpaPracticeRecording();
+        if (ui.ipaPractice && state.mainNav === 'pronunciation') renderAioPronunciationPage();
+      }
+    });
 
     function answerIpaListenOption(optIdx) {
       const p = ui.ipaPractice;
@@ -4173,6 +4199,7 @@
     }
 
     function goIpaPracticeItem(nextIdx) {
+      stopIpaAudio();
       const p = ui.ipaPractice;
       if (!p) return;
       stopIpaPracticeRecording();
@@ -4191,7 +4218,7 @@
       renderAioPronunciationPage();
       const it = p.items[p.idx];
       if (it && it.type === 'listen') {
-        setTimeout(() => speakIpaPracticeText(it.target), 150);
+        setTimeout(() => { if (!document.hidden && ui.ipaPractice === p && p.items[p.idx] === it && state.mainNav === 'pronunciation') speakIpaPracticeText(it.target); }, 150);
       }
     }
 
@@ -4484,12 +4511,6 @@
       const lang = ui.pronLang || 'en';
       const isZh = lang === 'zh';
 
-      const highlightSound = (ex, hi) => {
-        if (!hi) return ex;
-        const idx = ex.toLowerCase().lastIndexOf(hi.toLowerCase());
-        if (idx === -1) return ex;
-        return ex.slice(0, idx) + `<span class="underline decoration-cyan-500 decoration-2 underline-offset-2 font-extrabold text-cyan-800">${ex.slice(idx, idx + hi.length)}</span>` + ex.slice(idx + hi.length);
-      };
 
       const allEnIpa = [
         ...AIO_IPA_TABLE.vowelsLong, ...AIO_IPA_TABLE.vowelsShort, ...AIO_IPA_TABLE.diphthongs,
@@ -4530,20 +4551,21 @@
         const highlightTargetInIpa = (ipaStr) => {
           if (!ipaStr) return '';
           const esc = cur.sym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          return ipaStr.replace(new RegExp(esc, 'g'), `<span class="underline decoration-cyan-500 decoration-2 underline-offset-2 text-cyan-800 font-bold">${cur.sym}</span>`);
+          return ipaStr.replace(new RegExp(esc, 'g'), `<span class="underline decoration-cyan-500 decoration-2 underline-offset-2 text-cyan-800 font-bold">${ipaSymbol(cur.sym,cur.ex)}</span>`);
         };
 
         el.innerHTML = `
+          ${!isZh ? ipaStatusHTML : ''}
           <div class="aio-cyan-banner rounded-3xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-xs border-b-2 border-cyan-300/70">
             <div class="flex flex-wrap items-center gap-3">
               <button type="button" id="ipa-practice-exit" class="px-3 py-1.5 rounded-xl bg-white/95 hover:bg-white border border-cyan-200 text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
-                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Âm /${cur.sym}/
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Âm /${ipaSymbol(cur.sym,cur.ex)}/
               </button>
               <div class="w-8 h-8 rounded-full bg-white/90 border border-cyan-200 flex items-center justify-center text-cyan-700 shrink-0">
                 <i data-lucide="mic" class="w-4 h-4"></i>
               </div>
               <div>
-                <div class="text-sm font-extrabold text-slate-900 leading-tight">Luyện /${cur.sym}/ ${cur.ex}</div>
+                <div class="text-sm font-extrabold text-slate-900 leading-tight">Luyện /${ipaSymbol(cur.sym,cur.ex)}/ ${cur.ex}</div>
                 <button type="button" id="ipa-toggle-accent" class="text-[11px] font-bold text-cyan-800 hover:underline">${isUK ? 'Giọng Anh-Anh (UK)' : 'Giọng Anh-Mỹ (US)'} · bấm đổi</button>
               </div>
               <div class="hidden md:flex items-center gap-4 pl-2 border-l border-cyan-300/60">
@@ -4562,9 +4584,9 @@
 
           ${p.showGuide ? `
             <div class="bg-white rounded-2xl border border-cyan-200 p-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs shadow-2xs">
-              <div><strong class="text-slate-500">Miệng:</strong> <span class="text-slate-800">${g.mouth}</span></div>
-              <div><strong class="text-slate-500">Môi:</strong> <span class="text-slate-800">${g.lips}</span></div>
-              <div><strong class="text-slate-500">Lưỡi:</strong> <span class="text-slate-800">${g.tongue}</span></div>
+              <div><strong class="text-slate-500">Khẩu hình:</strong> <span class="text-slate-800">${g.mouth}</span></div>
+              <div><strong class="text-slate-500">Bước 1:</strong> <span class="text-slate-800">${g.lips}</span></div>
+              <div><strong class="text-slate-500">Bước 2–3:</strong> <span class="text-slate-800">${g.tongue}</span></div>
               <div class="md:col-span-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900"><strong>⚠️ Người Việt hay nhầm:</strong> ${g.pitfall}</div>
             </div>
           ` : ''}
@@ -4631,7 +4653,7 @@
                   <span class="inline-block px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[11px] font-extrabold mb-3">${item.label}</span>
                   <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-snug">${item.text}</h2>
                   ${item.vi ? `<div class="text-sm font-medium text-slate-600 mt-1.5">${item.vi}</div>` : ''}
-                  ${item.ipa ? `<div class="text-sm font-mono text-slate-500 mt-1">${highlightTargetInIpa(item.ipa)}</div>` : ''}
+                  ${item.ipa && isUK ? `<div class="text-sm font-mono text-slate-500 mt-1">${highlightTargetInIpa(item.ipa)}</div>` : ''}
                 </div>
 
                 <div class="border-t border-dashed border-[#DDD3BD] mt-6 pt-4">
@@ -4639,15 +4661,10 @@
                     <div class="flex items-center gap-2 text-xs font-extrabold text-rose-600 animate-pulse">
                       <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Đang ghi âm giọng bạn... Hãy đọc to rõ "${item.text}" rồi bấm dừng!
                     </div>
-                  ` : p.transcript ? `
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                      <div class="text-xs sm:text-sm text-slate-700">Bạn vừa đọc: <strong class="text-slate-900">"${p.transcript}"</strong></div>
-                      <span class="px-3 py-1 rounded-full text-xs font-extrabold ${p.score >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                        ${p.score >= 70 ? `✅ Khớp ${p.score}% — Rất tốt!` : `🎯 Khớp ${p.score}% — Thử đọc lại chậm hơn nhé`}
-                      </span>
-                    </div>
+                  ` : p.hasRecording ? `
+                    <div class="text-xs text-slate-700">Đã ghi âm. Bấm <strong>Nghe lại</strong> để so sánh với mẫu. Phần này không chấm điểm phát âm tự động.</div>
                   ` : `
-                    <div class="text-xs text-slate-400">Bấm <strong>Nghe mẫu</strong> trước, sau đó bấm nút micro màu đỏ <strong>Bắt đầu ghi âm</strong> để luyện đọc và nghe lại giọng mình.</div>
+                    <div class="text-xs text-slate-400">Bấm <strong>Nghe cả cụm/câu</strong> trước, sau đó bấm nút micro màu đỏ <strong>Bắt đầu ghi âm</strong> để luyện đọc và nghe lại giọng mình.</div>
                   `}
                 </div>
               </div>
@@ -4655,7 +4672,7 @@
               <div class="bg-[#EAE2D0] rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 border border-[#DDD3BD]">
                 <div class="flex flex-wrap items-center gap-2.5">
                   <button type="button" id="ipa-sample-play" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-[#D8CEB8] text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
-                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-slate-700"></i> Nghe mẫu
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-slate-700"></i> Nghe cả cụm/câu
                   </button>
 
                   <button type="button" id="ipa-record-btn" class="flex items-center gap-2.5 pr-3 py-1 pl-1 rounded-full ${p.recording ? 'bg-rose-100 border border-rose-400' : 'hover:bg-white/60'} transition-all">
@@ -4686,6 +4703,7 @@
             `}
           </div>
         `;
+        updateIpaAudioStatus();
         refreshIcons();
         return;
       }
@@ -4695,7 +4713,8 @@
         const cur = allEnIpa.find(x => x.sym === ui.ipaDetailSym) || activeIpa;
         const g = getIpaGuide(cur);
         const doneSet = getIpaDoneSet(cur.sym);
-        const listenDone = (g.words || []).filter((_, i) => doneSet.has(`l_${i}`)).length;
+        const listenItems = buildIpaPracticeItems(cur,g).filter(item=>item.type === 'listen');
+        const listenDone = listenItems.filter(item=>doneSet.has(item.key)).length;
         const phraseDone = (g.phrases || []).filter((_, i) => doneSet.has(`p_${i}`)).length;
         const sentDone = (g.sentences || []).filter((_, i) => doneSet.has(`s_${i}`)).length;
         const isUK = (ui.ipaAccent || 'en-GB') === 'en-GB';
@@ -4706,12 +4725,13 @@
         }).join('');
 
         el.innerHTML = `
+          ${!isZh ? ipaStatusHTML : ''}
           <div class="aio-cyan-banner rounded-3xl px-5 py-4 flex items-center justify-between gap-3 shadow-xs">
             <div class="flex items-center gap-3">
               <button type="button" id="ipa-back-btn" class="px-3 py-1.5 rounded-xl bg-white/90 hover:bg-white border border-cyan-200 text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Phát âm
               </button>
-              <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Âm /${cur.sym}/.</h1>
+              <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Âm /${ipaSymbol(cur.sym,cur.ex)}/.</h1>
             </div>
             <div class="bg-white/90 p-0.5 rounded-xl inline-flex text-xs font-extrabold border border-cyan-200">
               <button type="button" data-ipa-accent="en-GB" class="px-2.5 py-1 rounded-lg ${isUK ? 'bg-cyan-800 text-white' : 'text-slate-600'}">UK</button>
@@ -4721,22 +4741,22 @@
 
           <div class="bg-white rounded-3xl border border-[#E5DEC9] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
             <div class="flex items-center gap-4">
-              <div class="w-20 h-20 rounded-2xl bg-[#FAF6EE] border border-[#E5DEC9] flex items-center justify-center text-3xl font-extrabold text-slate-900 shadow-2xs shrink-0">/${cur.sym}/</div>
+              <div class="w-20 h-20 rounded-2xl bg-[#FAF6EE] border border-[#E5DEC9] flex items-center justify-center text-3xl font-extrabold text-slate-900 shadow-2xs shrink-0">/${ipaSymbol(cur.sym,cur.ex)}/</div>
               <div class="space-y-1.5">
                 <div class="flex flex-wrap items-center gap-1.5">
                   <span class="px-2.5 py-0.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-[11px] font-bold">${g.cat}</span>
-                  <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold">${(listenDone + phraseDone + sentDone) > 0 ? `Đã luyện ${listenDone + phraseDone + sentDone}/${(g.words.length + g.phrases.length + g.sentences.length)}` : 'Chưa luyện'}</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold">${(listenDone + phraseDone + sentDone) > 0 ? `Đã luyện ${listenDone + phraseDone + sentDone}/${(listenItems.length + g.phrases.length + g.sentences.length)}` : 'Chưa luyện'}</span>
                 </div>
                 <div class="text-base sm:text-lg text-slate-700">
                   <span class="text-xs font-bold text-slate-400 mr-1.5">Từ khoá</span>
-                  <strong class="text-2xl text-slate-900">${highlightSound(cur.ex, cur.hi)}</strong>
+                  <strong class="text-2xl text-slate-900">${ipaHighlight(cur.sym,cur.ex)}</strong>
                   <span class="text-sm font-mono text-cyan-700 ml-1.5">${g.ipaEx}</span>
                   <span class="text-xs text-slate-500 ml-1.5">${g.viEx}</span>
                 </div>
               </div>
             </div>
             <div class="flex flex-wrap items-center gap-2 shrink-0">
-              <button type="button" data-ipa-file="${cur.file || ''}" data-speak-phoneme="${cur.sound || cur.ex}" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-extrabold flex items-center gap-1.5">
+              <button type="button" data-speak-phoneme="${cur.sym}" data-ipa-context="${cur.ex}" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-extrabold flex items-center gap-1.5">
                 <i data-lucide="volume-2" class="w-4 h-4 text-cyan-700"></i> Nghe âm
               </button>
               <button type="button" data-ipa-start="phrase" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border-2 border-cyan-500 text-slate-900 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-xs">
@@ -4745,18 +4765,26 @@
             </div>
           </div>
 
+          <section class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
+            <h2 class="font-extrabold text-sm">Âm trong từng từ</h2>
+            <p class="nt-ipa-note">Loa /âm/ chỉ phát phần gạch chân; “Cả từ” đọc toàn bộ từ minh họa.</p>
+            <div class="nt-ipa-examples">${[...new Set([cur.ex,...g.words])].map(word=>NTPronunciation.exampleHTML(cur.sym,word,ipaAccent())).join('')}</div>
+          </section>
+          ${NTPronunciation.ruleHTML(cur.sym,ipaAccent())}
+
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
             <div class="lg:col-span-5 bg-white rounded-3xl border border-cyan-200/80 p-5 space-y-3 shadow-2xs">
               <div class="font-extrabold text-sm text-slate-900">Cặp dễ nhầm</div>
               <div class="space-y-2.5">
+                ${g.pairs.length ? '' : '<p class="nt-ipa-note">Luyện âm riêng rồi nghe cả từ ở phần trên.</p>'}
                 ${g.pairs.map(pr => `
                   <div class="p-2.5 rounded-2xl bg-[#FAF6EE] border border-[#EAE2D3] flex items-center justify-between gap-2">
-                    <button type="button" data-speak="${pr[0]}" class="flex-1 px-3 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
-                      <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-600"></i> ${pr[0]} <span class="text-[11px] font-mono text-slate-400 font-normal">${pr[1]}</span>
+                    <button type="button" data-ipa-word="${pr[0]}" class="flex-1 px-3 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-600"></i> ${pr[0]} <span class="text-[11px] font-mono text-slate-400 font-normal">${ipaWordIPA(pr[0]) || (isUK ? pr[1] : '')}</span>
                     </button>
                     <span class="text-xs font-extrabold text-slate-400">≠</span>
-                    <button type="button" data-speak="${pr[2]}" class="flex-1 px-3 py-2 rounded-xl bg-white hover:bg-rose-50 border border-slate-200 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
-                      <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rose-500"></i> ${pr[2]} <span class="text-[11px] font-mono text-slate-400 font-normal">${pr[3]}</span>
+                    <button type="button" data-ipa-word="${pr[2]}" class="flex-1 px-3 py-2 rounded-xl bg-white hover:bg-rose-50 border border-slate-200 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rose-500"></i> ${pr[2]} <span class="text-[11px] font-mono text-slate-400 font-normal">${ipaWordIPA(pr[2]) || (isUK ? pr[3] : '')}</span>
                     </button>
                   </div>
                 `).join('')}
@@ -4766,9 +4794,9 @@
             <div class="lg:col-span-7 bg-white rounded-3xl border border-[#E5DEC9] p-5 space-y-3 shadow-2xs">
               <div class="font-extrabold text-sm text-slate-900">Cách đọc</div>
               <div class="divide-y divide-slate-100 text-xs sm:text-sm">
-                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Miệng</span><span class="text-slate-800">${g.mouth}</span></div>
-                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Môi</span><span class="text-slate-800">${g.lips}</span></div>
-                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Lưỡi</span><span class="text-slate-800">${g.tongue}</span></div>
+                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Khẩu hình</span><span class="text-slate-800">${g.mouth}</span></div>
+                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Bước 1</span><span class="text-slate-800">${g.lips}</span></div>
+                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Bước 2–3</span><span class="text-slate-800">${g.tongue}</span></div>
               </div>
               <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700">
                 <strong>ℹ️ Lưu ý khi phát âm:</strong> ${g.note}
@@ -4784,12 +4812,12 @@
               <div class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
                 <i data-lucide="headphones" class="w-4 h-4 text-cyan-600"></i> Thử thách nghe
               </div>
-              <div class="flex flex-wrap items-center gap-1.5">${miniSquares(g.words.length, 'l')}</div>
+              <div class="flex flex-wrap items-center gap-1.5">${listenItems.map(item=>`<span class="w-3.5 h-3.5 rounded border ${doneSet.has(item.key)?'bg-emerald-500':'bg-white'}"></span>`).join('')}</div>
               <div class="text-xs text-slate-500 truncate">${g.words.join(', ')}</div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
-              <span class="text-sm font-extrabold text-slate-700">${listenDone}/${g.words.length}</span>
-              <button type="button" data-ipa-start="listen" class="px-4 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-400 text-slate-900 text-xs font-extrabold shadow-2xs">Bắt đầu luyện →</button>
+              <span class="text-sm font-extrabold text-slate-700">${listenDone}/${listenItems.length}</span>
+              <button type="button" data-ipa-start="listen" ${listenItems.length ? '' : 'disabled title="Chưa có cặp đối chiếu phù hợp cho âm và giọng này"'} class="px-4 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-400 text-slate-900 text-xs font-extrabold shadow-2xs">Bắt đầu luyện →</button>
             </div>
           </div>
 
@@ -4823,6 +4851,7 @@
             </div>
           </div>
         `;
+        updateIpaAudioStatus();
         refreshIcons();
         return;
       }
@@ -4830,49 +4859,55 @@
       const tileHtml = (item, isChinese) => {
         const isSel = !isChinese && activeIpa && activeIpa.sym === item.sym;
         return `
-        <button type="button" ${isChinese ? `data-speak-zh="${item.ex.split('(')[0].trim()}"` : `data-pick-ipa="${item.sym}" data-ipa-file="${item.file || ''}" data-speak-phoneme="${item.sound || item.ex}"`} class="p-3 rounded-2xl bg-white hover:bg-cyan-50/60 border ${isSel ? 'border-cyan-500 ring-2 ring-cyan-200 shadow-xs' : 'border-[#E5DEC9] hover:border-cyan-400 shadow-2xs'} text-left transition-all group">
+        <button type="button" ${isChinese ? `data-speak-zh="${item.ex.split('(')[0].trim()}"` : `data-pick-ipa="${item.sym}" data-speak-phoneme="${item.sym}" data-ipa-context="${item.ex}"`} class="p-3 rounded-2xl bg-white hover:bg-cyan-50/60 border ${isSel ? 'border-cyan-500 ring-2 ring-cyan-200 shadow-xs' : 'border-[#E5DEC9] hover:border-cyan-400 shadow-2xs'} text-left transition-all group">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">${item.diff || 'Pinyin'}</span>
             <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-600 opacity-70 group-hover:opacity-100"></i>
           </div>
-          <div class="text-lg font-extrabold text-slate-900 mt-1">${item.sym}</div>
-          <div class="text-xs font-semibold text-slate-600 truncate">${isChinese ? item.ex : highlightSound(item.ex, item.hi)}</div>
+          <div class="text-lg font-extrabold text-slate-900 mt-1">${isChinese ? item.sym : NTPronunciation.tileSymbol(item.sym,ipaAccent(),item.ex)}</div>
+          <div class="text-xs font-semibold text-slate-600 truncate">${isChinese ? item.ex : ipaHighlight(item.sym,item.ex)}</div>
           ${isChinese && item.tip ? `<div class="text-[10px] text-rose-600 mt-0.5 line-clamp-1">${item.tip}</div>` : ''}
         </button>`;
       };
 
       el.innerHTML = `
+          ${!isZh ? ipaStatusHTML : ''}
         <!-- Cyan AIO Pronunciation Banner -->
         <div class="aio-cyan-banner rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
           <div class="space-y-2">
             <div class="flex flex-wrap items-center gap-2.5">
               <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Luyện phát âm.</h1>
               <div class="bg-white/85 p-0.5 rounded-xl inline-flex text-xs font-bold border border-cyan-200">
-                <button type="button" data-pron-lang="en" class="px-3 py-1 rounded-lg ${!isZh ? 'bg-cyan-700 text-white' : 'text-slate-600'}">Tiếng Anh (IPA Mỹ)</button>
+                <button type="button" data-pron-lang="en" class="px-3 py-1 rounded-lg ${!isZh ? 'bg-cyan-700 text-white' : 'text-slate-600'}">Tiếng Anh (IPA)</button>
                 <button type="button" data-pron-lang="zh" class="px-3 py-1 rounded-lg ${isZh ? 'bg-rose-600 text-white' : 'text-slate-600'}">Tiếng Trung (4 Thanh &amp; Pinyin)</button>
               </div>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">Bấm trực tiếp vào từng ô âm để nghe phát âm mẫu chuẩn xác.</p>
+            <p class="text-xs sm:text-sm text-slate-700">${isZh ? 'Bấm trực tiếp vào từng ô âm để nghe phát âm mẫu chuẩn xác.' : 'Bấm ô âm để nghe riêng phần gạch chân. Phụ âm và âm cuối phát 3 lần.'}</p>
           </div>
         </div>
 
         ${!isZh ? `
+          <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <button type="button" data-ipa-accent="en-GB" class="nt-ipa-button" aria-pressed="${ipaAccent()==='en-GB'}">Anh–Anh</button>
+            <button type="button" data-ipa-accent="en-US" class="nt-ipa-button" aria-pressed="${ipaAccent()==='en-US'}">Anh–Mỹ</button>
+            <span class="nt-ipa-note">Đang học ${ipaAccent()==='en-GB'?'Anh–Anh':'Anh–Mỹ'}. Bảng giữ các mục học của bản gốc.</span>
+          </div>
           <!-- Active Sound Coach Card (Khẩu hình miệng & phần gạch chân âm đang chọn) -->
           <div class="bg-white rounded-3xl border border-cyan-200 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
             <div class="flex items-center gap-4">
-              <div class="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-2xl font-extrabold text-cyan-800 shrink-0">${activeIpa.sym}</div>
+              <div class="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-2xl font-extrabold text-cyan-800 shrink-0">${ipaSymbol(activeIpa.sym,activeIpa.ex)}</div>
               <div>
                 <div class="text-sm sm:text-base font-extrabold text-slate-900">
-                  Âm <span class="text-cyan-700">/${activeIpa.sym}/</span> — chú ý phần gạch chân trong: <span class="text-lg">${highlightSound(activeIpa.ex, activeIpa.hi)}</span>
+                  Âm <span class="text-cyan-700">/${ipaSymbol(activeIpa.sym,activeIpa.ex)}/</span> — chú ý phần gạch chân trong: <span class="text-lg">${ipaHighlight(activeIpa.sym,activeIpa.ex)}</span>
                 </div>
-                <div class="text-xs text-slate-600 mt-0.5"><strong>Mẹo khẩu hình:</strong> ${activeIpa.tip}</div>
+                <div class="text-xs text-slate-600 mt-0.5"><strong>Mẹo khẩu hình:</strong> ${NTPronunciation.guide(activeIpa.sym,ipaAccent())?.tip || activeIpa.tip}</div>
               </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-              <button type="button" data-ipa-file="${activeIpa.file || ''}" data-speak-phoneme="${activeIpa.sound || activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold flex items-center gap-1.5">
-                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe riêng âm /${activeIpa.sym}/
+              <button type="button" data-speak-phoneme="${activeIpa.sym}" data-ipa-context="${activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold flex items-center gap-1.5">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe riêng âm /${ipaSymbol(activeIpa.sym,activeIpa.ex)}/
               </button>
-              <button type="button" data-speak="${activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold">
+              <button type="button" data-ipa-word="${activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold">
                 Nghe từ: ${activeIpa.ex}
               </button>
             </div>
@@ -4923,6 +4958,8 @@
           </div>
         `}
       `;
+      if (!isZh) el.insertAdjacentHTML('beforeend','<p class="nt-ipa-sources">Mẫu âm IPA tham chiếu; một số âm dùng chung giữa hai giọng. <a href="./assets/pronunciation/CREDITS.txt" target="_blank" rel="noopener">Nguồn và giấy phép bản thu</a></p>');
+      updateIpaAudioStatus();
       refreshIcons();
     }
 
@@ -6412,6 +6449,8 @@
 
     // ==================== EVENT DELEGATION ====================
     document.addEventListener('click', (e) => {
+      const ipaWordButton = e.target.closest('[data-ipa-word]');
+      if (ipaWordButton) { e.stopPropagation(); speakIpaPracticeText(ipaWordButton.dataset.ipaWord,Number(ipaWordButton.dataset.ipaRate) || undefined); return; }
       const speakBtn = e.target.closest('[data-speak]');
       if (speakBtn) { e.stopPropagation(); speakText(speakBtn.dataset.speak); return; }
       const speakSlowBtn = e.target.closest('[data-speak-slow]');
@@ -6855,6 +6894,7 @@
         return;
       }
       if (e.target.closest('#ipa-back-btn')) {
+        stopIpaAudio(); stopIpaPracticeRecording();
         stopIpaPracticeRecording();
         ui.ipaPractice = null;
         ui.ipaDetailSym = null;
@@ -6862,6 +6902,7 @@
         return;
       }
       if (e.target.closest('#ipa-practice-exit')) {
+        stopIpaAudio(); stopIpaPracticeRecording();
         stopIpaPracticeRecording();
         ui.ipaPractice = null;
         renderAioPronunciationPage();
@@ -6869,14 +6910,16 @@
       }
       const ipaAccentBtn = e.target.closest('[data-ipa-accent]');
       if (ipaAccentBtn) {
+        stopIpaAudio(); stopIpaPracticeRecording();
         ui.ipaAccent = ipaAccentBtn.dataset.ipaAccent;
-        if (ui.ipaPractice) ui.ipaPractice.accent = ui.ipaAccent;
+        refreshIpaPracticeAccent();
         renderAioPronunciationPage();
         return;
       }
       if (e.target.closest('#ipa-toggle-accent')) {
+        stopIpaAudio(); stopIpaPracticeRecording();
         ui.ipaAccent = (ui.ipaAccent || 'en-GB') === 'en-GB' ? 'en-US' : 'en-GB';
-        if (ui.ipaPractice) ui.ipaPractice.accent = ui.ipaAccent;
+        refreshIpaPracticeAccent();
         renderAioPronunciationPage();
         return;
       }
@@ -6922,7 +6965,8 @@
         return;
       }
       if (e.target.closest('#ipa-playback-btn') && _ipaRecUrl) {
-        try { new Audio(_ipaRecUrl).play(); } catch {}
+        if (ui.ipaPractice && ui.ipaPractice.recording) { showToast('Dừng ghi âm trước khi nghe lại.'); return; }
+        finishIpaPlayback(getIpaController().playRecording(_ipaRecUrl));
         return;
       }
       if (e.target.closest('#ipa-practice-next') && ui.ipaPractice) {
@@ -6933,14 +6977,14 @@
       if (pickIpaBtn) {
         ui.activeIpaSym = pickIpaBtn.dataset.pickIpa;
         ui.ipaDetailSym = pickIpaBtn.dataset.pickIpa;
-        playIpaPhoneme(pickIpaBtn.dataset.ipaFile || '', pickIpaBtn.dataset.speakPhoneme || '');
+        playIpaPhoneme(pickIpaBtn.dataset.pickIpa, pickIpaBtn.dataset.ipaContext || '');
         renderAioPronunciationPage();
         return;
       }
       const spkPhonemeBtn = e.target.closest('[data-speak-phoneme]');
       if (spkPhonemeBtn) {
         e.stopPropagation();
-        playIpaPhoneme(spkPhonemeBtn.dataset.ipaFile || '', spkPhonemeBtn.dataset.speakPhoneme || '');
+        playIpaPhoneme(spkPhonemeBtn.dataset.speakPhoneme, spkPhonemeBtn.dataset.ipaContext || '');
         return;
       }
       const spkSlowBtn = e.target.closest('[data-speak-slow]');
@@ -6954,6 +6998,7 @@
       }
       const pronLangBtn = e.target.closest('[data-pron-lang]');
       if (pronLangBtn) {
+        stopIpaAudio(); stopIpaPracticeRecording();
         ui.pronLang = pronLangBtn.dataset.pronLang;
         renderAioPronunciationPage();
         return;
@@ -7708,7 +7753,7 @@
     });
 
     document.addEventListener('change', (e) => {
-      if (e.target.id === 'ipa-speed-select' && ui.ipaPractice) { ui.ipaPractice.speed = Number(e.target.value) || 1; return; }
+      if (e.target.id === 'ipa-speed-select' && ui.ipaPractice) { stopIpaAudio(); ui.ipaPractice.speed = Number(e.target.value) || 1; return; }
       if (e.target.id === 'vid-lang-select') {
         ui.customVideoLang = e.target.value === 'zh' ? 'zh' : 'en';
         return;

@@ -1,15 +1,16 @@
 // Vercel Serverless Function v21: /api/tts
-// 1) mode=ipa&file=<Wikimedia.ogg>: Lấy bản MP3 chuẩn (tương thích 100% iPhone/iPad Safari & máy tính) của âm IPA thu âm người thật trên Wikimedia Commons.
+// 1) mode=ipa&file=<Wikimedia.ogg>: Chỉ trả MP3 IPA hợp lệ; thiếu/lỗi âm thì báo lỗi, tuyệt đối không đọc thay bằng từ. Giao diện phát âm dùng tệp IPA MP3 đóng gói sẵn.
+//    mode=ipa-word&lang=en-GB|en-US&text=<word>: Chỉ bản MP3 đúng hậu tố -uk/-us; thiếu giọng thì trả 404.
 // 2) mode=word&lang=en-GB|en-US&text=<word>: Ưu tiên lấy MP3 thu âm người bản xứ thật từ từ điển (Oxford/Wiktionary qua dictionaryapi.dev), đúng giọng UK/US.
 // 3) Mặc định (cụm từ / câu / tiếng Trung): Phát MP3 giọng bản xứ tự nhiên chuẩn UK/US/zh-CN.
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
-async function fetchWikimediaMp3(filename) {
+async function fetchWikimediaMp3(filename, signal) {
   const clean = String(filename || '').replace(/[^a-zA-Z0-9._-]/g, '');
   if (!clean) return null;
   const apiUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(clean)}&prop=videoinfo&viprop=derivatives|url&format=json`;
-  const r = await fetch(apiUrl, { headers: { 'User-Agent': 'EngStartKidLearning/1.0 (https://vercel.app)' } });
+  const r = await fetch(apiUrl, { signal, headers: { 'User-Agent': 'EngStartKidLearning/1.0 (https://vercel.app)' } });
   if (!r.ok) return null;
   const data = await r.json();
   const pages = (data && data.query && data.query.pages) || {};
@@ -20,11 +21,41 @@ async function fetchWikimediaMp3(filename) {
   const mp3 = derivs.find(d => d && ((d.type && d.type.includes('mpeg')) || (d.src && d.src.toLowerCase().endsWith('.mp3'))));
   const audioUrl = (mp3 && mp3.src) || vi.url;
   if (!audioUrl) return null;
-  const ar = await fetch(audioUrl, { headers: { 'User-Agent': 'EngStartKidLearning/1.0 (https://vercel.app)' } });
+  const ar = await fetch(audioUrl, { signal, headers: { 'User-Agent': 'EngStartKidLearning/1.0 (https://vercel.app)' } });
   if (!ar.ok) return null;
   const buf = Buffer.from(await ar.arrayBuffer());
   const ct = (mp3 && 'audio/mpeg') || ar.headers.get('content-type') || 'audio/ogg';
   return { buf, ct };
+}
+
+// Opt-in pronunciation word lookup. Original word/phrase/Chinese modes below are unchanged.
+async function fetchIpaDictionaryWordMp3(word, lang, signal) {
+  const suffix = String(lang).toLowerCase() === 'en-gb' ? '-uk.mp3' : '-us.mp3';
+  const r = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.toLowerCase())}`, {
+    signal, headers: { 'User-Agent': UA }
+  });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error('IPA word dictionary unavailable');
+  const entries = await r.json();
+  if (!Array.isArray(entries)) throw new Error('Invalid IPA word dictionary response');
+  let chosen = null;
+  for (const entry of entries) {
+    for (const ph of (Array.isArray(entry.phonetics) ? entry.phonetics : [])) {
+      const url = ph && typeof ph.audio === 'string' ? ph.audio : '';
+      let parsed;
+      try { parsed = new URL(url); } catch { continue; }
+      if (/^https?:$/.test(parsed.protocol) && parsed.pathname.toLowerCase().endsWith(suffix)) {
+        chosen = url;
+        break;
+      }
+    }
+    if (chosen) break;
+  }
+  if (!chosen) return null;
+  const ar = await fetch(chosen, { signal, headers: { 'User-Agent': UA } });
+  if (ar.status === 404) return null;
+  if (!ar.ok) throw new Error('IPA word recording unavailable');
+  return Buffer.from(await ar.arrayBuffer());
 }
 
 async function fetchDictionaryWordMp3(word, lang) {
@@ -70,14 +101,49 @@ module.exports = async function handler(req, res) {
   const lang = String(req.query.lang || 'en-GB').trim();
 
   try {
-    if (mode === 'ipa' && file) {
-      const ipaAudio = await fetchWikimediaMp3(file);
-      if (ipaAudio) {
-        res.setHeader('Content-Type', ipaAudio.ct);
+    // IPA requests are terminal: never substitute a word or generated speech.
+    if (mode === 'ipa') {
+      if (!file) return res.status(400).end('Missing IPA file');
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      try {
+        const ipaAudio = await fetchWikimediaMp3(file, controller.signal);
+        if (!ipaAudio) return res.status(404).end('IPA audio not found');
+        const buf = ipaAudio.buf;
+        const hasId3 = buf.length >= 3 && buf.subarray(0, 3).toString('ascii') === 'ID3';
+        const hasMpegFrame = buf.length >= 2 && buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0;
+        if (!/^audio\/mpeg(?:;|$)/i.test(ipaAudio.ct) || (!hasId3 && !hasMpegFrame)) {
+          return res.status(502).end('IPA MP3 audio unavailable');
+        }
+        res.setHeader('Content-Type', 'audio/mpeg');
         res.setHeader('Cache-Control', 'public, max-age=604800');
-        return res.status(200).send(ipaAudio.buf);
+        return res.status(200).send(buf);
+      } catch (e) {
+        return res.status(502).end('IPA audio upstream failed');
+      } finally {
+        clearTimeout(timeout);
       }
-      if (!text) return res.status(404).end('IPA audio not found');
+    }
+
+    if (mode === 'ipa-word') {
+      if (!/^en-(?:gb|us)$/i.test(lang)) return res.status(400).end('Unsupported IPA word accent');
+      if (!/^[a-zA-Z]+(?:['-][a-zA-Z]+)*$/.test(text)) return res.status(400).end('IPA word requires one English word');
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      try {
+        const buf = await fetchIpaDictionaryWordMp3(text, lang, controller.signal);
+        if (!buf) return res.status(404).end('IPA word recording not found for requested accent');
+        const hasId3 = buf.length >= 3 && buf.subarray(0, 3).toString('ascii') === 'ID3';
+        const hasMpegFrame = buf.length >= 2 && buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0;
+        if (!hasId3 && !hasMpegFrame) return res.status(502).end('IPA word MP3 audio unavailable');
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Cache-Control', 'public, max-age=604800');
+        return res.status(200).send(buf);
+      } catch (e) {
+        return res.status(502).end('IPA word audio upstream failed');
+      } finally {
+        clearTimeout(timeout);
+      }
     }
 
     if (!text) return res.status(400).end('Missing text');
