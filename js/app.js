@@ -3007,20 +3007,42 @@
     // ==================== EXERCISES TAB ("LÀM BÀI TẬP" — ANH & TRUNG, 4 DẠNG BÀI) ====================
     const EX_GRAMMAR_QS = {
       en: [
-        { prompt: 'She ____ a teacher at a primary school.', options: ['am', 'is', 'are', 'be'], ans: 1, exp: 'Chủ ngữ ngôi thứ 3 số ít "She" đi với động từ to be "is".' },
-        { prompt: '____ you like drinking iced coffee?', options: ['Does', 'Is', 'Do', 'Are'], ans: 2, exp: 'Câu hỏi hiện tại đơn với động từ thường "like" và chủ ngữ "you" dùng "Do".' },
-        { prompt: 'I ____ English with my AI teacher right now.', options: ['learn', 'am learning', 'learned', 'learns'], ans: 1, exp: 'Có "right now" (ngay lúc này) nên dùng thì Hiện tại tiếp diễn: am + V-ing.' },
-        { prompt: 'Yesterday, we ____ to a new Vietnamese restaurant.', options: ['go', 'going', 'went', 'goes'], ans: 2, exp: '"Yesterday" (hôm qua) dùng Quá khứ đơn; quá khứ của "go" là "went".' },
-        { prompt: 'Could you ____ me where the train station is?', options: ['tell', 'telling', 'to tell', 'told'], ans: 0, exp: 'Sau động từ khuyết thiếu "Could" luôn dùng động từ nguyên mẫu không "to".' },
-        { prompt: 'If it rains tomorrow, I ____ stay at home.', options: ['am', 'will', 'was', 'did'], ans: 1, exp: 'Câu điều kiện loại 1: If + Hiện tại đơn, S + will + V nguyên mẫu.' }
+        { prompt: 'She ____ a teacher at a primary school.', vi: 'Cô ấy là giáo viên tại một trường tiểu học.', options: ['am', 'is', 'are', 'be'], ans: 1, exp: 'Chủ ngữ ngôi thứ 3 số ít "She" đi với động từ to be "is".' },
+        { prompt: '____ you like drinking iced coffee?', vi: 'Bạn có thích uống cà phê đá không?', options: ['Does', 'Is', 'Do', 'Are'], ans: 2, exp: 'Câu hỏi hiện tại đơn với động từ thường "like" và chủ ngữ "you" dùng "Do".' },
+        { prompt: 'I ____ English with my AI teacher right now.', vi: 'Ngay lúc này tôi đang học tiếng Anh cùng cô giáo AI.', options: ['learn', 'am learning', 'learned', 'learns'], ans: 1, exp: 'Có "right now" (ngay lúc này) nên dùng thì Hiện tại tiếp diễn: am + V-ing.' },
+        { prompt: 'Yesterday, we ____ to a new Vietnamese restaurant.', vi: 'Hôm qua chúng tôi đã đến một nhà hàng Việt Nam mới.', options: ['go', 'going', 'went', 'goes'], ans: 2, exp: '"Yesterday" (hôm qua) dùng Quá khứ đơn; quá khứ của "go" là "went".' },
+        { prompt: 'Could you ____ me where the train station is?', vi: 'Bạn có thể chỉ giúp tôi nhà ga ở đâu không?', options: ['tell', 'telling', 'to tell', 'told'], ans: 0, exp: 'Sau động từ khuyết thiếu "Could" luôn dùng động từ nguyên mẫu không "to".' },
+        { prompt: 'If it rains tomorrow, I ____ stay at home.', vi: 'Nếu ngày mai trời mưa, tôi sẽ ở nhà.', options: ['am', 'will', 'was', 'did'], ans: 1, exp: 'Câu điều kiện loại 1: If + Hiện tại đơn, S + will + V nguyên mẫu.' },
+        { prompt: 'My brother ____ football every Sunday morning.', vi: 'Anh trai tôi chơi bóng đá mỗi sáng Chủ nhật.', options: ['play', 'plays', 'playing', 'played'], ans: 1, exp: 'Thói quen lặp lại (every Sunday) + ngôi thứ 3 số ít "My brother" → thêm -s (plays).' },
+        { prompt: 'There ____ two cute cats in the living room.', vi: 'Có hai chú mèo dễ thương trong phòng khách.', options: ['is', 'are', 'am', 'be'], ans: 1, exp: '"two cute cats" là danh từ số nhiều nên dùng "There are".' },
+        { prompt: 'We have lived in Ho Chi Minh City ____ 2020.', vi: 'Chúng tôi đã sống ở TP. Hồ Chí Minh từ năm 2020.', options: ['for', 'since', 'at', 'in'], ans: 1, exp: 'Trước một mốc thời gian cụ thể (2020) trong thì Hiện tại hoàn thành dùng "since".' },
+        { prompt: 'This milk tea is ____ than the one I bought yesterday.', vi: 'Ly trà sữa này ngon hơn ly tôi mua hôm qua.', options: ['good', 'better', 'best', 'more good'], ans: 1, exp: 'So sánh hơn của "good" là dạng bất quy tắc "better".' },
+        { prompt: 'She ____ to Japan twice.', vi: 'Cô ấy đã từng đi Nhật Bản hai lần.', options: ['has been', 'have been', 'was been', 'is being'], ans: 0, exp: 'Trải nghiệm đến hiện tại với chủ ngữ "She" dùng Hiện tại hoàn thành "has been".' },
+        { prompt: 'You ____ wear a helmet when riding a motorbike.', vi: 'Bạn phải đội mũ bảo hiểm khi đi xe máy.', options: ['must', 'mustn\'t', 'doesn\'t', 'are'], ans: 0, exp: '"must" diễn tả quy định/nghĩa vụ bắt buộc.' },
+        { prompt: 'I enjoy ____ to music while working.', vi: 'Tôi thích nghe nhạc trong lúc làm việc.', options: ['listen', 'to listen', 'listening', 'listened'], ans: 2, exp: 'Sau động từ "enjoy" luôn dùng V-ing (listening).' },
+        { prompt: 'What ____ you doing when I called you last night?', vi: 'Bạn đang làm gì khi tôi gọi cho bạn tối qua?', options: ['was', 'were', 'are', 'did'], ans: 1, exp: 'Quá khứ tiếp diễn với chủ ngữ "you" dùng "were".' },
+        { prompt: 'How ____ sugar would you like in your coffee?', vi: 'Bạn muốn cho bao nhiêu đường vào cà phê?', options: ['many', 'much', 'few', 'a'], ans: 1, exp: '"sugar" là danh từ không đếm được nên hỏi số lượng bằng "How much".' },
+        { prompt: 'He wants ____ a new laptop for his job.', vi: 'Anh ấy muốn mua một chiếc laptop mới cho công việc.', options: ['buy', 'buying', 'to buy', 'bought'], ans: 2, exp: 'Cấu trúc "want + to V" (muốn làm gì).' },
+        { prompt: 'The meeting starts ____ 9:30 AM tomorrow.', vi: 'Cuộc họp bắt đầu lúc 9 giờ 30 sáng ngày mai.', options: ['in', 'on', 'at', 'to'], ans: 2, exp: 'Trước giờ giấc cụ thể luôn dùng giới từ "at".' },
+        { prompt: '____ is your favorite Vietnamese dish?', vi: 'Món ăn Việt Nam yêu thích nhất của bạn là gì?', options: ['Who', 'Where', 'What', 'When'], ans: 2, exp: 'Hỏi về món ăn (sự vật) dùng từ để hỏi "What".' }
       ],
       zh: [
-        { prompt: '我 ____ 越南人。(Tôi là người Việt Nam.)', options: ['有 (yǒu)', '是 (shì)', '在 (zài)', '去 (qù)'], ans: 1, exp: 'Dùng động từ 是 (shì — là) để nối chủ ngữ và danh từ.' },
-        { prompt: '你是学生 ____？(Bạn là học sinh phải không?)', options: ['的 (de)', '了 (le)', '吗 (ma)', '不 (bù)'], ans: 2, exp: 'Thêm trợ từ 吗 (ma) vào cuối câu để tạo câu hỏi Có/Không.' },
-        { prompt: '我 ____ 弟弟。(Tôi không có em trai.)', options: ['不有 (bù yǒu)', '没有 (méiyǒu)', '不是 (bú shì)', '没是 (méi shì)'], ans: 1, exp: 'Phủ định của 有 (có) luôn là 没有 (méiyǒu), không dùng 不有.' },
-        { prompt: '我今天 ____ 家学习中文。(Hôm nay tôi học tiếng Trung ở nhà.)', options: ['在 (zài)', '是 (shì)', '有 (yǒu)', '很 (hěn)'], ans: 0, exp: 'Cấu trúc địa điểm: Chủ ngữ + Thời gian + 在 + Địa điểm + Động từ.' },
-        { prompt: '这件衣服 ____ 钱？(Cái áo này bao nhiêu tiền?)', options: ['什么 (shénme)', '哪里 (nǎlǐ)', '多少 (duōshao)', '怎么 (zěnme)'], ans: 2, exp: 'Hỏi giá tiền dùng cụm cố định 多少钱 (duōshao qián).' },
-        { prompt: '我 ____ 一杯珍珠奶茶。(Cho tôi một ly trà sữa trân châu.)', options: ['要 (yào)', '是 (shì)', '在 (zài)', '叫 (jiào)'], ans: 0, exp: 'Khi gọi món ăn/đồ uống, dùng động từ 要 (yào — muốn/lấy).' }
+        { prompt: '我 ____ 越南人。', vi: 'Tôi là người Việt Nam.', options: ['有 (yǒu)', '是 (shì)', '在 (zài)', '去 (qù)'], ans: 1, exp: 'Dùng động từ 是 (shì — là) để nối chủ ngữ và danh từ.' },
+        { prompt: '你是学生 ____？', vi: 'Bạn là học sinh phải không?', options: ['的 (de)', '了 (le)', '吗 (ma)', '不 (bù)'], ans: 2, exp: 'Thêm trợ từ 吗 (ma) vào cuối câu để tạo câu hỏi Có/Không.' },
+        { prompt: '我 ____ 弟弟。', vi: 'Tôi không có em trai.', options: ['不有 (bù yǒu)', '没有 (méiyǒu)', '不是 (bú shì)', '没是 (méi shì)'], ans: 1, exp: 'Phủ định của 有 (có) luôn là 没有 (méiyǒu), không dùng 不有.' },
+        { prompt: '我今天 ____ 家学习中文。', vi: 'Hôm nay tôi học tiếng Trung ở nhà.', options: ['在 (zài)', '是 (shì)', '有 (yǒu)', '很 (hěn)'], ans: 0, exp: 'Cấu trúc địa điểm: Chủ ngữ + Thời gian + 在 + Địa điểm + Động từ.' },
+        { prompt: '这件衣服 ____ 钱？', vi: 'Cái áo này bao nhiêu tiền?', options: ['什么 (shénme)', '哪里 (nǎlǐ)', '多少 (duōshao)', '怎么 (zěnme)'], ans: 2, exp: 'Hỏi giá tiền dùng cụm cố định 多少钱 (duōshao qián).' },
+        { prompt: '我 ____ 一杯珍珠奶茶。', vi: 'Cho tôi một ly trà sữa trân châu.', options: ['要 (yào)', '是 (shì)', '在 (zài)', '叫 (jiào)'], ans: 0, exp: 'Khi gọi món ăn/đồ uống, dùng động từ 要 (yào — muốn/lấy).' },
+        { prompt: '这是我 ____ 书。', vi: 'Đây là quyển sách của tôi.', options: ['的 (de)', '吗 (ma)', '呢 (ne)', '吧 (ba)'], ans: 0, exp: 'Trợ từ 的 (de) biểu thị sự sở hữu ("của").' },
+        { prompt: '你叫 ____ 名字？', vi: 'Bạn tên là gì?', options: ['谁 (shéi)', '什么 (shénme)', '哪儿 (nǎr)', '几 (jǐ)'], ans: 1, exp: 'Hỏi tên dùng mẫu câu cố định: 你叫什么名字？' },
+        { prompt: '今天天气 ____ 好！', vi: 'Thời tiết hôm nay rất đẹp!', options: ['很 (hěn)', '是 (shì)', '有 (yǒu)', '在 (zài)'], ans: 0, exp: 'Trước tính từ trong câu trần thuật tiếng Trung thường dùng phó từ 很 (hěn).' },
+        { prompt: '我昨天买 ____ 一件新衣服。', vi: 'Hôm qua tôi đã mua một cái áo mới.', options: ['吗 (ma)', '了 (le)', '呢 (ne)', '的 (de)'], ans: 1, exp: 'Trợ từ 了 (le) đặt sau động từ biểu thị hành động đã hoàn thành.' },
+        { prompt: '你 ____ 说中文吗？', vi: 'Bạn biết nói tiếng Trung không?', options: ['会 (huì)', '是 (shì)', '在 (zài)', '给 (gěi)'], ans: 0, exp: '会 (huì) diễn tả kỹ năng học được (biết nói ngoại ngữ, biết lái xe...).' },
+        { prompt: '现在 ____ 点了？', vi: 'Bây giờ là mấy giờ rồi?', options: ['什么 (shénme)', '几 (jǐ)', '谁 (shéi)', '怎么 (zěnme)'], ans: 1, exp: 'Hỏi giờ dùng 几点 (jǐ diǎn — mấy giờ).' },
+        { prompt: '地铁站 ____ 哪里？', vi: 'Trạm tàu điện ngầm ở đâu?', options: ['有 (yǒu)', '是 (shì)', '在 (zài)', '去 (qù)'], ans: 2, exp: 'Hỏi vị trí dùng 在哪里 (zài nǎlǐ — ở đâu).' },
+        { prompt: '我们一起去喝咖啡 ____！', vi: 'Chúng mình cùng đi uống cà phê nhé!', options: ['吗 (ma)', '吧 (ba)', '的 (de)', '了 (le)'], ans: 1, exp: 'Trợ từ 吧 (ba) đặt cuối câu mang nghĩa gợi ý, rủ rê ("nhé / đi").' },
+        { prompt: '他 ____ 喜欢听音乐。', vi: 'Anh ấy cũng thích nghe nhạc.', options: ['也 (yě)', '和 (hé)', '吗 (ma)', '的 (de)'], ans: 0, exp: 'Phó từ 也 (yě — cũng) luôn đặt trước động từ.' },
+        { prompt: '我明天 ____ 去北京旅游。', vi: 'Ngày mai tôi muốn đi du lịch Bắc Kinh.', options: ['想 (xiǎng)', '是 (shì)', '在 (zài)', '有 (yǒu)'], ans: 0, exp: '想 (xiǎng) + động từ diễn tả mong muốn/dự định làm gì.' }
       ]
     };
 
@@ -3041,20 +3063,25 @@
       const shuffled = [...words].sort(() => Math.random() - 0.5);
 
       if (mode === 'mcq') {
-        const gramPart = (EX_GRAMMAR_QS[lang] || EX_GRAMMAR_QS.en).slice(0, 4).map(g => ({ ...g, kind: 'grammar' }));
+        const gramPool = [...(EX_GRAMMAR_QS[lang] || EX_GRAMMAR_QS.en)].sort(() => Math.random() - 0.5);
+        const gramPart = gramPool.slice(0, 4).map(g => {
+          const correctText = g.options[g.ans];
+          const shuffledOpts = [...g.options].sort(() => Math.random() - 0.5);
+          return { ...g, options: shuffledOpts, ans: shuffledOpts.indexOf(correctText), kind: 'grammar' };
+        });
         const vocabPart = shuffled.slice(0, 4).map(w => {
           const wrongs = shuffled.filter(x => x.term !== w.term).slice(0, 3).map(x => x.vi);
           const opts = [w.vi, ...wrongs].sort(() => Math.random() - 0.5);
           return {
             kind: 'vocab',
-            prompt: isZh ? `Từ "${w.term}" (${w.sub}) có nghĩa là gì?` : `Từ "${w.term}" (${w.sub}) có nghĩa là gì?`,
+            prompt: `Từ "${w.term}" (${w.sub}) có nghĩa là gì?`,
             speak: w.term,
             options: opts,
             ans: opts.indexOf(w.vi),
             exp: `${w.term} (${w.sub}) = ${w.vi}. Ví dụ: ${w.ex} (${w.exVi})`
           };
         });
-        return [...gramPart, ...vocabPart];
+        return [...gramPart, ...vocabPart].sort(() => Math.random() - 0.5);
       }
 
       if (mode === 'fill') {
@@ -3199,15 +3226,23 @@
                   return `<button type="button" data-ex-mcq-pick="${i}" ${picked !== null ? 'disabled' : ''} class="p-3.5 rounded-2xl border text-left text-sm transition-all ${cls}"><span class="font-extrabold mr-2 text-slate-400">${['A','B','C','D'][i]}.</span>${opt}</button>`;
                 }).join('')}
               </div>
-              ${ui.exPicked !== null ? `
-                <div class="p-4 rounded-2xl ${ui.exPicked === item.ans ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'} border text-xs sm:text-sm space-y-2">
-                  <div class="font-extrabold">${ui.exPicked === item.ans ? '✓ Chính xác!' : '✗ Chưa đúng rồi!'}</div>
-                  <div>${item.exp}</div>
+              ${ui.exPicked !== null ? (() => {
+                const ansClean = (item.options[item.ans] || '').split('(')[0].trim();
+                const fullSent = item.prompt.includes('____') ? item.prompt.replace('____', ansClean) : '';
+                return `
+                <div class="p-4 rounded-2xl ${ui.exPicked === item.ans ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'} border text-xs sm:text-sm space-y-1.5">
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="font-extrabold">${ui.exPicked === item.ans ? '✓ Chính xác!' : '✗ Chưa đúng rồi!'}</div>
+                    ${fullSent ? `<button type="button" ${speakAttrFor(fullSent)} class="px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200 text-indigo-700 text-xs font-bold inline-flex items-center gap-1"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe câu</button>` : ''}
+                  </div>
+                  ${fullSent ? `<div class="font-bold text-slate-900">Câu đầy đủ: ${fullSent}</div>` : ''}
+                  ${item.vi ? `<div><strong>Dịch nghĩa:</strong> ${item.vi}</div>` : ''}
+                  <div><strong>Giải thích:</strong> ${item.exp}</div>
                 </div>
                 <div class="flex justify-end">
                   <button type="button" id="ex-next-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold">Câu tiếp theo →</button>
-                </div>
-              ` : ''}
+                </div>`;
+              })() : ''}
             ` : ''}
 
             ${mode === 'fill' ? `
@@ -4340,25 +4375,29 @@
 
     async function fetchYoutubeTranscript(videoId) {
       if (!window.location || !window.location.protocol.startsWith('http')) {
-        showToast('Đã mở video! Để tự động lấy phụ đề YouTube, hãy mở trên web Vercel hoặc nạp file .SRT/.VTT nhé.');
+        showToast('Đã mở video! Để Gemini AI tự nghe & dịch trực tiếp video, hãy dùng trên web Vercel nhé.');
         return;
       }
       ui.videoLoadingSubs = true;
+      showToast('Gemini AI đang trực tiếp nghe & dịch video của bạn (khoảng 10–20 giây)...');
       renderVideoStudioPage();
       try {
         const res = await fetch(`/api/transcript?v=${encodeURIComponent(videoId)}&lang=${encodeURIComponent(ui.customVideoLang || 'en')}`);
-        if (!res.ok) throw new Error('no-subs');
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          showToast(data.error || `Không gọi được AI dịch video (HTTP ${res.status}).`);
+          return;
+        }
         if (data && Array.isArray(data.lines) && data.lines.length) {
           ui.customVideoLines = data.lines;
           ui.customVideoLang = data.lang || 'en';
           ui.videoLineIdx = 0;
-          showToast(`Đã tải thành công ${data.lines.length} dòng phụ đề chạy tự động!`);
+          showToast(`Gemini AI đã dịch xong ${data.lines.length} dòng phụ đề chạy đồng bộ!`);
         } else {
-          showToast('Video này không có phụ đề công khai trên YouTube — bạn có thể nạp file .SRT/.VTT bên dưới.');
+          showToast('AI chưa trích xuất được phụ đề cho video này.');
         }
-      } catch {
-        showToast('Chưa lấy được phụ đề tự động của video này (hãy thử video khác có bật CC hoặc nạp file .SRT/.VTT).');
+      } catch (err) {
+        showToast('Lỗi kết nối tới máy chủ AI (/api/transcript).');
       } finally {
         ui.videoLoadingSubs = false;
         renderVideoStudioPage();
