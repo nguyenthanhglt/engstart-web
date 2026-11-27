@@ -3424,40 +3424,790 @@
 
     const AIO_IPA_TABLE = {
       vowelsLong: [
-        { sym: 'iː', ex: 'sheep', diff: 'Dễ' }, { sym: 'uː', ex: 'food', diff: 'Dễ' },
-        { sym: 'ɔː', ex: 'saw', diff: 'Vừa' }, { sym: 'ɑː', ex: 'car', diff: 'Dễ' },
-        { sym: 'ɜː', ex: 'bird', diff: 'Khó' }
+        { sym: 'iː', ex: 'sheep', hi: 'ee', file: 'Close_front_unrounded_vowel.ogg', sound: 'sheep', diff: 'Dễ', tip: 'Miệng cười rộng sang hai bên, kéo dài âm "i".' },
+        { sym: 'uː', ex: 'food', hi: 'oo', file: 'Close_back_rounded_vowel.ogg', sound: 'food', diff: 'Dễ', tip: 'Tròn môi nhỏ, đẩy ra trước, kéo dài âm "u".' },
+        { sym: 'ɔː', ex: 'saw', hi: 'aw', file: 'Open-mid_back_rounded_vowel.ogg', sound: 'saw', diff: 'Vừa', tip: 'Mở miệng vừa phải, hơi tròn môi, kéo dài âm "o".' },
+        { sym: 'ɑː', ex: 'car', hi: 'ar', file: 'Open_back_unrounded_vowel.ogg', sound: 'car', diff: 'Dễ', tip: 'Há miệng rộng, hạ cằm xuống, kéo dài âm "a".' },
+        { sym: 'ɜː', ex: 'bird', hi: 'ir', file: 'Open-mid_central_unrounded_vowel.ogg', sound: 'bird', diff: 'Khó', tip: 'Đọc âm "ơ" dài rồi hơi cong đầu lưỡi nhẹ lên.' }
       ],
       vowelsShort: [
-        { sym: 'ɪ', ex: 'ship', diff: 'Khó' }, { sym: 'ʊ', ex: 'book', diff: 'Khó' },
-        { sym: 'ɒ', ex: 'hot', diff: 'Vừa' }, { sym: 'ʌ', ex: 'cup', diff: 'Vừa' },
-        { sym: 'ə', ex: 'about', diff: 'Khó' }, { sym: 'e', ex: 'bed', diff: 'Vừa' },
-        { sym: 'æ', ex: 'cat', diff: 'Khó' }
+        { sym: 'ɪ', ex: 'ship', hi: 'i', file: 'Near-close_near-front_unrounded_vowel.ogg', sound: 'ship', diff: 'Khó', tip: 'Thả lỏng môi, đọc ngắn và dứt khoát giữa "i" và "ê".' },
+        { sym: 'ʊ', ex: 'book', hi: 'oo', file: 'Near-close_near-back_rounded_vowel.ogg', sound: 'book', diff: 'Khó', tip: 'Môi hơi mở lỏng, đọc ngắn giữa "u" và "ư".' },
+        { sym: 'ɒ', ex: 'hot', hi: 'o', file: 'Open_back_rounded_vowel.ogg', sound: 'hot', diff: 'Vừa', tip: 'Há miệng vừa, đọc âm "o" ngắn và gọn.' },
+        { sym: 'ʌ', ex: 'cup', hi: 'u', file: 'Open-mid_back_unrounded_vowel.ogg', sound: 'cup', diff: 'Vừa', tip: 'Đọc ngắn và dứt khoát như âm "ă" tiếng Việt.' },
+        { sym: 'ə', ex: 'about', hi: 'a', file: 'Mid-central_vowel.ogg', sound: 'about', diff: 'Khó', tip: 'Âm "ơ" cực nhẹ và ngắn (âm không nhấn trọng âm).' },
+        { sym: 'e', ex: 'bed', hi: 'e', file: 'Open-mid_front_unrounded_vowel.ogg', sound: 'bed', diff: 'Vừa', tip: 'Mở miệng vừa, đọc ngắn gọn như "e" tiếng Việt.' },
+        { sym: 'æ', ex: 'cat', hi: 'a', file: 'Near-open_front_unrounded_vowel.ogg', sound: 'cat', diff: 'Khó', tip: 'Há miệng rộng như nói "a" nhưng đọc âm "e" (a-bẹt).' }
       ],
       diphthongs: [
-        { sym: 'eɪ', ex: 'face', diff: 'Vừa' }, { sym: 'aɪ', ex: 'my', diff: 'Dễ' },
-        { sym: 'ɔɪ', ex: 'boy', diff: 'Dễ' }, { sym: 'oʊ', ex: 'go', diff: 'Vừa' },
-        { sym: 'aʊ', ex: 'now', diff: 'Dễ' }, { sym: 'ɪə', ex: 'ear', diff: 'Khó' },
-        { sym: 'eə', ex: 'hair', diff: 'Khó' }, { sym: 'ʊə', ex: 'tour', diff: 'Khó' }
+        { sym: 'eɪ', ex: 'face', hi: 'a', file: '', sound: 'ay', diff: 'Vừa', tip: 'Lướt nhanh từ "ê" sang "i".' },
+        { sym: 'aɪ', ex: 'my', hi: 'y', file: '', sound: 'eye', diff: 'Dễ', tip: 'Lướt từ "a" sang "i" (giống "ai").' },
+        { sym: 'ɔɪ', ex: 'boy', hi: 'oy', file: '', sound: 'oy', diff: 'Dễ', tip: 'Lướt từ "o" sang "i" (giống "oi").' },
+        { sym: 'oʊ', ex: 'go', hi: 'o', file: '', sound: 'oh', diff: 'Vừa', tip: 'Đọc "ô" rồi khép tròn môi sang "u".' },
+        { sym: 'aʊ', ex: 'now', hi: 'ow', file: '', sound: 'ow', diff: 'Dễ', tip: 'Lướt từ "a" sang "u" (giống "ao").' },
+        { sym: 'ɪə', ex: 'ear', hi: 'ear', file: '', sound: 'ear', diff: 'Khó', tip: 'Lướt từ "i" ngắn sang "ơ" nhẹ.' },
+        { sym: 'eə', ex: 'hair', hi: 'air', file: '', sound: 'air', diff: 'Khó', tip: 'Lướt từ "e" sang "ơ" nhẹ.' },
+        { sym: 'ʊə', ex: 'tour', hi: 'our', file: '', sound: 'tour', diff: 'Khó', tip: 'Lướt từ "u" ngắn sang "ơ" nhẹ.' }
       ],
       consonantsVoiceless: [
-        { sym: 'p', ex: 'pen', diff: 'Dễ' }, { sym: 't', ex: 'tea', diff: 'Vừa' },
-        { sym: 'k', ex: 'key', diff: 'Dễ' }, { sym: 'f', ex: 'fine', diff: 'Dễ' },
-        { sym: 'θ', ex: 'think', diff: 'Khó' }, { sym: 's', ex: 'see', diff: 'Vừa' },
-        { sym: 'ʃ', ex: 'she', diff: 'Khó' }, { sym: 'tʃ', ex: 'chair', diff: 'Khó' }
+        { sym: 'p', ex: 'pen', hi: 'p', file: 'Voiceless_bilabial_plosive.ogg', sound: 'pen', diff: 'Dễ', tip: 'Mím 2 môi rồi bật mạnh luồng hơi ra (không rung cổ).' },
+        { sym: 't', ex: 'tea', hi: 't', file: 'Voiceless_alveolar_plosive.ogg', sound: 'tea', diff: 'Vừa', tip: 'Đầu lưỡi chạm lợi trên rồi bật hơi mạnh ra ngoài.' },
+        { sym: 'k', ex: 'key', hi: 'k', file: 'Voiceless_velar_plosive.ogg', sound: 'key', diff: 'Dễ', tip: 'Cuống lưỡi nâng lên bật hơi mạnh như "kh" nhẹ.' },
+        { sym: 'f', ex: 'fine', hi: 'f', file: 'Voiceless_labiodental_fricative.ogg', sound: 'fine', diff: 'Dễ', tip: 'Răng trên chạm nhẹ môi dưới rồi thổi hơi ra.' },
+        { sym: 'θ', ex: 'think', hi: 'th', file: 'Voiceless_dental_fricative.ogg', sound: 'think', diff: 'Khó', tip: 'Đặt đầu lưỡi giữa hai hàm răng rồi thổi hơi nhẹ (không rung).' },
+        { sym: 's', ex: 'see', hi: 's', file: 'Voiceless_alveolar_sibilant.ogg', sound: 'see', diff: 'Vừa', tip: 'Khép nhẹ răng, xì hơi sắc qua khe răng.' },
+        { sym: 'ʃ', ex: 'she', hi: 'sh', file: 'Voiceless_postalveolar_fricative.ogg', sound: 'she', diff: 'Khó', tip: 'Chu môi tròn ra trước, thổi hơi mềm như "suỵt".' },
+        { sym: 'tʃ', ex: 'chair', hi: 'ch', file: 'Voiceless_postalveolar_affricate.ogg', sound: 'chair', diff: 'Khó', tip: 'Chu môi bật hơi dứt khoát như "ch" nặng có gió.' }
       ],
       consonantsVoiced: [
-        { sym: 'b', ex: 'bag', diff: 'Dễ' }, { sym: 'd', ex: 'day', diff: 'Dễ' },
-        { sym: 'g', ex: 'girl', diff: 'Dễ' }, { sym: 'v', ex: 'voice', diff: 'Dễ' },
-        { sym: 'ð', ex: 'this', diff: 'Khó' }, { sym: 'z', ex: 'zoo', diff: 'Vừa' },
-        { sym: 'ʒ', ex: 'measure', diff: 'Khó' }, { sym: 'dʒ', ex: 'job', diff: 'Khó' }
+        { sym: 'b', ex: 'bag', hi: 'b', file: 'Voiced_bilabial_plosive.ogg', sound: 'bag', diff: 'Dễ', tip: 'Mím 2 môi bật ra có rung dây thanh quản.' },
+        { sym: 'd', ex: 'day', hi: 'd', file: 'Voiced_alveolar_plosive.ogg', sound: 'day', diff: 'Dễ', tip: 'Đầu lưỡi chạm lợi trên bật ra có rung cổ.' },
+        { sym: 'g', ex: 'girl', hi: 'g', file: 'Voiced_velar_plosive.ogg', sound: 'girl', diff: 'Dễ', tip: 'Cuống lưỡi bật ra có rung cổ như "g" tiếng Việt.' },
+        { sym: 'v', ex: 'voice', hi: 'v', file: 'Voiced_labiodental_fricative.ogg', sound: 'voice', diff: 'Dễ', tip: 'Răng trên chạm môi dưới, thổi hơi kèm rung cổ.' },
+        { sym: 'ð', ex: 'this', hi: 'th', file: 'Voiced_dental_fricative.ogg', sound: 'this', diff: 'Khó', tip: 'Đầu lưỡi giữa 2 hàm răng, đẩy hơi kèm rung cổ.' },
+        { sym: 'z', ex: 'zoo', hi: 'z', file: 'Voiced_alveolar_sibilant.ogg', sound: 'zoo', diff: 'Vừa', tip: 'Như âm /s/ nhưng rung dây thanh quản (như tiếng ong).' },
+        { sym: 'ʒ', ex: 'measure', hi: 's', file: 'Voiced_postalveolar_fricative.ogg', sound: 'measure', diff: 'Khó', tip: 'Chu môi như /ʃ/ nhưng có rung cổ.' },
+        { sym: 'dʒ', ex: 'job', hi: 'j', file: 'Voiced_postalveolar_affricate.ogg', sound: 'job', diff: 'Khó', tip: 'Chu môi bật âm "gi/dờ" có rung cổ.' }
       ],
       endings: [
-        { sym: '-t', ex: 'sit', diff: 'Khó' }, { sym: '-k', ex: 'back', diff: 'Khó' },
-        { sym: '-s', ex: 'nice', diff: 'Khó' }, { sym: '-ed', ex: 'played', diff: 'Khó' },
-        { sym: '-st', ex: 'past', diff: 'Khó' }, { sym: '-nd', ex: 'friend', diff: 'Khó' }
+        { sym: '-t', ex: 'sit', hi: 't', file: 'Voiceless_alveolar_plosive.ogg', sound: 'sit', diff: 'Khó', tip: 'Bật nhẹ âm đuôi /t/ ở cuối từ — đừng nuốt mất âm cuối!' },
+        { sym: '-k', ex: 'back', hi: 'ck', file: 'Voiceless_velar_plosive.ogg', sound: 'back', diff: 'Khó', tip: 'Bật nhẹ luồng hơi /k/ ở cuống họng khi kết thúc từ.' },
+        { sym: '-s', ex: 'nice', hi: 'ce', file: 'Voiceless_alveolar_sibilant.ogg', sound: 'nice', diff: 'Khó', tip: 'Xì nhẹ âm /s/ ở cuối từ.' },
+        { sym: '-ed', ex: 'played', hi: 'ed', file: 'Voiced_alveolar_plosive.ogg', sound: 'played', diff: 'Khó', tip: 'Bật nhẹ âm /d/ cuối từ (không đọc thành "ết").' },
+        { sym: '-st', ex: 'past', hi: 'st', file: '', sound: 'past', diff: 'Khó', tip: 'Xì /s/ rồi bật nhẹ /t/ liền mạch ở cuối từ.' },
+        { sym: '-nd', ex: 'friend', hi: 'nd', file: '', sound: 'friend', diff: 'Khó', tip: 'Giữ âm /n/ rồi bật nhẹ /d/ ở cuối từ.' }
       ]
     };
+
+
+    const IPA_DETAIL_GUIDES = {
+      'iː': {
+        cat: 'Nguyên âm dài', ipaEx: '/ʃiːp/', viEx: 'con cừu',
+        mouth: 'Mở miệng nhẹ.',
+        lips: 'Kéo môi rộng nhất có thể và giữ môi căng.',
+        tongue: 'Căng lưỡi, nâng lưỡi rất cao trong miệng và đẩy ra trước.',
+        note: 'Đầu lưỡi cũng có thể đặt ngay sau răng cửa dưới.',
+        pitfall: 'Hay đọc ngắn như "i" tiếng Việt nên sheep nghe thành ship, leave thành live. Kéo dài âm, giữ môi căng tới hết.',
+        pairs: [['eat', '/iːt/', 'it', '/ɪt/'], ['feel', '/fiːl/', 'fill', '/fɪl/'], ['meal', '/miːl/', 'mill', '/mɪl/']],
+        words: ['sheep', 'eat', 'seat', 'feel', 'cheap', 'sleep', 'heat', 'feet', 'reach', 'bean'],
+        phrases: ['sweet dreams', 'green tea', 'a piece of cheese', 'see you next week', 'free time', 'keep quiet'],
+        sentences: [
+          'We have to leave at three o’clock.',
+          'Please don’t put your feet on the seats.',
+          'Can we meet for coffee next week?',
+          'I need some sleep before the meeting.',
+          'My teacher speaks slowly and clearly.',
+          'He’s reading a magazine on the beach.'
+        ]
+      },
+      'uː': {
+        cat: 'Nguyên âm dài', ipaEx: '/fuːd/', viEx: 'thức ăn',
+        mouth: 'Mở miệng nhẹ.',
+        lips: 'Làm tròn môi thành vòng tròn và giữ môi căng.',
+        tongue: 'Căng lưỡi, nâng phần sau lưỡi rất cao và kéo về phía cổ họng.',
+        note: 'Giữ khẩu hình tròn môi ổn định và kéo dài hơi đều đặn.',
+        pitfall: 'Hay đọc như "u" tiếng Việt, không phân biệt dài ngắn nên pool và pull nghe như nhau. Chu môi căng, kéo dài hẳn tới hết.',
+        pairs: [['pool', '/puːl/', 'pull', '/pʊl/'], ['fool', '/fuːl/', 'full', '/fʊl/'], ['soon', '/suːn/', 'sun', '/sʌn/']],
+        words: ['pool', 'fool', 'soon', 'noon', 'mood', 'school'],
+        phrases: ['a true story', 'a soup spoon', 'a blue balloon', 'too soon', 'a huge room', 'new shoes'],
+        sentences: [
+          'We usually have soup at noon.',
+          'Do you like fruit juice too?',
+          'The new school uniform is blue and white.',
+          'I lost my blue shoes at the swimming pool.',
+          'The music is too loud in here.',
+          'Who moved my computer to the new room?'
+        ]
+      },
+      'ɔː': {
+        cat: 'Nguyên âm dài', ipaEx: '/sɔː/', viEx: 'đã thấy (quá khứ của see)',
+        mouth: 'Mở miệng vừa phải, hẹp hơn khi đọc /ɑː/.',
+        lips: 'Làm tròn môi rõ, hơi đưa ra trước và giữ môi căng.',
+        tongue: 'Căng lưỡi, kéo lưỡi ra sau và nâng phần sau lưỡi ở mức giữa; giữ âm dài.',
+        note: 'Giọng Anh không đọc r cuối (short, port). Giọng Mỹ mở miệng rộng hơn, lưỡi thấp hơn.',
+        pitfall: 'Hay đọc ngắn như "o" hoặc "ô" tiếng Việt nên short nghe như shot. Tròn môi, kéo dài; giọng Anh bỏ r cuối, giọng Mỹ đọc r (short, port).',
+        pairs: [['walk', '/wɔːk/', 'wok', '/wɒk/'], ['law', '/lɔː/', 'low', '/ləʊ/'], ['ball', '/bɔːl/', 'bowl', '/bəʊl/']],
+        words: ['walk', 'stalk', 'law', 'ball', 'call', 'saw', 'hall', 'lawn', 'called', 'bald'],
+        phrases: ['a short walk', 'small talk', 'all morning', 'a short story', 'the sports hall', 'draw a horse'],
+        sentences: [
+          'We all saw the sports report on the morning news.',
+          'Call me before you walk to school.',
+          'My daughter loves to draw horses.',
+          'We walked to the shore before breakfast.',
+          'He was born in a small town in the north.',
+          'Your football shorts are in the drawer.'
+        ]
+      },
+      'ɑː': {
+        cat: 'Nguyên âm dài', ipaEx: '/kɑː/', viEx: 'xe hơi',
+        mouth: 'Mở miệng rộng.',
+        lips: 'Giữ môi ở tư thế trung tính, không kéo ngang hoặc tròn môi.',
+        tongue: 'Căng và làm phẳng lưỡi; đặt lưỡi rất thấp ở giữa khoang miệng, không quá đưa ra trước hoặc kéo ra sau.',
+        note: 'Tuỳ giọng địa phương, /ɑː/ có thể được phát âm với lưỡi ở giữa miệng hoặc kéo lùi hơn về phía cổ họng.',
+        pitfall: 'Hay đọc như "a" tiếng Việt, ngắn và nông nên heart nghe gần hut. Hạ lưỡi thật thấp, mở rộng miệng, kéo dài; giọng Anh bỏ r cuối, giọng Mỹ đọc r.',
+        pairs: [['calm', '/kɑːm/', 'come', '/kʌm/'], ['heart', '/hɑːt/', 'hurt', '/hɜːt/'], ['farm', '/fɑːm/', 'firm', '/fɜːm/']],
+        words: ['calm', 'heart', 'far', 'farm', 'hard', 'barn', 'dart', 'star'],
+        phrases: ['a car park', 'a garden party', 'a large farm', 'a sharp knife', 'keep calm', 'far apart'],
+        sentences: [
+          'My father parked the car in the dark.',
+          'Is the market very far away?',
+          'The party starts in the garden at eight.',
+          'Calm down and start the car.',
+          'The stars are very bright tonight.',
+          'It’s hard to park in the city centre.'
+        ]
+      },
+      'ɜː': {
+        cat: 'Nguyên âm dài', ipaEx: '/bɜːd/', viEx: 'con chim',
+        mouth: 'Mở miệng nhẹ.',
+        lips: 'Giữ môi trung tính và thả lỏng, không tròn môi.',
+        tongue: 'Hơi căng lưỡi, đặt lưỡi ở giữa khoang miệng; đầu lưỡi hạ, không cong lên.',
+        note: 'Giọng Anh không đọc r: chỉ giữ âm ở giữa miệng và kéo dài. /ɜː/ thường ở âm tiết có nhấn, nhưng vẫn giữ ở vài âm tiết không nhấn như -work (homework /ˈhəʊmwɜːk/).',
+        pitfall: 'Hay tròn môi thành "ơ" (work nghe như walk) hoặc mở thành "a" (heard như hard). Miệng hé, kéo dài âm; giọng Mỹ cong đầu lưỡi thành r.',
+        pairs: [['bird', '/bɜːd/', 'board', '/bɔːd/'], ['heard', '/hɜːd/', 'hard', '/hɑːd/'], ['shirt', '/ʃɜːt/', 'short', '/ʃɔːt/']],
+        words: ['bird', 'shirt', 'turn', 'burn', 'worm', 'hurt', 'heard', 'fur', 'firm', 'stir'],
+        phrases: ['the first word', 'learn new words', 'a dirty shirt', 'her birthday', 'a perfect world', 'a church service'],
+        sentences: [
+          'She has worked as a nurse for thirty years.',
+          'The early bird catches the worm.',
+          'Turn left at the church and it’s the first house.',
+          'I was nervous on my first day at work.',
+          'I’d like to return this shirt, please.',
+          'Which girl came first in the race?'
+        ]
+      },
+      'ɪ': {
+        cat: 'Nguyên âm ngắn', ipaEx: '/ʃɪp/', viEx: 'con tàu',
+        mouth: 'Mở miệng nhẹ.',
+        lips: 'Kéo môi ngang nhưng giữ môi thả lỏng.',
+        tongue: 'Thả lỏng lưỡi, nâng lưỡi cao trong miệng và đẩy ra trước.',
+        note: 'Âm này cũng có thể phát âm với môi trung tính. Đầu lưỡi có thể đặt ngay sau răng cửa dưới.',
+        pitfall: 'Hay đọc thành "i" Việt căng và dài nên ship nghe như sheep, live như leave. Thả lỏng môi lưỡi, đọc thật ngắn, hơi ngả về "ê".',
+        pairs: [['it', '/ɪt/', 'eat', '/iːt/'], ['sit', '/sɪt/', 'seat', '/siːt/'], ['fill', '/fɪl/', 'feel', '/fiːl/']],
+        words: ['ship', 'list', 'bit', 'still', 'lip', 'sick', 'dip', 'hill', 'pitch', 'chick'],
+        phrases: ['fish and chips', 'a little bit', 'a busy city', 'the kitchen sink', 'different things', 'swimming pool'],
+        sentences: [
+          'My little sister is six years old.',
+          'Is this the quickest way to the city?',
+          'Did you fix the window in the kitchen?',
+          'The milk is in the fridge.',
+          'The children are swimming in the river.',
+          'Sit still and listen to this song.'
+        ]
+      },
+      'ʊ': {
+        cat: 'Nguyên âm ngắn', ipaEx: '/bʊk/', viEx: 'cuốn sách',
+        mouth: 'Mở miệng nhẹ.',
+        lips: 'Làm tròn môi nhẹ và giữ môi thả lỏng.',
+        tongue: 'Thả lỏng lưỡi, nâng phần sau lưỡi lên cao và kéo về phía cổ họng.',
+        note: 'Âm ngắn và thả lỏng hoàn toàn, không chu môi căng như /uː/.',
+        pitfall: 'Hay đọc thành "u" Việt dài, chu môi căng nên full nghe như fool, pull như pool. Thả lỏng môi, đọc ngắn và nhẹ.',
+        pairs: [['full', '/fʊl/', 'fool', '/fuːl/'], ['pull', '/pʊl/', 'pool', '/puːl/'], ['could', '/kʊd/', 'cooed', '/kuːd/']],
+        words: ['full', 'pull', 'could', 'should', 'wood', 'look', 'book', 'took'],
+        phrases: ['my favourite book', 'a good cook', 'brown sugar', 'the football team', 'a wooden table', 'look at this'],
+        sentences: [
+          'Put the books back on the shelf, please.',
+          'I took a good look at the photos.',
+          'We should cook the chicken a bit longer.',
+          'He stood on my foot by mistake.',
+          'Could you put the book on the shelf?',
+          'The woman pushed the door and looked in.'
+        ]
+      },
+      'ɒ': {
+        cat: 'Nguyên âm ngắn', ipaEx: '/hɒt/', viEx: 'nóng',
+        mouth: 'Miệng mở rộng, hàm hạ thấp.',
+        lips: 'Môi tròn nhẹ, không chu ra trước.',
+        tongue: 'Lưỡi hạ thấp, lùi về sau; đọc ngắn, dứt gọn.',
+        note: 'Giọng Anh tròn môi nhẹ và ngắn; giọng Mỹ thường mở rộng hơn gần /ɑː/.',
+        pitfall: 'Hay kéo dài thành /ɔː/ (shot nghe như short) hoặc bẹt thành "ă" (lock nghe như luck). Đọc thật ngắn, môi tròn nhẹ như "o".',
+        pairs: [['lock', '/lɒk/', 'luck', '/lʌk/'], ['not', '/nɒt/', 'nut', '/nʌt/'], ['shot', '/ʃɒt/', 'short', '/ʃɔːt/']],
+        words: ['lock', 'not', 'long', 'boss', 'body', 'cot', 'shot', 'pot', 'spot', 'fox'],
+        phrases: ['hot coffee', 'not a lot', 'got a job', 'a long holiday', 'a box of chocolates', 'a common problem'],
+        sentences: [
+          'The doctor says I should stop drinking coffee.',
+          'The shops stop selling hot food at ten o’clock.',
+          'She got a job at the hospital.',
+          'I’m sorry, I forgot to wash the bottles.',
+          'Can you watch the shop while I pop out?',
+          'The dog got lost in the forest.'
+        ]
+      },
+      'ʌ': {
+        cat: 'Nguyên âm ngắn', ipaEx: '/kʌp/', viEx: 'cốc, tách',
+        mouth: 'Mở miệng nhẹ.',
+        lips: 'Giữ môi trung tính và thả lỏng.',
+        tongue: 'Thả lỏng lưỡi, giữ lưỡi ở vị trí giữa khoang miệng.',
+        note: '/ʌ/ thường nằm ở âm tiết có nhấn; ở âm tiết không nhấn nó hay yếu thành /ə/, trừ vài chỗ như un- (unhappy /ʌnˈhæpi/).',
+        pitfall: 'Hay kéo dài thành /ɑː/ (cut nghe như cart) hoặc mở rộng thành /æ/ (cup nghe như cap). Đọc ngắn, gọn như "ă".',
+        pairs: [['up', '/ʌp/', 'app', '/æp/'], ['but', '/bʌt/', 'bat', '/bæt/'], ['cup', '/kʌp/', 'cap', '/kæp/']],
+        words: ['come', 'stuff', 'cup', 'cut', 'fun', 'much', 'run', 'bug', 'uncle', 'truck'],
+        phrases: ['a cup of tea', 'my younger brother', 'a lucky number', 'just enough', 'Sunday lunch', 'run for the bus'],
+        sentences: [
+          'My mother loves running with us.',
+          'We must run or we’ll miss the bus.',
+          'The club meets once a month.',
+          'There’s nothing in the cupboard for lunch.',
+          'Is it fun to study in another country?',
+          'Mum cut up the onions for the soup.'
+        ]
+      },
+      'ə': {
+        cat: 'Nguyên âm ngắn', ipaEx: '/əˈbaʊt/', viEx: 'về, khoảng',
+        mouth: 'Miệng hé nhẹ, hàm thả lỏng, gần như không cử động.',
+        lips: 'Môi thả lỏng hoàn toàn, không tròn, không dẹt.',
+        tongue: 'Lưỡi nằm yên giữa miệng; đọc rất ngắn, nhẹ, không nhấn.',
+        note: 'Đây là âm xuất hiện nhiều nhất trong tiếng Anh ở các âm tiết không nhấn (schwa).',
+        pitfall: 'Hay đọc rõ theo mặt chữ (about thành "a-bao") hoặc thành /ɪ/: accept nghe như except. Âm tiết không nhấn đọc lướt như "ơ" rất nhẹ.',
+        pairs: [['accept', '/əkˈsept/', 'except', '/ɪkˈsept/'], ['affect', '/əˈfekt/', 'effect', '/ɪˈfekt/'], ['addition', '/əˈdɪʃn/', 'edition', '/ɪˈdɪʃn/']],
+        words: ['accept', 'addition', 'alike', 'away', 'support', 'parade'],
+        phrases: ['talk about a problem', 'a famous actor', 'together again', 'tomorrow afternoon', "a doctor's appointment", 'a chocolate cake'],
+        sentences: [
+          'The teacher forgot about the lesson.',
+          'This banana bread is absolutely delicious.',
+          'The cinema is open again today.',
+          'My neighbours went away on holiday.',
+          'The police officer asked a question.',
+          'Remember to bring a camera tomorrow.'
+        ]
+      },
+      'e': {
+        cat: 'Nguyên âm ngắn', ipaEx: '/bed/', viEx: 'cái giường',
+        mouth: 'Mở miệng một phần.',
+        lips: 'Kéo môi hơi ngang nhưng vẫn thả lỏng.',
+        tongue: 'Thả lỏng lưỡi, đặt lưỡi hơi thấp hơn đường giữa và đẩy ra trước.',
+        note: 'Đầu lưỡi cũng có thể đặt ngay sau răng cửa dưới.',
+        pitfall: 'Hay đọc khép thành "ê" hoặc mở quá thành /æ/: bed nghe như bad, pen như pan. Hạ hàm vừa phải, đọc ngắn, gần "e" tiếng Việt.',
+        pairs: [['bed', '/bed/', 'bad', '/bæd/'], ['end', '/end/', 'and', '/ænd/'], ['pen', '/pen/', 'pan', '/pæn/']],
+        words: ['bed', 'pen', 'men', 'said', 'head', 'send', 'beg', 'lend', 'bet', 'guess'],
+        phrases: ['get dressed', 'breakfast in bed', 'a red dress', 'fresh bread', 'help yourself', 'very well'],
+        sentences: [
+          'Let me check the menu again.',
+          'My best friend never forgets my birthday.',
+          'Did you get the message I sent yesterday?',
+          'I felt tired, so I went to bed early.',
+          'You need some rest to get better.',
+          'The reception desk is next to the lift.'
+        ]
+      },
+      'æ': {
+        cat: 'Nguyên âm ngắn (a-bẹt)', ipaEx: '/kæt/', viEx: 'con mèo',
+        mouth: 'Há miệng rộng, hạ cằm xuống thấp.',
+        lips: 'Môi hơi kéo nhẹ sang hai bên, không tròn môi.',
+        tongue: 'Đầu lưỡi chạm răng cửa dưới, thân lưỡi ép thấp xuống.',
+        note: 'Khẩu hình giống chữ "a" nhưng phát ra âm lai giữa "a" và "e".',
+        pitfall: 'Người Việt hay đọc thành "e" thường nên bad nghe thành bed, man nghe thành men.',
+        pairs: [['bad', '/bæd/', 'bed', '/bed/'], ['man', '/mæn/', 'men', '/men/'], ['pan', '/pæn/', 'pen', '/pen/']],
+        words: ['cat', 'hat', 'bag', 'apple', 'happy', 'family', 'thank', 'plan'],
+        phrases: ['black cat', 'a bad habit', 'happy family', 'thank you', 'back pack', 'fast track'],
+        sentences: [
+          'The black cat sat on the mat.',
+          'I have a happy family.',
+          'Can I have an apple, please?',
+          'That man has a black bag.'
+        ]
+      },
+      'θ': {
+        cat: 'Phụ âm vô thanh', ipaEx: '/θɪŋk/', viEx: 'suy nghĩ',
+        mouth: 'Mở hé nhẹ.',
+        lips: 'Môi thả lỏng tự nhiên.',
+        tongue: 'Đặt nhẹ đầu lưỡi vào giữa hai hàm răng trên và dưới.',
+        note: 'Thổi luồng hơi nhẹ qua khe giữa lưỡi và răng trên — KHÔNG rung cổ họng.',
+        pitfall: 'Người Việt hay đọc thành "thờ" tiếng Việt nên think nghe thành tink, thank thành tank.',
+        pairs: [['think', '/θɪŋk/', 'sink', '/sɪŋk/'], ['three', '/θriː/', 'tree', '/triː/'], ['thank', '/θæŋk/', 'tank', '/tæŋk/']],
+        words: ['think', 'thank', 'three', 'mouth', 'both', 'month', 'north', 'healthy'],
+        phrases: ['thank you', 'three thousand', 'both of us', 'healthy food'],
+        sentences: [
+          'Thank you for thinking of me.',
+          'I have three brothers.',
+          'My birthday is next month.'
+        ]
+      },
+      'ð': {
+        cat: 'Phụ âm hữu thanh', ipaEx: '/ðɪs/', viEx: 'cái này',
+        mouth: 'Mở hé nhẹ.',
+        lips: 'Môi thả lỏng tự nhiên.',
+        tongue: 'Đặt nhẹ đầu lưỡi vào giữa hai hàm răng giống âm /θ/.',
+        note: 'Vừa thổi hơi vừa RUNG dây thanh quản ở cổ họng (sờ tay lên cổ sẽ thấy rung).',
+        pitfall: 'Hay đọc thành "đờ" hoặc "dờ" tiếng Việt (this thành đít, that thành đát).',
+        pairs: [['they', '/ðeɪ/', 'day', '/deɪ/'], ['there', '/ðeə/', 'dare', '/deə/'], ['breathe', '/briːð/', 'breeze', '/briːz/']],
+        words: ['this', 'that', 'they', 'mother', 'father', 'brother', 'weather', 'together'],
+        phrases: ['this and that', 'mother and father', 'the weather', 'together with'],
+        sentences: [
+          'This is my mother and that is my father.',
+          'The weather is nice today.',
+          'Let’s study together.'
+        ]
+      },
+      'ʃ': {
+        cat: 'Phụ âm vô thanh', ipaEx: '/ʃiː/', viEx: 'cô ấy',
+        mouth: 'Mở nhỏ, hai hàm răng gần khép lại.',
+        lips: 'Chu môi tròn và đẩy nhẹ ra trước (như khi ra hiệu "suỵt!").',
+        tongue: 'Nâng mặt lưỡi lên gần vòm miệng, không chạm hẳn.',
+        note: 'Thổi hơi mạnh, dài và êm — không rung cổ họng.',
+        pitfall: 'Người Việt hay quên chu môi nên she nghe giống see, wash nghe giống was.',
+        pairs: [['she', '/ʃiː/', 'see', '/siː/'], ['ship', '/ʃɪp/', 'sip', '/sɪp/'], ['short', '/ʃɔːt/', 'sort', '/sɔːt/']],
+        words: ['she', 'shop', 'shoe', 'fish', 'wash', 'English', 'sugar', 'nation'],
+        phrases: ['fresh fish', 'English class', 'wash dishes', 'shopping mall'],
+        sentences: [
+          'She sells fresh fish at the shop.',
+          'I study English every day.',
+          'Please wash your hands before dinner.'
+        ]
+      },
+      'tʃ': {
+        cat: 'Phụ âm vô thanh', ipaEx: '/tʃeə/', viEx: 'cái ghế',
+        mouth: 'Khép nhẹ rồi bật mở nhanh.',
+        lips: 'Chu môi nhẹ ra trước như âm /ʃ/.',
+        tongue: 'Đầu lưỡi chạm lợi trên để chặn hơi, sau đó bật mạnh ra cùng tiếng /ʃ/.',
+        note: 'Bật hơi rõ và dứt khoát, không rung cổ họng.',
+        pitfall: 'Hay đọc nhẹ quá thành "ch" tiếng Việt không có hơi bật mạnh.',
+        pairs: [['chair', '/tʃeə/', 'share', '/ʃeə/'], ['cheap', '/tʃiːp/', 'sheep', '/ʃiːp/'], ['watch', '/wɒtʃ/', 'wash', '/wɒʃ/']],
+        words: ['chair', 'cheese', 'check', 'lunch', 'watch', 'teacher', 'kitchen', 'picture'],
+        phrases: ['cheap watch', 'cheese sandwich', 'my teacher', 'lunch time'],
+        sentences: [
+          'My teacher sits on the chair.',
+          'What did you have for lunch?',
+          'Let’s watch a movie tonight.'
+        ]
+      },
+      '-t': {
+        cat: 'Âm cuối hay quên', ipaEx: '/kæt/', viEx: 'con mèo',
+        mouth: 'Mở nhỏ.',
+        lips: 'Môi thả lỏng.',
+        tongue: 'Đầu lưỡi chạm vào lợi ngay sau răng cửa trên, giữ hơi 1 tích tắc rồi bật nhẹ ra.',
+        note: 'Chỉ bật luồng hơi "t" thật gọn, KHÔNG thêm tiếng "ờ" thành "cat-tờ".',
+        pitfall: 'Người Việt hay nuốt mất âm cuối nên cat, cap, cab nghe y hệt nhau.',
+        pairs: [['cat', '/kæt/', 'cap', '/kæp/'], ['hat', '/hæt/', 'had', '/hæd/'], ['right', '/raɪt/', 'ride', '/raɪd/']],
+        words: ['cat', 'hot', 'night', 'right', 'start', 'street', 'student', 'market'],
+        phrases: ['hot tea', 'good night', 'that cat', 'right now'],
+        sentences: [
+          'It is a hot night.',
+          'Put your hat on right now.',
+          'The cat sat on the mat.'
+        ]
+      }
+    };
+
+    function getIpaGuide(item) {
+      if (IPA_DETAIL_GUIDES[item.sym]) return IPA_DETAIL_GUIDES[item.sym];
+      const cat = item.sym.startsWith('-') ? 'Âm cuối hay quên' : (item.sym.length > 1 && /[ɪʊə]/.test(item.sym) ? 'Nguyên âm đôi' : 'Âm vị IPA cốt lõi');
+      return {
+        cat,
+        ipaEx: `/${item.sym}/`,
+        viEx: 'từ khóa mẫu',
+        mouth: 'Mở miệng vừa phải theo đúng khẩu hình của âm.',
+        lips: item.tip,
+        tongue: 'Giữ lưỡi ổn định khi phát âm và bật gọn ở cuối.',
+        note: `Tập trung nghe kỹ phần gạch chân "${item.hi || item.ex}" trong từ "${item.ex}".`,
+        pitfall: 'Nên nghe riêng âm mẫu trước 2–3 lần rồi mới ghép vào từ khóa để không đọc theo thói quen tiếng Việt.',
+        pairs: [[item.ex, `/${item.sym}/`, item.ex, 'đọc chậm']],
+        words: [item.ex],
+        phrases: [`Say "${item.ex}" clearly`],
+        sentences: [`Listen and repeat the sound /${item.sym}/ in "${item.ex}".`]
+      };
+    }
+
+    let _ipaAudioEl = null;
+    function canUseServerTts() {
+      return typeof window !== 'undefined' && window.location && /^https?:$/.test(window.location.protocol) && window.location.hostname !== '';
+    }
+
+    function playServerAudio(url, rate, onFail) {
+      if (_ipaAudioEl) { try { _ipaAudioEl.pause(); } catch {} _ipaAudioEl = null; }
+      const a = new Audio(url);
+      if (rate && rate !== 1) a.playbackRate = rate;
+      _ipaAudioEl = a;
+      let failed = false;
+      const failOnce = () => { if (!failed) { failed = true; if (onFail) onFail(); } };
+      a.onerror = failOnce;
+      a.play().catch(failOnce);
+    }
+
+    function playIpaPhoneme(file, fallbackText) {
+      if (_ipaAudioEl) { try { _ipaAudioEl.pause(); } catch {} _ipaAudioEl = null; }
+      const accent = (ui.ipaPractice && ui.ipaPractice.accent) || ui.ipaAccent || 'en-GB';
+      if (file) {
+        if (canUseServerTts()) {
+          const proxyUrl = `/api/tts?mode=ipa&file=${encodeURIComponent(file)}&lang=${encodeURIComponent(accent)}&text=${encodeURIComponent(fallbackText || '')}`;
+          playServerAudio(proxyUrl, 1.0, () => {
+            const directUrl = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}`;
+            playServerAudio(directUrl, 1.0, () => { if (fallbackText) speakIpaPracticeText(fallbackText); });
+          });
+          return;
+        }
+        const url = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}`;
+        playServerAudio(url, 1.0, () => { if (fallbackText) speakText(fallbackText); });
+        return;
+      }
+      if (fallbackText) speakIpaPracticeText(fallbackText);
+    }
+
+    // ==================== AIO IPA PRACTICE MODE (Cụm từ / Câu / Thử thách nghe) ====================
+    const IPA_MINIMAL_CONTRASTS = {
+      sheep: ['ship', '/ʃiːp/', '/ʃɪp/'], eat: ['it', '/iːt/', '/ɪt/'], seat: ['sit', '/siːt/', '/sɪt/'],
+      feel: ['fill', '/fiːl/', '/fɪl/'], cheap: ['chip', '/tʃiːp/', '/tʃɪp/'], sleep: ['slip', '/sliːp/', '/slɪp/'],
+      heat: ['hit', '/hiːt/', '/hɪt/'], feet: ['fit', '/fiːt/', '/fɪt/'], reach: ['rich', '/riːtʃ/', '/rɪtʃ/'],
+      bean: ['bin', '/biːn/', '/bɪn/'], meal: ['mill', '/miːl/', '/mɪl/'],
+      ship: ['sheep', '/ʃɪp/', '/ʃiːp/'], list: ['least', '/lɪst/', '/liːst/'], bit: ['beat', '/bɪt/', '/biːt/'],
+      still: ['steal', '/stɪl/', '/stiːl/'], lip: ['leap', '/lɪp/', '/liːp/'], sick: ['seek', '/sɪk/', '/siːk/'],
+      dip: ['deep', '/dɪp/', '/diːp/'], hill: ['heel', '/hɪl/', '/hiːl/'], pitch: ['peach', '/pɪtʃ/', '/piːtʃ/'],
+      chick: ['cheek', '/tʃɪk/', '/tʃiːk/'],
+      pool: ['pull', '/puːl/', '/pʊl/'], fool: ['full', '/fuːl/', '/fʊl/'], soon: ['sun', '/suːn/', '/sʌn/'],
+      noon: ['none', '/nuːn/', '/nʌn/'], mood: ['mud', '/muːd/', '/mʌd/'], school: ['skull', '/skuːl/', '/skʌl/'],
+      full: ['fool', '/fʊl/', '/fuːl/'], pull: ['pool', '/pʊl/', '/puːl/'], could: ['cooed', '/kʊd/', '/kuːd/'],
+      should: ['shoed', '/ʃʊd/', '/ʃuːd/'], wood: ['wooed', '/wʊd/', '/wuːd/'], look: ['Luke', '/lʊk/', '/luːk/'],
+      book: ['boot', '/bʊk/', '/buːt/'], took: ['tooth', '/tʊk/', '/tuːθ/'],
+      walk: ['wok', '/wɔːk/', '/wɒk/'], stalk: ['stock', '/stɔːk/', '/stɒk/'], law: ['low', '/lɔː/', '/ləʊ/'],
+      ball: ['bowl', '/bɔːl/', '/bəʊl/'], call: ['coal', '/kɔːl/', '/kəʊl/'], saw: ['so', '/sɔː/', '/səʊ/'],
+      hall: ['hole', '/hɔːl/', '/həʊl/'], lawn: ['loan', '/lɔːn/', '/ləʊn/'], called: ['cold', '/kɔːld/', '/kəʊld/'],
+      bald: ['bold', '/bɔːld/', '/bəʊld/'],
+      calm: ['come', '/kɑːm/', '/kʌm/'], heart: ['hurt', '/hɑːt/', '/hɜːt/'], far: ['fur', '/fɑː/', '/fɜː/'],
+      farm: ['firm', '/fɑːm/', '/fɜːm/'], hard: ['heard', '/hɑːd/', '/hɜːd/'], barn: ['burn', '/bɑːn/', '/bɜːn/'],
+      dart: ['dirt', '/dɑːt/', '/dɜːt/'], star: ['stir', '/stɑː/', '/stɜː/'],
+      bird: ['board', '/bɜːd/', '/bɔːd/'], shirt: ['short', '/ʃɜːt/', '/ʃɔːt/'], turn: ['torn', '/tɜːn/', '/tɔːn/'],
+      burn: ['born', '/bɜːn/', '/bɔːn/'], worm: ['warm', '/wɜːm/', '/wɔːm/'], hurt: ['heart', '/hɜːt/', '/hɑːt/'],
+      heard: ['hard', '/hɜːd/', '/hɑːd/'], fur: ['far', '/fɜː/', '/fɑː/'], firm: ['farm', '/fɜːm/', '/fɑːm/'],
+      stir: ['star', '/stɜː/', '/stɑː/'],
+      lock: ['luck', '/lɒk/', '/lʌk/'], not: ['nut', '/nɒt/', '/nʌt/'], long: ['lung', '/lɒŋ/', '/lʌŋ/'],
+      boss: ['bus', '/bɒs/', '/bʌs/'], body: ['buddy', '/ˈbɒdi/', '/ˈbʌdi/'], cot: ['cut', '/kɒt/', '/kʌt/'],
+      shot: ['short', '/ʃɒt/', '/ʃɔːt/'], pot: ['port', '/pɒt/', '/pɔːt/'], spot: ['sport', '/spɒt/', '/spɔːt/'],
+      fox: ['forks', '/fɒks/', '/fɔːks/'],
+      come: ['calm', '/kʌm/', '/kɑːm/'], stuff: ['staff', '/stʌf/', '/stɑːf/'], cup: ['cap', '/kʌp/', '/kæp/'],
+      cut: ['cat', '/kʌt/', '/kæt/'], fun: ['fan', '/fʌn/', '/fæn/'], much: ['match', '/mʌtʃ/', '/mætʃ/'],
+      run: ['ran', '/rʌn/', '/ræn/'], bug: ['bag', '/bʌg/', '/bæg/'], uncle: ['ankle', '/ˈʌŋkl/', '/ˈæŋkl/'],
+      truck: ['track', '/trʌk/', '/træk/'],
+      accept: ['except', '/əkˈsept/', '/ɪkˈsept/'], addition: ['edition', '/əˈdɪʃn/', '/ɪˈdɪʃn/'],
+      alike: ['like', '/əˈlaɪk/', '/laɪk/'], away: ['way', '/əˈweɪ/', '/weɪ/'],
+      support: ['sport', '/səˈpɔːt/', '/spɔːt/'], parade: ['prayed', '/pəˈreɪd/', '/preɪd/'],
+      bed: ['bad', '/bed/', '/bæd/'], pen: ['pan', '/pen/', '/pæn/'], men: ['man', '/men/', '/mæn/'],
+      said: ['sad', '/sed/', '/sæd/'], head: ['had', '/hed/', '/hæd/'], send: ['sand', '/send/', '/sænd/'],
+      beg: ['bag', '/beg/', '/bæg/'], lend: ['land', '/lend/', '/lænd/'], bet: ['bat', '/bet/', '/bæt/'],
+      guess: ['gas', '/ges/', '/gæs/'],
+      cat: ['cut', '/kæt/', '/kʌt/'], hat: ['hut', '/hæt/', '/hʌt/'], bag: ['beg', '/bæg/', '/beg/'],
+      think: ['sink', '/θɪŋk/', '/sɪŋk/'], thank: ['tank', '/θæŋk/', '/tæŋk/'], three: ['tree', '/θriː/', '/triː/'],
+      this: ['dis', '/ðɪs/', '/dɪs/'], they: ['day', '/ðeɪ/', '/deɪ/'],
+      she: ['see', '/ʃiː/', '/siː/'], chair: ['share', '/tʃeə/', '/ʃeə/'], watch: ['wash', '/wɒtʃ/', '/wɒʃ/']
+    };
+
+    const IPA_PHRASE_VI = {
+      'sweet dreams': ['mơ đẹp nhé', '/swiːt driːmz/'],
+      'green tea': ['trà xanh', '/griːn tiː/'],
+      'a piece of cheese': ['một miếng phô mai', '/ə piːs əv tʃiːz/'],
+      'see you next week': ['hẹn gặp bạn tuần tới', '/siː juː nekst wiːk/'],
+      'free time': ['thời gian rảnh', '/friː taɪm/'],
+      'keep quiet': ['giữ im lặng', '/kiːp ˈkwaɪət/'],
+      'a true story': ['một câu chuyện có thật', '/ə truː ˈstɔːri/'],
+      'a soup spoon': ['một cái thìa súp', '/ə suːp spuːn/'],
+      'a blue balloon': ['một quả bóng bay xanh', '/ə bluː bəˈluːn/'],
+      'too soon': ['quá sớm', '/tuː suːn/'],
+      'a huge room': ['một căn phòng rộng lớn', '/ə hjuːdʒ ruːm/'],
+      'new shoes': ['đôi giày mới', '/njuː ʃuːz/'],
+      'a short walk': ['một chuyến đi bộ ngắn', '/ə ʃɔːt wɔːk/'],
+      'small talk': ['chuyện phiếm xã giao', '/smɔːl tɔːk/'],
+      'all morning': ['cả buổi sáng', '/ɔːl ˈmɔːnɪŋ/'],
+      'a short story': ['một truyện ngắn', '/ə ʃɔːt ˈstɔːri/'],
+      'the sports hall': ['nhà thi đấu thể thao', '/ðə spɔːts hɔːl/'],
+      'draw a horse': ['vẽ một con ngựa', '/drɔː ə hɔːs/'],
+      'a car park': ['bãi đỗ xe hơi', '/ə kɑː pɑːk/'],
+      'a garden party': ['tiệc ngoài vườn', '/ə ˈgɑːdn ˈpɑːti/'],
+      'a large farm': ['một trang trại rộng', '/ə lɑːdʒ fɑːm/'],
+      'a sharp knife': ['một con dao sắc', '/ə ʃɑːp naɪf/'],
+      'keep calm': ['giữ bình tĩnh', '/kiːp kɑːm/'],
+      'far apart': ['cách xa nhau', '/fɑːr əˈpɑːt/'],
+      'the first word': ['từ đầu tiên', '/ðə fɜːst wɜːd/'],
+      'learn new words': ['học từ mới', '/lɜːn njuː wɜːdz/'],
+      'a dirty shirt': ['một chiếc áo sơ mi bẩn', '/ə ˈdɜːti ʃɜːt/'],
+      'her birthday': ['sinh nhật của cô ấy', '/hɜː ˈbɜːθdeɪ/'],
+      'a perfect world': ['một thế giới hoàn hảo', '/ə ˈpɜːfɪkt wɜːld/'],
+      'a church service': ['buổi lễ nhà thờ', '/ə tʃɜːtʃ ˈsɜːvɪs/'],
+      'fish and chips': ['cá và khoai tây chiên', '/fɪʃ ənd tʃɪps/'],
+      'a little bit': ['một chút xíu', '/ə ˈlɪtl bɪt/'],
+      'a busy city': ['một thành phố nhộn nhịp', '/ə ˈbɪzi ˈsɪti/'],
+      'the kitchen sink': ['bồn rửa nhà bếp', '/ðə ˈkɪtʃɪn sɪŋk/'],
+      'different things': ['những điều khác nhau', '/ˈdɪfrənt θɪŋz/'],
+      'swimming pool': ['hồ bơi', '/ˈswɪmɪŋ puːl/'],
+      'my favourite book': ['cuốn sách yêu thích của tôi', '/maɪ ˈfeɪvərɪt bʊk/'],
+      'a good cook': ['một đầu bếp giỏi', '/ə gʊd kʊk/'],
+      'brown sugar': ['đường nâu', '/braʊn ˈʃʊgə/'],
+      'the football team': ['đội bóng đá', '/ðə ˈfʊtbɔːl tiːm/'],
+      'a wooden table': ['một chiếc bàn gỗ', '/ə ˈwʊdn ˈteɪbl/'],
+      'look at this': ['hãy nhìn cái này xem', '/lʊk æt ðɪs/'],
+      'hot coffee': ['cà phê nóng', '/hɒt ˈkɒfi/'],
+      'not a lot': ['không nhiều lắm', '/nɒt ə lɒt/'],
+      'got a job': ['tìm được việc làm', '/gɒt ə dʒɒb/'],
+      'a long holiday': ['một kỳ nghỉ dài', '/ə lɒŋ ˈhɒlədeɪ/'],
+      'a box of chocolates': ['một hộp sô-cô-la', '/ə bɒks əv ˈtʃɒkləts/'],
+      'a common problem': ['một vấn đề phổ biến', '/ə ˈkɒmən ˈprɒbləm/'],
+      'a cup of tea': ['một tách trà', '/ə kʌp əv tiː/'],
+      'my younger brother': ['em trai của tôi', '/maɪ ˈjʌŋgə ˈbrʌðə/'],
+      'a lucky number': ['một con số may mắn', '/ə ˈlʌki ˈnʌmbə/'],
+      'just enough': ['vừa đủ', '/dʒʌst ɪˈnʌf/'],
+      'Sunday lunch': ['bữa trưa Chủ nhật', '/ˈsʌndeɪ lʌntʃ/'],
+      'run for the bus': ['chạy đuổi theo xe buýt', '/rʌn fə ðə bʌs/'],
+      'talk about a problem': ['nói về một vấn đề', '/tɔːk əˈbaʊt ə ˈprɒbləm/'],
+      'a famous actor': ['một diễn viên nổi tiếng', '/ə ˈfeɪməs ˈæktə/'],
+      'together again': ['lại ở bên nhau', '/təˈgeðər əˈgen/'],
+      'tomorrow afternoon': ['chiều ngày mai', '/təˈmɒrəʊ ˌɑːftəˈnuːn/'],
+      "a doctor's appointment": ['lịch hẹn bác sĩ', '/ə ˈdɒktəz əˈpɔɪntmənt/'],
+      'a chocolate cake': ['một chiếc bánh sô-cô-la', '/ə ˈtʃɒklət keɪk/'],
+      'get dressed': ['mặc quần áo', '/get drest/'],
+      'breakfast in bed': ['bữa sáng trên giường', '/ˈbrekfəst ɪn bed/'],
+      'a red dress': ['một chiếc váy đỏ', '/ə red dres/'],
+      'fresh bread': ['bánh mì tươi', '/freʃ bred/'],
+      'help yourself': ['cứ tự nhiên nhé', '/help jɔːˈself/'],
+      'very well': ['rất tốt', '/ˈveri wel/']
+    };
+
+    let _ipaRecMedia = null;
+    let _ipaRecChunks = [];
+    let _ipaRecUrl = null;
+    let _ipaSpeechRec = null;
+
+    function getIpaDoneSet(sym) {
+      if (!state.ipaProgress) state.ipaProgress = {};
+      if (!Array.isArray(state.ipaProgress[sym])) state.ipaProgress[sym] = [];
+      return new Set(state.ipaProgress[sym]);
+    }
+
+    function markIpaItemDone(sym, itemKey) {
+      if (!state.ipaProgress) state.ipaProgress = {};
+      if (!Array.isArray(state.ipaProgress[sym])) state.ipaProgress[sym] = [];
+      if (!state.ipaProgress[sym].includes(itemKey)) {
+        state.ipaProgress[sym].push(itemKey);
+        if (typeof addXp === 'function') addXp(3);
+        saveState();
+      }
+    }
+
+    function buildIpaPracticeItems(cur, g) {
+      const items = [];
+      (g.phrases || []).forEach((ph, i) => {
+        const meta = IPA_PHRASE_VI[ph] || ['', ''];
+        items.push({ key: `p_${i}`, type: 'phrase', label: 'Cụm từ', text: ph, vi: meta[0], ipa: meta[1] });
+      });
+      (g.sentences || []).forEach((s, i) => {
+        items.push({ key: `s_${i}`, type: 'sentence', label: 'Câu', text: s, vi: 'Nghe mẫu và bấm ghi âm để luyện nói tự nhiên', ipa: '' });
+      });
+      (g.words || []).forEach((w, i) => {
+        const c = IPA_MINIMAL_CONTRASTS[w.toLowerCase()];
+        const pairFallback = (g.pairs && g.pairs[i % g.pairs.length]) || [w, `/${cur.sym}/`, cur.ex, ''];
+        const targetIpa = c ? c[1] : `/${cur.sym}/`;
+        const altWord = c ? c[0] : (pairFallback[2] !== w ? pairFallback[2] : pairFallback[0]);
+        const altIpa = c ? c[2] : (pairFallback[2] !== w ? pairFallback[3] : pairFallback[1]);
+        const swap = ((w.charCodeAt(0) + i) % 2) === 1;
+        const opts = swap
+          ? [{ word: altWord, ipa: altIpa, isTarget: false }, { word: w, ipa: targetIpa, isTarget: true }]
+          : [{ word: w, ipa: targetIpa, isTarget: true }, { word: altWord, ipa: altIpa, isTarget: false }];
+        items.push({ key: `l_${i}`, type: 'listen', label: 'Thử thách nghe', target: w, opts });
+      });
+      return items;
+    }
+
+    function startIpaPractice(sym, startType) {
+      const allEnIpaList = [
+        ...AIO_IPA_TABLE.vowelsLong, ...AIO_IPA_TABLE.vowelsShort, ...AIO_IPA_TABLE.diphthongs,
+        ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.endings
+      ];
+      const cur = allEnIpaList.find(x => x.sym === sym) || allEnIpaList[0];
+      const g = getIpaGuide(cur);
+      const items = buildIpaPracticeItems(cur, g);
+      let idx = 0;
+      if (startType) {
+        const found = items.findIndex(it => it.type === startType);
+        if (found !== -1) idx = found;
+      }
+      if (_ipaRecUrl) { try { URL.revokeObjectURL(_ipaRecUrl); } catch {} _ipaRecUrl = null; }
+      ui.ipaDetailSym = cur.sym;
+      ui.ipaPractice = {
+        sym: cur.sym,
+        idx,
+        items,
+        accent: ui.ipaAccent || 'en-GB',
+        speed: 1.0,
+        showGuide: false,
+        answeredIdx: null,
+        recording: false,
+        transcript: '',
+        score: null,
+        hasRecording: false
+      };
+      renderAioPronunciationPage();
+      const first = items[idx];
+      if (first && first.type === 'listen') {
+        setTimeout(() => speakIpaPracticeText(first.target), 180);
+      }
+    }
+
+    function speakIpaPracticeText(text) {
+      if (!text) return;
+      const p = ui.ipaPractice;
+      const accent = (p && p.accent) || ui.ipaAccent || 'en-GB';
+      const rate = (p && p.speed) || 1.0;
+      const isSingleWord = /^[a-zA-Z'-]{1,28}$/.test(String(text).trim());
+
+      const fallbackBrowserTts = () => {
+        if (!('speechSynthesis' in window)) return;
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = accent;
+          u.rate = rate;
+          const voices = window.speechSynthesis.getVoices();
+          const preferred = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(accent.toLowerCase()));
+          if (preferred) u.voice = preferred;
+          window.speechSynthesis.speak(u);
+        } catch {
+          speakText(text);
+        }
+      };
+
+      if (canUseServerTts()) {
+        const modeParam = isSingleWord ? 'word' : 'phrase';
+        const url = `/api/tts?mode=${modeParam}&lang=${encodeURIComponent(accent)}&text=${encodeURIComponent(text)}`;
+        playServerAudio(url, rate, fallbackBrowserTts);
+        return;
+      }
+      fallbackBrowserTts();
+    }
+
+    function stopIpaPracticeRecording() {
+      if (_ipaRecMedia && _ipaRecMedia.state !== 'inactive') {
+        try { _ipaRecMedia.stop(); } catch {}
+      }
+      if (_ipaSpeechRec) {
+        try { _ipaSpeechRec.stop(); } catch {}
+      }
+      if (ui.ipaPractice) ui.ipaPractice.recording = false;
+    }
+
+    function toggleIpaPracticeRecording() {
+      const p = ui.ipaPractice;
+      if (!p) return;
+      const item = p.items[p.idx];
+      if (!item || item.type === 'listen') return;
+      if (p.recording) {
+        stopIpaPracticeRecording();
+        renderAioPronunciationPage();
+        return;
+      }
+      p.recording = true;
+      p.transcript = '';
+      p.score = null;
+      renderAioPronunciationPage();
+
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+          _ipaRecChunks = [];
+          const mr = new MediaRecorder(stream);
+          _ipaRecMedia = mr;
+          mr.ondataavailable = ev => { if (ev.data && ev.data.size > 0) _ipaRecChunks.push(ev.data); };
+          mr.onstop = () => {
+            stream.getTracks().forEach(t => t.stop());
+            if (_ipaRecChunks.length) {
+              if (_ipaRecUrl) { try { URL.revokeObjectURL(_ipaRecUrl); } catch {} }
+              const blob = new Blob(_ipaRecChunks, { type: 'audio/webm' });
+              _ipaRecUrl = URL.createObjectURL(blob);
+              if (ui.ipaPractice) ui.ipaPractice.hasRecording = true;
+              markIpaItemDone(p.sym, item.key);
+              renderAioPronunciationPage();
+            }
+          };
+          mr.start();
+          setTimeout(() => { if (_ipaRecMedia === mr && mr.state === 'recording') stopIpaPracticeRecording(); }, 30000);
+        }).catch(() => {
+          showToast('Trình duyệt chưa cấp quyền Micro — bạn vẫn có thể bấm Nghe mẫu & Tiếp theo nhé!');
+        });
+      }
+
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SR) {
+        try {
+          const rec = new SR();
+          _ipaSpeechRec = rec;
+          rec.lang = p.accent || 'en-GB';
+          rec.interimResults = false;
+          rec.maxAlternatives = 1;
+          rec.onresult = ev => {
+            const said = (ev.results[0] && ev.results[0][0] && ev.results[0][0].transcript) || '';
+            if (ui.ipaPractice) {
+              ui.ipaPractice.transcript = said;
+              const norm = s => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean);
+              const expWords = norm(item.text);
+              const gotWords = norm(said);
+              const matched = expWords.filter(w => gotWords.includes(w)).length;
+              ui.ipaPractice.score = expWords.length ? Math.round((matched / expWords.length) * 100) : 100;
+              markIpaItemDone(p.sym, item.key);
+              stopIpaPracticeRecording();
+              renderAioPronunciationPage();
+            }
+          };
+          rec.onerror = () => {
+            if (ui.ipaPractice) { ui.ipaPractice.recording = false; renderAioPronunciationPage(); }
+          };
+          rec.onend = () => {
+            if (ui.ipaPractice && ui.ipaPractice.recording) {
+              stopIpaPracticeRecording();
+              renderAioPronunciationPage();
+            }
+          };
+          rec.start();
+        } catch {}
+      }
+    }
+
+    function answerIpaListenOption(optIdx) {
+      const p = ui.ipaPractice;
+      if (!p) return;
+      const item = p.items[p.idx];
+      if (!item || item.type !== 'listen' || p.answeredIdx !== null) return;
+      p.answeredIdx = optIdx;
+      const chosen = item.opts[optIdx];
+      if (chosen && chosen.isTarget) {
+        markIpaItemDone(p.sym, item.key);
+        showToast('Chính xác! +3 XP');
+      } else {
+        showToast(`Đáp án đúng là "${item.target}" — bấm loa để nghe lại nhé!`);
+      }
+      renderAioPronunciationPage();
+    }
+
+    function goIpaPracticeItem(nextIdx) {
+      const p = ui.ipaPractice;
+      if (!p) return;
+      stopIpaPracticeRecording();
+      if (_ipaRecUrl) { try { URL.revokeObjectURL(_ipaRecUrl); } catch {} _ipaRecUrl = null; }
+      if (nextIdx >= p.items.length) {
+        showToast(`Chúc mừng! Bạn đã đi hết bài luyện âm /${p.sym}/!`);
+        ui.ipaPractice = null;
+        renderAioPronunciationPage();
+        return;
+      }
+      p.idx = Math.max(0, nextIdx);
+      p.answeredIdx = null;
+      p.transcript = '';
+      p.score = null;
+      p.hasRecording = false;
+      renderAioPronunciationPage();
+      const it = p.items[p.idx];
+      if (it && it.type === 'listen') {
+        setTimeout(() => speakIpaPracticeText(it.target), 150);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const p = ui.ipaPractice;
+      if (!p || state.mainNav !== 'pronunciation') return;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement && document.activeElement.tagName)) return;
+      const item = p.items[p.idx];
+      if (!item) return;
+      if (item.type === 'listen') {
+        if (e.key === '1') { e.preventDefault(); answerIpaListenOption(0); }
+        else if (e.key === '2') { e.preventDefault(); answerIpaListenOption(1); }
+        else if (e.key === 'Enter' && p.answeredIdx !== null) { e.preventDefault(); goIpaPracticeItem(p.idx + 1); }
+      }
+    });
+
 
     const AIO_ZH_PINYIN_INITIALS = [
       { sym: 'b', ex: '爸爸 (bàba)', tip: 'Giống p nhẹ không bật hơi' },
@@ -3734,17 +4484,362 @@
       const lang = ui.pronLang || 'en';
       const isZh = lang === 'zh';
 
-      const tileHtml = (item, isChinese) => `
-        <button type="button" ${isChinese ? `data-speak-zh="${item.ex.split('(')[0].trim()}"` : `data-speak="${item.ex}"`} class="p-3 rounded-2xl bg-white hover:bg-cyan-50/60 border border-[#E5DEC9] hover:border-cyan-400 text-left transition-all shadow-2xs group">
+      const highlightSound = (ex, hi) => {
+        if (!hi) return ex;
+        const idx = ex.toLowerCase().lastIndexOf(hi.toLowerCase());
+        if (idx === -1) return ex;
+        return ex.slice(0, idx) + `<span class="underline decoration-cyan-500 decoration-2 underline-offset-2 font-extrabold text-cyan-800">${ex.slice(idx, idx + hi.length)}</span>` + ex.slice(idx + hi.length);
+      };
+
+      const allEnIpa = [
+        ...AIO_IPA_TABLE.vowelsLong, ...AIO_IPA_TABLE.vowelsShort, ...AIO_IPA_TABLE.diphthongs,
+        ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.endings
+      ];
+      const activeIpa = allEnIpa.find(x => x.sym === ui.activeIpaSym) || allEnIpa[0];
+
+      // Full AIO Interactive Practice Mode (Cụm từ / Câu / Thử thách nghe)
+      if (!isZh && ui.ipaPractice) {
+        const p = ui.ipaPractice;
+        const cur = allEnIpa.find(x => x.sym === p.sym) || activeIpa;
+        const g = getIpaGuide(cur);
+        const item = p.items[p.idx] || p.items[0];
+        const doneSet = getIpaDoneSet(cur.sym);
+        const totalItems = p.items.length;
+        const doneCount = p.items.filter(it => doneSet.has(it.key)).length;
+        const isUK = (p.accent || 'en-GB') === 'en-GB';
+
+        const renderTrackBoxes = (type, label) => {
+          const subset = p.items.map((it, idx) => ({ it, idx })).filter(x => x.it.type === type);
+          return `
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] font-bold text-slate-600 leading-none">${label}</span>
+              <div class="flex items-center gap-1">
+                ${subset.map(x => {
+                  const isCur = x.idx === p.idx;
+                  const isDone = doneSet.has(x.it.key);
+                  return `<button type="button" data-ipa-jump="${x.idx}" title="${label} ${x.idx + 1}" class="w-3 h-3 rounded-[3px] border transition-all ${
+                    isCur ? 'bg-amber-300 border-slate-900 scale-110 shadow-2xs'
+                    : isDone ? 'bg-emerald-500 border-emerald-600'
+                    : 'bg-white/75 border-cyan-300/80 hover:border-cyan-600'
+                  }"></button>`;
+                }).join('')}
+              </div>
+            </div>`;
+        };
+
+        const highlightTargetInIpa = (ipaStr) => {
+          if (!ipaStr) return '';
+          const esc = cur.sym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          return ipaStr.replace(new RegExp(esc, 'g'), `<span class="underline decoration-cyan-500 decoration-2 underline-offset-2 text-cyan-800 font-bold">${cur.sym}</span>`);
+        };
+
+        el.innerHTML = `
+          <div class="aio-cyan-banner rounded-3xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 shadow-xs border-b-2 border-cyan-300/70">
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" id="ipa-practice-exit" class="px-3 py-1.5 rounded-xl bg-white/95 hover:bg-white border border-cyan-200 text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Âm /${cur.sym}/
+              </button>
+              <div class="w-8 h-8 rounded-full bg-white/90 border border-cyan-200 flex items-center justify-center text-cyan-700 shrink-0">
+                <i data-lucide="mic" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <div class="text-sm font-extrabold text-slate-900 leading-tight">Luyện /${cur.sym}/ ${cur.ex}</div>
+                <button type="button" id="ipa-toggle-accent" class="text-[11px] font-bold text-cyan-800 hover:underline">${isUK ? 'Giọng Anh-Anh (UK)' : 'Giọng Anh-Mỹ (US)'} · bấm đổi</button>
+              </div>
+              <div class="hidden md:flex items-center gap-4 pl-2 border-l border-cyan-300/60">
+                ${renderTrackBoxes('phrase', 'Cụm từ')}
+                ${renderTrackBoxes('sentence', 'Câu')}
+                ${renderTrackBoxes('listen', 'Thử thách nghe')}
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-extrabold text-slate-800">${doneCount}<span class="text-slate-500 font-semibold">/${totalItems} mục</span></span>
+              <button type="button" id="ipa-toggle-guide" class="px-3 py-1.5 rounded-xl bg-white/95 hover:bg-white border border-cyan-200 text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
+                <i data-lucide="book-open" class="w-3.5 h-3.5 text-cyan-700"></i> Cách đọc
+              </button>
+            </div>
+          </div>
+
+          ${p.showGuide ? `
+            <div class="bg-white rounded-2xl border border-cyan-200 p-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs shadow-2xs">
+              <div><strong class="text-slate-500">Miệng:</strong> <span class="text-slate-800">${g.mouth}</span></div>
+              <div><strong class="text-slate-500">Môi:</strong> <span class="text-slate-800">${g.lips}</span></div>
+              <div><strong class="text-slate-500">Lưỡi:</strong> <span class="text-slate-800">${g.tongue}</span></div>
+              <div class="md:col-span-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900"><strong>⚠️ Người Việt hay nhầm:</strong> ${g.pitfall}</div>
+            </div>
+          ` : ''}
+
+          <div class="max-w-3xl mx-auto pt-4 pb-8 space-y-4">
+            ${item.type === 'listen' ? `
+              <div class="relative bg-[#FAF6EE] rounded-3xl border border-cyan-200 border-b-4 border-l-4 border-b-cyan-300/80 border-l-cyan-300/80 p-6 sm:p-7 shadow-sm">
+                <div class="w-12 h-3 bg-amber-200/70 rounded-xs mx-auto -mt-8 mb-4"></div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[11px] font-extrabold mb-4">Thử thách nghe</span>
+                <div class="flex items-center gap-5">
+                  <button type="button" id="ipa-listen-play" class="w-16 h-16 rounded-full bg-[#5B481B] hover:bg-[#493914] text-white flex items-center justify-center shadow-md shrink-0 transition-transform active:scale-95">
+                    <i data-lucide="volume-2" class="w-7 h-7"></i>
+                  </button>
+                  <div>
+                    <div class="text-xs font-bold text-slate-500">Nghe</div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Bạn nghe thấy từ nào?</h2>
+                    <div class="text-xs text-slate-500 mt-0.5">Phím 1 / 2 để chọn nhanh · bấm loa để nghe lại</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                ${item.opts.map((opt, oi) => {
+                  const picked = p.answeredIdx !== null;
+                  const isChosen = p.answeredIdx === oi;
+                  let cls = 'bg-white hover:bg-cyan-50/50 border-[#E5DEC9] hover:border-cyan-400';
+                  if (picked) {
+                    if (opt.isTarget) cls = 'bg-emerald-50 border-emerald-500 ring-2 ring-emerald-200';
+                    else if (isChosen) cls = 'bg-rose-50 border-rose-400 ring-2 ring-rose-200';
+                    else cls = 'bg-white/70 border-slate-200 opacity-70';
+                  }
+                  return `
+                    <div class="rounded-2xl border p-4 transition-all flex items-center justify-between gap-3 ${cls}">
+                      <button type="button" data-ipa-listen-opt="${oi}" class="flex-1 flex items-center gap-3 text-left">
+                        <span class="w-6 h-6 rounded-md bg-[#FAF6EE] border border-[#E5DEC9] flex items-center justify-center text-xs font-extrabold text-slate-600 shrink-0">${oi + 1}</span>
+                        <div>
+                          <div class="text-lg font-extrabold text-slate-900">${opt.word}</div>
+                          <div class="text-xs font-mono text-slate-500">${opt.ipa}</div>
+                        </div>
+                      </button>
+                      ${picked ? `
+                        <button type="button" data-ipa-replay-word="${opt.word}" class="px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-1">
+                          <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-600"></i> Nghe
+                        </button>
+                      ` : ''}
+                    </div>`;
+                }).join('')}
+              </div>
+
+              <div class="bg-[#EAE2D0] rounded-2xl px-4 py-3 flex items-center justify-between gap-3 border border-[#DDD3BD]">
+                <div class="text-xs font-bold text-slate-700">
+                  ${p.answeredIdx !== null
+                    ? (item.opts[p.answeredIdx].isTarget ? '✅ Chính xác! Bạn phân biệt âm rất tốt.' : `❌ Từ vừa đọc là <strong>${item.target}</strong>. Hãy bấm nút Nghe ở cả 2 từ để so sánh nhé!`)
+                    : 'Bấm 1 hoặc 2 để chọn đáp án bạn nghe được.'}
+                </div>
+                <button type="button" id="ipa-practice-next" class="px-5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-[#D8CEB8] text-slate-900 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-2xs shrink-0">
+                  ${p.answeredIdx !== null ? 'Tiếp theo →' : 'Bỏ qua →'}
+                </button>
+              </div>
+            ` : `
+              <div class="relative bg-[#FAF6EE] rounded-3xl border border-cyan-200 border-b-4 border-l-4 border-b-cyan-300/80 border-l-cyan-300/80 p-6 sm:p-8 shadow-sm min-h-[250px] flex flex-col justify-between">
+                <div>
+                  <div class="w-12 h-3 bg-amber-200/70 rounded-xs mx-auto -mt-9 mb-4"></div>
+                  <span class="inline-block px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[11px] font-extrabold mb-3">${item.label}</span>
+                  <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-snug">${item.text}</h2>
+                  ${item.vi ? `<div class="text-sm font-medium text-slate-600 mt-1.5">${item.vi}</div>` : ''}
+                  ${item.ipa ? `<div class="text-sm font-mono text-slate-500 mt-1">${highlightTargetInIpa(item.ipa)}</div>` : ''}
+                </div>
+
+                <div class="border-t border-dashed border-[#DDD3BD] mt-6 pt-4">
+                  ${p.recording ? `
+                    <div class="flex items-center gap-2 text-xs font-extrabold text-rose-600 animate-pulse">
+                      <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Đang ghi âm giọng bạn... Hãy đọc to rõ "${item.text}" rồi bấm dừng!
+                    </div>
+                  ` : p.transcript ? `
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <div class="text-xs sm:text-sm text-slate-700">Bạn vừa đọc: <strong class="text-slate-900">"${p.transcript}"</strong></div>
+                      <span class="px-3 py-1 rounded-full text-xs font-extrabold ${p.score >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                        ${p.score >= 70 ? `✅ Khớp ${p.score}% — Rất tốt!` : `🎯 Khớp ${p.score}% — Thử đọc lại chậm hơn nhé`}
+                      </span>
+                    </div>
+                  ` : `
+                    <div class="text-xs text-slate-400">Bấm <strong>Nghe mẫu</strong> trước, sau đó bấm nút micro màu đỏ <strong>Bắt đầu ghi âm</strong> để luyện đọc và nghe lại giọng mình.</div>
+                  `}
+                </div>
+              </div>
+
+              <div class="bg-[#EAE2D0] rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 border border-[#DDD3BD]">
+                <div class="flex flex-wrap items-center gap-2.5">
+                  <button type="button" id="ipa-sample-play" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-[#D8CEB8] text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-slate-700"></i> Nghe mẫu
+                  </button>
+
+                  <button type="button" id="ipa-record-btn" class="flex items-center gap-2.5 pr-3 py-1 pl-1 rounded-full ${p.recording ? 'bg-rose-100 border border-rose-400' : 'hover:bg-white/60'} transition-all">
+                    <span class="w-11 h-11 rounded-full ${p.recording ? 'bg-rose-600 animate-pulse' : 'bg-[#D34A26] hover:bg-[#B93D1C]'} text-white flex items-center justify-center shadow-sm">
+                      <i data-lucide="${p.recording ? 'square' : 'mic'}" class="w-5 h-5"></i>
+                    </span>
+                    <span class="text-left leading-tight">
+                      <span class="block text-xs font-extrabold text-slate-900">${p.recording ? 'Dừng ghi âm' : 'Bắt đầu ghi âm'}</span>
+                      <span class="block text-[10px] text-slate-500">Tối đa 30 giây</span>
+                    </span>
+                  </button>
+
+                  <button type="button" id="ipa-playback-btn" ${p.hasRecording ? '' : 'disabled'} class="px-3 py-2 rounded-xl bg-white/85 border border-[#D8CEB8] text-xs font-bold flex items-center gap-1.5 ${p.hasRecording ? 'text-slate-800 hover:bg-white' : 'text-slate-400 opacity-60 cursor-not-allowed'}">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Nghe lại
+                  </button>
+
+                  <select id="ipa-speed-select" class="px-2.5 py-2 rounded-xl bg-white border border-[#D8CEB8] text-xs font-bold text-slate-700 outline-none">
+                    <option value="1" ${p.speed === 1 ? 'selected' : ''}>Mặc định</option>
+                    <option value="0.75" ${p.speed === 0.75 ? 'selected' : ''}>Chậm (0.75x)</option>
+                    <option value="0.6" ${p.speed === 0.6 ? 'selected' : ''}>Rất chậm (0.6x)</option>
+                  </select>
+                </div>
+
+                <button type="button" id="ipa-practice-next" class="px-5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-[#D8CEB8] text-slate-900 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-2xs">
+                  ${doneSet.has(item.key) ? 'Tiếp theo →' : 'Bỏ qua →'}
+                </button>
+              </div>
+            `}
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      // Full AIO Sound Detail View when user clicks any IPA tile!
+      if (!isZh && ui.ipaDetailSym) {
+        const cur = allEnIpa.find(x => x.sym === ui.ipaDetailSym) || activeIpa;
+        const g = getIpaGuide(cur);
+        const doneSet = getIpaDoneSet(cur.sym);
+        const listenDone = (g.words || []).filter((_, i) => doneSet.has(`l_${i}`)).length;
+        const phraseDone = (g.phrases || []).filter((_, i) => doneSet.has(`p_${i}`)).length;
+        const sentDone = (g.sentences || []).filter((_, i) => doneSet.has(`s_${i}`)).length;
+        const isUK = (ui.ipaAccent || 'en-GB') === 'en-GB';
+
+        const miniSquares = (count, prefix) => Array.from({ length: count }, (_, i) => {
+          const ok = doneSet.has(`${prefix}_${i}`);
+          return `<span class="w-3.5 h-3.5 rounded-[4px] border ${ok ? 'bg-emerald-500 border-emerald-600' : 'bg-[#FAF6EE] border-[#E2D9C5]'} inline-block"></span>`;
+        }).join('');
+
+        el.innerHTML = `
+          <div class="aio-cyan-banner rounded-3xl px-5 py-4 flex items-center justify-between gap-3 shadow-xs">
+            <div class="flex items-center gap-3">
+              <button type="button" id="ipa-back-btn" class="px-3 py-1.5 rounded-xl bg-white/90 hover:bg-white border border-cyan-200 text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Phát âm
+              </button>
+              <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Âm /${cur.sym}/.</h1>
+            </div>
+            <div class="bg-white/90 p-0.5 rounded-xl inline-flex text-xs font-extrabold border border-cyan-200">
+              <button type="button" data-ipa-accent="en-GB" class="px-2.5 py-1 rounded-lg ${isUK ? 'bg-cyan-800 text-white' : 'text-slate-600'}">UK</button>
+              <button type="button" data-ipa-accent="en-US" class="px-2.5 py-1 rounded-lg ${!isUK ? 'bg-cyan-800 text-white' : 'text-slate-600'}">US</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-[#E5DEC9] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-20 rounded-2xl bg-[#FAF6EE] border border-[#E5DEC9] flex items-center justify-center text-3xl font-extrabold text-slate-900 shadow-2xs shrink-0">/${cur.sym}/</div>
+              <div class="space-y-1.5">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="px-2.5 py-0.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-[11px] font-bold">${g.cat}</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold">${(listenDone + phraseDone + sentDone) > 0 ? `Đã luyện ${listenDone + phraseDone + sentDone}/${(g.words.length + g.phrases.length + g.sentences.length)}` : 'Chưa luyện'}</span>
+                </div>
+                <div class="text-base sm:text-lg text-slate-700">
+                  <span class="text-xs font-bold text-slate-400 mr-1.5">Từ khoá</span>
+                  <strong class="text-2xl text-slate-900">${highlightSound(cur.ex, cur.hi)}</strong>
+                  <span class="text-sm font-mono text-cyan-700 ml-1.5">${g.ipaEx}</span>
+                  <span class="text-xs text-slate-500 ml-1.5">${g.viEx}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <button type="button" data-ipa-file="${cur.file || ''}" data-speak-phoneme="${cur.sound || cur.ex}" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-extrabold flex items-center gap-1.5">
+                <i data-lucide="volume-2" class="w-4 h-4 text-cyan-700"></i> Nghe âm
+              </button>
+              <button type="button" data-ipa-start="phrase" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border-2 border-cyan-500 text-slate-900 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-xs">
+                Bắt đầu luyện →
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            <div class="lg:col-span-5 bg-white rounded-3xl border border-cyan-200/80 p-5 space-y-3 shadow-2xs">
+              <div class="font-extrabold text-sm text-slate-900">Cặp dễ nhầm</div>
+              <div class="space-y-2.5">
+                ${g.pairs.map(pr => `
+                  <div class="p-2.5 rounded-2xl bg-[#FAF6EE] border border-[#EAE2D3] flex items-center justify-between gap-2">
+                    <button type="button" data-speak="${pr[0]}" class="flex-1 px-3 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-600"></i> ${pr[0]} <span class="text-[11px] font-mono text-slate-400 font-normal">${pr[1]}</span>
+                    </button>
+                    <span class="text-xs font-extrabold text-slate-400">≠</span>
+                    <button type="button" data-speak="${pr[2]}" class="flex-1 px-3 py-2 rounded-xl bg-white hover:bg-rose-50 border border-slate-200 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-slate-900">
+                      <i data-lucide="volume-2" class="w-3.5 h-3.5 text-rose-500"></i> ${pr[2]} <span class="text-[11px] font-mono text-slate-400 font-normal">${pr[3]}</span>
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 bg-white rounded-3xl border border-[#E5DEC9] p-5 space-y-3 shadow-2xs">
+              <div class="font-extrabold text-sm text-slate-900">Cách đọc</div>
+              <div class="divide-y divide-slate-100 text-xs sm:text-sm">
+                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Miệng</span><span class="text-slate-800">${g.mouth}</span></div>
+                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Môi</span><span class="text-slate-800">${g.lips}</span></div>
+                <div class="py-2 flex gap-3"><span class="w-16 font-extrabold text-slate-500 shrink-0">Lưỡi</span><span class="text-slate-800">${g.tongue}</span></div>
+              </div>
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700">
+                <strong>ℹ️ Lưu ý khi phát âm:</strong> ${g.note}
+              </div>
+              <div class="p-3 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900">
+                <strong>⚠️ Người Việt hay nhầm:</strong> ${g.pitfall}
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-[#E5DEC9] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+            <div class="space-y-2 min-w-0">
+              <div class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                <i data-lucide="headphones" class="w-4 h-4 text-cyan-600"></i> Thử thách nghe
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5">${miniSquares(g.words.length, 'l')}</div>
+              <div class="text-xs text-slate-500 truncate">${g.words.join(', ')}</div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="text-sm font-extrabold text-slate-700">${listenDone}/${g.words.length}</span>
+              <button type="button" data-ipa-start="listen" class="px-4 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-400 text-slate-900 text-xs font-extrabold shadow-2xs">Bắt đầu luyện →</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="bg-white rounded-3xl border border-cyan-200/80 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+              <div class="space-y-2 min-w-0">
+                <div class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                  <i data-lucide="message-square" class="w-4 h-4 text-cyan-600"></i> Cụm từ
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5">${miniSquares(g.phrases.length, 'p')}</div>
+                <div class="text-xs text-slate-500 line-clamp-2">${g.phrases.join(', ')}</div>
+              </div>
+              <div class="flex items-center gap-3 shrink-0">
+                <span class="text-sm font-extrabold text-slate-700">${phraseDone}/${g.phrases.length}</span>
+                <button type="button" data-ipa-start="phrase" class="px-4 py-2 rounded-xl bg-white hover:bg-cyan-50 border border-slate-200 hover:border-cyan-400 text-slate-900 text-xs font-extrabold shadow-2xs">Bắt đầu luyện →</button>
+              </div>
+            </div>
+
+            <div class="aio-honey-panel rounded-3xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+              <div class="space-y-2 min-w-0">
+                <div class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                  <i data-lucide="quote" class="w-4 h-4 text-amber-800"></i> Câu
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5">${miniSquares(g.sentences.length, 's')}</div>
+                <div class="text-xs text-slate-600 line-clamp-2">${g.sentences.join(' · ')}</div>
+              </div>
+              <div class="flex items-center gap-3 shrink-0">
+                <span class="text-sm font-extrabold text-slate-700">${sentDone}/${g.sentences.length}</span>
+                <button type="button" data-ipa-start="sentence" class="px-4 py-2 rounded-xl bg-white hover:bg-amber-50 border border-[#E5D6B5] text-slate-900 text-xs font-extrabold shadow-2xs">Bắt đầu luyện →</button>
+              </div>
+            </div>
+          </div>
+        `;
+        refreshIcons();
+        return;
+      }
+
+      const tileHtml = (item, isChinese) => {
+        const isSel = !isChinese && activeIpa && activeIpa.sym === item.sym;
+        return `
+        <button type="button" ${isChinese ? `data-speak-zh="${item.ex.split('(')[0].trim()}"` : `data-pick-ipa="${item.sym}" data-ipa-file="${item.file || ''}" data-speak-phoneme="${item.sound || item.ex}"`} class="p-3 rounded-2xl bg-white hover:bg-cyan-50/60 border ${isSel ? 'border-cyan-500 ring-2 ring-cyan-200 shadow-xs' : 'border-[#E5DEC9] hover:border-cyan-400 shadow-2xs'} text-left transition-all group">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">${item.diff || 'Pinyin'}</span>
             <i data-lucide="volume-2" class="w-3.5 h-3.5 text-cyan-600 opacity-70 group-hover:opacity-100"></i>
           </div>
           <div class="text-lg font-extrabold text-slate-900 mt-1">${item.sym}</div>
-          <div class="text-xs font-semibold text-slate-500 truncate">${item.ex}</div>
-          ${item.tip ? `<div class="text-[10px] text-rose-600 mt-0.5 line-clamp-1">${item.tip}</div>` : ''}
-        </button>
-      `;
+          <div class="text-xs font-semibold text-slate-600 truncate">${isChinese ? item.ex : highlightSound(item.ex, item.hi)}</div>
+          ${isChinese && item.tip ? `<div class="text-[10px] text-rose-600 mt-0.5 line-clamp-1">${item.tip}</div>` : ''}
+        </button>`;
+      };
 
       el.innerHTML = `
         <!-- Cyan AIO Pronunciation Banner -->
@@ -3762,6 +4857,27 @@
         </div>
 
         ${!isZh ? `
+          <!-- Active Sound Coach Card (Khẩu hình miệng & phần gạch chân âm đang chọn) -->
+          <div class="bg-white rounded-3xl border border-cyan-200 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-2xl font-extrabold text-cyan-800 shrink-0">${activeIpa.sym}</div>
+              <div>
+                <div class="text-sm sm:text-base font-extrabold text-slate-900">
+                  Âm <span class="text-cyan-700">/${activeIpa.sym}/</span> — chú ý phần gạch chân trong: <span class="text-lg">${highlightSound(activeIpa.ex, activeIpa.hi)}</span>
+                </div>
+                <div class="text-xs text-slate-600 mt-0.5"><strong>Mẹo khẩu hình:</strong> ${activeIpa.tip}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button type="button" data-ipa-file="${activeIpa.file || ''}" data-speak-phoneme="${activeIpa.sound || activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold flex items-center gap-1.5">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe riêng âm /${activeIpa.sym}/
+              </button>
+              <button type="button" data-speak="${activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold">
+                Nghe từ: ${activeIpa.ex}
+              </button>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             <div class="lg:col-span-7 bg-white rounded-3xl border border-[#E5DEC9] p-5 space-y-3">
               <div class="font-extrabold text-sm text-slate-900">Nguyên âm (Dài &amp; Ngắn)</div>
@@ -5738,6 +6854,104 @@
         if (val) speakChinese(val); else showToast('Hãy dán đoạn văn tiếng Trung trước nhé!');
         return;
       }
+      if (e.target.closest('#ipa-back-btn')) {
+        stopIpaPracticeRecording();
+        ui.ipaPractice = null;
+        ui.ipaDetailSym = null;
+        renderAioPronunciationPage();
+        return;
+      }
+      if (e.target.closest('#ipa-practice-exit')) {
+        stopIpaPracticeRecording();
+        ui.ipaPractice = null;
+        renderAioPronunciationPage();
+        return;
+      }
+      const ipaAccentBtn = e.target.closest('[data-ipa-accent]');
+      if (ipaAccentBtn) {
+        ui.ipaAccent = ipaAccentBtn.dataset.ipaAccent;
+        if (ui.ipaPractice) ui.ipaPractice.accent = ui.ipaAccent;
+        renderAioPronunciationPage();
+        return;
+      }
+      if (e.target.closest('#ipa-toggle-accent')) {
+        ui.ipaAccent = (ui.ipaAccent || 'en-GB') === 'en-GB' ? 'en-US' : 'en-GB';
+        if (ui.ipaPractice) ui.ipaPractice.accent = ui.ipaAccent;
+        renderAioPronunciationPage();
+        return;
+      }
+      if (e.target.closest('#ipa-toggle-guide')) {
+        if (ui.ipaPractice) {
+          ui.ipaPractice.showGuide = !ui.ipaPractice.showGuide;
+          renderAioPronunciationPage();
+        }
+        return;
+      }
+      const ipaStartBtn = e.target.closest('[data-ipa-start]');
+      if (ipaStartBtn && ui.ipaDetailSym) {
+        startIpaPractice(ui.ipaDetailSym, ipaStartBtn.dataset.ipaStart);
+        return;
+      }
+      const ipaJumpBtn = e.target.closest('[data-ipa-jump]');
+      if (ipaJumpBtn && ui.ipaPractice) {
+        goIpaPracticeItem(Number(ipaJumpBtn.dataset.ipaJump));
+        return;
+      }
+      if (e.target.closest('#ipa-listen-play') && ui.ipaPractice) {
+        const it = ui.ipaPractice.items[ui.ipaPractice.idx];
+        if (it && it.target) speakIpaPracticeText(it.target);
+        return;
+      }
+      const ipaListenOpt = e.target.closest('[data-ipa-listen-opt]');
+      if (ipaListenOpt && ui.ipaPractice) {
+        answerIpaListenOption(Number(ipaListenOpt.dataset.ipaListenOpt));
+        return;
+      }
+      const ipaReplayWord = e.target.closest('[data-ipa-replay-word]');
+      if (ipaReplayWord) {
+        speakIpaPracticeText(ipaReplayWord.dataset.ipaReplayWord);
+        return;
+      }
+      if (e.target.closest('#ipa-sample-play') && ui.ipaPractice) {
+        const it = ui.ipaPractice.items[ui.ipaPractice.idx];
+        if (it && it.text) speakIpaPracticeText(it.text);
+        return;
+      }
+      if (e.target.closest('#ipa-record-btn') && ui.ipaPractice) {
+        toggleIpaPracticeRecording();
+        return;
+      }
+      if (e.target.closest('#ipa-playback-btn') && _ipaRecUrl) {
+        try { new Audio(_ipaRecUrl).play(); } catch {}
+        return;
+      }
+      if (e.target.closest('#ipa-practice-next') && ui.ipaPractice) {
+        goIpaPracticeItem(ui.ipaPractice.idx + 1);
+        return;
+      }
+      const pickIpaBtn = e.target.closest('[data-pick-ipa]');
+      if (pickIpaBtn) {
+        ui.activeIpaSym = pickIpaBtn.dataset.pickIpa;
+        ui.ipaDetailSym = pickIpaBtn.dataset.pickIpa;
+        playIpaPhoneme(pickIpaBtn.dataset.ipaFile || '', pickIpaBtn.dataset.speakPhoneme || '');
+        renderAioPronunciationPage();
+        return;
+      }
+      const spkPhonemeBtn = e.target.closest('[data-speak-phoneme]');
+      if (spkPhonemeBtn) {
+        e.stopPropagation();
+        playIpaPhoneme(spkPhonemeBtn.dataset.ipaFile || '', spkPhonemeBtn.dataset.speakPhoneme || '');
+        return;
+      }
+      const spkSlowBtn = e.target.closest('[data-speak-slow]');
+      if (spkSlowBtn) {
+        e.stopPropagation();
+        const prevRate = state.speechRate;
+        state.speechRate = 0.65;
+        speakText(spkSlowBtn.dataset.speakSlow || '');
+        state.speechRate = prevRate;
+        return;
+      }
       const pronLangBtn = e.target.closest('[data-pron-lang]');
       if (pronLangBtn) {
         ui.pronLang = pronLangBtn.dataset.pronLang;
@@ -6494,6 +7708,7 @@
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'ipa-speed-select' && ui.ipaPractice) { ui.ipaPractice.speed = Number(e.target.value) || 1; return; }
       if (e.target.id === 'vid-lang-select') {
         ui.customVideoLang = e.target.value === 'zh' ? 'zh' : 'en';
         return;
