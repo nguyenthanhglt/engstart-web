@@ -1,0 +1,96 @@
+BÁO CÁO KIỂM TRA — BẢN SỬA PHÁT ÂM IPA v5
+Ngày: 27/11/2026
+
+PHẠM VI
+
+Bản sửa tích hợp vào mã web gốc được cung cấp, gồm cả trang Luyện phát âm
+và mục IPA thuộc lộ trình Tiếng Anh. Giao diện và các mô-đun khác không
+được thiết kế lại. Hai tài nguyên css/styles.css và assets/hero-illustration.jpg
+chưa có trong bộ tệp gửi; gói ZIP cần được chép gộp vào dự án hiện hữu.
+
+NGUYÊN NHÂN LỖI TRONG MÃ GỐC
+
+1) Hàm phát âm có nhánh dự phòng đọc toàn bộ từ khi âm IPA tải lỗi.
+2) API mode=ipa có thể rơi tiếp sang nhánh đọc từ sau khi tải âm thất bại.
+3) Một số nút IPA đi qua hàm đọc từ chung, hoặc đọc chuỗi chữ thay vì âm.
+4) Nút chuyển âm chưa quản lý hết callback âm thanh cũ; lỗi phát muộn có
+   thể khởi động lại âm trước hoặc gây chồng tiếng.
+5) Vị trí gạch chân, một số nội dung phiên âm, câu hỏi nghe và trạng thái
+   đổi giọng chưa nhất quán.
+
+KẾT QUẢ KIỂM TRA TỰ ĐỘNG
+
+A. 9 nhóm tích hợp: ĐẠT.
+   - 204 bản ghi ánh xạ âm/từ được kiểm tra ở cả hai chế độ giọng.
+   - Vị trí gạch chân hợp lệ; nút âm riêng và nút đọc từ tách nhau.
+   - Các tệp MP3 được tham chiếu tồn tại và khớp mã SHA-256.
+   - 42 mục bảng âm gốc và 16 bài IPA gốc vẫn render theo ID cũ.
+   - Các thao tác click âm/từ đi đúng luồng tương ứng.
+   - 212 câu hỏi nghe được sinh có hai lựa chọn khác nhau; loại các mục
+     trùng, không phù hợp âm đang học hoặc nhập làm một ở giọng đã chọn.
+   - Đổi giọng dựng lại câu hỏi và xóa trạng thái trả lời không còn phù hợp.
+   - Tác vụ tự phát âm trễ không chạy khi trang bị ẩn.
+   - Quyền microphone trả về sau khi người học thoát được giải phóng.
+   - Ghi âm giữ đúng MIME MP4 khi trình duyệt trả MP4; bản cũ bị xóa khi
+     bắt đầu lượt mới; không phát lại bản cũ trong lúc đang thu.
+   - Mỗi bài IPA trong lộ trình giữ 3 nghĩa tiếng Việt gốc, 3 nút nghe từ
+     thường, 3 nút nghe từ chậm; nút chậm truyền đúng tốc độ 0.65.
+
+B. 28 trường hợp API: ĐẠT.
+   - IPA thiếu tệp: 400; không tìm thấy: 404; dữ liệu không đúng MP3,
+     lỗi nguồn hoặc quá thời gian: 502. Không chuyển sang đọc từ.
+   - Chế độ ipa-word chỉ chọn bản thu khớp giọng yêu cầu.
+   - HTML/ngữ liệu sai loại không bị trả thành tệp MP3 hợp lệ.
+   - Nhánh API đọc từ/câu/tiếng Trung thông thường có hành vi như bản gốc
+     trong các trường hợp kiểm tra; phần mã ngoài nhánh mới giữ nguyên.
+   - Lỗi đọc cả từ của bản gốc đã được tái hiện trong kiểm tra đối chiếu.
+
+C. 5 nhóm bộ điều khiển âm thanh: ĐẠT.
+   - Lần bấm mới thay lần cũ; callback lỗi muộn không khởi động lại âm cũ.
+   - Âm IPA lỗi không gọi TTS đọc từ.
+   - Đọc từ/câu dùng đúng giọng yêu cầu; không tự thay giọng khác.
+   - Âm, từ và bản ghi âm hủy nhau đúng lúc; tài nguyên được dọn dẹp.
+
+D. Kiểm tra cú pháp JavaScript của app, helper và API: ĐẠT.
+
+CÁC TỆP VÀ DỮ LIỆU ĐƯỢC GIỮ NGUYÊN
+
+Đối chiếu SHA-256 xác nhận 9 tệp cũ không thay đổi từng byte:
+  js/config.js
+  js/data.js
+  js/chinese.js
+  js/vocab_bank.js
+  api/chat.js
+  api/transcript.js
+  vercel.json
+  README.md
+  supabase_schema.sql
+
+Chỉ 3 tệp cũ thay đổi: index.html, js/app.js, api/tts.js.
+Đã đối chiếu 14 hàm dùng chung liên quan đọc văn bản, đăng nhập, lưu/đồng bộ
+tiến độ; khóa lưu engstart_pro_v3 và các khóa trạng thái cũ được giữ nguyên.
+
+KIỂM TRA TRÊN TRÌNH DUYỆT
+
+Chạy bản mã sửa qua máy chủ xem trước tĩnh:
+  - Mở được web và hai đường vào học phát âm của mã gốc.
+  - Mẫu /p/ trên trang Luyện phát âm phát đến sự kiện kết thúc thành công.
+  - Mẫu cụm cuối /nd/ trong friend phát đến sự kiện kết thúc thành công.
+  - Mẫu /r/ trong IPA của lộ trình phát đến sự kiện kết thúc thành công.
+  - Xác nhận phần gạch chân ở nice/friend và tách nút âm/từ.
+  - Sau khi tải lại, nghĩa tiếng Việt và nút nghe chậm của bài IPA vẫn hiện.
+
+GIỚI HẠN CỦA KẾT QUẢ KIỂM TRA
+
+Các kiểm tra tự động dùng ranh giới DOM/media/network được mô phỏng.
+Kiểm tra trình duyệt xác nhận quá trình tải/phát/kết thúc các mẫu nêu trên;
+không phải chứng nhận thẩm âm của giáo viên cho toàn bộ 58 bản thu.
+Một số bản thu đã được kiểm tra dạng sóng, phổ âm và mức tín hiệu; tài liệu
+nguồn/chỉnh sửa chi tiết được giữ trong assets/pronunciation/SOURCES.json.
+
+Chưa kiểm thử bằng microphone thật hoặc triển khai API trên tài khoản
+Vercel của bạn. Không kiểm thử toàn bộ luồng tài khoản/các môn học khác;
+đã kiểm tra phạm vi mã và tệp của những phần đó được giữ nguyên.
+
+Nguồn âm, tác giả và giấy phép nằm trong assets/pronunciation/CREDITS.txt
+và assets/pronunciation/SOURCES.json, được đóng gói kèm các tệp MP3.

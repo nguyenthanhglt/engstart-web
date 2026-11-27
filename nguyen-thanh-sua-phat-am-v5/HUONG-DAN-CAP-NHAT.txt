@@ -1,0 +1,96 @@
+NGUYỄN THÀNH — BẢN SỬA PHÁT ÂM TRÊN MÃ WEB GỐC
+Phiên bản: IPA v5 · 27/11/2026
+
+1. CÁCH DÙNG GÓI ZIP
+
+Đây là bản cập nhật để chép GỘP vào dự án web hiện tại. Gói được sửa trực
+tiếp từ các tệp bạn gửi, không phải giao diện web thay thế.
+
+Bộ tệp nhận được chưa có hai tài nguyên mà index.html đang tham chiếu:
+  css/styles.css
+  assets/hero-illustration.jpg
+
+Hãy GIỮ hai tệp này cùng các tài nguyên khác trong dự án đang dùng.
+Không xóa thư mục dự án cũ rồi chỉ giải nén ZIP vào một thư mục trống.
+CSS bổ sung css/pronunciation-fix.css chỉ phục vụ các thành phần phát âm;
+nó không thay thế css/styles.css của bạn.
+
+Các bước cập nhật:
+  1) Sao lưu dự án hiện tại.
+  2) Giải nén ZIP. Chép toàn bộ nội dung vào thư mục gốc của dự án,
+     cùng cấp với index.html và vercel.json. Gộp các thư mục js, api,
+     css, assets; ghi đè các tệp trùng tên. Giữ mọi tệp không có trong ZIP.
+  3) Triển khai lại dự án Vercel theo cách bạn vẫn dùng.
+  4) Mở lại web. Nếu còn bản cũ trong bộ nhớ đệm, tải lại bằng Ctrl+F5
+     (hoặc tải lại bỏ qua cache trên trình duyệt của bạn).
+
+Tệp index(2).html và vercel(2).json bạn gửi được đặt lại đúng tên chạy web:
+index.html và vercel.json. Không cần tạo thêm thư mục "site" khi chép ZIP.
+Giữ nguyên biến môi trường Vercel, cấu hình tài khoản và cơ sở dữ liệu cũ.
+Không cần chạy lại supabase_schema.sql, xóa dữ liệu học hay nhập lại cấu hình.
+Bản này chưa được triển khai lên website đang chạy; ZIP là kết quả bàn giao.
+
+2. PHẦN PHÁT ÂM ĐÃ SỬA
+
+Áp dụng ở cả "Luyện phát âm" và "Phát âm IPA" trong lộ trình Tiếng Anh:
+
+  - Nút nghe âm sử dụng tệp MP3 âm riêng được đóng gói sẵn.
+    Ví dụ: sheep gạch chân ee và phát /iː/; pen gạch chân p và phát /p/;
+    friend gạch chân nd và phát cụm âm cuối /nd/.
+  - Không gửi chữ cái, ký hiệu IPA hoặc chuỗi như "ay", "oh" cho bộ đọc
+    văn bản để giả làm âm mẫu. Không tự chuyển sang đọc cả từ nếu âm lỗi.
+  - "Cả từ" là nút riêng để nghe từ đầy đủ. Phần IPA trong lộ trình vẫn
+    giữ nghe chậm cả từ, nghĩa tiếng Việt và đánh dấu đã nắm bài.
+  - Phụ âm và âm cuối dùng mẫu lặp 3 lần, có khoảng nghỉ để dễ nghe.
+    Mẫu âm tắc được giữ ngắn; không kéo dài âm tắc hoặc thêm "ờ" vào cuối.
+  - Gạch chân bằng vị trí chữ được chỉ định cho từng từ, không gạch cả từ.
+    Ví dụ nice chỉ gạch c; chữ e cuối không được gạch cùng.
+  - Sửa nội dung giải thích, phiên âm và lựa chọn bài nghe trong phần IPA.
+    Các trường hợp đuôi -s/-es và -ed có mẫu theo từng cách đọc.
+  - Khi đổi âm, đổi giọng hoặc rời màn hình, phát âm cũ được dừng để tránh
+    chồng tiếng. Lỗi tải âm có thông báo, không thay bằng một âm khác.
+  - Ghi âm dùng để nghe lại, so với mẫu. Không hiển thị điểm phát âm giả
+    dựa trên tỷ lệ từ mà bộ nhận dạng giọng nói nhận ra.
+
+Âm mẫu là bản thu tham chiếu IPA; một số âm dùng chung cho cả hai giọng.
+Phần nguyên âm/cách đọc có khác biệt giữa giọng được ánh xạ theo lựa chọn.
+Nút đọc cả từ ưu tiên bản thu đúng giọng; nếu cần dùng giọng máy thì chỉ
+chọn đúng ngôn ngữ en-GB hoặc en-US đang học. Khi không có nguồn phù hợp,
+web báo lỗi để người học biết, không âm thầm đổi giọng.
+
+3. NHỮNG TỆP THAY ĐỔI
+
+Chỉ sửa 3 tệp cũ:
+  index.html       Nạp các tệp phát âm mới và đổi phiên bản cache của app.
+  js/app.js        Sửa các luồng phát âm, hiển thị, luyện nghe và ghi âm IPA.
+  api/tts.js       Chặn IPA rơi sang đọc từ; thêm chế độ đọc từ riêng cho IPA.
+
+Các tệp cũ còn lại được giữ nguyên từng byte, gồm dữ liệu học, tiếng Trung,
+ngân hàng từ, cấu hình, API chat/transcript, vercel.json, README.md và SQL.
+Khóa lưu tiến độ cũ, ID bài IPA cũ và dữ liệu trạng thái được giữ lại.
+
+Bổ sung:
+  js/pronunciation-content.js
+  js/pronunciation-helpers.js
+  js/pronunciation-manifest.js
+  js/phoneme-player.js
+  js/pronunciation-controller.js
+  css/pronunciation-fix.css
+  assets/pronunciation/phonemes/  (58 tệp MP3)
+  assets/pronunciation/SOURCES.json
+  assets/pronunciation/CREDITS.txt
+  assets/pronunciation/LICENSE-CC0.txt
+
+Giữ các tệp nguồn và giấy phép bản thu đi kèm khi triển khai. Bản thu có
+giấy phép riêng cho từng tệp; xem CREDITS.txt và SOURCES.json để biết
+tác giả, nguồn và chỉnh sửa của từng âm.
+
+4. KIỂM TRA NHANH SAU KHI TRIỂN KHAI
+
+  - Bấm sheep: chỉ ee được gạch; loa âm phát /iː/. Bấm "Cả từ" mới đọc sheep.
+  - Thử p trong pen và nd trong friend: nghe mẫu âm riêng lặp 3 lần.
+  - Mở Lộ trình Tiếng Anh > Phát âm IPA: vẫn thấy nghĩa từ, nút nghe chậm
+    và tiến độ cũ. Nút "Nghe âm riêng" không đọc toàn bộ từ.
+  - Bấm nhanh hai âm liên tiếp: âm sau thay âm trước.
+
+Chi tiết phạm vi và kết quả kiểm tra có trong BAO-CAO-KIEM-TRA.txt.
