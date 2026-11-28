@@ -88,3 +88,9 @@
 #page-videos .ev36 .ev41-text-thumb{background:linear-gradient(135deg,#f3e7c9,#e5d6b1);aspect-ratio:2/1}
 #page-videos .ev36 .ev41-text-thumb .ev-thumbfallback{color:#6d5634;font-size:16px}
 #page-videos .ev36 .ev41-text-card{border-color:#e5d9ba}
+
+/* v42: show real-caption preparation above the player, including on mobile. */
+#page-videos .ev36 .ev42-sourcebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:10px;background:#fffaf6;border:1px solid #dfbecf}
+#page-videos .ev36 .ev42-source-text{display:grid;gap:3px;min-width:0;flex:1 1 240px;overflow-wrap:anywhere}
+#page-videos .ev36 .ev42-sourcebar .ev-row{flex-wrap:wrap}
+#page-videos .ev36 .ev42-prep{overflow-wrap:anywhere}

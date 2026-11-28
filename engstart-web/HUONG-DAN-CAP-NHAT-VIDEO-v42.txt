@@ -1,0 +1,25 @@
+ENGSTART v42 - PHỤ ĐỀ GỐC CHO MỌI CHẾ ĐỘ VIDEO
+
+CẬP NHẬT TỪ v41
+Giữ Root Directory = engstart-web trên Vercel. Tải đè 4 tệp mã nguồn trong ZIP cập nhật vào đúng thư mục engstart-web bên trong repository. Không tải thêm một lớp thư mục engstart-web.
+- index.html
+- css/video-library-v36.css
+- js/video-library-v36.js
+- api/video-cues.js
+Sau khi triển khai, Ctrl+F5. Nhãn phòng học: v42 · Lời thoại gốc mọi chế độ.
+
+CÁCH DÙNG
+1. Mở bất kỳ video YouTube, kể cả Open Shut Them. Khi chưa có phụ đề gốc, web không hiển thị câu ví dụ tự soạn. Có thể xem video và bật CC của YouTube trong Subtitles.
+2. Bấm Tạo phụ đề gốc & học phía trên video. Đây là nhận dạng AI qua GEMINI_API_KEY đã cấu hình trên Vercel, có thể tốn lượt và chi phí tùy gói. Nếu dịch vụ lỗi, nạp SRT/VTT hoặc dán bản chép lời YouTube có mốc thời gian. Nếu thiếu mốc kết thúc cuối, xác nhận thủ công sau khi kiểm tra. Các câu có mốc chồng lấn cần sửa.
+3. Nghe đối chiếu lời thoại/lời hát và mốc do AI ước lượng, chỉnh đoạn nếu sai. Không phải phụ đề chính thức. Có thể Dịch song ngữ / Tiếp tục nếu thiếu nghĩa tiếng Việt hoặc bản dịch học tập. Bản dịch không thay thế lời gốc.
+4. Dictation: bấm Nghe câu, video tự dừng cuối đoạn, nhập đúng câu, bấm Kiểm tra, rồi bấm Tiếp theo. Không dùng TTS. Shadowing, Quiz và Subtitles sử dụng cùng nguồn lời thoại gốc.
+5. Các bài hội thoại không có video được giữ riêng. Phụ đề cũ trùng hoàn toàn câu mẫu bị ẩn nhưng không xóa tự động. Nút dán YouTube và dữ liệu tiến độ giữ nguyên.
+
+KIỂM THỬ
+- Node --check toàn bộ JS trong js/ và api/.
+- Chromium: mở Open Shut Them ở 4 chế độ với dữ liệu câu mẫu cũ; không còn hiển thị các câu mẫu.
+- Chromium: phản hồi API mô phỏng, mốc thời gian hợp lệ/thiếu/chồng, dịch Việt-Anh giữ lời gốc, khóa chuyển khi sai, dịch vụ gián đoạn và tiếp tục.
+- Video WebM thử nghiệm cục bộ: dừng ở mốc 2s và 4s; chỉ chạy tiếp sau khi trả lời đúng và bấm Tiếp theo.
+- API nhận dạng: kiểm tra phản hồi mô phỏng, không có khóa API, mốc thời gian thiếu/chồng, đoạn im lặng.
+- Chưa kiểm thử Gemini/YouTube trực tuyến trên Vercel; không có phụ đề đã xác minh sẵn cho toàn bộ 37 video. Không bảo đảm độ chính xác lời thoại/lời hát do AI nhận dạng.
+- 58 MP3 và các tệp ngoài 4 tệp thay đổi giữ nguyên từng byte.
