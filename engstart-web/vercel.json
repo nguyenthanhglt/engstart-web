@@ -11,5 +11,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/dictionary.js": {
+      "maxDuration": 55
+    }
+  }
 }
