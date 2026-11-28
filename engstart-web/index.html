@@ -29,8 +29,10 @@
   <link rel="stylesheet" href="./css/dictionary-v32.css?v=20261128-v35" />
   <link rel="stylesheet" href="./css/vocab-library-v33.css?v=20261128-v33" />
   <link rel="stylesheet" href="./css/video-library-v36.css?v=20261128-v42" />
+  <meta name="description" content="Học tiếng Anh và tiếng Trung với lộ trình, từ vựng, phát âm và video luyện tập. Thử một bài học ngay trên Nguyễn Thành." />
+  <link rel="stylesheet" href="./css/welcome-v43.css?v=43.1" />
 </head>
-<body class="min-h-screen flex flex-col md:flex-row antialiased selection:bg-sky-100 selection:text-sky-900">
+<body class="nt-welcome-active min-h-screen flex flex-col md:flex-row antialiased selection:bg-sky-100 selection:text-sky-900">
 
   <!-- ==================== AIO-STYLE LEFT SIDEBAR (DESKTOP) ==================== -->
   <aside id="aio-sidebar" class="hidden md:flex md:flex-col md:w-[244px] shrink-0 aio-sidebar sticky top-0 h-screen z-40 justify-between p-3.5 select-none">
@@ -462,70 +464,56 @@
     </div>
   </div>
 
-  <!-- ==================== MANDATORY AUTH GATE ==================== -->
-  <div id="auth-gate-overlay" class="fixed inset-0 z-[9999] flex items-center justify-center bg-[#F7F3EA] p-4 overflow-y-auto">
-    <div id="auth-gate-loading" class="text-center space-y-3">
-      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white font-black text-xl flex items-center justify-center mx-auto shadow-md">NT</div>
-      <div class="text-sm font-bold text-slate-700">Đang kiểm tra tài khoản...</div>
-    </div>
-
-    <div id="auth-gate-card" class="hidden bg-white rounded-3xl border border-[#E6DEC9] shadow-xl max-w-md w-full p-6 sm:p-8 space-y-5 my-auto">
-      <div class="text-center space-y-1.5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white font-black text-xl flex items-center justify-center mx-auto shadow-sm">NT</div>
-        <h2 class="text-xl font-extrabold text-slate-900">Nguyễn Thành — Học Anh &amp; Trung</h2>
-        <p class="text-xs sm:text-sm text-slate-500">Đăng nhập hoặc tạo tài khoản miễn phí để vào học và tự động lưu tiến độ.</p>
-      </div>
-
-      <div class="grid grid-cols-2 gap-1.5 bg-[#F6F2E9] p-1 rounded-2xl">
-        <button type="button" data-auth-tab="login" class="py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white text-slate-900 shadow-2xs transition-all">Đăng nhập</button>
-        <button type="button" data-auth-tab="signup" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 transition-all">Đăng ký tài khoản</button>
-      </div>
-
-      <form id="auth-gate-form" class="space-y-3">
-        <div id="auth-gate-name-wrap" class="hidden space-y-1">
-          <label for="auth-gate-name" class="block text-xs font-bold text-slate-700">Tên hiển thị của bạn</label>
-          <input type="text" id="auth-gate-name" autocomplete="name" placeholder="Ví dụ: Minh Anh" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none text-sm text-slate-900" />
-        </div>
-        <div class="space-y-1">
-          <label for="auth-gate-email" class="block text-xs font-bold text-slate-700">Email</label>
-          <input type="email" id="auth-gate-email" required autocomplete="email" placeholder="tenban@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none text-sm text-slate-900" />
-        </div>
-        <div class="space-y-1">
-          <label for="auth-gate-password" class="block text-xs font-bold text-slate-700">Mật khẩu</label>
-          <input type="password" id="auth-gate-password" required minlength="6" autocomplete="current-password" placeholder="Ít nhất 6 ký tự" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none text-sm text-slate-900" />
-        </div>
-
-        <div id="auth-gate-msg" class="hidden text-xs font-semibold rounded-xl px-3 py-2.5 leading-relaxed"></div>
-
-        <button type="submit" id="auth-gate-submit" class="w-full py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-extrabold shadow-xs transition-colors">
-          Đăng nhập
-        </button>
-      </form>
-
-      <div class="relative flex items-center justify-center">
-        <div class="border-t border-slate-200 w-full"></div>
-        <span class="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase shrink-0">hoặc</span>
-        <div class="border-t border-slate-200 w-full"></div>
-      </div>
-
-      <button type="button" id="auth-gate-google-btn" class="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs text-slate-800 text-sm font-bold flex items-center justify-center gap-2.5 transition-all">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/>
-          <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96h-3.98v3.09C3.515 21.3 7.615 24 12.255 24z"/>
-          <path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62h-3.98a11.86 11.86 0 0 0 0 10.76l3.98-3.09z"/>
-          <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
-        </svg>
-        Tiếp tục với Google (Gmail)
-      </button>
-    </div>
-  </div>
-
   <!-- ==================== TOAST ==================== -->
-  <div id="toast" class="fixed bottom-5 right-5 z-[10000] pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+  <div id="toast" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
     <div class="bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
       <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
       <span id="toast-msg">Đã lưu!</span>
     </div>
+  </div>
+
+  <!-- NT public welcome: separate from authenticated study views. -->
+  <div id="nt-welcome" class="nt-welcome">
+    <a class="nt-skip" href="#nt-demo">Đến bài học thử</a>
+    <header class="nt-top"><div class="nt-shell nt-top-inner">
+      <a href="#nt-top" class="nt-brand" aria-label="Nguyễn Thành, trang chủ"><span class="nt-logo">NT</span><span><strong>Nguyễn Thành</strong><small>HỌC ANH &amp; TRUNG</small></span></a>
+      <nav class="nt-nav" aria-label="Giới thiệu"><a href="#nt-features">Tính năng</a><a href="#nt-method">Cách học</a><a href="#nt-faq">Hỏi đáp</a></nav>
+      <div class="nt-top-actions"><button class="nt-btn nt-quiet" type="button" data-nt-auth="login">Đăng nhập</button><button class="nt-btn nt-primary" type="button" data-nt-auth="register">Bắt đầu học <span aria-hidden="true">↗</span></button></div>
+    </div></header>
+    <main class="nt-shell nt-main" id="nt-top">
+      <section class="nt-hero" aria-labelledby="nt-heading">
+        <div class="nt-intro">
+          <p class="nt-eyebrow"><span></span> GÓC HỌC TẬP CỦA BẠN</p>
+          <h1 id="nt-heading">Một chút mỗi ngày.<br><span>Tiến xa hơn</span> bằng<br class="nt-wide-break"> ngôn ngữ mới.</h1>
+          <p class="nt-lead">Học tiếng Anh và tiếng Trung theo cách bạn thích. Từ những câu chào đầu tiên đến hội thoại thực tế, mỗi bài học là một bước tiến nhỏ.</p>
+          <div class="nt-language" role="group" aria-label="Ngôn ngữ bài học thử"><button type="button" data-nt-lang="en" aria-pressed="true"><span class="nt-lang-icon">EN</span> Tiếng Anh</button><button type="button" data-nt-lang="zh" aria-pressed="false"><span class="nt-lang-icon">中</span> Tiếng Trung</button></div>
+          <div class="nt-hero-actions"><button class="nt-btn nt-primary nt-big" type="button" data-nt-auth="register">Bắt đầu học ngay <span aria-hidden="true">→</span></button><a class="nt-btn nt-secondary nt-big" href="#nt-demo">Học thử <span aria-hidden="true">↘</span></a></div>
+          <p class="nt-note">Bài học thử không cần tài khoản · Dành cho cả bé và người lớn</p>
+        </div>
+        <div id="nt-demo" class="nt-demo" tabindex="-1" aria-labelledby="nt-demo-title">
+          <div class="nt-demo-top"><div class="nt-demo-label"><span class="nt-icon nt-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h7a3 3 0 0 1 3 3v12a4 4 0 0 0-3-2H4zM14 8a3 3 0 0 1 3-3h3v13h-3a4 4 0 0 0-3 2"/></svg></span><div><strong id="nt-demo-title">Bài học thử</strong><small id="nt-demo-level">Tiếng Anh · Cơ bản</small></div></div><span class="nt-demo-count" id="nt-demo-count">1 / 3</span></div>
+          <div class="nt-track" role="progressbar" aria-label="Tiến độ bài thử" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" id="nt-demo-progress"><span></span></div>
+          <div id="nt-demo-body" class="nt-demo-body"></div>
+          <div class="nt-demo-bottom"><span class="nt-demo-foot">Thử một câu, nhớ một điều mới.</span><button type="button" id="nt-demo-next" class="nt-btn nt-primary" disabled>Tiếp theo →</button></div>
+        </div>
+      </section>
+      <div class="nt-strip" aria-label="Ưu điểm"><div><strong>02</strong><span>Ngôn ngữ<br> Anh &amp; Trung</span></div><div><strong>04</strong><span>Kỹ năng<br>Nghe · Nói · Đọc · Viết</span></div><div><span class="nt-strip-symbol">✓</span><span>Tiến độ riêng<br>Học theo nhịp của bạn</span></div><div><span class="nt-strip-symbol">↗</span><span>Web linh hoạt<br>Máy tính &amp; điện thoại</span></div></div>
+      <section id="nt-features" class="nt-section"><div class="nt-section-head"><div><p class="nt-eyebrow">KHÁM PHÁ</p><h2>Mọi kỹ năng, trong một góc học.</h2></div><p>Chọn điều bạn muốn luyện hôm nay, hoặc học theo lộ trình có sẵn.</p></div>
+        <div class="nt-features">
+          <article class="nt-feature nt-tint-blue"><span class="nt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M10 10h.01M13 10h.01M16 10h.01M7 14h10" stroke-linecap="round"/></svg></span><h3>Gõ câu &amp; hội thoại</h3><p>Ghi nhớ cấu trúc qua những câu giao tiếp hằng ngày.</p></article>
+          <article class="nt-feature nt-tint-purple"><span class="nt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="3" width="13" height="16" rx="2"/><path d="M6 7H4v14h12M9 8h7M9 12h5" stroke-linecap="round"/></svg></span><h3>Từ vựng &amp; Flashcard</h3><p>Học từ theo chủ đề, lật thẻ và ôn tập đúng lúc.</p></article>
+          <article class="nt-feature nt-tint-mint"><span class="nt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3M9 22h6" stroke-linecap="round"/></svg></span><h3>Luyện phát âm</h3><p>Nghe từng âm IPA, luyện khẩu hình và thanh điệu tiếng Trung.</p></article>
+          <article class="nt-feature nt-tint-rose"><span class="nt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4z" stroke-linejoin="round"/></svg></span><h3>Video luyện tập</h3><p>Dictation, Shadowing và phụ đề khi có lời thoại gốc.</p></article>
+          <article class="nt-feature nt-tint-sand"><span class="nt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h6a3 3 0 0 1 3 3v13a4 4 0 0 0-3-2H4zM13 7a3 3 0 0 1 3-3h4v14h-4a4 4 0 0 0-3 2M7 8h3M7 11h3M16 8h2" stroke-linecap="round"/></svg></span><h3>Từ điển chuyên sâu</h3><p>Tra nghĩa, ví dụ, phiên âm và những cụm từ thường gặp.</p></article>
+          <article class="nt-feature nt-tint-blue"><span class="nt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v3m-5 0h10a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-5a4 4 0 0 1 4-4zM8 12h.01M16 12h.01M9 16h6" stroke-linecap="round"/></svg></span><h3>Cô giáo AI</h3><p>Hỏi về ngữ pháp, từ vựng và cách diễn đạt khi cần.</p></article>
+        </div>
+      </section>
+      <section id="nt-method" class="nt-method"><div><p class="nt-eyebrow">HỌC THEO NHỊP CỦA MÌNH</p><h2>Không cần học thật nhiều.<br>Chỉ cần học đều.</h2><p>Bắt đầu từ nội dung phù hợp với trình độ. Quay lại mỗi ngày để ôn và thực hành điều đã học.</p><button class="nt-btn nt-primary" data-nt-auth="register" type="button">Tạo tài khoản →</button></div><div class="nt-steps"><div><b>01</b><span><strong>Chọn ngôn ngữ</strong><small>Tiếng Anh hoặc tiếng Trung.</small></span></div><div><b>02</b><span><strong>Học một bài nhỏ</strong><small>Nghe, gõ câu, đọc hoặc luyện từ.</small></span></div><div><b>03</b><span><strong>Ôn lại và tiến bộ</strong><small>Theo dõi quá trình học của bạn.</small></span></div></div></section>
+      <section id="nt-faq" class="nt-faq nt-section"><div><p class="nt-eyebrow">HỎI ĐÁP</p><h2>Trước khi bắt đầu.</h2><p>Một vài điều bạn có thể muốn biết.</p></div><div class="nt-questions"><details><summary>Người mới bắt đầu có học được không?</summary><p>Có. Bạn có thể bắt đầu từ các chủ đề cơ bản, làm quen với từ vựng, phát âm và câu giao tiếp. Trẻ em nên học cùng người lớn khi mở video bên ngoài.</p></details><details><summary>Tôi có cần tạo tài khoản để học thử?</summary><p>Không. Bài học thử ngay trên trang này không yêu cầu tài khoản. Đăng nhập để sử dụng khu vực học chính và lưu tiến độ theo cấu hình của web.</p></details><details><summary>Tôi có thể học cả tiếng Anh và tiếng Trung?</summary><p>Có. Hai ngôn ngữ có lộ trình, từ vựng và các chế độ luyện tập riêng. Bạn có thể đổi ngôn ngữ trong khu vực học.</p></details><details><summary>Học qua video hoạt động như thế nào?</summary><p>Chọn video trong thư viện hoặc dán link YouTube. Để luyện từng câu đồng bộ, cần lời thoại gốc có mốc thời gian. Bạn có thể nhập phụ đề hoặc thử tạo bằng AI khi dịch vụ hỗ trợ.</p></details></div></section>
+    </main>
+    <footer class="nt-footer"><div class="nt-shell"><a href="#nt-top" class="nt-brand"><span class="nt-logo">NT</span><span><strong>Nguyễn Thành</strong><small>HỌC ANH &amp; TRUNG</small></span></a><span>Mỗi ngày một bước nhỏ.</span><button class="nt-btn nt-quiet" data-nt-auth="login" type="button">Đăng nhập →</button></div></footer>
+    <dialog id="nt-auth-dialog" aria-labelledby="nt-auth-title"><div class="nt-auth-wrap"><button type="button" class="nt-close" data-nt-close aria-label="Đóng">×</button><div class="nt-auth-side"><span class="nt-logo">NT</span><p class="nt-eyebrow">NGUYỄN THÀNH · HỌC ANH &amp; TRUNG</p><h2>Chào mừng bạn<br>đến góc học của mình.</h2><p>Một bài học nhỏ hôm nay, một bước tiến mới ngày mai.</p><div class="nt-auth-mini"><span>Good morning!</span><span>早上好！</span><small>Zǎoshang hǎo! · Chào buổi sáng!</small></div></div><div class="nt-auth-main"><h2 id="nt-auth-title">Đăng nhập</h2><p id="nt-auth-intro">Tiếp tục hành trình học của bạn.</p><div class="nt-auth-tabs" role="group" aria-label="Hình thức tài khoản"><button type="button" data-nt-mode="login" aria-pressed="true">Đăng nhập</button><button type="button" data-nt-mode="register" aria-pressed="false">Đăng ký</button></div><form id="nt-auth-form"><label for="nt-email">Email</label><input id="nt-email" type="email" autocomplete="email" placeholder="tenban@example.com" required maxlength="254"><label for="nt-password">Mật khẩu</label><div class="nt-password-wrap"><input id="nt-password" type="password" minlength="6" autocomplete="current-password" placeholder="Ít nhất 6 ký tự" required><button type="button" id="nt-pass-toggle" aria-label="Hiện mật khẩu">Hiện</button></div><button id="nt-auth-submit" class="nt-btn nt-primary" type="submit">Đăng nhập →</button></form><div class="nt-or"><span>hoặc</span></div><button type="button" id="nt-google" class="nt-btn nt-secondary"><svg width="19" height="19" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.43 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.44 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.24 5.48-4.79 7.18l7.73 6C44.38 38.04 46.98 31.98 46.98 24.55z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19A23.98 23.98 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.88-5.8l-7.73-6c-2.15 1.45-4.93 2.3-8.15 2.3-6.26 0-11.56-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Tiếp tục với Google</button><p id="nt-auth-status" role="status" aria-live="polite" class="nt-auth-status"></p><button type="button" id="nt-local" class="nt-btn nt-quiet" hidden>Học trên thiết bị (chưa cấu hình đăng nhập)</button><p class="nt-auth-small">Tài khoản dùng chung với hệ thống học hiện có.</p></div></div></dialog>
+    <noscript><p class="nt-noscript">Vui lòng bật JavaScript để dùng bài học và đăng nhập.</p></noscript>
   </div>
 
   <script src="./js/config.js"></script>
@@ -547,6 +535,7 @@
   <script src="./js/video-library-data.js?v=20261128-v42"></script>
   <script src="./js/video-library-v36.js?v=20261128-v42vi"></script>
   <script src="./js/app.js?v=20261128-v43auth"></script>
+  <script src="./js/welcome-v43.js?v=43.1"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
