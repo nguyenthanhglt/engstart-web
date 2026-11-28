@@ -18,6 +18,9 @@
     },
     "api/video-translate.js": {
       "maxDuration": 45
+    },
+    "api/video-cues.js": {
+      "maxDuration": 50
     }
   }
 }
