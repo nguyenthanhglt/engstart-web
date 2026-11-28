@@ -1781,8 +1781,8 @@
       let rows = [];
       let online = false;
       try {
-        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-          const { data, error } = await supabaseClient
+        if (typeof sbClient !== 'undefined' && sbClient) {
+          const { data, error } = await sbClient
             .from('engstart_leaderboard')
             .select('id, player_name, lang, score, max_combo, created_at')
             .eq('lang', targetLang)
@@ -1831,8 +1831,8 @@
       }
 
       try {
-        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-          const { error } = await supabaseClient.from('engstart_leaderboard').insert([{
+        if (typeof sbClient !== 'undefined' && sbClient) {
+          const { error } = await sbClient.from('engstart_leaderboard').insert([{
             player_name: playerName,
             lang: targetLang,
             score: entry.score,
@@ -2117,7 +2117,7 @@
                   <span class="text-base">🏆</span>
                   <div>
                     <div class="text-sm font-extrabold text-slate-900">Bảng Xếp Hạng ${isZh ? 'Tiếng Trung' : 'Tiếng Anh'} (Top 10)</div>
-                    <div class="text-[11px] text-slate-500">${(ui.dashLbCache && ui.dashLbCache[lang] && ui.dashLbCache[lang].online) ? '🟢 Đang đồng bộ trực tuyến mọi người chơi' : '💾 Kỷ lục trên máy (chạy SQL bảng engstart_leaderboard trên Supabase để thi đua online)'}</div>
+                    ${(ui.dashLbCache && ui.dashLbCache[lang] && ui.dashLbCache[lang].online) ? '<div class="text-[11px] text-emerald-700 font-semibold">🟢 Đồng bộ trực tuyến mọi người chơi</div>' : ''}
                   </div>
                 </div>
                 <div class="flex items-center gap-1.5">
