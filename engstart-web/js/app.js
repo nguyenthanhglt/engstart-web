@@ -5671,7 +5671,7 @@
         const idx = Math.max(0, Math.min(ui.typingSentenceIdx || 0, topic.sentences.length - 1));
         ui.typingSentenceIdx = idx;
         const sent = topic.sentences[idx];
-        const mode = ui.typingMode || 'easy'; // 'easy' | 'medium' | 'hard'
+        const mode = ui.typingMode || 'hard'; // 'hard' | 'medium' | 'easy'
         const typed = ui.typingInput || '';
         const speakAttr = isZh
           ? `data-speak-zh="${sent.target.replace(/"/g, '&quot;')}"`
@@ -5685,9 +5685,9 @@
               </button>
               <div class="text-xs font-extrabold text-slate-600">${topic.icon} ${topic.title} · Câu ${idx + 1}/${topic.sentences.length}</div>
               <div class="bg-[#F6F2E9] p-1 rounded-xl inline-flex text-[11px] font-bold">
-                <button type="button" data-typing-mode="easy" class="px-2.5 py-1 rounded-lg ${mode === 'easy' ? 'bg-white text-sky-700 shadow-2xs' : 'text-slate-600'}">Dễ (Hiện mẫu)</button>
-                <button type="button" data-typing-mode="medium" class="px-2.5 py-1 rounded-lg ${mode === 'medium' ? 'bg-white text-amber-700 shadow-2xs' : 'text-slate-600'}">Vừa (Nghe+Việt)</button>
                 <button type="button" data-typing-mode="hard" class="px-2.5 py-1 rounded-lg ${mode === 'hard' ? 'bg-white text-rose-700 shadow-2xs' : 'text-slate-600'}">Khó (Nghe thuần)</button>
+                <button type="button" data-typing-mode="medium" class="px-2.5 py-1 rounded-lg ${mode === 'medium' ? 'bg-white text-amber-700 shadow-2xs' : 'text-slate-600'}">Vừa (Nghe+Việt)</button>
+                <button type="button" data-typing-mode="easy" class="px-2.5 py-1 rounded-lg ${mode === 'easy' ? 'bg-white text-sky-700 shadow-2xs' : 'text-slate-600'}">Dễ (Hiện mẫu)</button>
               </div>
             </div>
 
