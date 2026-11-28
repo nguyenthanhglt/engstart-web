@@ -525,6 +525,7 @@
 
     // ==================== NAVIGATION ====================
     function showMainPage(navName) {
+      if (navName !== 'videos' && window.EngVideo36) window.EngVideo36.leave();
       if (state.mainNav === 'bank') window.EngStartVocabulary?.leave();
       if (state.mainNav === 'dictionary' && navName !== 'dictionary') window.EngStartDictionary?.leave();
       stopIpaAudio(); stopIpaPracticeRecording();
@@ -6115,6 +6116,7 @@
     }
 
     function renderVideoStudioPage() {
+      if (window.EngVideo36) { window.EngVideo36.render(ui.videoLangFilter || 'all'); return; }
       const el = document.getElementById('page-videos');
       if (!el) return;
 
