@@ -6940,15 +6940,177 @@
       }
     }
 
+
+    let authGateTab = 'login';
+
+    function translateSupabaseAuthError(msg) {
+      const m = String(msg || '').toLowerCase();
+      if (m.includes('invalid login credentials')) return 'Sai email hoặc mật khẩu. Hãy kiểm tra lại nhé.';
+      if (m.includes('user already registered')) return 'Email này đã được đăng ký. Hãy chuyển sang tab Đăng nhập.';
+      if (m.includes('email not confirmed')) return 'Email chưa được xác nhận. Hãy mở hộp thư (cả mục Spam) để bấm link xác nhận.';
+      if (m.includes('password should be at least')) return 'Mật khẩu cần có ít nhất 6 ký tự.';
+      if (m.includes('unable to validate email') || m.includes('invalid email')) return 'Địa chỉ email chưa đúng định dạng.';
+      if (m.includes('rate limit') || m.includes('too many requests')) return 'Bạn thao tác hơi nhanh. Vui lòng đợi 1 phút rồi thử lại.';
+      return msg || 'Có lỗi xảy ra. Vui lòng thử lại.';
+    }
+
+    function setAuthGateMessage(text, isError) {
+      const el = document.getElementById('auth-gate-msg');
+      if (!el) return;
+      if (!text) {
+        el.classList.add('hidden');
+        el.textContent = '';
+        return;
+      }
+      el.classList.remove('hidden', 'bg-rose-50', 'text-rose-700', 'border', 'border-rose-200', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
+      if (isError) {
+        el.classList.add('bg-rose-50', 'text-rose-700', 'border', 'border-rose-200');
+      } else {
+        el.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200');
+      }
+      el.textContent = text;
+    }
+
+    function setAuthGateTab(tab) {
+      authGateTab = tab === 'signup' ? 'signup' : 'login';
+      const nameWrap = document.getElementById('auth-gate-name-wrap');
+      const submitBtn = document.getElementById('auth-gate-submit');
+      const passInput = document.getElementById('auth-gate-password');
+      if (nameWrap) nameWrap.classList.toggle('hidden', authGateTab !== 'signup');
+      if (submitBtn) submitBtn.textContent = authGateTab === 'signup' ? 'Tạo tài khoản mới' : 'Đăng nhập';
+      if (passInput) passInput.setAttribute('autocomplete', authGateTab === 'signup' ? 'new-password' : 'current-password');
+      document.querySelectorAll('[data-auth-tab]').forEach(btn => {
+        const active = btn.dataset.authTab === authGateTab;
+        btn.className = active
+          ? 'py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white text-slate-900 shadow-2xs transition-all'
+          : 'py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 transition-all';
+      });
+      setAuthGateMessage('', false);
+    }
+
+    function updateAuthGate(isLoading) {
+      const overlay = document.getElementById('auth-gate-overlay');
+      const loading = document.getElementById('auth-gate-loading');
+      const card = document.getElementById('auth-gate-card');
+      if (!overlay) return;
+      if (isLoading) {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+        if (loading) loading.classList.remove('hidden');
+        if (card) card.classList.add('hidden');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+      if (currentAuthUser) {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        document.body.style.overflow = '';
+      } else {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+        if (loading) loading.classList.add('hidden');
+        if (card) card.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    async function handleAuthGateSubmit(e) {
+      e.preventDefault();
+      if (!sbClient) {
+        setAuthGateMessage('Chưa kết nối được hệ thống tài khoản Supabase. Hãy kiểm tra tệp js/config.js.', true);
+        return;
+      }
+      const emailEl = document.getElementById('auth-gate-email');
+      const passEl = document.getElementById('auth-gate-password');
+      const nameEl = document.getElementById('auth-gate-name');
+      const submitBtn = document.getElementById('auth-gate-submit');
+      const email = (emailEl && emailEl.value || '').trim();
+      const password = (passEl && passEl.value || '');
+      const fullName = (nameEl && nameEl.value || '').trim();
+
+      if (!email || !password) {
+        setAuthGateMessage('Vui lòng nhập đầy đủ email và mật khẩu.', true);
+        return;
+      }
+      if (password.length < 6) {
+        setAuthGateMessage('Mật khẩu cần có ít nhất 6 ký tự.', true);
+        return;
+      }
+
+      const prevLabel = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = authGateTab === 'signup' ? 'Đang tạo tài khoản...' : 'Đang đăng nhập...';
+      }
+      setAuthGateMessage('', false);
+
+      try {
+        if (authGateTab === 'signup') {
+          const redirectUrl = window.location.origin + window.location.pathname;
+          const { data, error } = await sbClient.auth.signUp({
+            email,
+            password,
+            options: {
+              data: fullName ? { full_name: fullName } : {},
+              emailRedirectTo: redirectUrl
+            }
+          });
+          if (error) {
+            setAuthGateMessage(translateSupabaseAuthError(error.message), true);
+            return;
+          }
+          if (data && data.session && data.session.user) {
+            currentAuthUser = data.session.user;
+            if (fullName) {
+              state.profile = state.profile || {};
+              state.profile.name = fullName;
+              saveState(true);
+            }
+            updateHeader();
+            updateAuthGate(false);
+            showToast('Đăng ký thành công! Chào mừng bạn đến với web học.');
+            await pullProgressFromCloud();
+          } else {
+            setAuthGateMessage('Đăng ký thành công! Hãy mở hộp thư Email (cả mục Spam) và bấm vào link xác nhận, sau đó quay lại Đăng nhập nhé.', false);
+            setAuthGateTab('login');
+            setAuthGateMessage('Đăng ký thành công! Hãy mở hộp thư Email (cả mục Spam) và bấm vào link xác nhận, sau đó quay lại Đăng nhập nhé.', false);
+          }
+        } else {
+          const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
+          if (error) {
+            setAuthGateMessage(translateSupabaseAuthError(error.message), true);
+            return;
+          }
+          if (data && data.user) {
+            currentAuthUser = data.user;
+            updateHeader();
+            updateAuthGate(false);
+            showToast('Đăng nhập thành công!');
+            await pullProgressFromCloud();
+          }
+        }
+      } catch (err) {
+        setAuthGateMessage('Không thể kết nối máy chủ đăng nhập lúc này. Hãy thử lại sau.', true);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = prevLabel || (authGateTab === 'signup' ? 'Tạo tài khoản mới' : 'Đăng nhập');
+        }
+      }
+    }
+
     async function signOutGoogle() {
       if (!sbClient) return;
       try {
         await sbClient.auth.signOut();
         currentAuthUser = null;
         cloudSyncStatus = 'local';
+        const accModal = document.getElementById('account-modal');
+        if (accModal) { accModal.classList.add('hidden'); accModal.classList.remove('flex'); }
         updateHeader();
         renderAuthPanel();
-        showToast('Đã đăng xuất khỏi tài khoản Google.');
+        updateAuthGate(false);
+        showToast('Đã đăng xuất tài khoản.');
       } catch (e) {
         showToast('Có lỗi khi đăng xuất.');
       }
@@ -7007,25 +7169,38 @@
     }
 
     async function setupAuthSession() {
+      updateAuthGate(true);
       initSupabaseClient();
-      if (!sbClient) return;
+      const gateForm = document.getElementById('auth-gate-form');
+      if (gateForm && !gateForm.dataset.bound) {
+        gateForm.dataset.bound = '1';
+        gateForm.addEventListener('submit', handleAuthGateSubmit);
+      }
+      if (!sbClient) {
+        updateAuthGate(false);
+        return;
+      }
       try {
         const { data } = await sbClient.auth.getSession();
         if (data && data.session && data.session.user) {
           currentAuthUser = data.session.user;
           updateHeader();
+          updateAuthGate(false);
           await pullProgressFromCloud();
+        } else {
+          updateAuthGate(false);
         }
         sbClient.auth.onAuthStateChange(async (event, session) => {
           currentAuthUser = session && session.user ? session.user : null;
           updateHeader();
+          updateAuthGate(false);
           if (event === 'SIGNED_IN' && currentAuthUser) {
-            showToast('Đăng nhập Gmail thành công! Đang đồng bộ buổi học...');
+            showToast('Đăng nhập thành công! Đang đồng bộ buổi học...');
             await pullProgressFromCloud();
           }
         });
       } catch (e) {
-        // Fallback to offline local mode
+        updateAuthGate(false);
       }
     }
 
@@ -7169,7 +7344,9 @@
         showToast('Đã lưu tên hiển thị!');
         return;
       }
-      if (e.target.closest('#google-signin-btn')) { signInWithGoogle(); return; }
+      if (e.target.closest('#google-signin-btn') || e.target.closest('#auth-gate-google-btn')) { signInWithGoogle(); return; }
+      const authTabBtn = e.target.closest('[data-auth-tab]');
+      if (authTabBtn) { setAuthGateTab(authTabBtn.dataset.authTab); return; }
       if (e.target.closest('#google-signout-btn')) { signOutGoogle(); return; }
       if (e.target.closest('#manual-cloud-sync-btn')) { pushProgressToCloud(false); return; }
       if (e.target.closest('#export-json-btn')) {

@@ -462,8 +462,66 @@
     </div>
   </div>
 
+  <!-- ==================== MANDATORY AUTH GATE ==================== -->
+  <div id="auth-gate-overlay" class="fixed inset-0 z-[9999] flex items-center justify-center bg-[#F7F3EA] p-4 overflow-y-auto">
+    <div id="auth-gate-loading" class="text-center space-y-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white font-black text-xl flex items-center justify-center mx-auto shadow-md">NT</div>
+      <div class="text-sm font-bold text-slate-700">Đang kiểm tra tài khoản...</div>
+    </div>
+
+    <div id="auth-gate-card" class="hidden bg-white rounded-3xl border border-[#E6DEC9] shadow-xl max-w-md w-full p-6 sm:p-8 space-y-5 my-auto">
+      <div class="text-center space-y-1.5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white font-black text-xl flex items-center justify-center mx-auto shadow-sm">NT</div>
+        <h2 class="text-xl font-extrabold text-slate-900">Nguyễn Thành — Học Anh &amp; Trung</h2>
+        <p class="text-xs sm:text-sm text-slate-500">Đăng nhập hoặc tạo tài khoản miễn phí để vào học và tự động lưu tiến độ.</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-1.5 bg-[#F6F2E9] p-1 rounded-2xl">
+        <button type="button" data-auth-tab="login" class="py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white text-slate-900 shadow-2xs transition-all">Đăng nhập</button>
+        <button type="button" data-auth-tab="signup" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 transition-all">Đăng ký tài khoản</button>
+      </div>
+
+      <form id="auth-gate-form" class="space-y-3">
+        <div id="auth-gate-name-wrap" class="hidden space-y-1">
+          <label for="auth-gate-name" class="block text-xs font-bold text-slate-700">Tên hiển thị của bạn</label>
+          <input type="text" id="auth-gate-name" autocomplete="name" placeholder="Ví dụ: Minh Anh" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none text-sm text-slate-900" />
+        </div>
+        <div class="space-y-1">
+          <label for="auth-gate-email" class="block text-xs font-bold text-slate-700">Email</label>
+          <input type="email" id="auth-gate-email" required autocomplete="email" placeholder="tenban@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none text-sm text-slate-900" />
+        </div>
+        <div class="space-y-1">
+          <label for="auth-gate-password" class="block text-xs font-bold text-slate-700">Mật khẩu</label>
+          <input type="password" id="auth-gate-password" required minlength="6" autocomplete="current-password" placeholder="Ít nhất 6 ký tự" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none text-sm text-slate-900" />
+        </div>
+
+        <div id="auth-gate-msg" class="hidden text-xs font-semibold rounded-xl px-3 py-2.5 leading-relaxed"></div>
+
+        <button type="submit" id="auth-gate-submit" class="w-full py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-extrabold shadow-xs transition-colors">
+          Đăng nhập
+        </button>
+      </form>
+
+      <div class="relative flex items-center justify-center">
+        <div class="border-t border-slate-200 w-full"></div>
+        <span class="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase shrink-0">hoặc</span>
+        <div class="border-t border-slate-200 w-full"></div>
+      </div>
+
+      <button type="button" id="auth-gate-google-btn" class="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs text-slate-800 text-sm font-bold flex items-center justify-center gap-2.5 transition-all">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/>
+          <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96h-3.98v3.09C3.515 21.3 7.615 24 12.255 24z"/>
+          <path fill="#FBBC05" d="M5.525 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62h-3.98a11.86 11.86 0 0 0 0 10.76l3.98-3.09z"/>
+          <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.64 0-8.74 2.7-10.71 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
+        </svg>
+        Tiếp tục với Google (Gmail)
+      </button>
+    </div>
+  </div>
+
   <!-- ==================== TOAST ==================== -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+  <div id="toast" class="fixed bottom-5 right-5 z-[10000] pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
     <div class="bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
       <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
       <span id="toast-msg">Đã lưu!</span>
@@ -488,7 +546,7 @@
   <script src="./js/vocab-library-v33.js?v=20261128-v33"></script>
   <script src="./js/video-library-data.js?v=20261128-v42"></script>
   <script src="./js/video-library-v36.js?v=20261128-v42vi"></script>
-  <script src="./js/app.js?v=20261128-v42g2"></script>
+  <script src="./js/app.js?v=20261128-v43auth"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
