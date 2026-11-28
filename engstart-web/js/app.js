@@ -4874,6 +4874,126 @@
       refreshIcons();
     }
 
+
+    function buildGrammarFormulaLegend(formula, isZh) {
+      if (!formula) return '';
+      const f = String(formula);
+      const items = [];
+      const add = (sym, desc) => {
+        if (!items.some(x => x.sym === sym)) items.push({ sym, desc });
+      };
+
+      if (/\(\+\)/.test(f) && /\(-\)/.test(f)) {
+        add('(+) / (-) / (?)', '<b>(+)</b> Câu khẳng định · <b>(-)</b> Câu phủ định (không) · <b>(?)</b> Câu hỏi');
+      } else if (/\(\+\)/.test(f)) {
+        add('(+) / (-)', '<b>(+)</b> Câu khẳng định · <b>(-)</b> Câu phủ định / cấm đoán');
+      }
+
+      if (/\bS\b/.test(f)) {
+        add('S', isZh
+          ? 'Chủ ngữ (người/vật thực hiện hành động, VD: <i>我 tôi, 你 bạn, 他 anh ấy</i>)'
+          : 'Chủ ngữ — người/vật làm hành động (VD: <i>I, You, He, She, It, We, They</i>)');
+      }
+      if (isZh && /\bA\b/.test(f) && /\bB\b/.test(f)) {
+        add('A, B', 'Hai đối tượng (người hoặc vật) được nêu hoặc so sánh trong câu');
+      }
+      if (!isZh) {
+        if (/am\s*\/\s*is\s*\/\s*are/i.test(f)) {
+          add('am / is / are', 'Động từ <i>to be</i> (thì, là, ở): <b>I</b> → am · <b>He/She/It</b> → is · <b>You/We/They</b> → are');
+        }
+        if (/was\s*\/\s*were/i.test(f)) {
+          add('was / were', 'Động từ <i>to be</i> ở quá khứ: <b>I/He/She/It</b> → was · <b>You/We/They</b> → were');
+        }
+        if (/have\s*\/\s*has/i.test(f)) {
+          add('have / has', 'Trợ động từ hoàn thành: <b>have</b> đi với <i>I, You, We, They</i> · <b>has</b> đi với <i>He, She, It</i> (phủ định: <i>haven’t / hasn’t</i>)');
+        }
+        if (/do\s*\/\s*does|don’t\s*\/\s*doesn’t|don't\s*\/\s*doesn't/i.test(f) || (/\bDo\b/.test(f) && /\bDoes\b/.test(f))) {
+          add('do / does', 'Trợ động từ hiện tại: <b>do / don’t</b> đi với <i>I, You, We, They</i> · <b>does / doesn’t</b> đi với <i>He, She, It</i>');
+        }
+        if (/\bDid\b|didn’t|didn't/i.test(f)) {
+          add('did / didn’t', 'Trợ động từ quá khứ (dùng chung cho mọi chủ ngữ; động từ theo sau giữ nguyên mẫu)');
+        }
+        if (/\bwill\b/i.test(f)) {
+          add('will / won’t', '“Sẽ / sẽ không” (dùng chung cho mọi chủ ngữ, theo sau là động từ nguyên mẫu)');
+        }
+        if (/going to/i.test(f)) {
+          add('going to', '“Dự định sẽ...” — dùng cho kế hoạch đã lên trước');
+        }
+        if (/\bwould\b/i.test(f)) {
+          add('would', '“Sẽ...” — dùng trong tình huống giả định (không có thật ở hiện tại)');
+        }
+        if (/can\s*\/\s*could\s*\/\s*should\s*\/\s*must/i.test(f)) {
+          add('can / could / should / must', 'Động từ khuyết thiếu: <b>can</b> (có thể) · <b>could</b> (có thể, lịch sự) · <b>should</b> (nên) · <b>must</b> (phải)');
+        }
+        if (/Wh-/i.test(f)) {
+          add('Wh-', 'Từ để hỏi: <i>What (gì), Where (ở đâu), When (khi nào), Why (tại sao), Who (ai), How (thế nào)</i>');
+        }
+        if (/HTĐ/.test(f)) {
+          add('HTĐ', 'Thì Hiện tại đơn (<i>S + V / V-s,es</i>)');
+        }
+        if (/V3/.test(f)) {
+          add('V3 / V-ed', 'Động từ cột 3 (quá khứ phân từ): thêm <b>-ed</b> (<i>worked</i>) hoặc bất quy tắc (<i>gone, eaten, seen</i>)');
+        }
+        if (/V2/.test(f)) {
+          add('V2 / V-ed', 'Động từ quá khứ cột 2: thêm <b>-ed</b> (<i>played, visited</i>) hoặc bất quy tắc (<i>went, ate, saw</i>)');
+        }
+        if (/V-ing/.test(f)) {
+          add('V-ing', 'Động từ thêm đuôi <b>-ing</b> (VD: <i>eating, studying, playing</i>)');
+        }
+        if (/V-s\/es|V-s\b/.test(f)) {
+          add('V-s/es', 'Động từ thêm <b>-s</b> hoặc <b>-es</b> khi chủ ngữ là số ít (<i>He / She / It</i>)');
+        }
+        if (/to V\b/.test(f)) {
+          add('to V', '<b>to</b> + động từ nguyên mẫu (VD: <i>to learn, to go</i>)');
+        }
+        if (/V nguyên mẫu|\+\s*V\b|\bV\s*\/|\bV\?|\bV!|\bV\.\.\./.test(f)) {
+          add('V', 'Động từ nguyên mẫu — dạng gốc không chia (VD: <i>go, eat, play</i>)');
+        }
+        if (/N\/Adj/.test(f)) {
+          add('N / Adj', '<b>N</b> = Danh từ (<i>teacher, cat</i>) · <b>Adj</b> = Tính từ (<i>happy, tall</i>)');
+        }
+        if (/by tác nhân/.test(f)) {
+          add('by + tác nhân', '“Bởi ai đó” (có thể bỏ qua nếu không cần nhấn mạnh người làm)');
+        }
+      } else {
+        if (/V1/.test(f) && /V2/.test(f)) {
+          add('V1, V2', '<b>V1</b> = Hành động làm trước · <b>V2</b> = Hành động làm tiếp theo trong cùng câu');
+        } else if (/\bV\b/.test(f)) {
+          add('V', 'Động từ chỉ hành động (VD: <i>吃 ăn, 去 đi, 看 xem</i>)');
+        }
+        if (/\bO\b/.test(f)) {
+          add('O', 'Tân ngữ — người/vật chịu tác động của hành động (VD: <i>饭 cơm, 书 sách</i>)');
+        }
+        if (/是/.test(f)) add('是 / 不是', '<b>是 (shì)</b> = là · <b>不是 (bú shì)</b> = không phải là');
+        if (/吗/.test(f)) add('吗 (ma)', 'Đặt cuối câu để biến câu kể thành câu hỏi “...phải không / ...không?”');
+        if (/的/.test(f)) add('的 (de)', 'Từ nối sở hữu (“của”) hoặc nối phần mô tả với danh từ phía sau');
+        if (/有\s*\/\s*没有/.test(f)) add('有 / 没有', '<b>有 (yǒu)</b> = có · <b>没有 (méiyǒu)</b> = không có');
+        if (/了/.test(f)) add('了 (le)', 'Đánh dấu hành động <b>đã xảy ra / đã hoàn thành</b>');
+        if (/没/.test(f) && !/没有/.test(f)) add('没 (méi)', '“Chưa / đã không...” (khi dùng <b>没</b> thì bỏ <b>了</b>)');
+        if (/过/.test(f)) add('过 (guo)', '“Đã từng...” (nói về trải nghiệm trong quá khứ)');
+        if (/正在/.test(f)) add('正在 / 在... 呢', '“Đang...” — nhấn mạnh hành động đang diễn ra ngay lúc nói');
+        if (/比/.test(f)) add('比 (bǐ)', '“Hơn” — dùng để so sánh A hơn B');
+        if (/被/.test(f)) add('被 (bèi)', '“Bị / được” — dùng trong câu bị động');
+        if (/把/.test(f)) add('把 (bǎ)', 'Đưa đồ vật lên trước động từ để nhấn mạnh cách tác động lên đồ vật đó');
+        if (/想\s*\/\s*要/.test(f)) add('想 / 要 / 会 / 可以', '<b>想</b> (muốn) · <b>要</b> (cần/sẽ) · <b>会</b> (biết làm) · <b>可以</b> (có thể/được phép)');
+      }
+
+      if (!items.length) return '';
+      return `
+        <div class="pt-2.5 mt-2 border-t border-indigo-200/70 space-y-1.5">
+          <div class="text-[11px] font-extrabold text-indigo-700">💡 Giải thích ký hiệu cho dễ hiểu:</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+            ${items.map(it => `
+              <div class="flex items-start gap-2 text-xs text-slate-700 leading-snug bg-white/80 rounded-xl px-2.5 py-1.5 border border-indigo-100">
+                <span class="px-1.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-mono font-extrabold text-[11px] shrink-0">${it.sym}</span>
+                <span>${it.desc}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
     function renderAioGrammarPage() {
       const el = document.getElementById('page-grammar');
       if (!el) return;
@@ -4929,6 +5049,7 @@
             <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 space-y-1">
               <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-700">📐 Công thức ghi nhớ</div>
               <div class="text-xs sm:text-sm font-mono font-bold text-slate-900 leading-relaxed">${selectedPoint.formula}</div>
+              ${buildGrammarFormulaLegend(selectedPoint.formula, isZh)}
             </div>
           ` : ''}
 
