@@ -525,6 +525,8 @@
 
     // ==================== NAVIGATION ====================
     function showMainPage(navName) {
+      if (state.mainNav === 'bank') window.EngStartVocabulary?.leave();
+      if (state.mainNav === 'dictionary' && navName !== 'dictionary') window.EngStartDictionary?.leave();
       stopIpaAudio(); stopIpaPracticeRecording();
       ui.session = null;
       setZenMode(false);
@@ -582,6 +584,8 @@
     }
 
     function switchTrack(trackName) {
+      if (state.mainNav === 'bank') window.EngStartVocabulary?.leave();
+      if (state.mainNav === 'dictionary') window.EngStartDictionary?.leave();
       stopIpaAudio(); stopIpaPracticeRecording();
       ui.session = null;
       setZenMode(false);
@@ -2327,6 +2331,34 @@
     }
 
     function renderBankPage() {
+      const el = document.getElementById('page-bank');
+      if (!el) return;
+      if (window.EngStartVocabulary && !ui.bankLegacy) {
+        window.EngStartVocabulary.render(el, {
+          lang: ui.bankLang === 'zh' ? 'zh' : 'en',
+          getState: () => state,
+          getBank: () => getFullVocabBank(),
+          setLang: value => { ui.bankLang = value; updateHeader(); },
+          save: () => saveState(),
+          reward: xp => addXp(xp),
+          toast: showToast,
+          stopOtherAudio: () => { stopIpaAudio(); try { window.speechSynthesis?.cancel(); } catch (_) {} },
+          legacy: () => { window.EngStartVocabulary.leave(); ui.bankLegacy = true; renderBankPage(); }
+        });
+        return;
+      }
+      renderLegacyBankPage();
+      if (window.EngStartVocabulary) {
+        const back = document.createElement('button');
+        back.type = 'button';
+        back.className = 'px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-sm';
+        back.textContent = '← Thư viện từ vựng mới';
+        back.addEventListener('click', () => { ui.bankLegacy = false; renderBankPage(); });
+        el.prepend(back);
+      }
+    }
+
+    function renderLegacyBankPage() {
       const el = document.getElementById('page-bank');
       if (!el) return;
       const isZh = ui.bankLang === 'zh';
@@ -5507,110 +5539,32 @@
     function renderAioDictionaryPage() {
       const el = document.getElementById('page-dictionary');
       if (!el) return;
-      const q = (ui.dictQuery || '').trim().toLowerCase();
-
-      // Build unified searchable English + Chinese dictionary from our app datasets
-      const enBank = typeof getFullVocabBank === 'function' ? getFullVocabBank() : [];
-      const zhList = [];
-      if (typeof ZH_TOPICS !== 'undefined') {
-        ZH_TOPICS.forEach(t => (t.words || []).forEach(w => zhList.push({
-          lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: t.title, vi: w.vi, ex: w.exZh || w.ex || '', exVi: w.exVi || ''
-        })));
-      }
-      if (typeof EXTRA_ZH_WORDS !== 'undefined') {
-        EXTRA_ZH_WORDS.forEach(w => zhList.push({
-          lang: 'zh', head: w.hanzi, sub: w.pinyin, pos: w.topic || 'HSK', vi: w.vi, ex: w.exZh || w.ex || '', exVi: w.exVi || ''
-        }));
-      }
-      const enEntries = enBank.map(w => ({ lang: 'en', head: w.en, sub: w.ipa || '', pos: w.pos || 'Từ vựng', vi: w.vi, ex: w.exEn || w.example || '', exVi: w.exVi || w.exampleVi || '' }));
-      const dictLang = ui.dictLang || 'all'; // 'all' | 'en' | 'zh'
-      const scopedEntries = dictLang === 'en' ? enEntries : (dictLang === 'zh' ? zhList : [...enEntries, ...zhList]);
-      const allEntries = [...enEntries, ...zhList];
-
-      const matches = q
-        ? scopedEntries.filter(e => e.head.toLowerCase().includes(q) || e.sub.toLowerCase().includes(q) || e.vi.toLowerCase().includes(q)).slice(0, 20)
-        : (dictLang === 'all' ? [...enEntries.slice(0, 5), ...zhList.slice(0, 5)] : scopedEntries.slice(0, 15));
-      const active = matches[ui.dictPickIdx || 0] || matches[0] || allEntries[0];
-      const isZh = active && active.lang === 'zh';
-
-      el.innerHTML = `
-        <!-- Sand/Gold AIO Deep Dictionary Banner -->
-        <div class="aio-sand-banner rounded-3xl p-5 sm:p-6 space-y-3 shadow-xs">
-          <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-            <h1 class="text-2xl font-extrabold text-slate-900 shrink-0">Từ điển chuyên sâu.</h1>
-            <div class="flex-1 flex items-center gap-2">
-              <input type="text" id="aio-dict-search" value="${(ui.dictQuery || '').replace(/"/g, '&quot;')}" placeholder="Tìm từ Tiếng Anh, chữ Hán, Pinyin hoặc nghĩa Tiếng Việt..." class="flex-1 px-4 py-2.5 rounded-2xl bg-white border border-[#D8C190] text-sm outline-none focus:border-amber-600" />
-              <button type="button" id="aio-dict-search-btn" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-amber-50 border border-[#D8C190] text-xs font-extrabold text-slate-900 shrink-0">Tra từ</button>
-            </div>
-          </div>
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="bg-white/85 p-1 rounded-xl inline-flex text-xs font-bold border border-[#D8C190]">
-              <button type="button" data-dict-lang="all" class="px-3 py-1 rounded-lg ${dictLang === 'all' ? 'bg-amber-600 text-white' : 'text-slate-600'}">Tất cả (${allEntries.length})</button>
-              <button type="button" data-dict-lang="en" class="px-3 py-1 rounded-lg ${dictLang === 'en' ? 'bg-sky-600 text-white' : 'text-slate-600'}">Tiếng Anh (${enEntries.length})</button>
-              <button type="button" data-dict-lang="zh" class="px-3 py-1 rounded-lg ${dictLang === 'zh' ? 'bg-rose-600 text-white' : 'text-slate-600'}">Tiếng Trung (${zhList.length})</button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 text-[11px] font-bold text-amber-900/80">
-              <span class="px-2.5 py-0.5 rounded-full bg-white/75">Phát âm chuẩn + Câu ví dụ thật</span>
-              <span class="px-2.5 py-0.5 rounded-full bg-white/75">Lưu ngay vào Sổ tay</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-          <!-- Main Word Detail Card -->
-          <div class="lg:col-span-8 space-y-4">
-            ${active ? `
-              <div class="bg-white rounded-3xl border border-[#E6DEC9] p-6 space-y-4 shadow-2xs">
-                <div class="flex items-start justify-between gap-3">
-                  <div>
-                    <div class="flex flex-wrap items-center gap-2">
-                      <h2 class="text-3xl font-extrabold text-slate-900">${active.head}</h2>
-                      <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isZh ? 'bg-rose-100 text-rose-700' : 'bg-sky-100 text-sky-700'}">${isZh ? 'Tiếng Trung' : 'Tiếng Anh'}</span>
-                      <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">${active.pos}</span>
-                    </div>
-                    <div class="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF6EE] border border-[#EAE2D3]">
-                      <span class="text-xs font-bold text-slate-500">${isZh ? 'Pinyin' : 'US IPA'}</span>
-                      <span class="text-sm font-mono font-bold ${isZh ? 'text-rose-600' : 'text-sky-700'}">${active.sub || '—'}</span>
-                      <button type="button" ${isZh ? `data-speak-zh="${active.head}"` : `data-speak="${active.head}"`} class="p-1.5 rounded-lg bg-white border border-slate-200 text-sky-600"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
-                    </div>
-                  </div>
-                  <button type="button" id="aio-dict-save-btn" class="px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-extrabold shrink-0">+ Lưu Sổ tay</button>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-[#FAF6EE] border border-[#EAE2D3] space-y-2">
-                  <div class="text-base font-extrabold text-emerald-800">1. ${active.vi}</div>
-                  ${active.ex ? `
-                    <div class="pt-2 border-t border-[#E6DEC9] flex items-start justify-between gap-2">
-                      <div>
-                        <div class="text-sm font-bold text-slate-900">${active.ex}</div>
-                        ${active.exVi ? `<div class="text-xs text-slate-600 mt-0.5">${active.exVi}</div>` : ''}
-                      </div>
-                      <button type="button" ${isZh ? `data-speak-zh="${active.ex}"` : `data-speak="${active.ex}"`} class="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 shrink-0"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                  ` : ''}
-                </div>
-              </div>
-            ` : `<div class="bg-white rounded-3xl p-8 text-center text-sm text-slate-500">Không tìm thấy từ phù hợp. Hãy thử gõ từ khác!</div>`}
-          </div>
-
-          <!-- Right Column: Matching Word Results (Blue AIO Panel) -->
-          <div class="lg:col-span-4 aio-sky-banner rounded-3xl p-4 space-y-2.5">
-            <div class="font-extrabold text-sm text-slate-900 px-1">Kết quả &amp; Từ liên quan.</div>
-            <div class="space-y-1.5 max-h-[420px] overflow-y-auto pr-0.5">
-              ${matches.map((m, idx) => `
-                <button type="button" data-aio-dict-pick="${idx}" class="w-full text-left p-3 rounded-2xl bg-white hover:bg-sky-50 border ${idx === (ui.dictPickIdx || 0) ? 'border-sky-500 ring-2 ring-sky-200' : 'border-sky-100'} transition-all">
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="font-extrabold text-sm text-slate-900">${m.head}</span>
-                    <span class="text-[10px] font-bold ${m.lang === 'zh' ? 'text-rose-600' : 'text-sky-600'}">${m.lang === 'zh' ? 'Trung' : 'Anh'}</span>
-                  </div>
-                  <div class="text-xs text-slate-500 truncate mt-0.5">${m.vi}</div>
-                </button>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      `;
-      refreshIcons();
+      if (!window.EngStartDictionary) { el.textContent = 'Chưa tải được bộ từ điển. Hãy tải lại trang.'; return; }
+      window.EngStartDictionary.render(el, {
+        lang: ui.dictLang || 'all',
+        setLang: value => { ui.dictLang = value; },
+        refreshIcons,
+        stopOtherAudio: () => { stopIpaAudio(); try { window.speechSynthesis?.cancel(); } catch {} },
+        getData: () => {
+          const en = [], zh = [];
+          if (typeof ALL_WORDS !== 'undefined') ALL_WORDS.forEach(w => en.push({head:w.en,sub:w.ipa,pos:w.pos,vi:w.vi,usage:w.usage,example:w.exEn,exampleVi:w.exVi,level:''}));
+          if (typeof EXTRA_COMM_WORDS !== 'undefined') EXTRA_COMM_WORDS.forEach(r => en.push({head:r[0],sub:r[1],pos:r[2],vi:r[3],level:r[4]}));
+          if (typeof ZH_TOPICS !== 'undefined') ZH_TOPICS.forEach(t => (t.words || []).forEach(w => zh.push({head:w.hanzi,sub:w.pinyin,pos:w.pos||'Từ vựng',vi:w.vi,example:w.exZh||w.ex,examplePy:w.exPy,exampleVi:w.exVi})));
+          if (typeof EXTRA_ZH_WORDS !== 'undefined') EXTRA_ZH_WORDS.forEach(r => zh.push(Array.isArray(r)?{head:r[0],sub:r[1],pos:r[2],vi:r[3],level:r[4]}:{head:r.hanzi,sub:r.pinyin,pos:r.pos,vi:r.vi,level:r.level,example:r.exZh,exampleVi:r.exVi}));
+          (state.customBankWords || []).forEach(w=>en.push({head:w.en,sub:w.ipa,pos:w.pos,vi:w.vi,level:w.level,example:w.exEn,exampleVi:w.exVi}));
+          (state.zhCustomBankWords || []).forEach(w=>zh.push({head:w.en,sub:w.ipa,pos:w.pos,vi:w.vi,level:w.level,example:w.exEn,exampleVi:w.exVi}));
+          return {en,zh};
+        },
+        isSaved: (head) => String(state.notebook || '').split('\n').some(line => line.startsWith('- [Từ điển] '+head+' (')),
+        save: (entry, meaning) => {
+          const prefix = '- [Từ điển] '+entry.head+' (';
+          if (String(state.notebook||'').split('\n').some(line=>line.startsWith(prefix))) { showToast('Từ này đã có trong sổ tay.'); return; }
+          const pronunciation = entry.lang === 'zh' ? (entry.pinyin || '—') : ([entry.uk&&'UK '+entry.uk,entry.us&&'US '+entry.us].filter(Boolean).join(' · ') || entry.sub || '—');
+          const line = (prefix + pronunciation + '): ' + meaning).replace(/[\r\n]+/g,' ');
+          state.notebook = state.notebook ? state.notebook + '\n' + line : line;
+          saveState(); showToast('Đã lưu '+entry.head+' vào Sổ tay!');
+        }
+      });
     }
 
     // ==================== AIO-STYLE SENTENCE TYPING ("HỌC QUA GÕ CÂU" — ANH & TRUNG) ====================
@@ -7570,44 +7524,6 @@
         renderAioPronunciationPage();
         return;
       }
-      const dLangBtn = e.target.closest('[data-dict-lang]');
-      if (dLangBtn) {
-        ui.dictLang = dLangBtn.dataset.dictLang;
-        ui.dictPickIdx = 0;
-        renderAioDictionaryPage();
-        return;
-      }
-      if (e.target.closest('#aio-dict-search-btn')) {
-        const inp = document.getElementById('aio-dict-search');
-        ui.dictQuery = inp ? inp.value : '';
-        ui.dictPickIdx = 0;
-        renderAioDictionaryPage();
-        return;
-      }
-      const dictPickBtn = e.target.closest('[data-aio-dict-pick]');
-      if (dictPickBtn) {
-        ui.dictPickIdx = parseInt(dictPickBtn.dataset.aioDictPick, 10);
-        renderAioDictionaryPage();
-        return;
-      }
-      if (e.target.closest('#aio-dict-save-btn')) {
-        const q = (ui.dictQuery || '').trim().toLowerCase();
-        const enBank = typeof getFullVocabBank === 'function' ? getFullVocabBank() : [];
-        const zhList = [];
-        if (typeof ZH_TOPICS !== 'undefined') ZH_TOPICS.forEach(t => (t.words || []).forEach(w => zhList.push({ head: w.hanzi, sub: w.pinyin, vi: w.vi })));
-        if (typeof EXTRA_ZH_WORDS !== 'undefined') EXTRA_ZH_WORDS.forEach(w => zhList.push({ head: w.hanzi, sub: w.pinyin, vi: w.vi }));
-        const all = [...enBank.map(w => ({ head: w.en, sub: w.ipa || '', vi: w.vi })), ...zhList];
-        const matches = q ? all.filter(x => x.head.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q) || x.vi.toLowerCase().includes(q)).slice(0, 12) : all.slice(0, 8);
-        const item = matches[ui.dictPickIdx || 0] || matches[0];
-        if (item) {
-          const line = `- ${item.head} (${item.sub}): ${item.vi}`;
-          state.notebook = state.notebook ? (state.notebook + '\n' + line) : line;
-          saveState();
-          showToast(`Đã lưu "${item.head}" vào Sổ tay!`);
-        }
-        return;
-      }
-
       // AIO Sentence Typing ("Học qua gõ câu") actions
       const tLangBtn = e.target.closest('[data-typing-lang]');
       if (tLangBtn) {
@@ -8474,7 +8390,6 @@
     document.addEventListener('keydown', (e) => {
       const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
       if (tag === 'input' || tag === 'textarea') {
-        if (e.key === 'Enter' && e.target.id === 'aio-dict-search') { e.preventDefault(); ui.dictQuery = e.target.value; ui.dictPickIdx = 0; renderAioDictionaryPage(); return; }
         if (e.key === 'Enter' && e.target.id === 'ai-chat-input') { e.preventDefault(); sendAiMessage(e.target.value); }
         else if (e.key === 'Enter' && e.target.id === 'card-recall-input') { e.preventDefault(); checkCardRecall(); }
         else if (e.key === 'Enter' && e.target.id === 'dictation-input') {
