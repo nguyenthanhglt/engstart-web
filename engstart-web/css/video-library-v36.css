@@ -24,3 +24,5 @@
 #page-videos .ev36 .ev-card button.ev-thumb{border-radius:0}
 #page-videos .ev36 button.ev-thumb:hover:not(:disabled){background:linear-gradient(135deg,#d2e1e9,#b7c9d9);box-shadow:inset 0 0 0 2px #b15881}
 #page-videos .ev36 button.ev-thumb:hover .ev-play{background:#a44770;color:#fff}
+
+#page-videos .ev36 .ev37-vi{color:#775165;font-weight:500;white-space:pre-wrap}#page-videos .ev36 #ev37-status{flex:1;overflow-wrap:anywhere;line-height:1.5}#page-videos .ev36 #ev37-original,#page-videos .ev36 #ev37-target{min-width:0;width:100%}
