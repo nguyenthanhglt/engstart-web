@@ -64,3 +64,11 @@
 #page-videos .ev36 .ev38-room[data-mode=dictation] #ev36-caption,#page-videos .ev36 .ev38-room[data-mode=quiz] #ev36-caption{display:none}
 #page-videos .ev36:has(.ev38-room) .ev-head{padding:12px}
 #page-videos .ev36 .ev38-room .ev38-exercise .ev-row{gap:6px}
+
+/* v39: strict sentence-by-sentence Dictation and visible YouTube add action. */
+#page-videos .ev36 .ev39-add-youtube{font-weight:800;white-space:normal}
+#page-videos .ev36 .ev39-dictation-player iframe,#page-videos .ev36 .ev39-dictation-player video{pointer-events:none}
+#page-videos .ev36 .ev39-step{border:1px solid #dfc2d1;background:#f9edf3;color:#823757;border-radius:9px;padding:10px 12px;font-size:13px;font-weight:700}
+#page-videos .ev36 #ev36-answer:disabled{background:#f2eee8;color:#737373;cursor:not-allowed}
+#page-videos .ev36 #ev39-next:disabled{opacity:.45;cursor:not-allowed}
+#page-videos .ev36 .ev38-line:disabled{opacity:.6;cursor:not-allowed}
