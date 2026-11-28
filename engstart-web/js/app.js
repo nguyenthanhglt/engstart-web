@@ -1763,6 +1763,89 @@
       return list;
     }
 
+    // ==================== SPEED DASH ONLINE LEADERBOARD (SUPABASE + LOCAL FALLBACK) ====================
+    function getDashPlayerName() {
+      const saved = (state.profile && state.profile.name && state.profile.name.trim()) || '';
+      const meta = (typeof currentAuthUser !== 'undefined' && currentAuthUser && currentAuthUser.user_metadata) || {};
+      const guest = (typeof localStorage !== 'undefined' && localStorage.getItem('engstart_dash_nick')) || '';
+      return (guest || saved || meta.full_name || meta.name || 'Người chơi ẩn danh').slice(0, 28);
+    }
+
+    async function loadDashLeaderboard(lang, force) {
+      const targetLang = lang === 'zh' ? 'zh' : 'en';
+      if (!ui.dashLbCache) ui.dashLbCache = {};
+      if (!force && ui.dashLbCache[targetLang] && (Date.now() - ui.dashLbCache[targetLang].ts < 20000)) {
+        return ui.dashLbCache[targetLang];
+      }
+      ui.dashLbLoading = true;
+      let rows = [];
+      let online = false;
+      try {
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+          const { data, error } = await supabaseClient
+            .from('engstart_leaderboard')
+            .select('id, player_name, lang, score, max_combo, created_at')
+            .eq('lang', targetLang)
+            .order('score', { ascending: false })
+            .order('max_combo', { ascending: false })
+            .limit(10);
+          if (!error && Array.isArray(data)) {
+            rows = data;
+            online = true;
+          }
+        }
+      } catch {}
+      if (!online) {
+        const localAll = Array.isArray(state.dashLocalLb) ? state.dashLocalLb : [];
+        rows = localAll
+          .filter(r => r.lang === targetLang)
+          .sort((a, b) => (b.score - a.score) || (b.max_combo - a.max_combo))
+          .slice(0, 10);
+      }
+      ui.dashLbCache[targetLang] = { rows, online, ts: Date.now() };
+      ui.dashLbLoading = false;
+      if (state.mainNav === 'review' && ui.reviewSubTab === 'dash') renderReviewPage();
+      return ui.dashLbCache[targetLang];
+    }
+
+    async function submitDashScore(lang, score, maxCombo) {
+      if (!score || score <= 0) return;
+      const targetLang = lang === 'zh' ? 'zh' : 'en';
+      const playerName = getDashPlayerName();
+      const entry = {
+        id: 'loc_' + Date.now(),
+        player_name: playerName,
+        lang: targetLang,
+        score: Number(score) || 0,
+        max_combo: Number(maxCombo) || 0,
+        created_at: new Date().toISOString()
+      };
+      if (!Array.isArray(state.dashLocalLb)) state.dashLocalLb = [];
+      const prevBest = state.dashLocalLb.filter(x => x.lang === targetLang).reduce((m, x) => Math.max(m, x.score || 0), 0);
+      state.dashLocalLb.push(entry);
+      state.dashLocalLb = state.dashLocalLb.sort((a, b) => b.score - a.score).slice(0, 30);
+      saveState();
+
+      if (score > prevBest && typeof confetti === 'function') {
+        try { confetti({ particleCount: 70, spread: 65, origin: { y: 0.65 } }); } catch {}
+      }
+
+      try {
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+          const { error } = await supabaseClient.from('engstart_leaderboard').insert([{
+            player_name: playerName,
+            lang: targetLang,
+            score: entry.score,
+            max_combo: entry.max_combo
+          }]);
+          if (!error) {
+            showToast(`🏆 Đã ghi danh ${score} điểm lên Bảng xếp hạng!`);
+          }
+        }
+      } catch {}
+      loadDashLeaderboard(targetLang, true);
+    }
+
     function initOqSpeedDash() {
       const lang = ui.oqLang || 'en';
       const pool = getOqPool(lang);
@@ -1770,6 +1853,7 @@
       ui.oqDashActive = true;
       ui.oqDashScore = 0;
       ui.oqDashCombo = 0;
+      ui.oqDashBestCombo = 0;
       ui.oqDashLeft = 60;
       ui.oqDashPool = shuffled;
       ui.oqDashIdx = 0;
@@ -1787,6 +1871,7 @@
           ui.oqDashActive = false;
           clearInterval(window._oqDashTimer);
           addXp(Math.min(40, (ui.oqDashScore || 0) * 5), `Hoàn thành Đua tốc độ (+${Math.min(40, (ui.oqDashScore || 0) * 5)} XP)`);
+          submitDashScore(ui.oqLang || 'en', ui.oqDashScore || 0, ui.oqDashBestCombo || 0);
           renderReviewPage();
         }
       }, 1000);
@@ -2024,6 +2109,54 @@
                 <button type="button" data-oq-dash-pick="0" class="text-xs font-bold text-slate-500 hover:text-slate-800 underline">Tôi không biết (Bỏ qua)</button>
               </div>
             `}
+          
+            <!-- 🏆 Bảng Xếp Hạng Đua Tốc Độ 60s -->
+            <div class="pt-4 border-t border-slate-100 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🏆</span>
+                  <div>
+                    <div class="text-sm font-extrabold text-slate-900">Bảng Xếp Hạng ${isZh ? 'Tiếng Trung' : 'Tiếng Anh'} (Top 10)</div>
+                    <div class="text-[11px] text-slate-500">${(ui.dashLbCache && ui.dashLbCache[lang] && ui.dashLbCache[lang].online) ? '🟢 Đang đồng bộ trực tuyến mọi người chơi' : '💾 Kỷ lục trên máy (chạy SQL bảng engstart_leaderboard trên Supabase để thi đua online)'}</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <input type="text" id="dash-nick-input" value="${getDashPlayerName().replace(/"/g, '&quot;')}" maxlength="24" placeholder="Tên thi đấu..." class="w-32 sm:w-40 px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 outline-none focus:border-amber-500" />
+                  <button type="button" id="dash-lb-refresh" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">🔄 Làm mới</button>
+                </div>
+              </div>
+
+              ${(() => {
+                const cached = ui.dashLbCache && ui.dashLbCache[lang];
+                if (!cached && !ui.dashLbLoading) {
+                  setTimeout(() => loadDashLeaderboard(lang, false), 50);
+                }
+                const rows = (cached && cached.rows) || [];
+                const myName = getDashPlayerName().toLowerCase();
+                if (!rows.length) {
+                  return `<div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 text-center text-xs text-slate-500">Chưa có điểm nào ở mục ${isZh ? 'Tiếng Trung' : 'Tiếng Anh'}. Hãy bấm <strong>Bắt đầu chơi ngay</strong> để lên Top 1 đầu tiên nhé!</div>`;
+                }
+                const medals = ['🥇', '🥈', '🥉'];
+                return `
+                  <div class="divide-y divide-slate-100 rounded-2xl border border-slate-200/80 overflow-hidden bg-white">
+                    ${rows.map((r, i) => {
+                      const isMe = String(r.player_name || '').toLowerCase() === myName;
+                      return `
+                        <div class="px-3.5 py-2.5 flex items-center justify-between gap-2 text-xs sm:text-sm ${isMe ? 'bg-amber-50/70' : (i % 2 === 1 ? 'bg-slate-50/40' : 'bg-white')}">
+                          <div class="flex items-center gap-2.5 min-w-0">
+                            <span class="w-6 text-center font-extrabold shrink-0 ${i < 3 ? 'text-base' : 'text-xs text-slate-400'}">${medals[i] || ('#' + (i + 1))}</span>
+                            <span class="font-extrabold text-slate-900 truncate">${(r.player_name || 'Ẩn danh').replace(/</g, '&lt;')}</span>
+                            ${isMe ? '<span class="px-1.5 py-0.5 rounded-md bg-amber-200/80 text-amber-900 text-[10px] font-extrabold shrink-0">Bạn</span>' : ''}
+                          </div>
+                          <div class="flex items-center gap-3 shrink-0">
+                            <span class="text-[11px] font-bold text-orange-600">🔥 x${r.max_combo || 0}</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-extrabold text-xs">${r.score || 0} điểm</span>
+                          </div>
+                        </div>`;
+                    }).join('')}
+                  </div>`;
+              })()}
+            </div>
           </div>
         `;
       }
@@ -4655,74 +4788,154 @@
       if (!el) return;
       const lang = ui.aioGrammarLang || 'en';
       const isZh = lang === 'zh';
-      const units = AIO_GRAMMAR_UNITS[lang] || AIO_GRAMMAR_UNITS.en;
+      const sourceMap = (typeof window !== 'undefined' && window.AIO_GRAMMAR_UNITS_FULL) ? window.AIO_GRAMMAR_UNITS_FULL : AIO_GRAMMAR_UNITS;
+      const allUnits = sourceMap[lang] || sourceMap.en;
+      const activeGroup = ui.aioGrammarGroup || 'all';
+      const units = activeGroup === 'all' ? allUnits : allUnits.filter(u => u.group === activeGroup);
       const activeKey = ui.aioGrammarSelected || `${lang}-1-0`;
 
       let selectedPoint = null;
       units.forEach(u => u.points.forEach((pt, idx) => {
-        if (`${lang}-${u.num}-${idx}` === activeKey) selectedPoint = { ...pt, unitTitle: u.title, level: u.level };
+        if (`${lang}-${u.num}-${idx}` === activeKey) selectedPoint = { ...pt, unitTitle: u.title, level: u.level, unitNum: u.num, key: activeKey };
       }));
-      if (!selectedPoint) selectedPoint = { ...units[0].points[0], unitTitle: units[0].title, level: units[0].level };
+      if (!selectedPoint) {
+        const u0 = units[0];
+        selectedPoint = { ...u0.points[0], unitTitle: u0.title, level: u0.level, unitNum: u0.num, key: `${lang}-${u0.num}-0` };
+      }
+
+      const examples = Array.isArray(selectedPoint.examples) && selectedPoint.examples.length
+        ? selectedPoint.examples
+        : [{ text: selectedPoint.ex || '', vi: '', note: '' }];
+      const firstSpeakText = (examples[0].text || '').split('(')[0].trim();
+      const quizPicked = ui.aioGramQuizPicked && ui.aioGramQuizPicked[selectedPoint.key];
+      const chk = selectedPoint.check;
 
       el.innerHTML = `
-        <!-- Orange AIO Grammar Banner -->
         <div class="aio-orange-banner rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
           <div class="space-y-2">
             <div class="flex flex-wrap items-center gap-2.5">
               <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Luyện ngữ pháp.</h1>
               <div class="bg-white/85 p-0.5 rounded-xl inline-flex text-xs font-bold border border-orange-200">
-                <button type="button" data-aio-gram-lang="en" class="px-3 py-1 rounded-lg ${!isZh ? 'bg-orange-600 text-white' : 'text-slate-600'}">Tiếng Anh (A1–A2)</button>
-                <button type="button" data-aio-gram-lang="zh" class="px-3 py-1 rounded-lg ${isZh ? 'bg-rose-600 text-white' : 'text-slate-600'}">Tiếng Trung (HSK 1–2)</button>
+                <button type="button" data-aio-gram-lang="en" class="px-3 py-1 rounded-lg ${!isZh ? 'bg-orange-600 text-white' : 'text-slate-600'}">🇬🇧 Tiếng Anh (${(sourceMap.en || []).length} chuyên đề)</button>
+                <button type="button" data-aio-gram-lang="zh" class="px-3 py-1 rounded-lg ${isZh ? 'bg-rose-600 text-white' : 'text-slate-600'}">🇨🇳 Tiếng Trung (${(sourceMap.zh || []).length} chuyên đề)</button>
               </div>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">Hệ thống hóa điểm ngữ pháp cốt lõi theo từng cụm dễ nhớ kèm ví dụ phát âm bản xứ.</p>
+            <p class="text-xs sm:text-sm text-slate-700">Đầy đủ công thức, giải thích dễ hiểu bằng tiếng Việt, 3 ví dụ có phát âm bản xứ, lỗi hay mắc và bài tập áp dụng ngay.</p>
           </div>
-          <button type="button" ${isZh ? `data-speak-zh="${selectedPoint.ex.split('(')[0].trim()}"` : `data-speak="${selectedPoint.ex}"`} class="px-4 py-2.5 rounded-2xl bg-white hover:bg-orange-50 border border-orange-200 text-slate-900 text-xs font-extrabold shadow-xs shrink-0 flex items-center gap-1.5">
-            <i data-lucide="volume-2" class="w-4 h-4 text-orange-600"></i> Nghe ví dụ đang chọn
+          <button type="button" ${isZh ? `data-speak-zh="${firstSpeakText.replace(/"/g, '&quot;')}"` : `data-speak="${firstSpeakText.replace(/"/g, '&quot;')}"`} class="px-4 py-2.5 rounded-2xl bg-white hover:bg-orange-50 border border-orange-200 text-slate-900 text-xs font-extrabold shadow-xs shrink-0 flex items-center gap-1.5">
+            <i data-lucide="volume-2" class="w-4 h-4 text-orange-600"></i> Nghe ví dụ chính
           </button>
         </div>
 
-        <!-- Selected Grammar Detail Card -->
-        <div class="bg-white rounded-3xl border border-[#E6DEC9] p-5 shadow-2xs space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800 text-[11px] font-extrabold">${selectedPoint.level} · ${selectedPoint.unitTitle}</span>
+        <div class="bg-white rounded-3xl border border-[#E6DEC9] p-5 sm:p-6 shadow-2xs space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-[11px] font-extrabold">Bài ${selectedPoint.unitNum} · ${selectedPoint.level} · ${selectedPoint.unitTitle}</span>
           </div>
-          <div class="text-lg font-extrabold text-slate-900">${selectedPoint.title}</div>
-          <div class="text-sm text-slate-700 leading-relaxed"><strong>Quy tắc:</strong> ${selectedPoint.rule}</div>
-          <div class="p-3 rounded-xl bg-[#FAF6EE] border border-[#EAE2D3] text-sm font-bold text-slate-900 flex items-center justify-between gap-2">
-            <span>Ví dụ: ${selectedPoint.ex}</span>
-            <button type="button" ${isZh ? `data-speak-zh="${selectedPoint.ex.split('(')[0].trim()}"` : `data-speak="${selectedPoint.ex}"`} class="p-2 rounded-lg bg-white border border-slate-200 text-orange-600 shrink-0"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">${selectedPoint.title}</h2>
+
+          ${selectedPoint.formula ? `
+            <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 space-y-1">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-700">📐 Công thức ghi nhớ</div>
+              <div class="text-xs sm:text-sm font-mono font-bold text-slate-900 leading-relaxed">${selectedPoint.formula}</div>
+            </div>
+          ` : ''}
+
+          <div class="text-sm text-slate-800 leading-relaxed bg-[#FAF6EE] p-4 rounded-2xl border border-[#EAE2D3]">
+            <strong class="text-orange-800">📖 Giải thích tiếng Việt:</strong> ${selectedPoint.rule}
           </div>
+
+          <div class="space-y-2">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">💬 Ví dụ cụ thể &amp; Phân tích (bấm loa để nghe)</div>
+            <div class="space-y-2">
+              ${examples.map((ex, ei) => {
+                const spk = (ex.text || '').split('(')[0].trim().replace(/"/g, '&quot;');
+                return `
+                  <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 hover:border-orange-300 transition-colors flex items-start justify-between gap-3">
+                    <div class="space-y-1 min-w-0">
+                      <div class="text-sm sm:text-base font-extrabold text-slate-900">${ei + 1}. ${ex.text}</div>
+                      ${ex.pinyin ? `<div class="text-xs font-mono text-rose-600">${ex.pinyin}</div>` : ''}
+                      ${ex.vi ? `<div class="text-xs sm:text-sm font-semibold text-emerald-700">→ ${ex.vi}</div>` : ''}
+                      ${ex.note ? `<div class="text-xs text-slate-500">💡 <em>${ex.note}</em></div>` : ''}
+                    </div>
+                    <button type="button" ${isZh ? `data-speak-zh="${spk}"` : `data-speak="${spk}"`} class="p-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-700 shrink-0" title="Nghe phát âm">
+                      <i data-lucide="volume-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>`;
+              }).join('')}
+            </div>
+          </div>
+
+          ${selectedPoint.mistake ? `
+            <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200 text-xs sm:text-sm text-amber-950 leading-relaxed">
+              <strong>⚠️ Lỗi người Việt hay mắc:</strong> ${selectedPoint.mistake}
+            </div>
+          ` : ''}
+
+          ${chk ? `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-3">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-violet-700">📝 Kiểm tra nhanh (áp dụng ngay)</div>
+              <div class="text-sm font-bold text-slate-900">${chk.q}</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${chk.opts.map((opt, oi) => {
+                  const picked = quizPicked !== undefined;
+                  let cls = 'bg-white hover:bg-violet-50 border-slate-200 text-slate-800';
+                  if (picked) {
+                    if (oi === chk.ans) cls = 'bg-emerald-50 border-emerald-500 text-emerald-900 ring-1 ring-emerald-300';
+                    else if (oi === quizPicked) cls = 'bg-rose-50 border-rose-400 text-rose-900';
+                    else cls = 'bg-white/70 border-slate-200 text-slate-400';
+                  }
+                  return `<button type="button" data-aio-gram-quiz="${oi}" data-aio-gram-key="${selectedPoint.key}" class="px-3.5 py-2.5 rounded-xl border text-left text-xs sm:text-sm font-bold transition-all ${cls}">${String.fromCharCode(65 + oi)}. ${opt}</button>`;
+                }).join('')}
+              </div>
+              ${quizPicked !== undefined ? `
+                <div class="p-3 rounded-xl text-xs font-semibold ${quizPicked === chk.ans ? 'bg-emerald-100/80 text-emerald-900' : 'bg-rose-100/80 text-rose-900'}">
+                  ${quizPicked === chk.ans ? '✅ Chính xác! (+5 XP) — ' : '❌ Chưa đúng rồi — '}${chk.explain}
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
         </div>
 
-        <!-- Honey Panel with Numbered Grammar Units (Exact AIO layout) -->
-        <div class="aio-honey-panel rounded-3xl p-5 space-y-4">
-          <div class="text-sm font-extrabold text-slate-900">${isZh ? 'HSK 1–2 · Ngữ pháp nền tảng.' : 'A1–A2 · Ngữ pháp sơ cấp.'}</div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            ${units.map(u => `
-              <div class="bg-white/95 rounded-2xl border border-[#E5D6B5] p-4 space-y-2.5 shadow-2xs">
-                <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-900 text-xs font-extrabold flex items-center justify-center shrink-0">${u.num}</span>
-                  <div class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">${u.title}</div>
+        <!-- 3 Category Filter Pills -->
+        <div class="flex flex-wrap items-center gap-2">
+          ${[
+            { id: 'all', label: `Tất cả (${allUnits.length} bài)` },
+            { id: 'tenses', label: isZh ? '1. Năng nguyện & Trợ từ' : '1. Các thì & Trợ động từ' },
+            { id: 'parts', label: isZh ? '2. Sở hữu, Lượng từ & 的/地/得' : '2. Từ loại (Danh/Đại/Tính/Trạng)' },
+            { id: 'structures', label: isZh ? '3. Cấu trúc câu (被, 把, Liên từ)' : '3. Cấu trúc câu (Mệnh lệnh, If, Bị động, Từ nối)' }
+          ].map(g => `
+            <button type="button" data-aio-gram-group="${g.id}" class="px-3.5 py-2 rounded-2xl text-xs font-extrabold border transition-all ${
+              activeGroup === g.id ? 'bg-slate-900 text-white border-transparent shadow-2xs' : 'bg-white hover:bg-orange-50 text-slate-700 border-[#E6DEC9]'
+            }">${g.label}</button>
+          `).join('')}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${units.map(u => `
+            <div class="bg-white rounded-3xl border border-[#E6DEC9] p-4 sm:p-5 space-y-2.5 shadow-2xs">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-8 h-8 rounded-xl bg-orange-100 text-orange-800 font-extrabold text-sm flex items-center justify-center shrink-0">${u.num}</span>
+                  <h3 class="font-extrabold text-sm sm:text-base text-slate-900">${u.title}</h3>
                 </div>
-                <div class="space-y-1.5">
-                  ${u.points.map((pt, idx) => {
-                    const key = `${lang}-${u.num}-${idx}`;
-                    const isSel = key === activeKey;
-                    return `
-                      <button type="button" data-aio-gram-pick="${key}" class="w-full text-left p-2.5 rounded-xl border transition-all ${isSel ? 'border-orange-400 bg-orange-50/70 shadow-2xs' : 'border-slate-100 hover:bg-slate-50'}">
-                        <div class="flex items-center justify-between gap-2">
-                          <span class="text-xs font-bold text-slate-900">${pt.title}</span>
-                          ${isSel ? `<span class="px-1.5 py-0.5 rounded-md bg-orange-600 text-white text-[10px] font-bold">Đang xem</span>` : ''}
-                        </div>
-                        <div class="text-[11px] text-slate-500 mt-0.5 truncate">${pt.ex}</div>
-                      </button>
-                    `;
-                  }).join('')}
-                </div>
+                <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-extrabold shrink-0">${u.level}</span>
               </div>
-            `).join('')}
-          </div>
+              <div class="space-y-1.5">
+                ${u.points.map((pt, idx) => {
+                  const key = `${lang}-${u.num}-${idx}`;
+                  const isSel = key === selectedPoint.key;
+                  return `
+                    <button type="button" data-aio-gram-pick="${key}" class="w-full text-left px-3.5 py-2.5 rounded-2xl border transition-all flex items-center justify-between gap-2 ${
+                      isSel ? 'bg-orange-50 border-orange-400 text-orange-950 font-extrabold shadow-2xs' : 'bg-[#FAF6EE]/70 hover:bg-orange-50/40 border-[#EAE2D3] text-slate-800 font-semibold'
+                    }">
+                      <span class="text-xs sm:text-sm">${pt.title}</span>
+                      <i data-lucide="chevron-right" class="w-4 h-4 text-orange-500 shrink-0"></i>
+                    </button>`;
+                }).join('')}
+              </div>
+            </div>
+          `).join('')}
         </div>
       `;
       refreshIcons();
@@ -7150,16 +7363,43 @@
       }
 
       // AIO Grammar, Reading, Pronunciation & Dictionary actions
+      const grmGroupBtn = e.target.closest('[data-aio-gram-group]');
+      if (grmGroupBtn) {
+        ui.aioGrammarGroup = grmGroupBtn.dataset.aioGramGroup;
+        renderAioGrammarPage();
+        return;
+      }
       const grmLangBtn = e.target.closest('[data-aio-gram-lang]');
       if (grmLangBtn) {
         ui.aioGrammarLang = grmLangBtn.dataset.aioGramLang;
+        ui.aioGrammarGroup = 'all';
         ui.aioGrammarSelected = `${ui.aioGrammarLang}-1-0`;
         renderAioGrammarPage();
+        return;
+      }
+      const gramQuizBtn = e.target.closest('[data-aio-gram-quiz]');
+      if (gramQuizBtn) {
+        const gKey = gramQuizBtn.dataset.aioGramKey;
+        const pickedIdx = Number(gramQuizBtn.dataset.aioGramQuiz);
+        if (!ui.aioGramQuizPicked) ui.aioGramQuizPicked = {};
+        if (ui.aioGramQuizPicked[gKey] === undefined) {
+          ui.aioGramQuizPicked[gKey] = pickedIdx;
+          const lang = ui.aioGrammarLang || 'en';
+          const src = (typeof window !== 'undefined' && window.AIO_GRAMMAR_UNITS_FULL) ? window.AIO_GRAMMAR_UNITS_FULL : AIO_GRAMMAR_UNITS;
+          const units = src[lang] || src.en;
+          units.forEach(u => u.points.forEach((pt, idx) => {
+            if (`${lang}-${u.num}-${idx}` === gKey && pt.check && pickedIdx === pt.check.ans) {
+              addXp(5, 'Đúng câu kiểm tra ngữ pháp (+5 XP)');
+            }
+          }));
+          renderAioGrammarPage();
+        }
         return;
       }
       const grmPickBtn = e.target.closest('[data-aio-gram-pick]');
       if (grmPickBtn) {
         ui.aioGrammarSelected = grmPickBtn.dataset.aioGramPick;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         renderAioGrammarPage();
         return;
       }
@@ -7522,6 +7762,15 @@
         if (state.mainNav === 'reading') renderAioReadingPage(); else renderReviewPage();
         return;
       }
+      if (e.target.closest('#dash-lb-refresh')) {
+        const inp = document.getElementById('dash-nick-input');
+        if (inp && inp.value.trim()) {
+          try { localStorage.setItem('engstart_dash_nick', inp.value.trim().slice(0, 24)); } catch {}
+        }
+        loadDashLeaderboard(ui.oqLang || 'en', true);
+        showToast('Đã cập nhật bảng xếp hạng!');
+        return;
+      }
       if (e.target.closest('#oq-dash-start-btn') || e.target.closest('#oq-dash-start-btn-2')) {
         initOqSpeedDash();
         renderReviewPage();
@@ -7533,6 +7782,7 @@
         if (ok) {
           ui.oqDashScore = (ui.oqDashScore || 0) + 1;
           ui.oqDashCombo = (ui.oqDashCombo || 0) + 1;
+          ui.oqDashBestCombo = Math.max(ui.oqDashBestCombo || 0, ui.oqDashCombo);
           ui.oqDashFeedback = '✓ Chính xác! +1 điểm';
         } else {
           ui.oqDashCombo = 0;
@@ -8070,6 +8320,7 @@
     });
 
     document.addEventListener('change', (e) => {
+      if (e.target.id === 'dash-nick-input') { try { localStorage.setItem('engstart_dash_nick', (e.target.value || '').trim().slice(0, 24)); } catch {} return; }
       if (e.target.id === 'ipa-speed-select' && ui.ipaPractice) { stopIpaAudio(); ui.ipaPractice.speed = Number(e.target.value) || 1; return; }
       if (e.target.id === 'vid-lang-select') {
         ui.customVideoLang = e.target.value === 'zh' ? 'zh' : 'en';
