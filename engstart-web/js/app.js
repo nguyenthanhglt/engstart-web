@@ -3791,10 +3791,21 @@
         { sym: 'ʒ', ex: 'measure', hi: 's', file: 'Voiced_postalveolar_fricative.ogg', sound: 'measure', diff: 'Khó', tip: 'Chu môi như /ʃ/ nhưng có rung cổ.' },
         { sym: 'dʒ', ex: 'job', hi: 'j', file: 'Voiced_postalveolar_affricate.ogg', sound: 'job', diff: 'Khó', tip: 'Chu môi bật âm "gi/dờ" có rung cổ.' }
       ],
+      consonantsOther: [
+        {"sym":"m","ex":"man","hi":"m","file":"","sound":"man","diff":"Dễ","tip":"Khép hai môi, giữ thanh quản rung và để hơi đi qua mũi."},
+        {"sym":"n","ex":"no","hi":"n","file":"","sound":"no","diff":"Dễ","tip":"Đầu lưỡi chạm gờ lợi, luồng hơi qua mũi và thanh quản rung."},
+        {"sym":"ŋ","ex":"sing","hi":"ng","file":"","sound":"sing","diff":"Vừa","tip":"Nâng phần sau lưỡi chạm vòm mềm, phát thanh qua mũi."},
+        {"sym":"h","ex":"house","hi":"h","file":"","sound":"house","diff":"Dễ","tip":"Hơi đi nhẹ qua thanh môn mở; chuẩn bị khẩu hình của nguyên âm sau."},
+        {"sym":"l","ex":"light","hi":"l","file":"","sound":"light","diff":"Khó","tip":"Đầu lưỡi chạm gờ lợi, luồng hơi thoát qua hai bên lưỡi."},
+        {"sym":"r","ex":"red","hi":"r","file":"","sound":"red","diff":"Khó","tip":"Nâng phần trước lưỡi nhưng không chạm gờ lợi; giữ thanh."},
+        {"sym":"j","ex":"yes","hi":"y","file":"","sound":"yes","diff":"Dễ","tip":"Nâng phần trước lưỡi gần vòm cứng và lướt ngay sang nguyên âm."},
+        {"sym":"w","ex":"we","hi":"w","file":"","sound":"we","diff":"Dễ","tip":"Tròn môi và nâng phần sau lưỡi, sau đó lướt sang nguyên âm."}
+      ],
       endings: [
         { sym: '-t', ex: 'sit', hi: 't', file: 'Voiceless_alveolar_plosive.ogg', sound: 'sit', diff: 'Khó', tip: 'Bật nhẹ âm đuôi /t/ ở cuối từ — đừng nuốt mất âm cuối!' },
         { sym: '-k', ex: 'back', hi: 'ck', file: 'Voiceless_velar_plosive.ogg', sound: 'back', diff: 'Khó', tip: 'Bật nhẹ luồng hơi /k/ ở cuống họng khi kết thúc từ.' },
         { sym: '-s', ex: 'nice', hi: 'ce', file: 'Voiceless_alveolar_sibilant.ogg', sound: 'nice', diff: 'Khó', tip: 'Xì nhẹ âm /s/ ở cuối từ.' },
+        { sym: '-(e)s', ex: 'cats', hi: 's', file: 'Voiceless_alveolar_sibilant.ogg', sound: 'cats', diff: 'Khó', tip: 'Đuôi -(e)s có 3 cách đọc: /s/ (cats), /z/ (dogs), /ɪz/ (watches).' },
         { sym: '-ed', ex: 'played', hi: 'ed', file: 'Voiced_alveolar_plosive.ogg', sound: 'played', diff: 'Khó', tip: 'Bật nhẹ âm /d/ cuối từ (không đọc thành "ết").' },
         { sym: '-st', ex: 'past', hi: 'st', file: '', sound: 'past', diff: 'Khó', tip: 'Xì /s/ rồi bật nhẹ /t/ liền mạch ở cuối từ.' },
         { sym: '-nd', ex: 'friend', hi: 'nd', file: '', sound: 'friend', diff: 'Khó', tip: 'Giữ âm /n/ rồi bật nhẹ /d/ ở cuối từ.' }
@@ -4093,6 +4104,25 @@
           'Let’s watch a movie tonight.'
         ]
       },
+      '-(e)s': {
+        cat: 'Âm cuối (số nhiều / ngôi 3)', ipaEx: '/kæts/', viEx: 'những con mèo',
+        mouth: 'Khép nhẹ hai hàm răng gần sát nhau.',
+        lips: 'Môi thả lỏng tự nhiên, hơi kéo nhẹ sang hai bên.',
+        tongue: 'Đầu lưỡi đặt gần lợi trên, thổi luồng hơi gọn ra qua khe răng — KHÔNG đọc kéo dài hay thêm "ờ".',
+        note: 'Đuôi -(e)s có 3 cách đọc chuẩn: (1) Đọc /s/ sau âm vô thanh p, t, k, f, θ (cats, books, stops); (2) Đọc /ɪz/ sau âm gió s, z, sh, ch, x, ge (buses, watches, boxes); (3) Đọc /z/ sau tất cả các âm hữu thanh & nguyên âm còn lại (dogs, bags, plays).',
+        pitfall: 'Người Việt hay bỏ luôn đuôi -s/-es (cats nghe như cat) hoặc đọc nhầm từ nào cũng xì /s/ mạnh dù phải đọc /z/ (dogs) hay /ɪz/ (watches).',
+        pairs: [['cats', '/kæts/', 'cat', '/kæt/'], ['dogs', '/dɒgz/', 'dog', '/dɒg/'], ['watches', '/ˈwɒtʃɪz/', 'watch', '/wɒtʃ/']],
+        words: ['cats', 'books', 'stops', 'dogs', 'bags', 'plays', 'buses', 'watches', 'boxes', 'dishes'],
+        phrases: ['two black cats', 'three big dogs', 'five new books', 'red buses', 'clean dishes', 'my watches'],
+        sentences: [
+          'The two cats love sleeping on the sofa.',
+          'She reads five books every month.',
+          'My brother walks our two dogs every morning.',
+          'The red buses stop near my school.',
+          'He watches English cartoons after dinner.',
+          'Please put the clean dishes in those boxes.'
+        ]
+      },
       '-t': {
         cat: 'Âm cuối hay quên', ipaEx: '/kæt/', viEx: 'con mèo',
         mouth: 'Mở nhỏ.',
@@ -4158,21 +4188,35 @@
         return;
       }
       stopIpaPracticeRecording();
-      finishIpaPlayback(getIpaController().playSound(target.id, {accent:ipaAccent(),rate}));
+      const accent=ipaAccent();
+      finishIpaPlayback(getIpaController().playSound(target.id, {accent,rate}).then(result=>{
+        state.ipaHeard = state.ipaHeard && typeof state.ipaHeard==='object' ? state.ipaHeard : {};
+        state.ipaHeard[accent] = state.ipaHeard[accent] || {};
+        if(!state.ipaHeard[accent][sym]) {state.ipaHeard[accent][sym]=true;saveState();}
+        if(state.mainNav==='pronunciation' && !ui.ipaDetailSym && !ui.ipaPractice && (ui.pronLang||'en')==='en') renderAioPronunciationPage();
+        return result;
+      }));
     }
     function getIpaGuide(item) {
       const fix = NTPronunciation.guide(item.sym, ipaAccent());
       const old = IPA_DETAIL_GUIDES[item.sym];
-      const pair = fix && fix.pair;
+      const supplemental = fix?.practiceV31 || {};
+      const pair = supplemental.pair || (fix && fix.pair);
       const isUS = ipaAccent() === 'en-US';
       const fallbackPairs = pair ? [[pair.a,pair[isUS?'ipaAUS':'ipaAUK'],pair.b,pair[isUS?'ipaBUS':'ipaBUK']]] : [];
       const base = old || {
-        cat:item.sym.startsWith('-') ? 'Âm cuối' : 'Âm tiếng Anh',
+        cat:item.sym.startsWith('-') ? 'Âm cuối' : AIO_IPA_TABLE.consonantsOther.some(x=>x.sym===item.sym) ? 'Phụ âm không ghép cặp' : 'Âm tiếng Anh',
         pairs:fallbackPairs, words:[item.ex],
         phrases:[item.ex], sentences:[`Please say ${item.ex} clearly.`]
       };
       const primary = NTPronunciation.target(item.sym,item.ex,ipaAccent());
+      const appendUnique = (old, extra) => [...new Set([...(old || []), ...(extra || [])])];
+      const enrichedPairs = [...(base.pairs || [])];
+      fallbackPairs.forEach(pr=>{if(!enrichedPairs.some(x=>x[0]===pr[0]&&x[2]===pr[2])) enrichedPairs.push(pr);});
       return {...base,
+        words:appendUnique(base.words,supplemental.words),
+        phrases:appendUnique(base.phrases,supplemental.phrases),
+        sentences:appendUnique(base.sentences,supplemental.sentences),
         ipaEx:primary && primary.wordIPA || '',
         viEx:fix && fix.meaning || (old && item.sym !== '-t' ? old.viEx : '') || '',
         mouth:fix && fix.tip || item.tip,
@@ -4180,7 +4224,7 @@
         tongue:fix && fix.steps.slice(1).join(' ') || '',
         note:[fix && fix.accentNote,'Nghe âm riêng trước; “Cả từ” dùng để nghe âm trong từ. Phụ âm và âm cuối được lặp 3 lần, không thêm nguyên âm đệm.'].filter(Boolean).join(' '),
         pitfall:fix && fix.mistake || '',
-        pairs:(base.pairs || []).filter(pair => {
+        pairs:enrichedPairs.filter(pair => {
           const words = [pair[0].toLowerCase(),pair[2].toLowerCase()];
           if (words[0] === words[1]) return false;
           if (words.some(word=>['book','took','accept','except','affect','effect','addition','edition'].includes(word))) return false;
@@ -4355,6 +4399,17 @@
           : [{ word: w, ipa: targetIpa, isTarget: true }, { word: altWord, ipa: altIpa, isTarget: false }];
         items.push({ key: `l_${i}`, type: 'listen', label: 'Thử thách nghe', target: w, opts });
       });
+      (g.pairs || []).forEach((pair, i) => {
+        const targetWord = [pair[0],pair[2]].find(w=>NTPronunciation.target(cur.sym,w,ipaAccent()));
+        if (!targetWord || items.some(it=>it.type==='listen' && it.target===targetWord)) return;
+        const alternate = targetWord===pair[0]?pair[2]:pair[0];
+        const targetIpa = ipaWordIPA(targetWord) || (ipaAccent()==='en-GB'?(targetWord===pair[0]?pair[1]:pair[3]):'');
+        const alternateIpa = ipaWordIPA(alternate) || (ipaAccent()==='en-GB'?(targetWord===pair[0]?pair[3]:pair[1]):'');
+        if (!targetIpa || !alternateIpa || targetIpa===alternateIpa || targetWord===alternate) return;
+        const opts=[{word:targetWord,ipa:targetIpa,isTarget:true},{word:alternate,ipa:alternateIpa,isTarget:false}];
+        if(i%2===0) opts.reverse();
+        items.push({key:`contrast_${targetWord}_${alternate}`,type:'listen',label:'Thử thách nghe',target:targetWord,opts});
+      });
       return items;
     }
 
@@ -4362,7 +4417,7 @@
       stopIpaAudio(); stopIpaPracticeRecording();
       const allEnIpaList = [
         ...AIO_IPA_TABLE.vowelsLong, ...AIO_IPA_TABLE.vowelsShort, ...AIO_IPA_TABLE.diphthongs,
-        ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.endings
+        ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.consonantsOther, ...AIO_IPA_TABLE.endings
       ];
       const cur = allEnIpaList.find(x => x.sym === sym) || allEnIpaList[0];
       const g = getIpaGuide(cur);
@@ -4382,24 +4437,28 @@
         speed: 1.0,
         showGuide: false,
         answeredIdx: null,
+        heardKey: null,
         recording: false,
         transcript: '',
         score: null,
         hasRecording: false
       };
       renderAioPronunciationPage();
-      const first = items[idx];
-      if (first && first.type === 'listen') {
-        const owner = ui.ipaPractice;
-        setTimeout(() => { if (!document.hidden && ui.ipaPractice === owner && owner.items[owner.idx] === first && state.mainNav === 'pronunciation') speakIpaPracticeText(first.target); }, 180);
-      }
+      // Listening starts with an explicit tap on the speaker.
     }
 
     function speakIpaPracticeText(text, customRate) {
       if (!text) return;
       stopIpaPracticeRecording();
       const rate = customRate || (ui.ipaPractice && ui.ipaPractice.speed) || 1;
-      finishIpaPlayback(getIpaController().playWord(text, {accent:ipaAccent(),rate}));
+      const practice=ui.ipaPractice;
+      const item=practice?.items[practice.idx];
+      finishIpaPlayback(getIpaController().playWord(text, {accent:ipaAccent(),rate}).then(result=>{
+        if(practice && ui.ipaPractice===practice && practice.items[practice.idx]===item && item?.type==='listen' && item.target===text && practice.answeredIdx===null && state.mainNav==='pronunciation') {
+          practice.heardKey=item.key;renderAioPronunciationPage();
+        }
+        return result;
+      }));
     }
 
     function refreshIpaPracticeAccent() {
@@ -4411,7 +4470,7 @@
       if (!cur) return;
       p.items = buildIpaPracticeItems(cur,getIpaGuide(cur));
       p.idx = Math.max(0,p.items.findIndex(item=>item.key === previousKey));
-      p.answeredIdx = null; p.transcript = ''; p.score = null; p.hasRecording = false;
+      p.answeredIdx = null; p.heardKey = null; p.transcript = ''; p.score = null; p.hasRecording = false;
       if (_ipaRecUrl) { URL.revokeObjectURL(_ipaRecUrl); _ipaRecUrl = null; }
     }
 
@@ -4502,7 +4561,8 @@
       const p = ui.ipaPractice;
       if (!p) return;
       const item = p.items[p.idx];
-      if (!item || item.type !== 'listen' || p.answeredIdx !== null) return;
+      if (!item || item.type !== 'listen' || p.answeredIdx !== null || !item.opts[optIdx]) return;
+      if(p.heardKey!==item.key){showToast('Hãy nghe hết mẫu trước khi chọn đáp án.');return;}
       p.answeredIdx = optIdx;
       const chosen = item.opts[optIdx];
       if (chosen && chosen.isTarget) {
@@ -4528,14 +4588,12 @@
       }
       p.idx = Math.max(0, nextIdx);
       p.answeredIdx = null;
+      p.heardKey = null;
       p.transcript = '';
       p.score = null;
       p.hasRecording = false;
       renderAioPronunciationPage();
-      const it = p.items[p.idx];
-      if (it && it.type === 'listen') {
-        setTimeout(() => { if (!document.hidden && ui.ipaPractice === p && p.items[p.idx] === it && state.mainNav === 'pronunciation') speakIpaPracticeText(it.target); }, 150);
-      }
+      // Listening starts with an explicit tap on the speaker.
     }
 
     document.addEventListener('keydown', (e) => {
@@ -4975,6 +5033,22 @@
       refreshIcons();
     }
 
+    function ipaLessonSeen(sym) {
+      return Boolean(state.ipaHeard?.[ipaAccent()]?.[sym] || (Array.isArray(state.ipaProgress?.[sym]) && state.ipaProgress[sym].length));
+    }
+    function ipaBoardGroups() { return Object.values(AIO_IPA_TABLE).flat(); }
+    function ipaNextLesson() {
+      const ordered=['Dễ','Vừa','Khó'].flatMap(diff=>ipaBoardGroups().filter(x=>x.diff===diff));
+      return ordered.find(x=>!ipaLessonSeen(x.sym)) || ordered[0];
+    }
+    function ipaOpenLesson(sym) {
+      const item=ipaBoardGroups().find(x=>x.sym===sym);
+      if(!item) return;
+      stopIpaAudio(); stopIpaPracticeRecording();
+      ui.activeIpaSym=sym;ui.ipaDetailSym=sym;ui.ipaPractice=null;
+      _ipaAudioMessage='';_ipaAudioError=false;
+      renderAioPronunciationPage();window.scrollTo({top:0,behavior:'smooth'});
+    }
     function renderAioPronunciationPage() {
       const el = document.getElementById('page-pronunciation');
       if (!el) return;
@@ -4984,7 +5058,7 @@
 
       const allEnIpa = [
         ...AIO_IPA_TABLE.vowelsLong, ...AIO_IPA_TABLE.vowelsShort, ...AIO_IPA_TABLE.diphthongs,
-        ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.endings
+        ...AIO_IPA_TABLE.consonantsVoiceless, ...AIO_IPA_TABLE.consonantsVoiced, ...AIO_IPA_TABLE.consonantsOther, ...AIO_IPA_TABLE.endings
       ];
       const activeIpa = allEnIpa.find(x => x.sym === ui.activeIpaSym) || allEnIpa[0];
 
@@ -5073,7 +5147,7 @@
                   <div>
                     <div class="text-xs font-bold text-slate-500">Nghe</div>
                     <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Bạn nghe thấy từ nào?</h2>
-                    <div class="text-xs text-slate-500 mt-0.5">Phím 1 / 2 để chọn nhanh · bấm loa để nghe lại</div>
+                    <div class="text-xs text-slate-500 mt-0.5">Bấm loa để nghe mẫu · phím 1 / 2 để chọn nhanh</div>
                   </div>
                 </div>
               </div>
@@ -5110,7 +5184,7 @@
                 <div class="text-xs font-bold text-slate-700">
                   ${p.answeredIdx !== null
                     ? (item.opts[p.answeredIdx].isTarget ? '✅ Chính xác! Bạn phân biệt âm rất tốt.' : `❌ Từ vừa đọc là <strong>${item.target}</strong>. Hãy bấm nút Nghe ở cả 2 từ để so sánh nhé!`)
-                    : 'Bấm 1 hoặc 2 để chọn đáp án bạn nghe được.'}
+                    : (p.heardKey===item.key?'Bấm 1 hoặc 2 để chọn đáp án bạn nghe được.':'Bấm loa và nghe hết mẫu trước khi chọn đáp án.')}
                 </div>
                 <button type="button" id="ipa-practice-next" class="px-5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-[#D8CEB8] text-slate-900 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-2xs shrink-0">
                   ${p.answeredIdx !== null ? 'Tiếp theo →' : 'Bỏ qua →'}
@@ -5201,7 +5275,7 @@
               <button type="button" id="ipa-back-btn" class="px-3 py-1.5 rounded-xl bg-white/90 hover:bg-white border border-cyan-200 text-slate-800 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Phát âm
               </button>
-              <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Âm /${ipaSymbol(cur.sym,cur.ex)}/.</h1>
+              <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">${cur.sym==='-(e)s'?'Đuôi -s/-es':cur.sym==='-ed'?'Đuôi -ed':cur.sym.startsWith('-')?`Âm cuối /${ipaSymbol(cur.sym,cur.ex)}/`:`Âm /${ipaSymbol(cur.sym,cur.ex)}/`}.</h1>
             </div>
             <div class="bg-white/90 p-0.5 rounded-xl inline-flex text-xs font-extrabold border border-cyan-200">
               <button type="button" data-ipa-accent="en-GB" class="px-2.5 py-1 rounded-lg ${isUK ? 'bg-cyan-800 text-white' : 'text-slate-600'}">UK</button>
@@ -5229,6 +5303,8 @@
               <button type="button" data-speak-phoneme="${cur.sym}" data-ipa-context="${cur.ex}" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-extrabold flex items-center gap-1.5">
                 <i data-lucide="volume-2" class="w-4 h-4 text-cyan-700"></i> Nghe âm
               </button>
+              <button type="button" data-speak-phoneme="${cur.sym}" data-ipa-context="${cur.ex}" data-ipa-rate="0.8" class="nt-ipa-button">Âm chậm</button>
+              <button type="button" data-ipa-word="${cur.ex}" class="nt-ipa-button">Cả từ</button>
               <button type="button" data-ipa-start="phrase" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-cyan-50 border-2 border-cyan-500 text-slate-900 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-xs">
                 Bắt đầu luyện →
               </button>
@@ -5237,7 +5313,7 @@
 
           <section class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
             <h2 class="font-extrabold text-sm">Âm trong từng từ</h2>
-            <p class="nt-ipa-note">Loa /âm/ chỉ phát phần gạch chân; “Cả từ” đọc toàn bộ từ minh họa.</p>
+            <p class="nt-ipa-note">Loa /âm/ chỉ phát phần gạch chân; “Cả từ” đọc toàn bộ từ minh họa. Nếu mẫu cả từ không tải được, bạn có thể <a class="underline" href="https://dictionary.cambridge.org/pronunciation/english/${encodeURIComponent(cur.ex)}" target="_blank" rel="noopener noreferrer">nghe từ khóa trên Cambridge</a> và thử lại sau. Mẫu âm riêng không phụ thuộc giọng đọc cài trên thiết bị.</p>
             <div class="nt-ipa-examples">${[...new Set([cur.ex,...g.words])].map(word=>NTPronunciation.exampleHTML(cur.sym,word,ipaAccent())).join('')}</div>
           </section>
           ${NTPronunciation.ruleHTML(cur.sym,ipaAccent())}
@@ -5328,6 +5404,10 @@
 
       const tileHtml = (item, isChinese) => {
         const isSel = !isChinese && activeIpa && activeIpa.sym === item.sym;
+        if(!isChinese) return `<article class="nt31-tile ${ipaLessonSeen(item.sym)?'nt31-seen':''} ${isSel?'nt31-selected':''}">
+          <div class="nt31-tile-top"><span class="nt31-diff">${item.diff}</span><button type="button" class="nt31-speaker" data-speak-phoneme="${item.sym}" data-ipa-context="${item.ex}" aria-label="Nghe riêng âm /${ipaSymbol(item.sym,item.ex)}/" title="Nghe âm riêng"><i data-lucide="volume-2" class="w-4 h-4"></i></button></div>
+          <button type="button" class="nt31-open" data-pick-ipa="${item.sym}" aria-label="Mở bài ${ipaSymbol(item.sym,item.ex)} ${item.ex}"><strong>${NTPronunciation.tileSymbol(item.sym,ipaAccent(),item.ex)}</strong><span>${ipaHighlight(item.sym,item.ex)}</span><small>${ipaLessonSeen(item.sym)?'Đã nghe/luyện':'Mở bài học →'}</small></button>
+        </article>`;
         return `
         <button type="button" ${isChinese ? `data-speak-zh="${item.ex.split('(')[0].trim()}"` : `data-pick-ipa="${item.sym}" data-speak-phoneme="${item.sym}" data-ipa-context="${item.ex}"`} class="p-3 rounded-2xl bg-white hover:bg-cyan-50/60 border ${isSel ? 'border-cyan-500 ring-2 ring-cyan-200 shadow-xs' : 'border-[#E5DEC9] hover:border-cyan-400 shadow-2xs'} text-left transition-all group">
           <div class="flex items-center justify-between">
@@ -5352,60 +5432,24 @@
                 <button type="button" data-pron-lang="zh" class="px-3 py-1 rounded-lg ${isZh ? 'bg-rose-600 text-white' : 'text-slate-600'}">Tiếng Trung (4 Thanh &amp; Pinyin)</button>
               </div>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">${isZh ? 'Bấm trực tiếp vào từng ô âm để nghe phát âm mẫu chuẩn xác.' : 'Bấm ô âm để nghe riêng phần gạch chân. Phụ âm và âm cuối phát 3 lần.'}</p>
+            <p class="text-xs sm:text-sm text-slate-700">${isZh ? 'Bấm trực tiếp vào từng ô âm để nghe phát âm mẫu chuẩn xác.' : 'Bấm loa để nghe riêng phần gạch chân; bấm ký hiệu để mở bài học. Phụ âm và âm cuối phát 3 lần.'}</p>
           </div>
         </div>
 
         ${!isZh ? `
-          <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
-            <button type="button" data-ipa-accent="en-GB" class="nt-ipa-button" aria-pressed="${ipaAccent()==='en-GB'}">Anh–Anh</button>
-            <button type="button" data-ipa-accent="en-US" class="nt-ipa-button" aria-pressed="${ipaAccent()==='en-US'}">Anh–Mỹ</button>
-            <span class="nt-ipa-note">Đang học ${ipaAccent()==='en-GB'?'Anh–Anh':'Anh–Mỹ'}. Bảng giữ các mục học của bản gốc.</span>
+          <div class="nt31-toolbar">
+            <div class="nt31-accent"><button type="button" data-ipa-accent="en-GB" class="nt-ipa-button" aria-pressed="${ipaAccent()==='en-GB'}">Anh–Anh (UK)</button><button type="button" data-ipa-accent="en-US" class="nt-ipa-button" aria-pressed="${ipaAccent()==='en-US'}">Anh–Mỹ (US)</button></div>
+            <div class="nt31-progress"><b>${allEnIpa.filter(x=>ipaLessonSeen(x.sym)).length}/${allEnIpa.length}</b> mục đã nghe/luyện <button type="button" class="nt-ipa-button" data-pick-ipa="${ipaNextLesson().sym}">Luyện tiếp /${ipaSymbol(ipaNextLesson().sym,ipaNextLesson().ex)}/ →</button></div>
           </div>
-          <!-- Active Sound Coach Card (Khẩu hình miệng & phần gạch chân âm đang chọn) -->
-          <div class="bg-white rounded-3xl border border-cyan-200 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
-            <div class="flex items-center gap-4">
-              <div class="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-2xl font-extrabold text-cyan-800 shrink-0">${ipaSymbol(activeIpa.sym,activeIpa.ex)}</div>
-              <div>
-                <div class="text-sm sm:text-base font-extrabold text-slate-900">
-                  Âm <span class="text-cyan-700">/${ipaSymbol(activeIpa.sym,activeIpa.ex)}/</span> — chú ý phần gạch chân trong: <span class="text-lg">${ipaHighlight(activeIpa.sym,activeIpa.ex)}</span>
-                </div>
-                <div class="text-xs text-slate-600 mt-0.5"><strong>Mẹo khẩu hình:</strong> ${NTPronunciation.guide(activeIpa.sym,ipaAccent())?.tip || activeIpa.tip}</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-              <button type="button" data-speak-phoneme="${activeIpa.sym}" data-ipa-context="${activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold flex items-center gap-1.5">
-                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Nghe riêng âm /${ipaSymbol(activeIpa.sym,activeIpa.ex)}/
-              </button>
-              <button type="button" data-ipa-word="${activeIpa.ex}" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold">
-                Nghe từ: ${activeIpa.ex}
-              </button>
-            </div>
+          <p class="nt-ipa-note">44 mục âm theo bảng UK + 7 bài âm cuối. Với US, một số mục là biến thể hoặc tổ hợp âm (có thể trùng nhau); không coi 51 mục là 51 âm vị riêng. Tiến độ bài luyện cũ được giữ lại.</p>
+          <section class="nt31-roadmap"><h2> <i data-lucide="route" class="w-4 h-4"></i> Lộ trình luyện</h2><div class="nt31-stages">${['Dễ','Vừa','Khó'].map((diff,i)=>{const group=allEnIpa.filter(x=>x.diff===diff);const done=group.filter(x=>ipaLessonSeen(x.sym)).length;const next=group.find(x=>!ipaLessonSeen(x.sym))||group[0];return `<button type="button" data-pick-ipa="${next.sym}" class="nt31-stage"><span>Chặng ${i+1} · ${diff}</span><b>${['Làm quen với âm cơ bản','Chỉnh những âm dễ lệch','Âm khó và âm cuối'][i]}</b><small>${done}/${group.length} mục đã nghe/luyện</small><div class="nt31-bar"><i style="width:${100*done/group.length}%"></i></div></button>`;}).join('')}</div></section>
+          <div class="nt31-layout">
+            <section class="nt31-panel"><h2>Nguyên âm đơn <small>12 mục</small></h2><div class="nt31-row-label">Dài</div><div class="nt31-vowels-long">${AIO_IPA_TABLE.vowelsLong.map(x=>tileHtml(x,false)).join('')}</div><div class="nt31-row-label">Ngắn</div><div class="nt31-vowels-short">${AIO_IPA_TABLE.vowelsShort.map(x=>tileHtml(x,false)).join('')}</div></section>
+            <section class="nt31-panel nt31-warm"><h2>Nguyên âm đôi <small>8 mục UK</small></h2><div class="nt31-diphthongs">${AIO_IPA_TABLE.diphthongs.map(x=>tileHtml(x,false)).join('')}</div></section>
+            <section class="nt31-panel nt31-warm nt31-consonants"><h2>Phụ âm <small>24 mục</small></h2><div class="nt31-row-label">Vô thanh</div><div class="nt31-consonant-row">${AIO_IPA_TABLE.consonantsVoiceless.map(x=>tileHtml(x,false)).join('')}</div><div class="nt31-row-label">Hữu thanh</div><div class="nt31-consonant-row">${AIO_IPA_TABLE.consonantsVoiced.map(x=>tileHtml(x,false)).join('')}</div><div class="nt31-row-label">Không ghép cặp</div><div class="nt31-consonant-row">${AIO_IPA_TABLE.consonantsOther.map(x=>tileHtml(x,false)).join('')}</div></section>
+            <section class="nt31-panel nt31-endings"><h2>Âm cuối <small>7 bài</small></h2><div class="nt31-ending-row">${AIO_IPA_TABLE.endings.map(x=>tileHtml(x,false)).join('')}</div></section>
           </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div class="lg:col-span-7 bg-white rounded-3xl border border-[#E5DEC9] p-5 space-y-3">
-              <div class="font-extrabold text-sm text-slate-900">Nguyên âm (Dài &amp; Ngắn)</div>
-              <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">${AIO_IPA_TABLE.vowelsLong.map(x => tileHtml(x, false)).join('')}</div>
-              <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2 pt-1">${AIO_IPA_TABLE.vowelsShort.map(x => tileHtml(x, false)).join('')}</div>
-            </div>
-            <div class="lg:col-span-5 aio-honey-panel rounded-3xl p-5 space-y-3">
-              <div class="font-extrabold text-sm text-slate-900">Nguyên âm đôi (8 âm)</div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">${AIO_IPA_TABLE.diphthongs.map(x => tileHtml(x, false)).join('')}</div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div class="lg:col-span-8 aio-honey-panel rounded-3xl p-5 space-y-3">
-              <div class="font-extrabold text-sm text-slate-900">Phụ âm (Vô thanh &amp; Hữu thanh)</div>
-              <div class="grid grid-cols-4 sm:grid-cols-8 gap-2">${AIO_IPA_TABLE.consonantsVoiceless.map(x => tileHtml(x, false)).join('')}</div>
-              <div class="grid grid-cols-4 sm:grid-cols-8 gap-2">${AIO_IPA_TABLE.consonantsVoiced.map(x => tileHtml(x, false)).join('')}</div>
-            </div>
-            <div class="lg:col-span-4 aio-grid-paper rounded-3xl border border-[#E5DEC9] p-5 space-y-3">
-              <div class="font-extrabold text-sm text-slate-900">Âm cuối hay quên</div>
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">${AIO_IPA_TABLE.endings.map(x => tileHtml(x, false)).join('')}</div>
-            </div>
-          </div>
+          <p class="nt-ipa-note">Loa phát bản âm riêng có sẵn trong web. Bấm ký hiệu hoặc từ để mở bài học. Mẫu âm riêng là tham chiếu IPA; giọng tự nhiên có thể khác đôi chút. <a class="underline" href="https://dictionary.cambridge.org/help/phonetics.html" target="_blank" rel="noopener noreferrer">Đối chiếu UK/US với Cambridge</a>.</p>
         ` : `
           <div class="aio-honey-panel rounded-3xl p-5 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2">
@@ -7422,6 +7466,7 @@
         stopIpaPracticeRecording();
         ui.ipaPractice = null;
         ui.ipaDetailSym = null;
+        _ipaAudioMessage='';_ipaAudioError=false;
         renderAioPronunciationPage();
         return;
       }
@@ -7436,6 +7481,7 @@
       if (ipaAccentBtn) {
         stopIpaAudio(); stopIpaPracticeRecording();
         ui.ipaAccent = ipaAccentBtn.dataset.ipaAccent;
+        _ipaAudioMessage='';_ipaAudioError=false;
         refreshIpaPracticeAccent();
         renderAioPronunciationPage();
         return;
@@ -7499,16 +7545,13 @@
       }
       const pickIpaBtn = e.target.closest('[data-pick-ipa]');
       if (pickIpaBtn) {
-        ui.activeIpaSym = pickIpaBtn.dataset.pickIpa;
-        ui.ipaDetailSym = pickIpaBtn.dataset.pickIpa;
-        playIpaPhoneme(pickIpaBtn.dataset.pickIpa, pickIpaBtn.dataset.ipaContext || '');
-        renderAioPronunciationPage();
+        ipaOpenLesson(pickIpaBtn.dataset.pickIpa);
         return;
       }
       const spkPhonemeBtn = e.target.closest('[data-speak-phoneme]');
       if (spkPhonemeBtn) {
         e.stopPropagation();
-        playIpaPhoneme(spkPhonemeBtn.dataset.speakPhoneme, spkPhonemeBtn.dataset.ipaContext || '');
+        playIpaPhoneme(spkPhonemeBtn.dataset.speakPhoneme, spkPhonemeBtn.dataset.ipaContext || '', Number(spkPhonemeBtn.dataset.ipaRate)||1);
         return;
       }
       const spkSlowBtn = e.target.closest('[data-speak-slow]');
