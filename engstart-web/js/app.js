@@ -512,7 +512,7 @@
         btn.classList.toggle('aio-nav-active', active);
         btn.classList.toggle('text-slate-700', !active);
       });
-      const activeLang = (state.mainNav === 'chinese' || (state.mainNav === 'typing' && ui.typingLang === 'zh') || (state.mainNav === 'bank' && ui.bankLang === 'zh') || (state.mainNav === 'tutor' && ui.aiLang === 'zh')) ? 'zh' : 'en';
+      const activeLang = (state.mainNav === 'chinese' || (state.mainNav === 'typing' && ui.typingLang === 'zh') || (state.mainNav === 'bank' && ui.bankLang === 'zh') || (state.mainNav === 'tutor' && ui.aiLang === 'zh') || (state.mainNav === 'dictionary' && ui.dictLang === 'zh')) ? 'zh' : 'en';
       document.querySelectorAll('.global-lang-btn').forEach(btn => {
         const isOn = btn.dataset.globalLang === activeLang;
         btn.classList.toggle('bg-white', isOn);
@@ -5542,7 +5542,7 @@
       if (!window.EngStartDictionary) { el.textContent = 'Chưa tải được bộ từ điển. Hãy tải lại trang.'; return; }
       window.EngStartDictionary.render(el, {
         lang: ui.dictLang || 'all',
-        setLang: value => { ui.dictLang = value; },
+        setLang: value => { ui.dictLang = value; updateHeader(); },
         refreshIcons,
         stopOtherAudio: () => { stopIpaAudio(); try { window.speechSynthesis?.cancel(); } catch {} },
         getData: () => {
