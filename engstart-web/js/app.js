@@ -5553,6 +5553,14 @@
           if (typeof EXTRA_ZH_WORDS !== 'undefined') EXTRA_ZH_WORDS.forEach(r => zh.push(Array.isArray(r)?{head:r[0],sub:r[1],pos:r[2],vi:r[3],level:r[4]}:{head:r.hanzi,sub:r.pinyin,pos:r.pos,vi:r.vi,level:r.level,example:r.exZh,exampleVi:r.exVi}));
           (state.customBankWords || []).forEach(w=>en.push({head:w.en,sub:w.ipa,pos:w.pos,vi:w.vi,level:w.level,example:w.exEn,exampleVi:w.exVi}));
           (state.zhCustomBankWords || []).forEach(w=>zh.push({head:w.en,sub:w.ipa,pos:w.pos,vi:w.vi,level:w.level,example:w.exEn,exampleVi:w.exVi}));
+          // v34 dictionary: include the entire v33 library and personal vocabulary decks.
+          const addLibrary = (w,l) => {
+            if (!w || !['en','zh'].includes(l)) return;
+            const row = {head:w.en||w.word||w.hanzi,sub:w.ipa||w.pinyin,pos:w.pos,vi:w.vi||w.meaning,level:w.level,example:w.exEn||w.exZh||w.example,exampleVi:w.exVi||w.exampleVi,examplePy:w.exPy,definition:w.definition,usage:w.usage};
+            (l==='zh'?zh:en).push(row);
+          };
+          (window.EngStartVocabularyData?.rows || []).forEach(w=>addLibrary(w,w.lang));
+          (Array.isArray(state.vocabLibraryV33?.custom)?state.vocabLibraryV33.custom:[]).forEach(d=>{if(d&&Array.isArray(d.words))d.words.forEach(w=>addLibrary(w,d.lang));});
           return {en,zh};
         },
         isSaved: (head) => String(state.notebook || '').split('\n').some(line => line.startsWith('- [Từ điển] '+head+' (')),
