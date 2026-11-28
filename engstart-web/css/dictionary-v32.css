@@ -69,3 +69,15 @@
 @media(max-width:480px){#page-dictionary .nd-title{width:100%;font-size:19px}#page-dictionary .nd-banner,#page-dictionary .nd-panel{padding:11px}#page-dictionary .nd-audios,#page-dictionary .nd-syn-grid{grid-template-columns:1fr}#page-dictionary .nd-lang button{padding:6px 8px}#page-dictionary .nd-family{grid-template-columns:1fr 1fr}}
 #page-dictionary .nd-example-target{color:inherit;background:transparent;font-weight:800;text-decoration:underline;text-decoration-color:#249590;text-decoration-thickness:1.5px;text-underline-offset:3px}
 #page-dictionary .nd-icon{display:inline-block;vertical-align:middle;color:inherit}
+
+/* v35: Mandarin-only reading layout */
+#page-dictionary .nd-zh .nd-word{font-size:clamp(32px,4vw,46px);letter-spacing:0;font-family:Inter,"Noto Sans SC","Microsoft YaHei",sans-serif}
+#page-dictionary .nd-zh .nd-audios{grid-template-columns:1fr}
+#page-dictionary .nd-zh .nd-example b{font-size:18px;line-height:1.5}
+#page-dictionary .nd-zh .nd-example p:first-of-type{color:#126b68;font-size:13px}
+#page-dictionary .nd-zh-pinyin{display:block;color:#126b68;font-size:12px;margin-top:2px;line-height:1.5}
+#page-dictionary .nd-zh-related .nd-related-word b{font-size:17px;line-height:1.4}
+#page-dictionary .nd-zh .nd-related-row{align-items:flex-start}
+
+#page-dictionary .nd-multi-reading{border:1px solid #e0d9c9;border-radius:11px;background:#f4f0e5;padding:10px 12px;min-height:40px}
+#page-dictionary .nd-zh .nd-example b,#page-dictionary .nd-zh-related .nd-related-word b{font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC","Noto Sans SC",sans-serif}
