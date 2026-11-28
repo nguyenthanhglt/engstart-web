@@ -1,0 +1,28 @@
+ENGSTART NGUYEN THANH - V38: PHONG LUYEN VIDEO & DICTATION
+
+Nen: EngStart-v37-Sua-dich-phu-de-song-ngu.zip.
+Chi thay doi 3 tep ma nguon, khong thay API hoac du lieu IPA:
+  index.html
+  css/video-library-v36.css
+  js/video-library-v36.js
+
+CAP NHAT TREN GITHUB
+1. Neu dang chay v37, giai nen goi cap nhat nhanh.
+2. Vao repository engstart-web, mo thu muc engstart-web ben trong (Root Directory cua Vercel).
+3. Tai noi dung cua thu muc engstart-web trong ZIP vao dung vi tri, giu duong dan css/ va js/. Chi 3 tep ma nguon can thay.
+4. Commit changes tren nhanh main. Sau khi Vercel Production bao Ready, Ctrl+F5.
+5. Neu web chua chay v37, dung ZIP day du; khong xoa cac tai nguyen cu. GitHub web gioi han so tep moi luot, hay chia nho theo thu muc.
+
+CACH HOC
+- Mo Hoc qua video, chon bai. Phong video co video va bai tap ben trai; danh sach cau ben phai (dien thoai xep doc).
+- Dictation: Nghe cau, go dap an. Hien so tu/chu khop, bam tung o de xem goi y; nut Chu cai dau, Hien dap an. Enter kiem tra; Enter lan nua sau khi dung sang cau tiep. Ctrl+Enter nghe lai; Alt+H goi y khi dang o o nhap; Shift+Enter xuong dong.
+- Tien do dictation rieng cho moi video, nguon bai va ngon ngu. Diem la do khop van ban (Levenshtein theo tu/chu Han), khong phai diem phat am. Diem cao nhat tung cau duoc luu tren thiet bi; trung binh chi tinh cac cau da cham. Neu dung goi y thi hien nhan goi y. Nut Dat lai chi xoa tien do dictation, khong xoa tien do cac che do cu.
+- Hien loi thoai: mo/che danh sach cau. Phu de dich hien khi hien dap an hoac hien loi thoai. Giu nguyen dich song ngu v37, nhap SRT/VTT/JSON va moc thoi gian.
+- Neu video goc khac ngon ngu hoc, Dictation dung giong doc ban dich, khong gia vo la am thanh goc. Phu de khong co moc thoi gian dung giong doc mau. Video YouTube phu thuoc quyen nhung, API va ket noi.
+- Shadowing, Quiz, Subtitles va kho video cu duoc giu. Du lieu tien do va phu de cu dung cung khoa localStorage. Khong dong bo them voi Supabase.
+
+KIEM THU
+- Kiem tra cu phap tat ca tep JS trong js/ va api/.
+- Chromium fixture: 4 che do, an loi thoai, goi y, dung/sai, diem, Enter chuyen cau, hoc tiep, nhap phu de Viet va dich sang Anh voi API gia lap, Dictation chu Han, dien thoai 390px khong tran ngang. Khong phat hien pageerror trong cac bai kiem thu.
+- Trinh duyet khong cho truy cap host thu nghiem; da nap truc tiep HTML/CSS/JS va mo phong localStorage, YouTube, API. Chua kiem thu YouTube, TTS, microphone, API dich, Vercel thuc te.
+- Cac tep goc ngoai 3 tep tren duoc bao toan byte-for-byte. ZIP kiem tra CRC.
