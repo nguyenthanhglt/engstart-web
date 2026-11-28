@@ -20,7 +20,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Đại từ nhân xưng & Tính từ sở hữu (my, your, his, her, our, their)',
-          formula: 'I → my (của tôi) | You → your | He → his | She → her | It → its | We → our | They → their',
+          formula: 'I → my  |  You → your  |  He → his  |  She → her  |  It → its  |  We → our  |  They → their',
           rule: 'Tính từ sở hữu luôn đứng TRƯỚC danh từ để chỉ vật/người đó thuộc về ai. Khác với tiếng Việt (nói "sách của tôi"), tiếng Anh luôn đặt từ sở hữu trước danh từ ("my book").',
           examples: [
             { text: 'This is my backpack and that is his pen.', vi: 'Đây là ba lô của tôi còn kia là cây bút của anh ấy.', note: '"my" đứng trước "backpack", "his" đứng trước "pen".' },
@@ -37,7 +37,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Cách dùng mạo từ a / an / the chuẩn xác',
-          formula: 'a + phụ âm (a cat) | an + nguyên âm u,e,o,a,i (an apple) | the + vật đã xác định / duy nhất',
+          formula: 'a / an + N (số ít)  |  the + N',
           rule: 'Dùng "a/an" trước danh từ đếm được số ít khi nhắc tới lần đầu (nghĩa là "một"). Dùng "an" khi âm đầu của từ là nguyên âm (a, e, i, o, u — ví dụ: an apple, an hour). Dùng "the" khi cả người nói và người nghe đều biết rõ đang nói tới vật nào, hoặc vật duy nhất (the sun, the moon).',
           examples: [
             { text: 'I saw a dog. The dog was very cute.', vi: 'Tôi thấy một chú chó. Chú chó đó rất dễ thương.', note: 'Nhắc lần đầu dùng "a dog", nhắc lại lần 2 đã rõ con nào nên dùng "the dog".' },
@@ -49,7 +49,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'There is / There are (Có cái gì ở đâu)',
-          formula: 'There is + danh từ số ít / không đếm được  |  There are + danh từ số nhiều',
+          formula: 'There is + N (số ít / không đếm được)  |  There are + N (số nhiều)',
           rule: 'Khi muốn giới thiệu sự tồn tại của vật hoặc người ở một địa điểm ("Có 1 quyển sách trên bàn"), tiếng Anh dùng "There is / There are", KHÔNG dùng "Have" đứng đầu câu như tiếng Việt.',
           examples: [
             { text: 'There is a red apple on the table.', vi: 'Có một quả táo đỏ ở trên bàn.', note: '1 quả táo (số ít) nên dùng "There is".' },
@@ -107,7 +107,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Phân biệt Hiện tại đơn vs Hiện tại tiếp diễn',
-          formula: 'Thói quen lặp lại → Hiện tại đơn (V / V-s)   |   Đang làm lúc này → Hiện tại tiếp diễn (be + V-ing)',
+          formula: 'Hiện tại đơn: S + V / V-s,es  |  Hiện tại tiếp diễn: S + am/is/are + V-ing',
           rule: 'Hãy đặt câu hỏi: việc này diễn ra MỖI NGÀY (thói quen) hay ĐANG XẢY RA NGAY BÂY GIỜ? Ngoài ra, các động từ chỉ cảm giác/suy nghĩ (like, love, want, know, understand) thường KHÔNG chia V-ing.',
           examples: [
             { text: 'I usually drink tea, but today I am drinking coffee.', vi: 'Tôi thường uống trà, nhưng hôm nay tôi đang uống cà phê.', note: 'Vế 1 là thói quen ("usually" → drink); vế 2 là tình huống tạm thời hôm nay ("am drinking").' },
@@ -136,7 +136,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Quá khứ tiếp diễn kết hợp When / While',
-          formula: 'S + was/were + V-ing + WHEN + S + V-ed/V2 (hành động ngắn xen vào)',
+          formula: 'S + was/were + V-ing + WHEN + S + V-ed/V2',
           rule: 'Dùng Quá khứ tiếp diễn (was/were + V-ing) để diễn tả hành động ĐANG diễn ra tại một thời điểm trong quá khứ, thì một hành động khác bất ngờ xen ngang (chia Quá khứ đơn).',
           examples: [
             { text: 'I was reading a book when the phone rang.', vi: 'Tôi đang đọc sách thì điện thoại reo.', note: 'Đọc sách đang diễn ra (was reading), chuông reo xen vào (rang).' },
@@ -199,7 +199,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Quy tắc tam giác ngược: IN – ON – AT (Thời gian & Địa điểm)',
-          formula: 'IN (rộng: năm, tháng, mùa, thành phố)  >  ON (vừa: ngày, thứ, bề mặt)  >  AT (cụ thể: giờ giấc, điểm chính xác)',
+          formula: 'IN  >  ON  >  AT',
           rule: 'Nhớ mẹo "từ lớn đến nhỏ": IN dùng cho khoảng rộng (in 2026, in May, in Vietnam, in the room); ON dùng cho ngày/thứ và bề mặt (on Monday, on June 1st, on the table); AT dùng cho giờ chính xác và địa điểm cụ thể (at 7 o’clock, at school, at the door).',
           examples: [
             { text: 'The class starts at 8:00 a.m. on Monday.', vi: 'Lớp học bắt đầu lúc 8 giờ sáng thứ Hai.', note: 'Giờ cụ thể dùng "at 8:00 a.m.", thứ trong tuần dùng "on Monday".' },
@@ -211,7 +211,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Some / Any / Much / Many / A lot of',
-          formula: 'some (khẳng định, mời) | any (phủ định, câu hỏi) | many + đếm được số nhiều | much + không đếm được',
+          formula: 'some  |  any  |  many + N (số nhiều)  |  much + N (không đếm được)',
           rule: 'Dùng "many" với danh từ đếm được (many books, many friends); dùng "much" với danh từ không đếm được (much water, much time); còn "a lot of" dùng được cho CẢ HAI rất tiện lợi trong giao tiếp!',
           examples: [
             { text: 'I have some apples, but I don’t have any bananas.', vi: 'Tôi có vài quả táo, nhưng tôi không có quả chuối nào.', note: 'Câu khẳng định dùng "some", câu phủ định dùng "any".' },
@@ -228,7 +228,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Can / Could / Should / Must / Have to',
-          formula: 'S + can / could / should / must + V nguyên mẫu (KHÔNG có "to", KHÔNG thêm -s)',
+          formula: 'S + can / could / should / must + V',
           rule: 'Can: khả năng (biết làm gì) hoặc xin phép. Could: lịch sự hơn Can khi nhờ vả. Should: lời khuyên ("nên làm gì"). Must / Have to: bắt buộc, nghĩa vụ ("phải làm gì"). Lưu ý: mustn’t = CẤM làm, còn don’t have to = KHÔNG CẦN phải làm.',
           examples: [
             { text: 'She can swim very well, and she can ride a bike.', vi: 'Cô bé biết bơi rất giỏi và biết đi xe đạp.', note: 'Sau "can" động từ "swim / ride" giữ nguyên mẫu dù chủ ngữ là "She".' },
@@ -245,7 +245,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'So sánh hơn (-er / more ... than) & So sánh nhất (the -est / the most)',
-          formula: 'Tính từ ngắn (1 âm tiết): taller than / the tallest  |  Tính từ dài (2+ âm tiết): more expensive than / the most expensive',
+          formula: 'Adj ngắn: -er than / the -est  |  Adj dài: more ... than / the most ...',
           rule: 'So sánh giữa 2 người/vật dùng So sánh hơn (luôn có "than"). So sánh từ 3 người/vật trở lên dùng So sánh nhất (luôn có "the"). Nhớ 3 từ bất quy tắc hay gặp: good → better → the best; bad → worse → the worst; far → farther → the farthest.',
           examples: [
             { text: 'My brother is taller than me.', vi: 'Anh trai tôi cao hơn tôi.', note: '"tall" là tính từ ngắn (1 âm tiết) nên thêm "-er" + "than".' },
@@ -274,7 +274,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Câu bị động cơ bản (Passive Voice: be + V3)',
-          formula: 'S (đối tượng chịu tác động) + am/is/are/was/were + V3/V-ed (+ by tác nhân)',
+          formula: 'S + am/is/are/was/were + V3/V-ed (+ by O)',
           rule: 'Dùng câu bị động khi muốn nhấn mạnh ĐỐI TƯỢNG chịu hành động (hoặc không cần biết ai làm). Công thức cốt lõi chỉ cần nhớ: To Be (chia theo thì) + Động từ cột 3 (V3/V-ed).',
           examples: [
             { text: 'English is spoken all over the world.', vi: 'Tiếng Anh được nói trên khắp thế giới.', note: 'Bị động hiện tại: "is" + V3 của speak là "spoken".' },
@@ -315,7 +315,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Đại từ sở hữu whose & Trạng từ quan hệ (where / when / why)',
-          formula: 'whose + Danh từ (của ai)  |  where (nơi mà)  |  when (khi mà)  |  why (lý do mà)',
+          formula: 'whose + N  |  where  |  when  |  why',
           rule: 'Ngoài who/which/that, khi muốn nối câu chỉ sự SỞ HỮU dùng "whose + N"; chỉ NƠI CHỐN dùng "where"; chỉ THỜI GIAN dùng "when"; chỉ LÝ DO (sau "the reason") dùng "why".',
           examples: [
             { text: 'That is the boy whose dog won the prize.', vi: 'Đó là cậu bé có chú chó đã giành giải thưởng.', note: '"whose dog" = chú chó của cậu bé đó.' },
@@ -332,7 +332,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Câu mệnh lệnh khẳng định, phủ định (Don’t + V) & rủ rê (Let’s + V)',
-          formula: '(+) V nguyên mẫu!  |  (-) Don’t + V nguyên mẫu!  |  Lịch sự: Please + V  |  Rủ rê: Let’s + V!',
+          formula: '(+) V!  |  (-) Don’t + V!  |  Please + V  |  Let’s + V!',
           rule: 'Câu mệnh lệnh dùng để hướng dẫn, yêu cầu, nhắc nhở hoặc rủ rê — điểm đặc biệt là KHÔNG cần viết chủ ngữ "You" ở đầu câu mà bắt đầu thẳng bằng động từ nguyên mẫu. Muốn lịch sự hơn, thêm "Please" ở đầu hoặc cuối câu.',
           examples: [
             { text: 'Open your book and read page ten, please.', vi: 'Làm ơn mở sách ra và đọc trang 10 nhé.', note: 'Bắt đầu thẳng bằng động từ nguyên mẫu "Open", thêm "please" cho lịch sự.' },
@@ -349,7 +349,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Phân biệt nhanh Do/Does/Did · Am/Is/Are · Have/Has',
-          formula: 'Do/Does/Did + V nguyên mẫu (hỏi/phủ định động từ thường) | Be + V-ing / V3 / Tính từ | Have/Has + V3 (hoàn thành)',
+          formula: 'Do/Does/Did + V  |  Be + V-ing / V3 / Adj  |  Have/Has + V3',
           rule: 'Trợ động từ giống như "người phụ tá" giúp đặt câu hỏi, phủ định và chia thì. Quy tắc vàng không bao giờ nhầm: thấy động từ thường ở Hiện tại đơn/Quá khứ đơn → mượn Do/Does/Did; thấy V-ing, bị động hoặc tính từ → dùng Be (am/is/are/was/were); thấy V3 (đã từng/vừa xong) → dùng Have/Has.',
           examples: [
             { text: 'Do you like apples? — Yes, I do.', vi: 'Bạn có thích táo không? — Có, mình thích.', note: '"like" là động từ thường ở Hiện tại đơn → mượn "Do".' },
@@ -378,7 +378,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Danh từ đếm được & Danh từ không đếm được',
-          formula: 'Đếm được: a cat → two cats (thêm -s/-es)  |  Không đếm được: water, rice, music, advice, information (KHÔNG thêm a/an, KHÔNG thêm -s)',
+          formula: 'Đếm được: a/an + N, N-s/es  |  Không đếm được: N',
           rule: 'Danh từ không đếm được (chất lỏng, chất bột, khái niệm trừu tượng như water, milk, money, advice, homework, news) LUÔN chia động từ số ít (is/has) và muốn đếm phải mượn đơn vị (a glass of water, a piece of advice).',
           examples: [
             { text: 'Could I have a glass of water, please?', vi: 'Cho tôi xin một ly nước được không?', note: '"water" không đếm được, mượn đơn vị "a glass of".' },
@@ -395,7 +395,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Phân biệt Tính từ (tả người/vật) và Trạng từ (tả cách làm hành động)',
-          formula: 'Tính từ + Danh từ (a careful driver)  |  Động từ + Trạng từ (drives carefully)  •  Ngoại lệ: good → well | fast → fast | hard → hard',
+          formula: 'Adj + N  |  V + Adv',
           rule: 'Tính từ mô tả DANH TỪ hoặc đứng sau to be / feel / look (She is happy). Trạng từ mô tả ĐỘNG TỪ ("làm như thế nào?") và thường tạo bằng cách thêm "-ly" vào tính từ (slow → slowly, careful → carefully). Nhớ 3 ngoại lệ kinh điển: good → well, fast giữ nguyên fast, hard giữ nguyên hard.',
           examples: [
             { text: 'He is a careful driver. He always drives carefully.', vi: 'Anh ấy là một tài xế cẩn thận. Anh ấy luôn lái xe cẩn thận.', note: '"careful" (tính từ) bổ nghĩa cho "driver"; "carefully" (trạng từ) bổ nghĩa cho "drives".' },
@@ -412,7 +412,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Liên từ nối trong câu (and, but, or, so, because, although)',
-          formula: 'Nguyên nhân: because / so  |  Tương phản: but / although  |  Bổ sung / Lựa chọn: and / or',
+          formula: 'because / so  |  but / although  |  and / or',
           rule: 'Dùng để nối 2 vế trong cùng 1 câu. Lưu ý cực quan trọng cho người Việt: trong tiếng Anh KHÔNG BAO GIỜ dùng kép "Because ... so ..." hay "Although ... but ..." trong cùng 1 câu (chỉ chọn 1 trong 2 từ thôi!).',
           examples: [
             { text: 'I stayed home because it was raining.', vi: 'Tôi ở nhà vì trời đang mưa.', note: 'Hoặc nói: "It was raining, so I stayed home." (chỉ dùng 1 từ because HOẶC so).' },
@@ -424,7 +424,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Từ nối giữa các câu (However, Therefore, First, Then, Finally)',
-          formula: 'Câu 1. However, Câu 2. (Tuy nhiên)  |  Câu 1. Therefore, Câu 2. (Vì vậy)  |  First, ... Then, ... Finally, ...',
+          formula: 'Câu 1. However, Câu 2.  |  Câu 1. Therefore, Câu 2.  |  First, ... Then, ... Finally, ...',
           rule: 'Khi muốn chuyển ý mượt mà sang câu tiếp theo trong bài nói hoặc đoạn văn, đặt từ nối ở đầu câu mới và nhớ đặt DẤU PHẨY ngay sau nó (However, / Therefore, / In addition, / Finally,).',
           examples: [
             { text: 'The test was difficult. However, Lan got a high score.', vi: 'Bài kiểm tra rất khó. Tuy nhiên, Lan vẫn đạt điểm cao.', note: '"However," đứng đầu câu mới để chuyển sang ý trái ngược.' },
@@ -443,7 +443,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Câu định nghĩa A 是 B (A là B) & Phủ định 不是',
-          formula: '(+) A + 是 + B   |   (-) A + 不是 (bú shì) + B   |   (?) A + 是 + B + 吗？',
+          formula: '(+) A + 是 + B  |  (-) A + 不是 + B  |  (?) A + 是 + B + 吗？',
           rule: 'Chữ 是 (shì) dùng để nối 2 danh từ (nghĩa là "là"). Lưu ý quan trọng: tiếng Trung KHÔNG dùng 是 trước tính từ (ví dụ: "Cô ấy rất đẹp" nói 她很漂亮, KHÔNG nói 她是漂亮!). Phủ định của 是 là 不是 (đọc biến điệu thành bú shì).',
           examples: [
             { text: '我是越南人。', pinyin: 'Wǒ shì Yuènán rén.', vi: 'Tôi là người Việt Nam.', note: 'Nối đại từ 我 với danh từ 越南人 bằng 是.' },
@@ -455,7 +455,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Các từ để hỏi cơ bản (什么, 谁, 哪儿, 几, 多少)',
-          formula: 'Trật tự câu hỏi giữ NGUYÊN như câu trần thuật — chỉ thay chỗ cần hỏi bằng từ để hỏi!',
+          formula: 'S + V + [什么 / 谁 / 哪儿 / 几 / 多少]?',
           rule: 'Đây là điểm siêu dễ của tiếng Trung so với tiếng Anh: bạn KHÔNG cần đảo ngữ! Muốn hỏi phần nào thì đặt từ để hỏi (什么 cái gì, 谁 ai, 哪儿 ở đâu, 几 mấy) vào đúng vị trí của câu trả lời.',
           examples: [
             { text: '你叫什么名字？', pinyin: 'Nǐ jiào shénme míngzi?', vi: 'Bạn tên là gì?', note: 'Trả lời: 我叫小明 (thay 什么名字 bằng tên).' },
@@ -472,7 +472,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Trợ từ sở hữu 的 (của) & Động từ 有 / 没有',
-          formula: 'Chủ sở hữu + 的 + Danh từ   |   A + 有 / 没有 + B (có / không có)',
+          formula: 'A + 的 + N  |  A + 有 / 没有 + B',
           rule: 'Đặt 的 ở giữa để chỉ sở hữu (ngược với tiếng Việt: "sách của tôi" → 我的书). Khi nói về người thân hoặc mối quan hệ rất gần (我妈妈, 我朋友) có thể lược bỏ 的. Đặc biệt: phủ định của 有 LUÔN là 没有 (méiyǒu), tuyệt đối không dùng 不有.',
           examples: [
             { text: '这是我的书包。', pinyin: 'Zhè shì wǒ de shūbāo.', vi: 'Đây là cặp sách của tôi.', note: '我 (tôi) + 的 (của) + 书包 (cặp sách).' },
@@ -484,7 +484,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
         },
         {
           title: 'Lượng từ bắt buộc (个, 本, 杯, 只)',
-          formula: 'Số từ + Lượng từ + Danh từ (Ví dụ: 一个人, 两本书, 一杯茶, 一只猫)',
+          formula: 'Số từ + Lượng từ + N',
           rule: 'Trong tiếng Trung, giữa số đếm (一, 两, 三...) và danh từ BẮT BUỘC có lượng từ. Nhớ 4 lượng từ hay dùng nhất: 个 (gè — người/đồ vật chung), 本 (běn — sách vở), 杯 (bēi — ly/cốc nước), 只 (zhī — động vật nhỏ). Lưu ý: số 2 trước lượng từ dùng 两 (liǎng), không dùng 二.',
           examples: [
             { text: '我要两杯牛奶。', pinyin: 'Wǒ yào liǎng bēi niúnǎi.', vi: 'Cho tôi hai ly sữa.', note: 'Số 2 đi với lượng từ 杯 phải dùng 两 (liǎng).' },
@@ -501,7 +501,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Quy tắc vàng: Chủ ngữ + Thời gian + 在 Địa điểm + Động từ',
-          formula: 'S + Thời gian + 在 (ở) + Địa điểm + Động từ + Tân ngữ',
+          formula: 'S + Thời gian + 在 + Địa điểm + V + O',
           rule: 'Khác hẳn tiếng Việt ("Tôi ăn cơm ở nhà"), trong tiếng Trung ĐỊA ĐIỂM (ở đâu) và THỜI GIAN (khi nào) luôn phải đặt TRƯỚC động từ! Hãy nhớ câu thần chú: "Ai — Khi nào — Ở đâu — Làm gì".',
           examples: [
             { text: '我今天在家学习中文。', pinyin: 'Wǒ jīntiān zài jiā xuéxí Zhōngwén.', vi: 'Hôm nay tôi học tiếng Trung ở nhà.', note: '我 (Ai) + 今天 (Khi nào) + 在家 (Ở đâu) + 学习中文 (Làm gì).' },
@@ -518,7 +518,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Phân biệt 想 (muốn nhẹ), 要 (muốn / gọi món) và 会 (biết kỹ năng)',
-          formula: 'S + 想 / 要 / 会 / 可以 + Động từ',
+          formula: 'S + 想 / 要 / 会 / 可以 + V',
           rule: '想 (xiǎng): mong muốn trong lòng ("tôi muốn đi du lịch"). 要 (yào): muốn dứt khoát hoặc dùng khi gọi món/mua hàng ("cho tôi 1 ly trà"). 会 (huì): biết một kỹ năng đã qua học tập (biết nói tiếng Trung, biết bơi). 可以 (kěyǐ): xin phép ("có thể không?").',
           examples: [
             { text: '我想去中国旅游。', pinyin: 'Wǒ xiǎng qù Zhōngguó lǚyóu.', vi: 'Tôi muốn đi du lịch Trung Quốc.', note: 'Mong muốn nhẹ nhàng dùng 想.' },
@@ -535,7 +535,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Trợ từ 了 (đã xảy ra / thay đổi) & 过 (đã từng trải nghiệm)',
-          formula: 'S + V + 了 + O (đã làm xong)  |  S + 没 + V (chưa làm, bỏ 了)  |  S + V + 过 + O (đã từng)',
+          formula: 'S + V + 了 + O  |  S + 没 + V  |  S + V + 过 + O',
           rule: 'Đặt 了 ngay sau động từ để nhấn mạnh hành động đã hoàn thành, hoặc đặt cuối câu để báo sự thay đổi mới ("Trời mưa rồi!"). Khi phủ định quá khứ dùng 没 (méi) và BỎ 了. Dùng 过 (guo) sau động từ để nói kinh nghiệm "đã từng" làm gì trong đời.',
           examples: [
             { text: '我买了一本新书。', pinyin: 'Wǒ mǎile yì běn xīn shū.', vi: 'Tôi đã mua một quyển sách mới.', note: '了 đặt sau động từ 买 chỉ việc mua đã hoàn thành.' },
@@ -552,7 +552,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Hành động đang diễn ra (正在 / 在 + V + 呢) & So sánh hơn (A 比 B + Tính từ)',
-          formula: 'S + 正在 / 在 + V (+ O) + 呢   |   A + 比 + B + Tính từ (+ 一点儿 / 得多)',
+          formula: 'S + 正在 / 在 + V (+ O) + 呢  |  A + 比 + B + Adj',
           rule: 'Dùng 在 hoặc 正在 trước động từ (có thể thêm 呢 ở cuối câu) để nói việc đang xảy ra. Trong câu so sánh hơn A 比 B + Tính từ: TUYỆT ĐỐI KHÔNG thêm 很 (rất) trước tính từ! Nếu muốn nói "hơn nhiều" dùng 得多, "hơn một chút" dùng 一点儿 đặt SAU tính từ.',
           examples: [
             { text: '妹妹正在画画呢。', pinyin: 'Mèimei zhèngzài huàhuà ne.', vi: 'Em gái đang vẽ tranh đấy.', note: '正在 + V + 呢 diễn tả hành động đang diễn ra.' },
@@ -569,7 +569,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Khen/nhận xét mức độ làm việc (V + 得 + 很 + Tính từ) & Kết quả (看完, 听懂)',
-          formula: 'S + (V + O) + V + 得 + 很 + Tính từ   |   V + 完 (xong) / 懂 (hiểu) / 到 (được)',
+          formula: 'S + (V + O) + V + 得 + 很 + Adj  |  V + 完 / 懂 / 到',
           rule: 'Muốn khen ai đó làm việc gì rất giỏi ("nói rất lưu loát", "viết rất đẹp"), đặt trợ từ 得 (de) ngay sau động từ rồi mới tới tính từ. Muốn nhấn mạnh KẾT QUẢ của hành động, ghép thêm chữ chỉ kết quả ngay sau động từ: 听懂 (nghe hiểu), 看完 (xem xong), 找到 (tìm thấy).',
           examples: [
             { text: '你说中文说得很好！', pinyin: 'Nǐ shuō Zhōngwén shuō de hěn hǎo!', vi: 'Bạn nói tiếng Trung rất giỏi!', note: 'Có tân ngữ 中文 nên lặp lại động từ 说 trước 得.' },
@@ -586,7 +586,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: '3 cặp liên từ giao tiếp đắt giá (因为...所以..., 虽然...但是..., 如果...就...)',
-          formula: '因为 (vì)... 所以 (nên)...  |  虽然 (tuy)... 但是 (nhưng)...  |  如果 (nếu)... 就 (thì)...',
+          formula: '因为... 所以...  |  虽然... 但是...  |  如果... 就...',
           rule: 'Tiếng Trung rất thích dùng theo cặp liên từ để câu văn mạch lạc (khác tiếng Anh không dùng cả Because lẫn So cùng lúc, tiếng Trung lại DÙNG CẢ HAI 因为...所以... rất tự nhiên!).',
           examples: [
             { text: '因为下雨，所以我们不去公园。', pinyin: 'Yīnwèi xiàyǔ, suǒyǐ wǒmen bú qù gōngyuán.', vi: 'Vì trời mưa nên chúng tôi không đi công viên.', note: 'Dùng trọn cặp 因为...所以...' },
@@ -603,7 +603,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Mời lịch sự (请 + V), Khuyên đừng làm (别 / 不要 + V) & Rủ rê (...吧)',
-          formula: 'Lịch sự: 请 + V  |  Đừng làm: 别 (bié) / 不要 + V  |  Rủ rê / Đề nghị: S + V + 吧 (ba)',
+          formula: '请 + V  |  别 / 不要 + V  |  S + V + 吧',
           rule: 'Đặt 请 (qǐng) trước động từ để nói lịch sự ("mời / xin vui lòng"). Dùng 别 (bié) hoặc 不要 (búyào) trước động từ để khuyên ngăn ("đừng làm..."). Đặt trợ từ 吧 (ba) ở cuối câu để rủ rê hoặc gợi ý nhẹ nhàng ("nhé / thôi").',
           examples: [
             { text: '请进，请坐！', pinyin: 'Qǐng jìn, qǐng zuò!', vi: 'Mời vào, mời ngồi!', note: '请 đặt trước động từ tạo câu mời cực lịch sự.' },
@@ -620,7 +620,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Câu bị động (被 bèi) & Câu xử lý đồ vật (把 bǎ)',
-          formula: 'Bị động: Đối tượng + 被 (+ Tác nhân) + V + kết quả  |  Chữ 把: Chủ ngữ + 把 + Đồ vật + V + kết quả',
+          formula: 'S + 被 (+ O) + V + kết quả  |  S + 把 + O + V + kết quả',
           rule: 'Câu chữ 被 (bèi) dùng khi muốn nói ai/cái gì "bị / được" làm sao đó (thường mang kết quả rõ ràng). Câu chữ 把 (bǎ) đưa đồ vật lên TRƯỚC động từ để nhấn mạnh hành động làm thay đổi vị trí/trạng thái của vật đó (ví dụ: "để sách lên bàn", "uống hết sữa").',
           examples: [
             { text: '我的苹果被弟弟吃了。', pinyin: 'Wǒ de píngguǒ bèi dìdi chī le.', vi: 'Quả táo của tôi bị em trai ăn mất rồi.', note: 'Táo (đối tượng) + 被 + em trai + 吃了 (động từ + kết quả).' },
@@ -637,7 +637,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Mẹo nhớ không bao giờ nhầm bộ ba 的 · 地 · 得 (đều đọc "de")',
-          formula: 'Tính từ + 的 + Danh từ  |  Trạng từ + 地 + Động từ  |  Động từ + 得 + Tính từ',
+          formula: 'Adj + 的 + N  |  Adv + 地 + V  |  V + 得 + Adj',
           rule: 'Cả 3 chữ đều đọc nhẹ là "de", nhưng vị trí hoàn toàn khác nhau: trước DANH TỪ dùng 的 (bạch-đích); trước ĐỘNG TỪ (chỉ cách làm) dùng 地 (thổ-địa); SAU ĐỘNG TỪ (khen mức độ) dùng 得 (song-nhân-đắc).',
           examples: [
             { text: '她穿着一件漂亮的裙子。', pinyin: 'Tā chuānzhe yí jiàn piàoliang de qúnzi.', vi: 'Cô bé đang mặc một chiếc váy đẹp.', note: '漂亮 (đẹp) + 的 + 裙子 (váy — danh từ). Chữ 着 sau 穿 chỉ trạng thái đang mặc trên người.' },
@@ -654,7 +654,7 @@ window.AIO_GRAMMAR_UNITS_FULL = {
       points: [
         {
           title: 'Cách nói "Mệnh đề quan hệ" kiểu Trung (Cụm bổ nghĩa + 的 + Danh từ) & Câu liên động',
-          formula: '[Phần mô tả dài] + 的 + Danh từ chính   |   Câu liên động: S + V1 (đi đâu/dùng gì) + V2 (làm gì)',
+          formula: '[Mô tả] + 的 + N  |  S + V1 + V2',
           rule: 'Tiếng Trung KHÔNG dùng who/which đứng sau như tiếng Anh, mà gom TOÀN BỘ phần giải thích đặt TRƯỚC chữ 的 rồi mới tới danh từ chính (dịch ngược từ sau chữ 的 ra trước!). Còn Câu liên động chỉ cần xếp 2 động từ theo đúng thứ tự thời gian diễn ra (không cần "to" hay "and").',
           examples: [
             { text: '这是我昨天买的书。', pinyin: 'Zhè shì wǒ zuótiān mǎi de shū.', vi: 'Đây là cuốn sách mà hôm qua tôi đã mua.', note: 'Đặt "我昨天买" (hôm qua tôi mua) TRƯỚC 的 + 书 (sách).' },

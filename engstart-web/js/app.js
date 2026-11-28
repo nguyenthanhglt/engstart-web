@@ -4951,9 +4951,17 @@
         }
         if (/N\/Adj/.test(f)) {
           add('N / Adj', '<b>N</b> = Danh từ (<i>teacher, cat</i>) · <b>Adj</b> = Tính từ (<i>happy, tall</i>)');
+        } else {
+          if (/\bN\b|N-s\/es/.test(f)) add('N', 'Danh từ — tên người, đồ vật, con vật (VD: <i>cat, apple, teacher</i>)');
+          if (/\bAdj\b/.test(f)) add('Adj', 'Tính từ — từ miêu tả tính chất (VD: <i>happy, tall, careful</i>)');
         }
-        if (/by tác nhân/.test(f)) {
-          add('by + tác nhân', '“Bởi ai đó” (có thể bỏ qua nếu không cần nhấn mạnh người làm)');
+        if (/\bAdv\b/.test(f)) {
+          add('Adv', 'Trạng từ — miêu tả cách làm hành động (VD: <i>carefully, fast, well</i>)');
+        }
+        if (/by O/.test(f)) {
+          add('by O', '“Bởi ai đó / cái gì đó” (có thể lược bỏ nếu không cần nêu rõ)');
+        } else if (/\bO\b/.test(f)) {
+          add('O', 'Tân ngữ — người/vật chịu tác động của hành động');
         }
       } else {
         if (/V1/.test(f) && /V2/.test(f)) {
@@ -4961,6 +4969,9 @@
         } else if (/\bV\b/.test(f)) {
           add('V', 'Động từ chỉ hành động (VD: <i>吃 ăn, 去 đi, 看 xem</i>)');
         }
+        if (/\bN\b/.test(f)) add('N', 'Danh từ (VD: <i>书 sách, 人 người, 猫 mèo</i>)');
+        if (/\bAdj\b/.test(f)) add('Adj', 'Tính từ (VD: <i>好 tốt, 大 to, 快 nhanh</i>)');
+        if (/\bAdv\b/.test(f)) add('Adv', 'Trạng từ — miêu tả cách làm hành động (VD: <i>慢慢地 từ từ</i>)');
         if (/\bO\b/.test(f)) {
           add('O', 'Tân ngữ — người/vật chịu tác động của hành động (VD: <i>饭 cơm, 书 sách</i>)');
         }
