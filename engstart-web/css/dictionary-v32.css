@@ -1,0 +1,71 @@
+/* Dictionary tab only, matching EngStart's existing notebook palette. */
+#page-dictionary { --d-ink:#24313a; --d-muted:#67737c; --d-line:#ddd7c8; --d-gold:#a37a2a; --d-teal:#126b68; color:var(--d-ink); }
+#page-dictionary .nd-shell{display:flex;flex-direction:column;gap:13px;font-size:14px}
+#page-dictionary .nd-banner{border:1px solid #d6c397;background:linear-gradient(115deg,#f0e4c9,#fbf6e9);border-radius:18px;padding:13px 15px;box-shadow:0 3px 0 #d8c5a4,0 5px 16px #87744614}
+#page-dictionary .nd-search{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+#page-dictionary .nd-title{font-size:21px;font-weight:800;letter-spacing:-.025em;white-space:nowrap}
+#page-dictionary .nd-searchbox{display:flex;align-items:center;gap:8px;min-width:170px;flex:1;border:1px solid #c6b58e;border-radius:999px;background:#fffdf8;padding:6px 12px}
+#page-dictionary .nd-searchbox:focus-within{outline:2px solid #977735;outline-offset:2px}
+#page-dictionary .nd-searchbox input{min-width:0;width:100%;border:0;background:transparent;font:inherit;outline:none;padding:4px 0}
+#page-dictionary .nd-icon{width:17px;height:17px;flex:none}
+#page-dictionary button{cursor:pointer;line-height:1.35}
+#page-dictionary button:disabled{cursor:default;opacity:.55}
+#page-dictionary button:focus-visible,#page-dictionary a:focus-visible,#page-dictionary summary:focus-visible{outline:2px solid #126b68;outline-offset:3px}
+#page-dictionary .nd-btn{display:inline-flex;justify-content:center;align-items:center;gap:5px;border:1px solid #d9d0bb;border-radius:9px;background:#fffdf7;padding:7px 11px;font-size:12px;font-weight:700;white-space:nowrap;min-height:34px}
+#page-dictionary .nd-btn:hover:not(:disabled){border-color:#9daea6;background:#f5fcf9}
+#page-dictionary .nd-primary{background:#73571f;color:white;border-color:#73571f}
+#page-dictionary .nd-primary:hover:not(:disabled){background:#5e461a;color:white}
+#page-dictionary .nd-clear{border:0;background:transparent;padding:3px;color:#6c6b60;font-size:18px}
+#page-dictionary .nd-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+#page-dictionary .nd-lang{display:flex;background:#fff8e8;border:1px solid #dcccaa;border-radius:10px;padding:3px;gap:2px}
+#page-dictionary .nd-lang button{border:0;border-radius:7px;background:transparent;padding:6px 10px;font-size:12px;font-weight:700;color:#76684c}
+#page-dictionary .nd-lang button[aria-pressed=true]{background:#73571f;color:white}
+#page-dictionary .nd-muted{font-size:12px;color:var(--d-muted);line-height:1.55}
+#page-dictionary .nd-pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+#page-dictionary .nd-chip{border:1px solid #ddd8ca;border-radius:99px;background:#fffdf8;font-size:12px;padding:5px 9px;max-width:100%;text-align:left;overflow-wrap:anywhere}
+#page-dictionary .nd-chip:hover{background:#fff;color:#126b68;border-color:#77aa9f}
+#page-dictionary .nd-chip b{font-weight:700}#page-dictionary .nd-chip small{color:#59665f;font-size:11px;margin-left:4px}
+#page-dictionary .nd-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px;align-items:start}
+#page-dictionary .nd-stack{display:grid;gap:12px;min-width:0}
+#page-dictionary .nd-panel{border:1px solid var(--d-line);background:#fffcf5;border-radius:15px;padding:15px;box-shadow:0 2px 0 #e0d8c5,0 5px 12px #433d2510;min-width:0;overflow-wrap:anywhere}
+#page-dictionary .nd-panel-blue{background-color:#e5f2fd;background-image:linear-gradient(#aacce31b 1px,transparent 1px),linear-gradient(90deg,#aacce31b 1px,transparent 1px);background-size:16px 16px;border-color:#b7d4e7;box-shadow:0 2px 0 #b5d3e7}
+#page-dictionary .nd-panel-gold{background:#f3e8ce;border-color:#dbc8a3;box-shadow:0 2px 0 #dbc8a3}
+#page-dictionary .nd-panel-green{background:#e1f0e5;border-color:#b2d6ba;box-shadow:0 2px 0 #b2d6ba}
+#page-dictionary .nd-h2{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:800;margin:0 0 11px}
+#page-dictionary .nd-headrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#page-dictionary .nd-word{font-size:clamp(26px,3vw,40px);font-weight:800;letter-spacing:-.035em;line-height:1.15;margin:0;overflow-wrap:anywhere}
+#page-dictionary .nd-badge{background:#e4eddf;color:#43644a;border:1px solid #cbdac2;border-radius:20px;font-size:11px;font-weight:700;padding:3px 7px}
+#page-dictionary .nd-badge-level{background:#f0ead9;color:#796333;border-color:#e0d3b5}
+#page-dictionary .nd-badge-ai{background:#eaf0f8;color:#476783;border-color:#cad8e8}
+#page-dictionary .nd-audios{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+#page-dictionary .nd-audios button{display:flex;align-items:center;justify-content:space-between;gap:7px;text-align:left;border:1px solid #e0d9c9;border-radius:11px;background:#f4f0e5;padding:8px 10px;min-height:40px;white-space:normal}
+#page-dictionary .nd-audios strong{font-size:12px;color:#5b655f}#page-dictionary .nd-ipa{font-family:Inter,system-ui,sans-serif;font-size:16px;font-weight:600;color:#245b59;overflow-wrap:anywhere}
+#page-dictionary .nd-overview{font-size:13px;line-height:1.65;margin:8px 0 13px;color:#414e54}
+#page-dictionary .nd-group{border:1px solid #e4ddd0;border-radius:11px;background:#fbf9f2;margin-top:8px;overflow:hidden}
+#page-dictionary .nd-group summary{list-style:none;cursor:pointer;padding:11px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:700}
+#page-dictionary .nd-group summary::-webkit-details-marker{display:none}#page-dictionary .nd-group summary:after{content:'⌄';margin-left:auto}#page-dictionary .nd-group[open] summary:after{content:'⌃'}
+#page-dictionary .nd-senses{padding:0 11px 9px}
+#page-dictionary .nd-sense{display:grid;grid-template-columns:25px minmax(0,1fr);gap:8px;padding:11px 0;border-top:1px solid #e7e0d4}
+#page-dictionary .nd-num{font-size:12px;display:grid;place-items:center;border:1px solid #b1b8a7;width:23px;height:23px;border-radius:100%;font-weight:800;color:#536957}
+#page-dictionary .nd-meaning{font-weight:800;font-size:15px;line-height:1.4}
+#page-dictionary .nd-definition{font-size:12px;color:#526166;margin-top:3px;line-height:1.5}
+#page-dictionary .nd-example{margin-top:7px;border:1px solid #e1d9cb;background:#fffdf8;border-radius:8px;padding:9px;display:flex;align-items:flex-start;gap:8px}
+#page-dictionary .nd-example>div{flex:1;min-width:0}#page-dictionary .nd-example b{font-size:13px;font-weight:650}#page-dictionary .nd-example p{font-size:12px;color:#677078;margin:3px 0 0;line-height:1.45}
+#page-dictionary .nd-audiobtn{display:grid;place-items:center;width:31px;height:31px;border-radius:8px;border:1px solid #ded9cb;background:#fff;color:#126b68;flex:none}
+#page-dictionary .nd-usage{margin-top:11px;border-radius:8px;background:#f1ead9;padding:10px;font-size:12px;line-height:1.65}
+#page-dictionary .nd-related{display:grid;gap:6px;max-height:510px;overflow-y:auto;padding:1px}
+#page-dictionary .nd-related-row{display:flex;gap:5px;align-items:center;min-width:0;background:#ffffffc9;border:1px solid #dce7ea;border-radius:9px;padding:8px}
+#page-dictionary .nd-related-word{flex:1;min-width:0;border:0;background:transparent;text-align:left;color:#26333b;overflow-wrap:anywhere}#page-dictionary .nd-related-word:hover b{color:#126b68;text-decoration:underline}
+#page-dictionary .nd-related-word b{display:block;font-size:13px;font-weight:800}#page-dictionary .nd-related-word small{display:block;color:#64727b;font-size:11px;margin-top:3px;line-height:1.4}
+#page-dictionary .nd-family{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+#page-dictionary .nd-family button{min-width:0;text-align:left;border:1px solid #e4d8bc;background:#fffcf4;border-radius:8px;padding:8px;overflow-wrap:anywhere}
+#page-dictionary .nd-family b{display:block;font-size:12px;font-weight:800}#page-dictionary .nd-family small{display:block;font-size:11px;color:#6a7066;margin-top:3px}
+#page-dictionary .nd-syn-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}#page-dictionary .nd-subhead{font-weight:700;font-size:12px;margin:0 0 7px;color:#4c6854}
+#page-dictionary .nd-notice{padding:10px 12px;border-radius:9px;border:1px solid #ded3b9;background:#fff7e5;font-size:12px;line-height:1.5;color:#73571f}
+#page-dictionary .nd-status{min-height:18px;font-size:12px;color:#65716e;line-height:1.5}#page-dictionary .nd-status[data-error=true]{color:#a3392a}
+#page-dictionary .nd-empty{padding:25px 15px;text-align:center}#page-dictionary .nd-empty h2{font-size:19px;font-weight:800;margin-bottom:7px}
+#page-dictionary .nd-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}#page-dictionary .nd-foot a{font-size:12px;text-decoration:underline;color:#246b6b}
+@media(max-width:900px){#page-dictionary .nd-cols{grid-template-columns:1fr}#page-dictionary .nd-related{max-height:340px}}
+@media(max-width:480px){#page-dictionary .nd-title{width:100%;font-size:19px}#page-dictionary .nd-banner,#page-dictionary .nd-panel{padding:11px}#page-dictionary .nd-audios,#page-dictionary .nd-syn-grid{grid-template-columns:1fr}#page-dictionary .nd-lang button{padding:6px 8px}#page-dictionary .nd-family{grid-template-columns:1fr 1fr}}
+#page-dictionary .nd-example-target{color:inherit;background:transparent;font-weight:800;text-decoration:underline;text-decoration-color:#249590;text-decoration-thickness:1.5px;text-underline-offset:3px}
+#page-dictionary .nd-icon{display:inline-block;vertical-align:middle;color:inherit}
